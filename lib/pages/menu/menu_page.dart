@@ -359,6 +359,24 @@ class MenuPage extends StatelessWidget {
                   const SizedBox(
                     height: 20.0,
                   ),
+
+                  // TODO: Add blur effect to image (innerside)
+                  Container(
+                    decoration: const BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          blurRadius: 20,
+                          spreadRadius: 50,
+                          color: Colors.white,
+                          blurStyle: BlurStyle.inner,
+                        ),
+                      ],
+                    ),
+                    child: Image.asset(
+                      ImageStrings.bottomWatermark,
+                      // color: AppColors.primaryColor,
+                    ),
+                  ),
                 ],
               ),
             ),

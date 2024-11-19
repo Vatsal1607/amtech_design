@@ -30,4 +30,5 @@ class ImageStrings {
   static const bestSeller2 = '${BaseImagePath.basePath}best_seller_2.png';
   static const bestSeller3 = '${BaseImagePath.basePath}best_seller_3.png';
   static const productPageBg = '${BaseImagePath.basePath}product_page_bg.png';
+  static const bottomWatermark = '${BaseImagePath.basePath}bottom_watermark.png';
 }

@@ -5,6 +5,7 @@ import 'package:amtech_design/pages/blog/blog_page.dart';
 import 'package:amtech_design/pages/menu/menu_page.dart';
 import 'package:amtech_design/pages/reorder/reorder_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/strings.dart';
 import 'bottom_bar_provider.dart';
@@ -37,11 +38,11 @@ class BottomBarPage extends StatelessWidget {
                 Colors.white, // Color for the selected label and icon
             unselectedItemColor: AppColors
                 .disabledColor, // Color for unselected labels and icons
-            selectedLabelStyle: const TextStyle(
-              height: 2.0, // Adds vertical padding to the label
+            selectedLabelStyle: TextStyle(
+              height: 2.h, // Adds vertical padding to the label
             ),
-            unselectedLabelStyle: const TextStyle(
-              height: 2.0, // Adds vertical padding to the label
+            unselectedLabelStyle: TextStyle(
+              height: 2.h, // Adds vertical padding to the label
             ),
             items: [
               BottomNavigationBarItem(

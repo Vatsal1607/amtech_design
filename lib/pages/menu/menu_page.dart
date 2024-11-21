@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/custom_appbar.dart';
@@ -8,9 +10,11 @@ import 'package:amtech_design/pages/menu/widgets/divider_label.dart';
 import 'package:amtech_design/pages/menu/widgets/product_widget.dart';
 import 'package:amtech_design/pages/product_page/product_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
+import '../../routes.dart';
 import 'widgets/custom_slider_track_shape.dart';
 
 class MenuPage extends StatelessWidget {
@@ -26,27 +30,27 @@ class MenuPage extends StatelessWidget {
         title: 'Good Afternoon,',
         subTitle: 'AMTech Design',
         leading: Container(
-          height: 48,
-          width: 48,
+          height: 48.h,
+          width: 48.w,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             border: Border.all(
               color: AppColors.primaryColor,
-              width: 2,
+              width: 2.w,
             ), // Border color and width
           ),
           child: ClipOval(
             child: Image.asset(
               ImageStrings.logo,
-              height: 48,
-              width: 48,
+              height: 48.h,
+              width: 48.w,
             ),
           ),
         ),
         actions: [
           Container(
-            height: 45,
-            width: 45,
+            height: 45.h,
+            width: 45.w,
             margin: const EdgeInsets.only(right: 15.0),
             decoration: const BoxDecoration(
               color: AppColors.primaryColor,
@@ -65,8 +69,8 @@ class MenuPage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      height: 12,
-                      width: 12,
+                      height: 12.h,
+                      width: 12.w,
                       decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: AppColors.red,
@@ -82,7 +86,7 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         backgroundColor: AppColors.primaryColor,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
+          borderRadius: BorderRadius.circular(30.r),
         ),
         onPressed: () {},
         icon: SvgIcon(icon: IconStrings.cup),
@@ -90,19 +94,19 @@ class MenuPage extends StatelessWidget {
           'MENU',
           style: GoogleFonts.publicSans(
             color: AppColors.white,
-            fontSize: 12.0,
+            fontSize: 12.sp,
           ),
         ),
       ),
       body: Stack(
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 20.0),
+            padding: EdgeInsets.only(top: 20.h),
             child: SingleChildScrollView(
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -110,23 +114,23 @@ class MenuPage extends StatelessWidget {
                           icon: IconStrings.address,
                           color: AppColors.primaryColor,
                         ),
-                        const SizedBox(width: 3.0),
+                        SizedBox(width: 3.w),
                         SizedBox(
-                          width: 230,
+                          width: 280.w,
                           child: RichText(
                             maxLines: 1,
                             overflow: TextOverflow.clip,
                             text: TextSpan(
                               text: 'Deliver to, ',
                               style: GoogleFonts.publicSans(
-                                fontSize: 12.0,
+                                fontSize: 12.sp,
                                 color: AppColors.primaryColor.withOpacity(0.8),
                               ),
                               children: <TextSpan>[
                                 TextSpan(
                                   text: 'AMTECH DESIGN, TITANIUM CIT',
                                   style: GoogleFonts.publicSans(
-                                    fontSize: 10.0,
+                                    fontSize: 10.sp,
                                     fontWeight: FontWeight.bold,
                                     color:
                                         AppColors.primaryColor.withOpacity(0.8),
@@ -137,17 +141,17 @@ class MenuPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          height: 24,
-                          width: 65,
+                          height: 24.h,
+                          width: 65.w,
                           decoration: BoxDecoration(
                             color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(10.0),
+                            borderRadius: BorderRadius.circular(10.r),
                           ),
                           child: Center(
                             child: Text(
                               'CHANGE',
                               style: GoogleFonts.publicSans(
-                                fontSize: 10.0,
+                                fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.white,
                               ),
@@ -157,9 +161,9 @@ class MenuPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 15.0),
+                  SizedBox(height: 15.h),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -169,14 +173,14 @@ class MenuPage extends StatelessWidget {
                             style: GoogleFonts.publicSans(
                               color: AppColors.primaryColor,
                               fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
+                              fontSize: 15.sp,
                             ),
                             children: <TextSpan>[
                               TextSpan(
                                 text: 'POINTS',
                                 style: GoogleFonts.publicSans(
                                   color: AppColors.primaryColor,
-                                  fontSize: 10.0,
+                                  fontSize: 10.sp,
                                 ),
                               )
                             ],
@@ -189,9 +193,9 @@ class MenuPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 13.0),
+                  SizedBox(height: 13.h),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.h),
                     child: Consumer<MenuProvider>(
                       builder:
                           (BuildContext context, provider, Widget? child) =>
@@ -305,10 +309,7 @@ class MenuPage extends StatelessWidget {
                           builder: (context, provider, child) =>
                               GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                ProductPage.route(),
-                              );
+                              Navigator.pushNamed(context, Routes.productPage);
                             },
                             child: ProductWidget(
                               image: provider.productImage[index],
@@ -360,22 +361,104 @@ class MenuPage extends StatelessWidget {
                     height: 20.0,
                   ),
 
-                  // TODO: Add blur effect to image (innerside)
-                  Container(
-                    decoration: const BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          blurRadius: 20,
-                          spreadRadius: 50,
-                          color: Colors.white,
-                          blurStyle: BlurStyle.inner,
+                  Stack(
+                    children: [
+                      ClipRect(
+                        child: Image.asset(
+                          ImageStrings.bottomWatermark,
+                          fit: BoxFit.cover,
+                          // color: Colors.transparent,
                         ),
-                      ],
-                    ),
-                    child: Image.asset(
-                      ImageStrings.bottomWatermark,
-                      // color: AppColors.primaryColor,
-                    ),
+                      ),
+                      // Top edge gradient
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        top: -15, // Changed from `bottom: 0` to `top: 0`
+                        height: 150, // Adjust the height of the blur effect
+                        child: IgnorePointer(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment
+                                    .topCenter, // Changed from `Alignment.bottomCenter`
+                                end: Alignment
+                                    .bottomCenter, // Changed from `Alignment.topCenter`
+                                colors: [
+                                  Colors.white, // Your background color
+                                  Colors.white
+                                      .withOpacity(0.0), // Fades to transparent
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Left edge gradient
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        width: 50, // Adjust the width of the blur effect
+                        child: IgnorePointer(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [
+                                  Colors.white, // Your background color
+                                  Colors.white.withOpacity(0.0),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Right edge gradient
+                      Positioned(
+                        top: 0,
+                        bottom: 0,
+                        right: 0,
+                        width: 50, // Adjust the width of the blur effect
+                        child: IgnorePointer(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.centerRight,
+                                end: Alignment.centerLeft,
+                                colors: [
+                                  Colors.white,
+                                  Colors.white.withOpacity(0.0),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Bottom edge gradient
+                      Positioned(
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        height: 150, // Adjust the height of the blur effect
+                        child: IgnorePointer(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [
+                                  Colors.white, // Your background color
+                                  Colors.white.withOpacity(0.0),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),

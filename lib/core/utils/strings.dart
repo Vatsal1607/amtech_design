@@ -6,6 +6,10 @@ class BaseImagePath {
   static const basePath = 'assets/images/';
 }
 
+class BaseGifPath {
+  static const basePath = 'assets/gif/';
+}
+
 class IconStrings {
   static const menu = '${BaseIconPath.basePath}menu.svg';
   static const billing = '${BaseIconPath.basePath}billing.svg';
@@ -21,6 +25,10 @@ class IconStrings {
   static const ratings = '${BaseIconPath.basePath}ratings.svg';
   static const time = '${BaseIconPath.basePath}time.svg';
   static const ratingsPerson = '${BaseIconPath.basePath}ratings_person.svg';
+  static const arrowNext = '${BaseIconPath.basePath}arrow_next.svg';
+  static const businessAccount = '${BaseIconPath.basePath}business_account.svg';
+  static const personalAccount = '${BaseIconPath.basePath}personal_account.svg';
+  static const arrowDropdown = '${BaseIconPath.basePath}arrow_dropdown.svg';
 }
 
 class ImageStrings {
@@ -30,5 +38,18 @@ class ImageStrings {
   static const bestSeller2 = '${BaseImagePath.basePath}best_seller_2.png';
   static const bestSeller3 = '${BaseImagePath.basePath}best_seller_3.png';
   static const productPageBg = '${BaseImagePath.basePath}product_page_bg.png';
-  static const bottomWatermark = '${BaseImagePath.basePath}bottom_watermark.png';
+  static const bottomWatermark =
+      '${BaseImagePath.basePath}bottom_watermark.png';
+  static const appLogo = '${BaseImagePath.basePath}splash_logo.png';
+  static const welcome1 = '${BaseImagePath.basePath}welcome1.png';
+  static const welcome2 = '${BaseImagePath.basePath}welcome2.png';
+  static const welcome3 = '${BaseImagePath.basePath}welcome3.png';
+  static const accountSelectionBg =
+      '${BaseImagePath.basePath}account_selection_bg.png';
+  static const locationSelectionBg =
+      '${BaseImagePath.basePath}location_selection_bg.png';
+}
+
+class GifStrings {
+  static const smoke = '${BaseGifPath.basePath}smoke.gif';
 }

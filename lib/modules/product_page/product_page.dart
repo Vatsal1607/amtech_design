@@ -1,7 +1,7 @@
 import 'package:amtech_design/custom_widgets/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/pages/product_page/widgets/add_to_cart_button.dart';
-import 'package:amtech_design/pages/product_page/widgets/size_widget.dart';
+import 'package:amtech_design/modules/product_page/widgets/add_to_cart_button.dart';
+import 'package:amtech_design/modules/product_page/widgets/size_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';

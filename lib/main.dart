@@ -1,16 +1,19 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
-import 'package:amtech_design/pages/welcome/welcome_provider.dart';
+import 'package:amtech_design/modules/auth/login/login_provider.dart';
+import 'package:amtech_design/modules/welcome/welcome_provider.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
-import 'pages/auth/location_selection/location_selection_provider.dart';
-import 'pages/bottom_bar/bottom_bar_page.dart';
-import 'pages/bottom_bar/bottom_bar_provider.dart';
-import 'pages/menu/menu_provider.dart';
+import 'modules/auth/company_selection/company_selection_provider.dart';
+import 'modules/auth/location_selection/location_selection_provider.dart';
+import 'modules/bottom_bar/bottom_bar_provider.dart';
+import 'modules/menu/menu_provider.dart';
 import 'routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferencesService.init();
   runApp(const MyApp());
 }
 
@@ -25,6 +28,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MenuProvider()),
         ChangeNotifierProvider(create: (_) => WelcomeProvider()),
         ChangeNotifierProvider(create: (_) => LocationSelectionProvider()),
+        ChangeNotifierProvider(create: (_) => CompanySelectionProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

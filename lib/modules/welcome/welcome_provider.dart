@@ -1,4 +1,4 @@
-import 'package:amtech_design/pages/welcome/widgets/welcome_build_pages.dart';
+import 'package:amtech_design/modules/welcome/widgets/welcome_build_pages.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';

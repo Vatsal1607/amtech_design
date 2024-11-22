@@ -1,9 +1,9 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/pages/billing/billing_page.dart';
-import 'package:amtech_design/pages/blog/blog_page.dart';
-import 'package:amtech_design/pages/menu/menu_page.dart';
-import 'package:amtech_design/pages/reorder/reorder_page.dart';
+import 'package:amtech_design/modules/billing/billing_page.dart';
+import 'package:amtech_design/modules/blog/blog_page.dart';
+import 'package:amtech_design/modules/menu/menu_page.dart';
+import 'package:amtech_design/modules/reorder/reorder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

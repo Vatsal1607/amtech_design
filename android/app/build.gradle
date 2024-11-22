@@ -7,8 +7,10 @@ plugins {
 
 android {
     namespace = "com.example.amtech_design"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+//    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
+    ndkVersion = "27.0.12077973"
+//    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8

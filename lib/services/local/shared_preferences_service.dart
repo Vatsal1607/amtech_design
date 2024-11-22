@@ -9,15 +9,15 @@ class SharedPreferencesService {
   }
 
   // Save data
-  Future<void> saveString(String key, String value) async {
+  Future<void> setString(String key, String value) async {
     await _prefs?.setString(key, value);
   }
 
-  Future<void> saveInt(String key, int value) async {
+  Future<void> setInt(String key, int value) async {
     await _prefs?.setInt(key, value);
   }
 
-  Future<void> saveBool(String key, bool value) async {
+  Future<void> setBool(String key, bool value) async {
     await _prefs?.setBool(key, value);
   }
 
@@ -31,7 +31,7 @@ class SharedPreferencesService {
     await _prefs?.remove(key);
   }
 
-  // Clear all data
+  // Clear all data // TODO: call clear local data method on logout
   Future<void> clear() async {
     await _prefs?.clear();
   }

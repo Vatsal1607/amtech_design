@@ -9,12 +9,16 @@ class CustomButton extends StatelessWidget {
   final Color bgColor;
   final Color textColor;
   final VoidCallback onTap;
+  final double? height;
+  final double? width;
   const CustomButton({
     super.key,
     this.text = 'NEXT',
     this.bgColor = AppColors.black,
     this.textColor = AppColors.white,
     required this.onTap,
+    this.height,
+    this.width,
   });
 
   @override
@@ -22,6 +26,8 @@ class CustomButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: height,
+        width: width,
         padding: EdgeInsets.only(
           top: 14.h,
           bottom: 16.h,

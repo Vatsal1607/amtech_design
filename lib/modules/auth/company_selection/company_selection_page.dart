@@ -1,19 +1,21 @@
-import 'package:amtech_design/core/utils/app_colors.dart';
-import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/pages/auth/location_selection/widgets/dropdown_location.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/strings.dart';
+import '../../../custom_widgets/custom_button.dart';
+import '../../../custom_widgets/svg_icon.dart';
+import '../../../routes.dart';
+import '../location_selection/location_selection_provider.dart';
+import 'company_dropdown.dart';
 
-import 'location_selection_provider.dart';
-
-class LocationSelectionPage extends StatelessWidget {
-  const LocationSelectionPage({super.key});
+class CompanySelectionPage extends StatelessWidget {
+  const CompanySelectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('Company selection page called');
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       appBar: AppBar(
@@ -56,7 +58,7 @@ class LocationSelectionPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Choose Location',
+                    'Choose Your Company',
                     style: GoogleFonts.publicSans(
                       fontSize: 40.sp,
                       color: AppColors.disabledColor,
@@ -65,8 +67,7 @@ class LocationSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'SELECT YOUR complex, business park or working space.'
-                        .toUpperCase(),
+                    'SELECT YOUR company or add one.'.toUpperCase(),
                     style: GoogleFonts.publicSans(
                       fontSize: 15.sp,
                       color: AppColors.seaShell,
@@ -75,8 +76,27 @@ class LocationSelectionPage extends StatelessWidget {
                   SizedBox(height: 16.h),
 
                   /// Dropdown button
-                  DropdownLocation(),
+                  const CompanyDropdown(),
                 ],
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.only(
+                bottom: 70.h,
+                left: 34.w,
+                right: 34.w,
+              ),
+              child: CustomButton(
+                height: 48.h,
+                onTap: () {
+                  debugPrint('Navigate to login page');
+                  Navigator.pushNamed(context, Routes.login);
+                },
+                bgColor: AppColors.disabledColor,
+                textColor: AppColors.primaryColor,
               ),
             ),
           ),

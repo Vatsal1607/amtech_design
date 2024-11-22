@@ -1,6 +1,6 @@
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/pages/welcome/welcome_provider.dart';
+import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';

@@ -1,6 +1,7 @@
 import 'package:amtech_design/modules/auth/account_selection/account_selection_page.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_page.dart';
 import 'package:amtech_design/modules/auth/login/login_page.dart';
+import 'package:amtech_design/modules/auth/otp/otp_page.dart';
 import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
@@ -20,6 +21,7 @@ class Routes {
   static const String details = '/details';
   static const String companySelection = '/companySelection';
   static const String login = '/login';
+  static const String otp = '/otp';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -31,5 +33,6 @@ class Routes {
     details: (context) => const ProductPage(),
     companySelection: (context) => const CompanySelectionPage(),
     login: (context) => const LoginPage(),
+    otp: (context) => const OtpPage(),
   };
 }

@@ -1,17 +1,11 @@
-import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/main.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
 import '../../../core/utils/app_colors.dart';
-import '../../../custom_widgets/custom_button.dart';
 import '../../../routes.dart';
-import '../../../services/local/shared_preferences_service.dart';
 import 'widgets/account_selection_button.dart';
 
 class AccountSelectionPage extends StatelessWidget {
@@ -23,6 +17,8 @@ class AccountSelectionPage extends StatelessWidget {
       body: Stack(
         children: [
           Image.asset(
+            height: 1.sh,
+            width: 1.sw,
             ImageStrings.accountSelectionBg,
             fit: BoxFit.cover,
           ),
@@ -82,13 +78,6 @@ class AccountSelectionPage extends StatelessWidget {
                     ),
                     SizedBox(height: 16.h),
 
-                    // Custom button
-                    CustomButton(
-                      onTap: () {
-                        debugPrint('Next pressed');
-                      },
-                    ),
-                    SizedBox(height: 12.h),
                     RichText(
                       text: TextSpan(
                           text: 'BY PROCEEDING, YOU ACCEPT OUR ',

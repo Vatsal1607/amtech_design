@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 
 class LoginProvider extends ChangeNotifier {
-  String selectedCountryCode = '+91'; // Default country code
+  String countryCode = '+91'; // Default country code for mobile
   final TextEditingController phoneController = TextEditingController();
 
-  onChangeCountryCode(value) {
-    selectedCountryCode = value!;
-    notifyListeners();
+  final formKey = GlobalKey<FormState>();
+
+  String? validateMobileNumber(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Mobile number is required';
+    }
+    if (value.length != 10) {
+      return 'Mobile number must be 10 digits';
+    }
+    if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+      return 'Mobile number must contain only numeric values';
+    }
+    return null;
   }
 
-  final List<String> countryCodes = [
-    '+1',
-    '+91',
-    '+44',
-    '+61',
-    '+81'
-  ]; // Add more codes as needed
+  @override
+  void dispose() {
+    phoneController.clear();
+    phoneController.dispose();
+    super.dispose();
+  }
 }

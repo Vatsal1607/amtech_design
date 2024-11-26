@@ -1,22 +1,30 @@
-import 'package:amtech_design/modules/auth/login/widgets/textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
-import '../company_selection/company_dropdown.dart';
+import '../../../routes.dart';
+import '../location_selection/location_selection_provider.dart';
+import 'login_provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final String accountType =
-    //     context.read<LocationSelectionProvider>().accountType ?? '';
+    final String accountType =
+        context.read<LocationSelectionProvider>().accountType ?? '';
+    debugPrint('Account type is: $accountType');
     return Scaffold(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: accountType != '' && accountType == 'business'
+          ? AppColors.primaryColor
+          : accountType != '' && accountType == 'personal'
+              ? AppColors.darkGreenGrey
+              : AppColors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: GestureDetector(
@@ -38,68 +46,180 @@ class LoginPage extends StatelessWidget {
         ),
       ),
       extendBodyBehindAppBar: true, // show content of body behind appbar
-      body: Stack(
-        children: [
-          Image.asset(
-            width: 1.sw,
-            height: 1.sh,
-            ImageStrings.locationSelectionBg,
-            // fit: BoxFit.cover,
-          ),
-          Positioned.fill(
-            child: Padding(
-              padding: EdgeInsets.only(
-                top: 150.0,
-                left: 34.w,
-                right: 34.w,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Login',
-                    style: GoogleFonts.publicSans(
-                      fontSize: 40.sp,
-                      color: AppColors.disabledColor,
-                      fontWeight: FontWeight.bold,
+      body: Form(
+        key: context.read<LoginProvider>().formKey,
+        child: Stack(
+          children: [
+            Image.asset(
+              width: 1.sw,
+              height: 1.sh,
+              ImageStrings.loginBg,
+              // fit: BoxFit.cover,
+            ),
+            Positioned.fill(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  top: 150.0,
+                  left: 34.w,
+                  right: 34.w,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Login',
+                      style: GoogleFonts.publicSans(
+                        fontSize: 40.sp,
+                        color: accountType != '' && accountType == 'business'
+                            ? AppColors.disabledColor
+                            : accountType != '' && accountType == 'personal'
+                                ? AppColors.seaMist
+                                : AppColors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    'Enter your mobile number to get otp.'.toUpperCase(),
-                    style: GoogleFonts.publicSans(
-                      fontSize: 15.sp,
-                      color: AppColors.seaShell,
+                    SizedBox(height: 10.h),
+                    Text(
+                      'Enter your mobile number to get otp.'.toUpperCase(),
+                      style: GoogleFonts.publicSans(
+                        fontSize: 15.sp,
+                        color: accountType != '' && accountType == 'business'
+                            ? AppColors.seaShell
+                            : accountType != '' && accountType == 'personal'
+                                ? AppColors.seaMist
+                                : AppColors.white,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.h),
+                    SizedBox(height: 16.h),
 
-                  /// TextFormField for Mobile number
-                  Textfield(),
-                ],
+                    /// TextField Widget for Mobile number
+                    // Textfield(), // Extracted widget
+
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Country Code Widget
+                        Container(
+                          height: 48.h,
+                          width: 48.w,
+                          decoration: const BoxDecoration(
+                            color: AppColors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Center(
+                            child: Text(
+                              context.read<LoginProvider>().countryCode,
+                              style: GoogleFonts.publicSans(
+                                fontSize: 15.sp,
+                                fontWeight: FontWeight.bold,
+                                color: accountType != '' &&
+                                        accountType == 'business'
+                                    ? AppColors.primaryColor
+                                    : accountType != '' &&
+                                            accountType == 'personal'
+                                        ? AppColors.darkGreenGrey
+                                        : AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 11.w),
+                        // Mobile Number Text Field
+                        Expanded(
+                          child: Consumer<LoginProvider>(
+                            builder: (context, provider, child) =>
+                                TextFormField(
+                              controller: provider.phoneController,
+                              keyboardType: TextInputType.phone,
+                              inputFormatters: [
+                                FilteringTextInputFormatter
+                                    .digitsOnly, // Allows only numeric input
+                              ],
+                              validator: provider.validateMobileNumber,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: AppColors.white,
+                                errorStyle:
+                                    const TextStyle(color: AppColors.white),
+                                hintText: 'Enter mobile number',
+                                hintStyle: GoogleFonts.publicSans(
+                                  fontSize: 15.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: accountType != '' &&
+                                          accountType == 'business'
+                                      ? AppColors.primaryColor.withOpacity(0.5)
+                                      : accountType != '' &&
+                                              accountType == 'personal'
+                                          ? AppColors.darkGreenGrey
+                                              .withOpacity(0.5)
+                                          : AppColors.white,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100.r),
+                                ),
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(
-                bottom: 70.h,
-                left: 34.w,
-                right: 34.w,
-              ),
-              child: CustomButton(
-                height: 48.h,
-                onTap: () {
-                  debugPrint('Login page, GET OTP pressed');
-                },
-                text: 'GET OTP',
-                bgColor: AppColors.disabledColor,
-                textColor: AppColors.primaryColor,
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(
+                  bottom: 70.h,
+                  left: 34.w,
+                  right: 34.w,
+                ),
+                child: CustomButton(
+                  height: 48.h,
+                  onTap: () {
+                    debugPrint('Login page, GET OTP pressed');
+
+                    if (context
+                        .read<LoginProvider>()
+                        .formKey
+                        .currentState!
+                        .validate()) {
+                      debugPrint('Form is valid');
+                      Navigator.pushNamed(
+                        context,
+                        Routes.otp,
+                        arguments: {
+                          'mobile_number': context
+                              .read<LoginProvider>()
+                              .phoneController
+                              .text,
+                        },
+                      );
+                    } else {
+                      debugPrint('Form is not valid');
+                    }
+                    context.read<LoginProvider>().phoneController.clear();
+                  },
+                  text: 'GET OTP',
+                  bgColor: accountType != '' && accountType == 'business'
+                      ? AppColors.disabledColor
+                      : accountType != '' && accountType == 'personal'
+                          ? AppColors.seaMist
+                          : AppColors.white,
+                  textColor: accountType != '' && accountType == 'business'
+                      ? AppColors.primaryColor
+                      : accountType != '' && accountType == 'personal'
+                          ? AppColors.darkGreenGrey
+                          : AppColors.white,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

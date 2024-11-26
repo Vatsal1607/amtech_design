@@ -3,6 +3,7 @@ import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/product_page/widgets/add_to_cart_button.dart';
 import 'package:amtech_design/modules/product_page/widgets/size_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:readmore/readmore.dart';
 import '../../core/utils/app_colors.dart';
@@ -31,8 +32,8 @@ class ProductPage extends StatelessWidget {
           Navigator.pop(context);
         },
         leading: Container(
-          height: 48,
-          width: 48,
+          height: 48.h,
+          width: 48.w,
           decoration: const BoxDecoration(
             shape: BoxShape.circle,
             color: AppColors.white,
@@ -46,8 +47,8 @@ class ProductPage extends StatelessWidget {
         ),
         actions: [
           Container(
-            height: 45,
-            width: 45,
+            height: 45.h,
+            width: 45.w,
             margin: const EdgeInsets.only(right: 15.0),
             decoration: const BoxDecoration(
               color: AppColors.white,
@@ -79,20 +80,23 @@ class ProductPage extends StatelessWidget {
           ),
           Container(
             // height: 400,
-            height: MediaQuery.of(context).size.height / 2 + 30,
+            height: MediaQuery.of(context).size.height / 2 + 30.h,
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 32),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               color: AppColors.seaShell,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+                topLeft: Radius.circular(30.r),
+                topRight: Radius.circular(30.r),
               ),
             ),
             // scrollable bottomsheet
             child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
+                  SizedBox(height: 100.h), // temp // TODO: remove
                   const SizedBox(
                     width: 36,
                     child: Divider(

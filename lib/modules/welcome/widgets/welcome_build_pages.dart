@@ -28,10 +28,11 @@ class WelcomeBuildPages extends StatelessWidget {
     return Stack(
       children: [
         Image.asset(
-          // width: 1.sw,
+          width: 1.sw,
+          height: 1.sh,
           image,
+          fit: BoxFit.cover,
         ),
-        // Image.asset(GifStrings.smoke,),
         Positioned.fill(
           top: 95.h,
           left: 30.w,

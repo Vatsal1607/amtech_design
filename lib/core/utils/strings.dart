@@ -49,6 +49,7 @@ class ImageStrings {
       '${BaseImagePath.basePath}account_selection_bg.png';
   static const locationSelectionBg =
       '${BaseImagePath.basePath}location_selection_bg.png';
+  static const loginBg = '${BaseImagePath.basePath}login_bg.png';
 }
 
 class GifStrings {

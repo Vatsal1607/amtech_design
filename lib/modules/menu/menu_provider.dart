@@ -2,6 +2,28 @@ import 'package:flutter/material.dart';
 import '../../core/utils/strings.dart';
 
 class MenuProvider extends ChangeNotifier {
+  // late ScrollController scrollController;
+
+  // MenuProvider() {
+  //   scrollController = ScrollController();
+  //   scrollController.addListener(_restrictScroll);
+  // }
+
+  // void _restrictScroll() {
+  //   // Limit scroll so that the sticky header is always visible above 150px
+  //   if (scrollController.offset > 150.0) {
+  //     scrollController.jumpTo(150.0); // Restrict scrolling beyond 150px
+  //   }
+  // }
+
+  @override
+  void dispose() {
+    // scrollController.removeListener(_restrictScroll);
+    // scrollController.dispose();
+    pageController.dispose();
+    super.dispose();
+  }
+
   double currentSliderValue = 20;
 
   onChangeSlider(double value) {
@@ -30,10 +52,4 @@ class MenuProvider extends ChangeNotifier {
     'tea w/o milk',
     'everyday tea',
   ];
-
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
 }

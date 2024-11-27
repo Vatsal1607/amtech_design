@@ -44,6 +44,12 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
             scaffoldBackgroundColor: AppColors.seaShell,
+            // Snackbar global theme
+            snackBarTheme: const SnackBarThemeData(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.zero, // Removes border radius
+              ),
+            ),
           ),
           // home: BottomBarPage(),
           initialRoute: Routes.initial,

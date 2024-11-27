@@ -3,12 +3,17 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../product_page/product_page.dart';
 import '../menu_provider.dart';
 
 class BannerView extends StatelessWidget {
-  const BannerView({super.key});
+  final String accountType;
+  const BannerView({
+    super.key,
+    required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +32,18 @@ class BannerView extends StatelessWidget {
               height: 102.0,
               // width: 300.0,
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
+                gradient: LinearGradient(
                   colors: [
-                    AppColors.primaryColor,
-                    AppColors.disabledColor,
+                    getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.seaMist,
+                    ),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(30.0),
@@ -69,7 +82,11 @@ class BannerView extends StatelessWidget {
                                 style: GoogleFonts.publicSans(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  color: AppColors.disabledColor,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.disabledColor,
+                                    personalColor: AppColors.seaMist,
+                                  ),
                                 ),
                               ),
                               Text(
@@ -102,8 +119,15 @@ class BannerView extends StatelessWidget {
               effect: WormEffect(
                 dotHeight: 7,
                 dotWidth: 7,
-                activeDotColor: AppColors.primaryColor,
-                dotColor: AppColors.primaryColor.withOpacity(0.5),
+                activeDotColor: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+                dotColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor.withOpacity(0.5),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(0.5)),
               ),
             ),
           ),

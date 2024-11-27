@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
@@ -15,7 +12,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
-import '../../routes.dart';
+import '../../core/utils/constants/keys.dart';
+import '../../services/local/shared_preferences_service.dart';
 import 'widgets/custom_slider_track_shape.dart';
 
 class MenuPage extends StatelessWidget {
@@ -23,8 +21,18 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType =
+        sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
+            '';
+    debugPrint('$accountType is from menu page (build)');
+
     return Scaffold(
-      backgroundColor: AppColors.seaShell,
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
+
       // appBar: CustomAppBar(
       //   backgroundColor: AppColors.seaShell.withOpacity(0.4),
       //   title: 'Good Afternoon,',
@@ -84,11 +92,17 @@ class MenuPage extends StatelessWidget {
       //   ],
       // ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: AppColors.primaryColor,
+        backgroundColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30.r),
         ),
-        onPressed: () {},
+        onPressed: () {
+          debugPrint('Menu pressed');
+        },
         icon: SvgIcon(icon: IconStrings.cup),
         label: Text(
           'MENU',
@@ -101,28 +115,40 @@ class MenuPage extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            backgroundColor: AppColors.seaShell.withOpacity(0.4),
+            backgroundColor: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.seaShell,
+              personalColor: AppColors.seaMist,
+            ),
             title: Column(
               children: [
                 Text(
                   'Good Afternoon,',
                   style: GoogleFonts.publicSans(
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     fontSize: 15,
                   ),
                 ),
                 Text(
                   'AMTech Design',
                   style: GoogleFonts.publicSans(
-                    color: AppColors.primaryColor,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
               ],
             ),
             leading: Padding(
-              padding: const EdgeInsets.all(8.0), // Adjust padding if needed
+              padding: EdgeInsets.all(8.w), // Adjust padding if needed
               child: Container(
                 height: 48,
                 width: 48,
@@ -146,13 +172,22 @@ class MenuPage extends StatelessWidget {
                 height: 45,
                 width: 45,
                 margin: const EdgeInsets.only(right: 15.0),
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryColor,
+                decoration: BoxDecoration(
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   shape: BoxShape.circle,
                 ),
                 child: Stack(
                   children: [
                     const Positioned.fill(
+                      // child: SvgIcon(
+                      //   icon: IconStrings.notification,
+                      //   color: AppColors.white,
+                      // ),
+                      // TODO: Replace with svg icon (above commented) // ReLaunch
                       child: Icon(
                         Icons.notifications_outlined,
                         color: AppColors.white,
@@ -187,7 +222,11 @@ class MenuPage extends StatelessWidget {
                     children: [
                       SvgIcon(
                         icon: IconStrings.address,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                       SizedBox(width: 3.w),
                       SizedBox(
@@ -199,7 +238,13 @@ class MenuPage extends StatelessWidget {
                             text: 'Deliver to, ',
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,
-                              color: AppColors.primaryColor.withOpacity(0.8),
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor:
+                                    AppColors.primaryColor.withOpacity(0.8),
+                                personalColor:
+                                    AppColors.darkGreenGrey.withOpacity(0.8),
+                              ),
                             ),
                             children: <TextSpan>[
                               TextSpan(
@@ -207,8 +252,13 @@ class MenuPage extends StatelessWidget {
                                 style: GoogleFonts.publicSans(
                                   fontSize: 10.sp,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      AppColors.primaryColor.withOpacity(0.8),
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor:
+                                        AppColors.primaryColor.withOpacity(0.8),
+                                    personalColor: AppColors.darkGreenGrey
+                                        .withOpacity(0.8),
+                                  ),
                                 ),
                               ),
                             ],
@@ -219,7 +269,12 @@ class MenuPage extends StatelessWidget {
                         height: 24.h,
                         width: 65.w,
                         decoration: BoxDecoration(
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                          // color: AppColors.primaryColor,
                           borderRadius: BorderRadius.circular(10.r),
                         ),
                         child: Center(
@@ -228,7 +283,11 @@ class MenuPage extends StatelessWidget {
                             style: GoogleFonts.publicSans(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.white,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.seaShell,
+                                personalColor: AppColors.seaMist,
+                              ),
                             ),
                           ),
                         ),
@@ -246,7 +305,11 @@ class MenuPage extends StatelessWidget {
                         text: TextSpan(
                           text: '140 / 200 ',
                           style: GoogleFonts.publicSans(
-                            color: AppColors.primaryColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                             fontWeight: FontWeight.bold,
                             fontSize: 15.sp,
                           ),
@@ -254,7 +317,11 @@ class MenuPage extends StatelessWidget {
                             TextSpan(
                               text: 'POINTS',
                               style: GoogleFonts.publicSans(
-                                color: AppColors.primaryColor,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
                                 fontSize: 10.sp,
                               ),
                             )
@@ -263,7 +330,11 @@ class MenuPage extends StatelessWidget {
                       ),
                       SvgIcon(
                         icon: IconStrings.reward,
-                        color: AppColors.black,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.black,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ],
                   ),
@@ -278,8 +349,16 @@ class MenuPage extends StatelessWidget {
                         thumbShape: SliderComponentShape.noThumb,
                         overlayShape: SliderComponentShape
                             .noOverlay, // Remove thumb shadow overlay
-                        activeTrackColor: AppColors.primaryColor,
-                        inactiveTrackColor: AppColors.disabledColor,
+                        activeTrackColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
+                        inactiveTrackColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                         // rangeTrackShape: RoundedRectRangeSliderTrackShape(),
                         trackShape: CustomTrackShape(),
                       ),
@@ -297,7 +376,11 @@ class MenuPage extends StatelessWidget {
                   height: 28.0,
                   margin: const EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     borderRadius: BorderRadius.circular(100.0),
                   ),
                   child: Center(
@@ -322,7 +405,7 @@ class MenuPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 22.0),
+                SizedBox(height: 22.h),
               ],
             ),
           ),
@@ -336,7 +419,6 @@ class MenuPage extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20.0),
                 decoration: BoxDecoration(
-                  // color: Colors.white, // Background color of the TextFormField
                   borderRadius: BorderRadius.circular(100.0),
                   boxShadow: const [
                     BoxShadow(
@@ -350,7 +432,11 @@ class MenuPage extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: 'Search for Tea, Coffee or Snacks',
                     hintStyle: GoogleFonts.publicSans(
-                      color: AppColors.disabledColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.disabledColor,
+                        personalColor: AppColors.white,
+                      ),
                       fontSize: 14.0,
                     ),
                     // border: InputBorder.none, // Removes the border
@@ -358,7 +444,12 @@ class MenuPage extends StatelessWidget {
                     enabledBorder: textFieldBorderStyle,
                     focusedBorder: textFieldBorderStyle,
                     filled: true, // To add a background color
-                    fillColor: AppColors.primaryColor.withOpacity(0.7),
+                    fillColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor.withOpacity(0.7),
+                      personalColor: AppColors.darkGreenGrey.withOpacity(0.7),
+                    ),
+                    // fillColor: AppColors.primaryColor.withOpacity(0.7),
                     prefixIcon: SvgIcon(icon: IconStrings.search),
                   ),
                 ),
@@ -374,22 +465,25 @@ class MenuPage extends StatelessWidget {
                   padding: EdgeInsets.only(top: 20.h),
                   child: Column(
                     children: [
-                      // BannerView
-                      const BannerView(),
+                      //* BannerView
+                      BannerView(
+                        accountType: accountType,
+                      ),
                       const SizedBox(height: 10.0),
 
                       // Best Seller Divider
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: DividerLabel(
                           label: 'BEST SELLER',
+                          accountType: accountType,
                         ),
                       ),
                       const SizedBox(height: 15.0),
 
                       // Best seller horizontal view
                       SizedBox(
-                        height: 157,
+                        height: 157.h,
                         child: ListView.separated(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           shrinkWrap: true,
@@ -402,29 +496,35 @@ class MenuPage extends StatelessWidget {
                               builder: (context, provider, child) =>
                                   GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                      context, Routes.productPage);
+                                  debugPrint('Product item pressed $index');
+
+                                  /// TODO: Uncomment navigation
+                                  // Navigator.pushNamed(
+                                  //     context, Routes.productPage);
                                 },
                                 child: ProductWidget(
                                   image: provider.productImage[index],
                                   name: provider.productName[index],
+                                  index: index,
+                                  accountType: accountType,
                                 ),
                               ),
                             );
                           },
                         ),
                       ),
-                      const SizedBox(height: 18),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      SizedBox(height: 18.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: DividerLabel(
                           label: 'TEA',
+                          accountType: accountType,
                         ),
                       ),
                       const SizedBox(height: 15),
                       // TEA seller horizontal view
                       SizedBox(
-                        height: 157,
+                        height: 157.h,
                         child: ListView.separated(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           shrinkWrap: true,
@@ -445,6 +545,8 @@ class MenuPage extends StatelessWidget {
                                 child: ProductWidget(
                                   image: provider.productImage[index],
                                   name: provider.productName[index],
+                                  index: index,
+                                  accountType: accountType,
                                 ),
                               ),
                             );
@@ -456,13 +558,9 @@ class MenuPage extends StatelessWidget {
                       Stack(
                         children: [
                           ClipRect(
-                            child: Container(
-                              color: AppColors.seaShell,
-                              child: Image.asset(
-                                ImageStrings.bottomWatermark,
-                                fit: BoxFit.cover,
-                                // color: Colors.transparent,
-                              ),
+                            child: Image.asset(
+                              ImageStrings.bottomWatermark,
+                              fit: BoxFit.cover,
                             ),
                           ),
                           // Top edge gradient
@@ -475,21 +573,27 @@ class MenuPage extends StatelessWidget {
                               child: Container(
                                 decoration: BoxDecoration(
                                   gradient: LinearGradient(
-                                    begin: Alignment
-                                        .topCenter, // Changed from `Alignment.bottomCenter`
-                                    end: Alignment
-                                        .bottomCenter, // Changed from `Alignment.topCenter`
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
                                     colors: [
-                                      Colors.white, // Your background color
-                                      Colors.white.withOpacity(
-                                          0.0), // Fades to transparent
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.seaShell,
+                                        personalColor: AppColors.seaMist,
+                                      ), // Your background color
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor:
+                                            AppColors.seaShell.withOpacity(0),
+                                        personalColor:
+                                            AppColors.seaMist.withOpacity(0),
+                                      ), // Fades to transparent
                                     ],
                                   ),
                                 ),
                               ),
                             ),
                           ),
-
                           // Left edge gradient
                           Positioned(
                             top: 0,
@@ -503,8 +607,18 @@ class MenuPage extends StatelessWidget {
                                     begin: Alignment.centerLeft,
                                     end: Alignment.centerRight,
                                     colors: [
-                                      Colors.white, // Your background color
-                                      Colors.white.withOpacity(0.0),
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.seaShell,
+                                        personalColor: AppColors.seaMist,
+                                      ), // Your background color
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor:
+                                            AppColors.seaShell.withOpacity(0),
+                                        personalColor:
+                                            AppColors.seaMist.withOpacity(0),
+                                      ), // Fades to transparent
                                     ],
                                   ),
                                 ),
@@ -524,8 +638,18 @@ class MenuPage extends StatelessWidget {
                                     begin: Alignment.centerRight,
                                     end: Alignment.centerLeft,
                                     colors: [
-                                      Colors.white,
-                                      Colors.white.withOpacity(0.0),
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.seaShell,
+                                        personalColor: AppColors.seaMist,
+                                      ), // Your background color
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor:
+                                            AppColors.seaShell.withOpacity(0),
+                                        personalColor:
+                                            AppColors.seaMist.withOpacity(0),
+                                      ), // Fades to transparent
                                     ],
                                   ),
                                 ),
@@ -545,8 +669,18 @@ class MenuPage extends StatelessWidget {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      Colors.white, // Your background color
-                                      Colors.white.withOpacity(0.0),
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.seaShell,
+                                        personalColor: AppColors.seaMist,
+                                      ), // Your background color
+                                      getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor:
+                                            AppColors.seaShell.withOpacity(0),
+                                        personalColor:
+                                            AppColors.seaMist.withOpacity(0),
+                                      ), // Fades to transparent
                                     ],
                                   ),
                                 ),
@@ -558,7 +692,8 @@ class MenuPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Added for blur effect on page (left, right, bottom)
+
+                //* Added for blur effect on page (left, right, bottom)
                 // Left edge gradient
                 Positioned(
                   top: 0,
@@ -572,8 +707,18 @@ class MenuPage extends StatelessWidget {
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
                           colors: [
-                            Colors.white, // Your background color
-                            Colors.white.withOpacity(0.0),
+                            // AppColors.seaShell, // Your background color
+                            // AppColors.seaShell.withOpacity(0.0),
+                            getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ), // Your background color
+                            getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell.withOpacity(0),
+                              personalColor: AppColors.seaMist.withOpacity(0),
+                            ), // Fades to transparent
                           ],
                         ),
                       ),
@@ -593,8 +738,16 @@ class MenuPage extends StatelessWidget {
                           begin: Alignment.centerRight,
                           end: Alignment.centerLeft,
                           colors: [
-                            Colors.white,
-                            Colors.white.withOpacity(0.0),
+                            getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ), // Your background color
+                            getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell.withOpacity(0),
+                              personalColor: AppColors.seaMist.withOpacity(0),
+                            ), // Fades to transparent
                           ],
                         ),
                       ),
@@ -614,8 +767,16 @@ class MenuPage extends StatelessWidget {
                           begin: Alignment.bottomCenter,
                           end: Alignment.topCenter,
                           colors: [
-                            Colors.white, // Your background color
-                            Colors.white.withOpacity(0.0),
+                            getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ), // Your background color
+                            getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell.withOpacity(0),
+                              personalColor: AppColors.seaMist.withOpacity(0),
+                            ), // Fades to transparent
                           ],
                         ),
                       ),

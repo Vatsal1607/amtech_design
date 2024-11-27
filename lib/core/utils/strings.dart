@@ -30,6 +30,7 @@ class IconStrings {
   static const personalAccount = '${BaseIconPath.basePath}personal_account.svg';
   static const arrowDropdown = '${BaseIconPath.basePath}arrow_dropdown.svg';
   static const location = '${BaseIconPath.basePath}location.svg';
+  static const notification = '${BaseIconPath.basePath}notification.svg';
 }
 
 class ImageStrings {

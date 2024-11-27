@@ -1,4 +1,5 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/billing/billing_page.dart';
 import 'package:amtech_design/modules/blog/blog_page.dart';
@@ -7,7 +8,9 @@ import 'package:amtech_design/modules/reorder/reorder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
+import '../../services/local/shared_preferences_service.dart';
 import 'bottom_bar_provider.dart';
 
 class BottomBarPage extends StatelessWidget {
@@ -20,6 +23,10 @@ class BottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType =
+        sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
+            '';
+    debugPrint('$accountType is from bottombar page (build)');
     return Scaffold(
       body: Consumer<BottomBarProvider>(
         builder: (context, provider, child) {
@@ -31,13 +38,24 @@ class BottomBarPage extends StatelessWidget {
         builder: (context, provider, child) {
           return BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
-            backgroundColor: AppColors.primaryColor,
+            backgroundColor: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            ),
             currentIndex: provider.selectedIndex,
             onTap: (index) => provider.updateIndex(index),
-            selectedItemColor:
-                Colors.white, // Color for the selected label and icon
-            unselectedItemColor: AppColors
-                .disabledColor, // Color for unselected labels and icons
+            selectedItemColor: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.white,
+              personalColor: AppColors.seaMist,
+            ), // Color for the selected label and icon
+
+            unselectedItemColor: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.disabledColor,
+              personalColor: AppColors.bayLeaf,
+            ), // Color for unselected labels and icons
             selectedLabelStyle: TextStyle(
               height: 2.h, // Adds vertical padding to the label
             ),
@@ -49,8 +67,16 @@ class BottomBarPage extends StatelessWidget {
                 icon: SvgIcon(
                   icon: IconStrings.menu,
                   color: provider.selectedIndex == 0
-                      ? AppColors.white
-                      : AppColors.disabledColor,
+                      ? getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.white,
+                          personalColor: AppColors.seaMist,
+                        )
+                      : getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                 ),
                 label: 'MENU',
               ),
@@ -58,8 +84,16 @@ class BottomBarPage extends StatelessWidget {
                 icon: SvgIcon(
                   icon: IconStrings.reorder,
                   color: provider.selectedIndex == 1
-                      ? AppColors.white
-                      : AppColors.disabledColor,
+                      ? getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.white,
+                          personalColor: AppColors.seaMist,
+                        )
+                      : getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                 ),
                 label: 'REORDER',
               ),
@@ -67,8 +101,16 @@ class BottomBarPage extends StatelessWidget {
                 icon: SvgIcon(
                   icon: IconStrings.billing,
                   color: provider.selectedIndex == 2
-                      ? AppColors.white
-                      : AppColors.disabledColor,
+                      ? getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.white,
+                          personalColor: AppColors.seaMist,
+                        )
+                      : getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                 ),
                 label: 'BILLING',
               ),
@@ -76,8 +118,16 @@ class BottomBarPage extends StatelessWidget {
                 icon: SvgIcon(
                   icon: IconStrings.blog,
                   color: provider.selectedIndex == 3
-                      ? AppColors.white
-                      : AppColors.disabledColor,
+                      ? getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.white,
+                          personalColor: AppColors.seaMist,
+                        )
+                      : getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                 ),
                 label: 'BLOG',
               ),

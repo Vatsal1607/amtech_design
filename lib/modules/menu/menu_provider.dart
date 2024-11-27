@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
+import '../../services/local/shared_preferences_service.dart';
 
 class MenuProvider extends ChangeNotifier {
-  // late ScrollController scrollController;
-
+  // String accountType = '';
   // MenuProvider() {
-  //   scrollController = ScrollController();
-  //   scrollController.addListener(_restrictScroll);
-  // }
-
-  // void _restrictScroll() {
-  //   // Limit scroll so that the sticky header is always visible above 150px
-  //   if (scrollController.offset > 150.0) {
-  //     scrollController.jumpTo(150.0); // Restrict scrolling beyond 150px
-  //   }
+  //   accountType =
+  //       sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
+  //           '';
+  //   debugPrint('$accountType is from menu provider');
   // }
 
   @override
   void dispose() {
-    // scrollController.removeListener(_restrictScroll);
-    // scrollController.dispose();
     pageController.dispose();
     super.dispose();
   }

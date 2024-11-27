@@ -96,7 +96,6 @@ class ProductPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 100.h), // temp // TODO: remove
                   const SizedBox(
                     width: 36,
                     child: Divider(

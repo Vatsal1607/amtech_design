@@ -1,6 +1,5 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
-import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';

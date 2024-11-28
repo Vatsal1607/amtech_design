@@ -13,6 +13,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
+import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'widgets/custom_slider_track_shape.dart';
 
@@ -120,6 +121,7 @@ class MenuPage extends StatelessWidget {
               businessColor: AppColors.seaShell,
               personalColor: AppColors.seaMist,
             ),
+            centerTitle: true,
             title: Column(
               children: [
                 Text(
@@ -147,31 +149,30 @@ class MenuPage extends StatelessWidget {
                 ),
               ],
             ),
-            leading: Padding(
-              padding: EdgeInsets.all(8.w), // Adjust padding if needed
-              child: Container(
-                height: 48,
-                width: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: AppColors.primaryColor,
-                    width: 2.0,
-                  ),
+            leading: Container(
+              height: 48.h,
+              width: 48.w,
+              margin: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.primaryColor,
+                  width: 2.0,
                 ),
-                child: ClipOval(
-                  child: Image.asset(
-                    ImageStrings.logo,
-                    fit: BoxFit.cover,
-                  ),
+              ),
+              child: ClipOval(
+                child: Image.asset(
+                  ImageStrings.logo,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
             actions: [
               Container(
-                height: 45,
-                width: 45,
-                margin: const EdgeInsets.only(right: 15.0),
+                height: 48.h,
+                width: 48.w,
+                margin: const EdgeInsets.only(right: 20.0),
                 decoration: BoxDecoration(
                   color: getColorAccountType(
                     accountType: accountType,
@@ -215,6 +216,7 @@ class MenuPage extends StatelessWidget {
           SliverToBoxAdapter(
             child: Column(
               children: [
+                SizedBox(height: 10.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
@@ -499,8 +501,8 @@ class MenuPage extends StatelessWidget {
                                   debugPrint('Product item pressed $index');
 
                                   /// TODO: Uncomment navigation
-                                  // Navigator.pushNamed(
-                                  //     context, Routes.productPage);
+                                  Navigator.pushNamed(
+                                      context, Routes.productPage);
                                 },
                                 child: ProductWidget(
                                   image: provider.productImage[index],

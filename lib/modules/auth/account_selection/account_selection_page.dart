@@ -23,91 +23,100 @@ class AccountSelectionPage extends StatelessWidget {
             fit: BoxFit.cover,
           ),
           Positioned.fill(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: EdgeInsets.only(left: 34.w, right: 34.w, top: 120.h),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      ImageStrings.appLogo,
-                      color: AppColors.primaryColor,
+            child: Padding(
+              padding: EdgeInsets.only(left: 34.w, right: 34.w, top: 130.h),
+              child: Column(
+                children: [
+                  Image.asset(
+                    ImageStrings.appLogo,
+                    color: AppColors.primaryColor,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Positioned.fill(
+            bottom: 90.h,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 34.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    'Choose Account',
+                    style: GoogleFonts.publicSans(
+                      fontSize: 40.sp,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(height: 200.h),
-                    Text(
-                      'Choose Account',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 40.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  ),
+                  SizedBox(height: 13.h),
+                  Text(
+                    'SELECT YOUR ACCOUNT TYPE',
+                    style: GoogleFonts.publicSans(
+                      fontSize: 15.sp,
                     ),
-                    SizedBox(height: 13.h),
-                    Text(
-                      'SELECT YOUR ACCOUNT TYPE',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 15.sp,
-                      ),
-                    ),
-                    SizedBox(height: 20.h),
+                  ),
+                  SizedBox(height: 20.h),
 
-                    // custom widget of Account selection button
-                    AccountSelectionButton(
-                      onTap: () {
-                        // Update & Save accountType in local storage
-                        context
-                            .read<LocationSelectionProvider>()
-                            .updateAccountType('business');
-                        Navigator.pushNamed(context, Routes.locationSelection);
-                      },
-                      text: 'business account',
-                      icon: IconStrings.businessAccount,
-                    ),
-                    SizedBox(height: 17.h),
-                    AccountSelectionButton(
-                      onTap: () {
-                        // Update & Save accountType in local storage
-                        context
-                            .read<LocationSelectionProvider>()
-                            .updateAccountType('personal');
-                        Navigator.pushNamed(context, Routes.locationSelection);
-                      },
-                      text: 'personal account',
-                      icon: IconStrings.personalAccount,
-                      bgColor: AppColors.darkGreenGrey,
-                      textColor: AppColors.seaMist,
-                      iconColor: AppColors.bayLeaf,
-                    ),
-                    SizedBox(height: 16.h),
+                  // custom widget of Account selection button
+                  AccountSelectionButton(
+                    onTap: () {
+                      // Update & Save accountType in local storage
+                      context
+                          .read<LocationSelectionProvider>()
+                          .updateAccountType('business');
+                      Navigator.pushNamed(context, Routes.locationSelection);
+                    },
+                    text: 'business account',
+                    icon: IconStrings.businessAccount,
+                  ),
+                  SizedBox(height: 17.h),
+                  AccountSelectionButton(
+                    onTap: () {
+                      // Update & Save accountType in local storage
+                      context
+                          .read<LocationSelectionProvider>()
+                          .updateAccountType('personal');
+                      Navigator.pushNamed(context, Routes.locationSelection);
+                    },
+                    text: 'personal account',
+                    icon: IconStrings.personalAccount,
+                    bgColor: AppColors.darkGreenGrey,
+                    textColor: AppColors.seaMist,
+                    iconColor: AppColors.bayLeaf,
+                  ),
+                  SizedBox(height: 16.h),
 
-                    RichText(
-                      text: TextSpan(
-                          text: 'BY PROCEEDING, YOU ACCEPT OUR ',
+                  RichText(
+                    text: TextSpan(
+                      text: 'BY PROCEEDING, YOU ACCEPT OUR ',
+                      style: GoogleFonts.publicSans(
+                          fontSize: 10.sp, color: AppColors.black),
+                      children: [
+                        TextSpan(
+                          text: 'T&C ',
                           style: GoogleFonts.publicSans(
-                              fontSize: 10.sp, color: AppColors.black),
-                          children: [
-                            TextSpan(
-                              text: 'T&C ',
-                              style: GoogleFonts.publicSans(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'AND ',
-                              style: GoogleFonts.publicSans(
-                                fontSize: 10.sp,
-                              ),
-                            ),
-                            TextSpan(
-                              text: 'PRIVACY POLICY.',
-                              style: GoogleFonts.publicSans(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 10.sp,
-                              ),
-                            ),
-                          ]),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'AND ',
+                          style: GoogleFonts.publicSans(
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'PRIVACY POLICY.',
+                          style: GoogleFonts.publicSans(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

@@ -31,6 +31,7 @@ class IconStrings {
   static const arrowDropdown = '${BaseIconPath.basePath}arrow_dropdown.svg';
   static const location = '${BaseIconPath.basePath}location.svg';
   static const notification = '${BaseIconPath.basePath}notification.svg';
+  static const rupee = '${BaseIconPath.basePath}rupee.svg';
 }
 
 class ImageStrings {
@@ -52,6 +53,8 @@ class ImageStrings {
       '${BaseImagePath.basePath}location_selection_bg.png';
   static const loginBg = '${BaseImagePath.basePath}login_bg.png';
   static const teaImg = '${BaseImagePath.basePath}tea_img.png';
+  static const transparent = '${BaseImagePath.basePath}transparent.png';
+  static const hygiene = '${BaseImagePath.basePath}hygiene.png';
 }
 
 class GifStrings {

@@ -10,12 +10,14 @@ import 'package:amtech_design/modules/product_page/product_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gradient_slider/gradient_slider.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'widgets/custom_slider_track_shape.dart';
+import 'widgets/slider_details_widget.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
@@ -122,94 +124,164 @@ class MenuPage extends StatelessWidget {
               personalColor: AppColors.seaMist,
             ),
             centerTitle: true,
-            title: Column(
+
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // mainAxisSize: MainAxisSize.max,
               children: [
-                Text(
-                  'Good Afternoon,',
-                  style: GoogleFonts.publicSans(
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+                /// leading icon
+                Container(
+                  height: 48.h,
+                  width: 48.w,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: AppColors.primaryColor,
+                      width: 2.0,
                     ),
-                    fontSize: 15,
                   ),
-                ),
-                Text(
-                  'AMTech Design',
-                  style: GoogleFonts.publicSans(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+                  child: ClipOval(
+                    child: Image.asset(
+                      ImageStrings.logo,
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
-              ],
-            ),
-            leading: Container(
-              height: 48.h,
-              width: 48.w,
-              margin: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.primaryColor,
-                  width: 2.0,
-                ),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  ImageStrings.logo,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            actions: [
-              Container(
-                height: 48.h,
-                width: 48.w,
-                margin: const EdgeInsets.only(right: 20.0),
-                decoration: BoxDecoration(
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: Stack(
+
+                /// center title content
+                Column(
                   children: [
-                    const Positioned.fill(
-                      // child: SvgIcon(
-                      //   icon: IconStrings.notification,
-                      //   color: AppColors.white,
-                      // ),
-                      // TODO: Replace with svg icon (above commented) // ReLaunch
-                      child: Icon(
-                        Icons.notifications_outlined,
-                        color: AppColors.white,
+                    Text(
+                      'Good Afternoon,',
+                      style: GoogleFonts.publicSans(
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
+                        fontSize: 15,
                       ),
                     ),
-                    Positioned(
-                      top: 2,
-                      right: 2,
-                      child: Container(
-                        height: 12,
-                        width: 12,
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.red,
+                    Text(
+                      'AMTech Design',
+                      style: GoogleFonts.publicSans(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
                         ),
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
+
+                /// trailing(action) icon
+                Container(
+                  height: 48.h,
+                  width: 48.w,
+                  decoration: BoxDecoration(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Stack(
+                    children: [
+                      const Positioned.fill(
+                        // child: SvgIcon(
+                        //   icon: IconStrings.notification,
+                        //   color: AppColors.white,
+                        // ),
+                        // Todo: Replace with svg icon (above commented) // ReLaunch
+                        child: Icon(
+                          Icons.notifications_outlined,
+                          color: AppColors.white,
+                        ),
+                      ),
+                      Positioned(
+                        top: 2,
+                        right: 2,
+                        child: Container(
+                          height: 12,
+                          width: 12,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.red,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            automaticallyImplyLeading: false,
+            // leading: Container(
+            //   height: 48.h,
+            //   width: 48.w,
+            //   margin: const EdgeInsets.all(8),
+            //   decoration: BoxDecoration(
+            //     color: Colors.black,
+            //     shape: BoxShape.circle,
+            //     border: Border.all(
+            //       color: AppColors.primaryColor,
+            //       width: 2.0,
+            //     ),
+            //   ),
+            //   child: ClipOval(
+            //     child: Image.asset(
+            //       ImageStrings.logo,
+            //       fit: BoxFit.cover,
+            //     ),
+            //   ),
+            // ),
+            // actions: [
+            //   Container(
+            //     height: 48.h,
+            //     width: 48.w,
+            //     margin: const EdgeInsets.only(right: 20.0),
+            //     decoration: BoxDecoration(
+            //       color: getColorAccountType(
+            //         accountType: accountType,
+            //         businessColor: AppColors.primaryColor,
+            //         personalColor: AppColors.darkGreenGrey,
+            //       ),
+            //       shape: BoxShape.circle,
+            //     ),
+            //     child: Stack(
+            //       children: [
+            //         const Positioned.fill(
+            //           // child: SvgIcon(
+            //           //   icon: IconStrings.notification,
+            //           //   color: AppColors.white,
+            //           // ),
+            //           // Todo: Replace with svg icon (above commented) // ReLaunch
+            //           child: Icon(
+            //             Icons.notifications_outlined,
+            //             color: AppColors.white,
+            //           ),
+            //         ),
+            //         Positioned(
+            //           top: 2,
+            //           right: 2,
+            //           child: Container(
+            //             height: 12,
+            //             width: 12,
+            //             decoration: const BoxDecoration(
+            //               shape: BoxShape.circle,
+            //               color: AppColors.red,
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ],
           ),
 
           // Initial data in Sliver
@@ -220,7 +292,7 @@ class MenuPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.w),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SvgIcon(
                         icon: IconStrings.address,
@@ -230,12 +302,12 @@ class MenuPage extends StatelessWidget {
                           personalColor: AppColors.darkGreenGrey,
                         ),
                       ),
-                      SizedBox(width: 3.w),
+                      SizedBox(width: 5.w),
                       SizedBox(
-                        width: 280.w,
+                        width: 360.w,
                         child: RichText(
                           maxLines: 1,
-                          overflow: TextOverflow.clip,
+                          overflow: TextOverflow.fade,
                           text: TextSpan(
                             text: 'Deliver to, ',
                             style: GoogleFonts.publicSans(
@@ -263,85 +335,113 @@ class MenuPage extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              TextSpan(
+                                text: 'AMTECH DESIGN, TITANIUM CIT',
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 10.sp,
+                                  fontWeight: FontWeight.bold,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor:
+                                        AppColors.primaryColor.withOpacity(0.8),
+                                    personalColor: AppColors.darkGreenGrey
+                                        .withOpacity(0.8),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ),
-                      Container(
-                        height: 24.h,
-                        width: 65.w,
-                        decoration: BoxDecoration(
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.primaryColor,
-                            personalColor: AppColors.darkGreenGrey,
-                          ),
-                          // color: AppColors.primaryColor,
-                          borderRadius: BorderRadius.circular(10.r),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'CHANGE',
-                            style: GoogleFonts.publicSans(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.bold,
-                              color: getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.seaShell,
-                                personalColor: AppColors.seaMist,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+
+                      ///* Address change button old
+                      // Container(
+                      //   height: 24.h,
+                      //   width: 65.w,
+                      //   decoration: BoxDecoration(
+                      //     color: getColorAccountType(
+                      //       accountType: accountType,
+                      //       businessColor: AppColors.primaryColor,
+                      //       personalColor: AppColors.darkGreenGrey,
+                      //     ),
+                      //     // color: AppColors.primaryColor,
+                      //     borderRadius: BorderRadius.circular(10.r),
+                      //   ),
+                      //   child: Center(
+                      //     child: Text(
+                      //       'CHANGE',
+                      //       style: GoogleFonts.publicSans(
+                      //         fontSize: 10.sp,
+                      //         fontWeight: FontWeight.bold,
+                      //         color: getColorAccountType(
+                      //           accountType: accountType,
+                      //           businessColor: AppColors.seaShell,
+                      //           personalColor: AppColors.seaMist,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
                 SizedBox(height: 15.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      RichText(
-                        text: TextSpan(
-                          text: '140 / 200 ',
-                          style: GoogleFonts.publicSans(
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.sp,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: 'POINTS',
-                              style: GoogleFonts.publicSans(
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                fontSize: 10.sp,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      SvgIcon(
-                        icon: IconStrings.reward,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.black,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ],
-                  ),
+
+                //* Slider details widget
+                SliderDetailsWidget(
+                  accountType: accountType,
+                  filledValue: '₹ 135',
+                  totalValue: '₹ 2,000',
+                  label: 'credits used',
+                  icon: IconStrings.rupee,
                 ),
                 SizedBox(height: 13.h),
+
+                // Credit Slider widget
+                Consumer<MenuProvider>(
+                  builder: (BuildContext context, provider, Widget? child) =>
+                      GradientSlider(
+                    // thumbAsset: ImageStrings.transparent,
+                    thumbAsset: '',
+                    thumbHeight: 0,
+                    thumbWidth: 0,
+                    trackHeight: 3,
+                    trackBorderColor: Colors.transparent,
+                    activeTrackGradient: const LinearGradient(
+                      colors: [
+                        AppColors.lightGreen,
+                        AppColors.lightGreen,
+                      ],
+                    ),
+                    inactiveTrackGradient: LinearGradient(
+                      colors: [
+                        AppColors.lightGreen.withOpacity(0.5),
+                        AppColors.red.withOpacity(0.5),
+                      ],
+                    ),
+                    inactiveTrackColor: Colors.transparent,
+                    slider: Slider(
+                      value: provider.sliderCreditValue,
+                      min: 1,
+                      max: 2000,
+                      onChanged: provider.onChangeCreditSlider,
+                    ),
+                  ),
+                ),
+
+                // SizedBox(height: 18.h),
+
+                //* Slider details widget
+                SliderDetailsWidget(
+                  accountType: accountType,
+                  filledValue: '140',
+                  totalValue: '200',
+                  label: 'reward points',
+                  icon: IconStrings.reward,
+                ),
+                SizedBox(height: 13.h),
+
+                /// Slider widget REWARD points
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 20.h),
                   child: Consumer<MenuProvider>(
@@ -361,7 +461,6 @@ class MenuPage extends StatelessWidget {
                           businessColor: AppColors.disabledColor,
                           personalColor: AppColors.bayLeaf,
                         ),
-                        // rangeTrackShape: RoundedRectRangeSliderTrackShape(),
                         trackShape: CustomTrackShape(),
                       ),
                       child: Slider(
@@ -421,7 +520,7 @@ class MenuPage extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100.0),
+                  borderRadius: BorderRadius.circular(100.r),
                   boxShadow: const [
                     BoxShadow(
                       color: Colors.black26,
@@ -431,6 +530,14 @@ class MenuPage extends StatelessWidget {
                   ],
                 ),
                 child: TextFormField(
+                  style: GoogleFonts.publicSans(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.white,
+                    ),
+                    fontSize: 14.0,
+                  ),
                   decoration: InputDecoration(
                     hintText: 'Search for Tea, Coffee or Snacks',
                     hintStyle: GoogleFonts.publicSans(
@@ -441,17 +548,16 @@ class MenuPage extends StatelessWidget {
                       ),
                       fontSize: 14.0,
                     ),
-                    // border: InputBorder.none, // Removes the border
+
                     border: textFieldBorderStyle,
                     enabledBorder: textFieldBorderStyle,
                     focusedBorder: textFieldBorderStyle,
                     filled: true, // To add a background color
                     fillColor: getColorAccountType(
                       accountType: accountType,
-                      businessColor: AppColors.primaryColor.withOpacity(0.7),
-                      personalColor: AppColors.darkGreenGrey.withOpacity(0.7),
+                      businessColor: AppColors.primaryColor.withOpacity(0.8),
+                      personalColor: AppColors.darkGreenGrey.withOpacity(0.8),
                     ),
-                    // fillColor: AppColors.primaryColor.withOpacity(0.7),
                     prefixIcon: SvgIcon(icon: IconStrings.search),
                   ),
                 ),

@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
-import '../../services/local/shared_preferences_service.dart';
 
 class MenuProvider extends ChangeNotifier {
-  // String accountType = '';
-  // MenuProvider() {
-  //   accountType =
-  //       sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
-  //           '';
-  //   debugPrint('$accountType is from menu provider');
-  // }
-
   @override
   void dispose() {
     pageController.dispose();
     super.dispose();
   }
 
-  double currentSliderValue = 20;
+  double sliderCreditValue = 135;
+  final double sliderTotalCreditValue = 2000;
+  onChangeCreditSlider(double value) {
+    sliderCreditValue = value;
+    notifyListeners();
+  }
 
+  double currentSliderValue = 20;
   onChangeSlider(double value) {
     currentSliderValue = value;
     notifyListeners();

@@ -32,6 +32,9 @@ class IconStrings {
   static const location = '${BaseIconPath.basePath}location.svg';
   static const notification = '${BaseIconPath.basePath}notification.svg';
   static const rupee = '${BaseIconPath.basePath}rupee.svg';
+  static const minus = '${BaseIconPath.basePath}minus.svg';
+  static const plus = '${BaseIconPath.basePath}plus.svg';
+  static const close = '${BaseIconPath.basePath}close.svg';
 }
 
 class ImageStrings {

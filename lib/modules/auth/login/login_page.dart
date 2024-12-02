@@ -20,6 +20,7 @@ class LoginPage extends StatelessWidget {
         context.read<LocationSelectionProvider>().accountType ?? '';
     debugPrint('Account type is: $accountType');
     return Scaffold(
+      resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
           ? AppColors.primaryColor
           : accountType != '' && accountType == 'personal'

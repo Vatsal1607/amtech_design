@@ -19,15 +19,12 @@ class IngredientText extends StatelessWidget {
           '• ', // Leading dot
           style: TextStyle(fontSize: 18, color: Colors.black),
         ),
-        Expanded(
-          // Ensures text wraps properly
-          child: Text(
-            text,
-            style: GoogleFonts.publicSans(
-              height: 1.h,
-              fontSize: 14.sp,
-              color: AppColors.primaryColor,
-            ),
+        Text(
+          text,
+          style: GoogleFonts.publicSans(
+            height: 1.h,
+            fontSize: 14.sp,
+            color: AppColors.primaryColor,
           ),
         ),
       ],

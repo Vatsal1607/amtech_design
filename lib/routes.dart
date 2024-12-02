@@ -9,7 +9,7 @@ import 'package:amtech_design/modules/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
 
 import 'modules/auth/company_selection/company_selection_page.dart';
-import 'modules/product_page/product_page.dart';
+import 'modules/product_page/product_details_page.dart';
 
 class Routes {
   static const String initial = '/';

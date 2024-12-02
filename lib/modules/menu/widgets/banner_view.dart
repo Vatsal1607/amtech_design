@@ -5,7 +5,7 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
-import '../../product_page/product_page.dart';
+import '../../product_page/product_details_page.dart';
 import '../menu_provider.dart';
 
 class BannerView extends StatelessWidget {

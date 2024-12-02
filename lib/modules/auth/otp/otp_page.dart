@@ -21,6 +21,7 @@ class OtpPage extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
           ? AppColors.primaryColor
           : accountType != '' && accountType == 'personal'

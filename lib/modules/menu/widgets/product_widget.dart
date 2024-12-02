@@ -1,3 +1,4 @@
+import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,76 +22,9 @@ class ProductWidget extends StatelessWidget {
   });
 
   // Bottomsheet // TODO: Reformat code (Move method in seprate file)
-  void _showBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: AppColors.primaryColor,
-      builder: (context) {
-        return Container(
-          padding: EdgeInsets.only(top: 19.h),
-          height: 300.h,
-          width: 1.sw,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'select size'.toUpperCase(),
-                style: GoogleFonts.publicSans(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.seaShell,
-                ),
-              ),
-              SizedBox(height: 17.h),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 32.w),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40.r),
-                  color: AppColors.disabledColor,
-                ),
-                child: ListTile(
-                  // tileColor: AppColors.disabledColor,
-                  leading: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'regular'.toUpperCase(),
-                        style: GoogleFonts.publicSans(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            '₹ 10 '.toUpperCase(),
-                            style: GoogleFonts.publicSans(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                          Text(
-                            '( 65 ml )'.toUpperCase(),
-                            style: GoogleFonts.publicSans(
-                              fontSize: 12.sp,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
+  // void _showBottomSheet(BuildContext context) {
+
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +87,8 @@ class ProductWidget extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 debugPrint('Add button pressed at index $index');
-                _showBottomSheet(context);
+                // Custom Size bottomsheet
+                showSizeModalBottomSheet(context: context);
 
                 /// showSnackbar(context, '{count} ITEMS ADDED');
               },

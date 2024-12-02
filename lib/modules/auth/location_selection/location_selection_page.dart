@@ -95,6 +95,8 @@ class LocationSelectionPage extends StatelessWidget {
                   DropdownLocation(
                     accountType: accountType,
                   ),
+
+                  // New dropdown search
                 ],
               ),
             ),

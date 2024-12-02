@@ -149,6 +149,7 @@ class BottomsheetContent extends StatelessWidget {
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read More',
                   trimExpandedText: 'Read Less',
+                  
                   textAlign: TextAlign.justify,
                   style: TextStyle(
                     color: AppColors.primaryColor,
@@ -191,19 +192,6 @@ class BottomsheetContent extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8.0),
-          // Old design of sizes
-          // Align(
-          //   alignment: Alignment.centerLeft,
-          //   child: Text(
-          //     'SIZE',
-          //     style: GoogleFonts.publicSans(
-          //       fontSize: 14.0,
-          //       fontWeight: FontWeight.bold,
-          //       color: AppColors.primaryColor,
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(height: 10.0),
 
           // // Size Widget
           // Row(
@@ -236,8 +224,8 @@ class BottomsheetContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
-          // List item text
           ListView.builder(
+            padding: EdgeInsets.zero, // Remove extra space from top in listview
             shrinkWrap: true,
             itemCount: 4,
             physics: const NeverScrollableScrollPhysics(),

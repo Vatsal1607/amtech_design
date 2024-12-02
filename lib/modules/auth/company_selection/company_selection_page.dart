@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
-import '../location_selection/location_selection_provider.dart';
 import 'company_dropdown.dart';
 
 class CompanySelectionPage extends StatelessWidget {

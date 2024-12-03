@@ -24,21 +24,23 @@ class MenuProvider extends ChangeNotifier {
   final PageController pageController = PageController();
 
   final List<String> banners = [
-    ImageStrings.bannerImage,
-    ImageStrings.bannerImage,
-    ImageStrings.bannerImage,
+    ImageStrings.masalaTeaBanner,
+    ImageStrings.navratiBanner,
   ];
 
   final List<String> productImage = [
-    ImageStrings.bestSeller1,
-    ImageStrings.bestSeller2,
-    ImageStrings.bestSeller3,
-    ImageStrings.bestSeller1,
+    ImageStrings.masalaTea3,
+    ImageStrings.masalaTea3,
+    ImageStrings.masalaTea3,
+    ImageStrings.masalaTea3,
+    // ImageStrings.bestSeller2,
+    // ImageStrings.bestSeller3,
+    // ImageStrings.bestSeller1,
   ];
 
   final List<String> productName = [
     'everyday tea',
-    'Zero suger c',
+    'Zero suger coffee ',
     'tea w/o milk',
     'everyday tea',
   ];

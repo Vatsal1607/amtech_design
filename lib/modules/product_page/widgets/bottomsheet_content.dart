@@ -139,7 +139,7 @@ class BottomsheetContent extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 7.0),
+            padding: const EdgeInsets.only(bottom: 5.0),
             child: Stack(
               children: [
                 const ReadMoreText(
@@ -149,8 +149,8 @@ class BottomsheetContent extends StatelessWidget {
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read More',
                   trimExpandedText: 'Read Less',
-                  
                   textAlign: TextAlign.justify,
+
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14.0,
@@ -179,9 +179,9 @@ class BottomsheetContent extends StatelessWidget {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            Colors.white.withOpacity(0.0), // Transparent
-                            Colors.white.withOpacity(
-                                0.4), // Fade to white or background color
+                            AppColors.seaShell.withOpacity(0.0), // Transparent
+                            AppColors.seaShell
+                                .withOpacity(0.8), // Fade to background color
                           ],
                         ),
                       ),
@@ -191,7 +191,7 @@ class BottomsheetContent extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(height: 8.0),
+          SizedBox(height: 15.h),
 
           // // Size Widget
           // Row(
@@ -211,7 +211,7 @@ class BottomsheetContent extends StatelessWidget {
           //     ),
           //   ],
           // ),
-          const SizedBox(height: 23.0),
+
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -224,21 +224,25 @@ class BottomsheetContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
+
           ListView.builder(
             padding: EdgeInsets.zero, // Remove extra space from top in listview
             shrinkWrap: true,
             itemCount: 4,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
-              return const IngredientText(
-                text: 'Lorem ipsum dolor sit amet',
+              return const Padding(
+                padding: EdgeInsets.all(0),
+                child: IngredientText(
+                  text: 'Lorem ipsum dolor sit amet',
+                ),
               );
             },
           ),
-          Image.asset(
-            height: 62.h,
-            width: 59.w,
-            ImageStrings.hygiene,
+          SizedBox(height: 30.h),
+          SvgIcon(
+            icon: IconStrings.hygiene,
+            color: AppColors.disabledColor.withOpacity(0.5),
           ),
           Text(
             'hygiene first'.toUpperCase(),
@@ -248,6 +252,7 @@ class BottomsheetContent extends StatelessWidget {
               color: AppColors.primaryColor.withOpacity(0.5),
             ),
           ),
+          SizedBox(height: 10.h),
           Text(
             'We serve our Products with hygiene'.toUpperCase(),
             style: GoogleFonts.publicSans(

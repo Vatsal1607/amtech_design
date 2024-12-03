@@ -183,27 +183,35 @@ class LoginPage extends StatelessWidget {
                   height: 48.h,
                   onTap: () {
                     debugPrint('Login page, GET OTP pressed');
-
-                    if (context
-                        .read<LoginProvider>()
-                        .formKey
-                        .currentState!
-                        .validate()) {
-                      debugPrint('Form is valid');
-                      Navigator.pushNamed(
-                        context,
-                        Routes.otp,
-                        arguments: {
-                          'mobile_number': context
-                              .read<LoginProvider>()
-                              .phoneController
-                              .text,
-                        },
-                      );
-                    } else {
-                      debugPrint('Form is not valid');
-                    }
-                    context.read<LoginProvider>().phoneController.clear();
+                    Navigator.pushNamed(
+                      context,
+                      Routes.otp,
+                      arguments: {
+                        'mobile_number':
+                            context.read<LoginProvider>().phoneController.text,
+                      },
+                    );
+                    // Todo Uncomment
+                    // if (context
+                    //     .read<LoginProvider>()
+                    //     .formKey
+                    //     .currentState!
+                    //     .validate()) {
+                    //   debugPrint('Form is valid');
+                    //   Navigator.pushNamed(
+                    //     context,
+                    //     Routes.otp,
+                    //     arguments: {
+                    //       'mobile_number': context
+                    //           .read<LoginProvider>()
+                    //           .phoneController
+                    //           .text,
+                    //     },
+                    //   );
+                    // } else {
+                    //   debugPrint('Form is not valid');
+                    // }
+                    // context.read<LoginProvider>().phoneController.clear();
                   },
                   text: 'GET OTP',
                   bgColor: accountType != '' && accountType == 'business'

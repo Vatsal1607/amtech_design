@@ -179,8 +179,8 @@ class _ProductPageState extends State<ProductPage> {
             alignment: Alignment.bottomCenter,
             child: DraggableScrollableSheet(
               expand: false, // doesn’t take over the entire screen
-              initialChildSize: 0.6, // Initial height of BottomSheet
-              minChildSize: 0.6, // Minimum height of BottomSheet
+              initialChildSize: 0.55, // Initial height of BottomSheet
+              minChildSize: 0.55, // Minimum height of BottomSheet
               maxChildSize: 0.8, // Maximum height of BottomSheet
               shouldCloseOnMinExtent: false,
               builder: (context, scrollController) {
@@ -208,6 +208,7 @@ class _ProductPageState extends State<ProductPage> {
                           children: [
                             SingleChildScrollView(
                               controller: scrollController,
+                              physics: const ClampingScrollPhysics(),
                               child: const BottomsheetContent(),
                             ),
                             // Add to cart button

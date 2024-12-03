@@ -35,6 +35,7 @@ class IconStrings {
   static const minus = '${BaseIconPath.basePath}minus.svg';
   static const plus = '${BaseIconPath.basePath}plus.svg';
   static const close = '${BaseIconPath.basePath}close.svg';
+  static const hygiene = '${BaseIconPath.basePath}hygiene.svg';
 }
 
 class ImageStrings {
@@ -58,6 +59,11 @@ class ImageStrings {
   static const teaImg = '${BaseImagePath.basePath}tea_img.png';
   static const transparent = '${BaseImagePath.basePath}transparent.png';
   static const hygiene = '${BaseImagePath.basePath}hygiene.png';
+  static const masalaTeaBanner =
+      '${BaseImagePath.basePath}masala _tea_banner.png';
+  static const navratiBanner = '${BaseImagePath.basePath}navrati_banner.png';
+  static const masalaTea2 = '${BaseImagePath.basePath}masala_tea_2.jpg';
+  static const masalaTea3 = '${BaseImagePath.basePath}masala_tea3.png';
 }
 
 class GifStrings {

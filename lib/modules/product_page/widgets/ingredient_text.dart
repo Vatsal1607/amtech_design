@@ -15,9 +15,13 @@ class IngredientText extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           '• ', // Leading dot
-          style: TextStyle(fontSize: 18, color: Colors.black),
+          style: TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+            height: 1.h,
+          ),
         ),
         Text(
           text,

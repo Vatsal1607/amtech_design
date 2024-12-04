@@ -20,3 +20,12 @@ Color getColorAccountType({
           ? personalColor
           : AppColors.white; // NOTE: default color (while type not found)
 }
+
+// default bottom shadow of content
+BoxShadow bottomShadow() {
+  return BoxShadow(
+    color: Colors.black26,
+    offset: Offset(0, 4),
+    blurRadius: 6,
+  );
+}

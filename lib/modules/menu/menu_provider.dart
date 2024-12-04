@@ -23,6 +23,29 @@ class MenuProvider extends ChangeNotifier {
 
   final PageController pageController = PageController();
 
+  bool isVisibleSearchSpaceTop = false;
+
+  bool onNotification(ScrollNotification scrollNotification) {
+    if (scrollNotification.metrics.axis == Axis.vertical) {
+      double scrollOffset = scrollNotification.metrics.pixels;
+      debugPrint('scrollOffset: $scrollOffset');
+      // Define the specific area range
+      if (scrollOffset > 230) {
+        if (!isVisibleSearchSpaceTop) {
+          isVisibleSearchSpaceTop = true;
+          notifyListeners();
+        }
+      } else {
+        if (isVisibleSearchSpaceTop) {
+          isVisibleSearchSpaceTop = false;
+          notifyListeners();
+        }
+      }
+    }
+    return true;
+  }
+  //
+
   final List<String> banners = [
     ImageStrings.masalaTeaBanner,
     ImageStrings.navratiBanner,

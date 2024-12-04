@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/product_page/widgets/bottomsheet_content.dart';
@@ -150,11 +151,22 @@ class _ProductPageState extends State<ProductPage> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Image.asset(
-                height: 439.h,
-                width: double.infinity,
-                ImageStrings.teaImg,
-                fit: BoxFit.cover,
+              Container(
+                decoration: BoxDecoration(
+                  boxShadow: const [
+                    BoxShadow(
+                      color: AppColors.primaryColor, // Shadow color
+                      offset: Offset(0, -4), // shadow at the top
+                      blurRadius: 10, // Blur effect for a smoother shadow
+                    ),
+                  ],
+                ),
+                child: Image.asset(
+                  height: 439.h,
+                  width: double.infinity,
+                  ImageStrings.teaImg,
+                  fit: BoxFit.cover,
+                ),
               ),
               // Expanded(
               //   child: DraggableScrollableSheet(

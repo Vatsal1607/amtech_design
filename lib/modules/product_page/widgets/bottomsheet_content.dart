@@ -150,7 +150,7 @@ class BottomsheetContent extends StatelessWidget {
                   trimCollapsedText: 'Read More',
                   trimExpandedText: 'Read Less',
                   textAlign: TextAlign.justify,
-
+                  delimiter: '    ',
                   style: TextStyle(
                     color: AppColors.primaryColor,
                     fontSize: 14.0,

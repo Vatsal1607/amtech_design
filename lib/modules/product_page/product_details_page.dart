@@ -1,5 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/custom_widgets/custom_appbar.dart';
+import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/product_page/widgets/bottomsheet_content.dart';
 import 'package:flutter/material.dart';

@@ -46,6 +46,8 @@ dependencies:
   dropdown_button2: ^2.3.9
   carousel_slider: ^5.0.0
   marquee: ^2.3.0
+  retrofit: ^4.4.1
+  dio: ^5.7.0
 
 dev_dependencies:
   flutter_test:
@@ -58,6 +60,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   flutter_launcher_icons: ^0.14.1
+  build_runner: ^2.4.13
+  retrofit_generator: ^9.1.5
 
 flutter_icons:
   image_path: "assets/icons/app_icon.png"

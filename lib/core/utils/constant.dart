@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'app_colors.dart';
 
@@ -23,9 +24,18 @@ Color getColorAccountType({
 
 // default bottom shadow of content
 BoxShadow bottomShadow() {
-  return BoxShadow(
+  return const BoxShadow(
     color: Colors.black26,
     offset: Offset(0, 4),
     blurRadius: 6,
   );
 }
+
+// textfield border style
+InputBorder? kTextfieldBorderStyle = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(100.r),
+  borderSide: BorderSide(
+    color: AppColors.seaShell,
+    width: 2.w,
+  ),
+);

@@ -36,6 +36,15 @@ class IconStrings {
   static const plus = '${BaseIconPath.basePath}plus.svg';
   static const close = '${BaseIconPath.basePath}close.svg';
   static const hygiene = '${BaseIconPath.basePath}hygiene.svg';
+  static const business = '${BaseIconPath.basePath}business.svg';
+  static const owner = '${BaseIconPath.basePath}owner.svg';
+  static const locationWhite = '${BaseIconPath.basePath}location_white.svg';
+  static const phone = '${BaseIconPath.basePath}phone.svg';
+  static const doc = '${BaseIconPath.basePath}doc.svg';
+  static const upload = '${BaseIconPath.basePath}upload.svg';
+  static const property = '${BaseIconPath.basePath}property.svg';
+  static const dropdown = '${BaseIconPath.basePath}dropdown.svg';
+  static const person = '${BaseIconPath.basePath}person.svg';
 }
 
 class ImageStrings {

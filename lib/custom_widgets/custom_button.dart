@@ -11,6 +11,7 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onTap;
   final double? height;
   final double? width;
+  final bool isLoading;
   const CustomButton({
     super.key,
     this.text = 'NEXT',
@@ -19,6 +20,7 @@ class CustomButton extends StatelessWidget {
     required this.onTap,
     this.height,
     this.width,
+    this.isLoading = false,
   });
 
   @override
@@ -37,14 +39,16 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(100.r),
         ),
         child: Center(
-          child: Text(
-            text,
-            style: GoogleFonts.publicSans(
-              fontSize: 15.sp,
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            ),
-          ),
+          child: isLoading
+              ? const CircularProgressIndicator.adaptive()
+              : Text(
+                  text,
+                  style: GoogleFonts.publicSans(
+                    fontSize: 15.sp,
+                    fontWeight: FontWeight.bold,
+                    color: textColor,
+                  ),
+                ),
         ),
       ),
     );

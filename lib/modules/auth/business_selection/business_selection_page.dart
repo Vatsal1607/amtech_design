@@ -1,3 +1,4 @@
+import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,36 +7,17 @@ import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
-import 'company_dropdown.dart';
+import 'business_dropdown.dart';
 
-class CompanySelectionPage extends StatelessWidget {
-  const CompanySelectionPage({super.key});
+class BusinessSelectionPage extends StatelessWidget {
+  const BusinessSelectionPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     debugPrint('Company selection page called');
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: SvgIcon(
-            icon: IconStrings.arrowBack,
-          ),
-        ),
-        centerTitle: false,
-        titleSpacing: 0, // Removes extra space
-        title: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Text(
-            'back'.toUpperCase(),
-            style: const TextStyle(
-              color: AppColors.white,
-            ),
-          ),
-        ),
-      ),
+      appBar: const AppBarWithBackButton(),
       extendBodyBehindAppBar: true, // show content of body behind appbar
       body: Stack(
         children: [
@@ -56,7 +38,7 @@ class CompanySelectionPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Choose Your Company',
+                    'Choose Your Business',
                     style: GoogleFonts.publicSans(
                       fontSize: 40.sp,
                       color: AppColors.disabledColor,
@@ -74,7 +56,7 @@ class CompanySelectionPage extends StatelessWidget {
                   SizedBox(height: 16.h),
 
                   /// Dropdown button
-                  const CompanyDropdown(),
+                  const BusinessDropdown(),
                 ],
               ),
             ),

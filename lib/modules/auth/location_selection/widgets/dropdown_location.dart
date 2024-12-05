@@ -2,6 +2,7 @@ import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/strings.dart';
@@ -80,10 +81,10 @@ class DropdownLocation extends StatelessWidget {
                         value: value,
                         child: Text(
                           value,
-                          style: TextStyle(
-                            fontSize: 14,
+                          style: GoogleFonts.publicSans(
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor.withOpacity(0.5),
+                            color: AppColors.primaryColor,
                           ),
                         ),
                       );

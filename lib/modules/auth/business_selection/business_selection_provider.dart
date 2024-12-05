@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CompanySelectionProvider extends ChangeNotifier {
+class BusinessSelectionProvider extends ChangeNotifier {
   String? dropdownValue;
 
   final List<String> dropdownItems = [

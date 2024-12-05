@@ -8,7 +8,8 @@ import 'package:amtech_design/modules/welcome/welcome_page.dart';
 // import 'package:amtech_design/pages/menu/menu_page.dart';
 import 'package:flutter/material.dart';
 
-import 'modules/auth/company_selection/company_selection_page.dart';
+import 'modules/auth/business_register/register_page.dart';
+import 'modules/auth/business_selection/business_selection_page.dart';
 import 'modules/product_page/product_details_page.dart';
 
 class Routes {
@@ -22,6 +23,7 @@ class Routes {
   static const String companySelection = '/companySelection';
   static const String login = '/login';
   static const String otp = '/otp';
+  static const String businessRegister = '/businessRegister';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -31,8 +33,9 @@ class Routes {
     bottomBarPage: (context) => BottomBarPage(),
     productPage: (context) => const ProductPage(),
     details: (context) => const ProductPage(),
-    companySelection: (context) => const CompanySelectionPage(),
+    companySelection: (context) => const BusinessSelectionPage(),
     login: (context) => const LoginPage(),
     otp: (context) => const OtpPage(),
+    businessRegister: (context) => const RegisterPage(),
   };
 }

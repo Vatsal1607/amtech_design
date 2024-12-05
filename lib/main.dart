@@ -6,7 +6,9 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'modules/auth/company_selection/company_selection_provider.dart';
+import 'modules/auth/business_register/register_page.dart';
+import 'modules/auth/business_register/register_provider.dart';
+import 'modules/auth/business_selection/business_selection_provider.dart';
 import 'modules/auth/location_selection/location_selection_provider.dart';
 import 'modules/auth/otp/otp_provider.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
@@ -30,17 +32,18 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MenuProvider()),
         ChangeNotifierProvider(create: (_) => WelcomeProvider()),
         ChangeNotifierProvider(create: (_) => LocationSelectionProvider()),
-        ChangeNotifierProvider(create: (_) => CompanySelectionProvider()),
+        ChangeNotifierProvider(create: (_) => BusinessSelectionProvider()),
         ChangeNotifierProvider(create: (_) => LoginProvider()),
         ChangeNotifierProvider(create: (_) => OtpProvider()),
         ChangeNotifierProvider(create: (_) => ProductDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => RegisterProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)
         minTextAdapt: true,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'AMTech design',
+          title: '135 Degrees',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
@@ -52,9 +55,8 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          // home: BottomBarPage(),
+          // home: RegisterPage(), //! temp route for dev, change to routes\
           initialRoute: Routes.initial,
-
           routes: Routes.routes,
         ),
       ),

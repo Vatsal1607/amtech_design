@@ -5,6 +5,42 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 
+void customSnackBar({
+  required BuildContext context,
+  required String message,
+  Color backgroundColor = Colors.black,
+  Color textColor = Colors.white,
+  IconData? icon,
+  Duration duration = const Duration(seconds: 3),
+}) {
+  final snackBar = SnackBar(
+    behavior: SnackBarBehavior.floating,
+    backgroundColor: backgroundColor,
+    duration: duration,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12.0),
+    ),
+    content: Row(
+      children: [
+        if (icon != null) ...[
+          Icon(icon, color: textColor),
+          SizedBox(width: 8),
+        ],
+        Expanded(
+          child: Text(
+            message,
+            style: TextStyle(color: textColor),
+          ),
+        ),
+      ],
+    ),
+  );
+
+  ScaffoldMessenger.of(context)
+    ..clearSnackBars()
+    ..showSnackBar(snackBar);
+}
+
 void showSnackbar(BuildContext context, String message) {
   final snackBar = SnackBar(
     margin: EdgeInsets.zero,

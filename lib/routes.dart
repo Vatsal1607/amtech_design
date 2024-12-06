@@ -23,7 +23,7 @@ class Routes {
   static const String companySelection = '/companySelection';
   static const String login = '/login';
   static const String otp = '/otp';
-  static const String businessRegister = '/businessRegister';
+  static const String register = '/register';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -36,6 +36,6 @@ class Routes {
     companySelection: (context) => const BusinessSelectionPage(),
     login: (context) => const LoginPage(),
     otp: (context) => const OtpPage(),
-    businessRegister: (context) => const RegisterPage(),
+    register: (context) => const RegisterPage(),
   };
 }

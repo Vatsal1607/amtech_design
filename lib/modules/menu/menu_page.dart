@@ -689,6 +689,113 @@ class MenuPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 20.0),
+                              Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                                child: DividerLabel(
+                                  label: 'Coffee',
+                                  accountType: accountType,
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              // TEA seller horizontal view
+                              SizedBox(
+                                height: 157.h,
+                                child: ListView.separated(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
+                                  shrinkWrap: true,
+                                  itemCount: 4,
+                                  scrollDirection: Axis.horizontal,
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(width: 10),
+                                  itemBuilder: (context, index) {
+                                    return Consumer<MenuProvider>(
+                                      builder: (context, provider, child) =>
+                                          GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            ProductPage.route(),
+                                          );
+                                        },
+                                        child: ProductWidget(
+                                          image: provider.productImage[index],
+                                          name: provider.productName[index],
+                                          index: index,
+                                          accountType: accountType,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20.0),
+                              Stack(
+                                children: [
+                                  Container(
+                                    height: 210.h,
+                                    width: double.infinity,
+                                    margin: EdgeInsets.symmetric(
+                                      horizontal: 10.w,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.lightGreen.withOpacity(
+                                        .4,
+                                      ),
+                                      borderRadius: BorderRadius.circular(30.r),
+                                    ),
+                                  ),
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 20.w, vertical: 10.h),
+                                        child: DividerLabel(
+                                          label: 'Health first',
+                                          accountType: accountType,
+                                        ),
+                                      ),
+                                      // const SizedBox(height: 8),
+                                      // Health first horizontal view
+                                      SizedBox(
+                                        height: 157.h,
+                                        child: ListView.separated(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20.0),
+                                          shrinkWrap: true,
+                                          itemCount: 4,
+                                          scrollDirection: Axis.horizontal,
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 10),
+                                          itemBuilder: (context, index) {
+                                            return Consumer<MenuProvider>(
+                                              builder:
+                                                  (context, provider, child) =>
+                                                      GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    ProductPage.route(),
+                                                  );
+                                                },
+                                                child: ProductWidget(
+                                                  image: provider
+                                                      .productImage[index],
+                                                  name: provider
+                                                      .productName[index],
+                                                  index: index,
+                                                  accountType: accountType,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
 
                               Stack(
                                 children: [

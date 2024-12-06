@@ -1,3 +1,4 @@
+import 'package:amtech_design/models/api_error_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:dio/dio.dart';
 import 'api_client.dart';
@@ -15,5 +16,10 @@ class ApiService {
   Future<PersonalRegisterModel> personalRegister(
       Map<String, dynamic> body) async {
     return await apiClient.personalRegister(body);
+  }
+
+  Future<ApiGlobalModel> businessRegister(
+      Map<String, dynamic> body, List<MultipartFile> images) async {
+    return await apiClient.businessRegister(body, images);
   }
 }

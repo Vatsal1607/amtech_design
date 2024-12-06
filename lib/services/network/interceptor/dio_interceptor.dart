@@ -27,13 +27,13 @@ class DioInterceptor extends Interceptor {
   // }
   void onError(DioException error, ErrorInterceptorHandler handler) {
     // Global error handling
-    ApiErrorModel apiError;
+    ApiGlobalModel apiError;
     if (error.response != null) {
       // Server error
-      apiError = ApiErrorModel.fromJson(error.response!.data);
+      apiError = ApiGlobalModel.fromJson(error.response!.data);
     } else {
       // Network or other error
-      apiError = ApiErrorModel(
+      apiError = ApiGlobalModel(
         message: error.message ?? 'Network error occurred',
         statusCode: error.response?.statusCode,
       );

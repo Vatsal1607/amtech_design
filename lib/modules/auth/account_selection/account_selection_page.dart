@@ -59,18 +59,7 @@ class AccountSelectionPage extends StatelessWidget {
                   SizedBox(height: 20.h),
 
                   // custom widget of Account selection button
-                  AccountSelectionButton(
-                    onTap: () {
-                      // Update & Save accountType in local storage
-                      context
-                          .read<LocationSelectionProvider>()
-                          .updateAccountType('business');
-                      Navigator.pushNamed(context, Routes.locationSelection);
-                    },
-                    text: 'business account',
-                    icon: IconStrings.businessAccount,
-                  ),
-                  SizedBox(height: 17.h),
+
                   AccountSelectionButton(
                     onTap: () {
                       // Update & Save accountType in local storage
@@ -84,6 +73,18 @@ class AccountSelectionPage extends StatelessWidget {
                     bgColor: AppColors.darkGreenGrey,
                     textColor: AppColors.seaMist,
                     iconColor: AppColors.bayLeaf,
+                  ),
+                  SizedBox(height: 17.h),
+                  AccountSelectionButton(
+                    onTap: () {
+                      // Update & Save accountType in local storage
+                      context
+                          .read<LocationSelectionProvider>()
+                          .updateAccountType('business');
+                      Navigator.pushNamed(context, Routes.locationSelection);
+                    },
+                    text: 'business account',
+                    icon: IconStrings.businessAccount,
                   ),
                   SizedBox(height: 16.h),
 

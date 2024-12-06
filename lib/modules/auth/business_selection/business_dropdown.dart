@@ -94,7 +94,7 @@ class BusinessDropdown extends StatelessWidget {
                             // Navigate to business register page
                             Navigator.pushNamed(
                               context,
-                              Routes.businessRegister,
+                              Routes.register,
                             );
                           },
                           child: Container(

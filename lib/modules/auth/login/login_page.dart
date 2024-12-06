@@ -167,6 +167,40 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20.h),
+                    GestureDetector(
+                      onTap: () {
+                        //* Navigate to Register page
+                        Navigator.pushNamed(
+                          context,
+                          Routes.register,
+                        );
+                      },
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Can’t find your business? ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 13.sp,
+                                color: AppColors.seaShell,
+                              ),
+                            ),
+                            Text(
+                              'Register Now',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 14.sp,
+                                color: AppColors.disabledColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -151,22 +153,11 @@ class _ProductPageState extends State<ProductPage> {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: const [
-                    BoxShadow(
-                      color: AppColors.primaryColor, // Shadow color
-                      offset: Offset(0, -4), // shadow at the top
-                      blurRadius: 10, // Blur effect for a smoother shadow
-                    ),
-                  ],
-                ),
-                child: Image.asset(
-                  height: 439.h,
-                  width: double.infinity,
-                  ImageStrings.teaImg,
-                  fit: BoxFit.cover,
-                ),
+              Image.asset(
+                height: 439.h,
+                width: double.infinity,
+                ImageStrings.teaImg,
+                fit: BoxFit.cover,
               ),
               // Expanded(
               //   child: DraggableScrollableSheet(
@@ -185,6 +176,35 @@ class _ProductPageState extends State<ProductPage> {
               // ),
             ],
           ),
+          // Blur Effect
+          // Fixed Height Blur Effect
+          // Positioned(
+          //   top: 0,
+          //   left: 0,
+          //   right: 0,
+          //   child: ClipRect(
+          //     child: BackdropFilter(
+          //       filter: ImageFilter.blur(
+          //           sigmaX: 10, sigmaY: 10), // Adjust blur intensity
+          //       child: Container(
+          //         height: 100.h, // Fixed height for the blur
+          //         decoration: BoxDecoration(
+          //           gradient: LinearGradient(
+          //             begin: Alignment.topCenter,
+          //             end: Alignment.bottomCenter,
+          //             colors: [
+          //               AppColors.primaryColor.withOpacity(0.8),
+          //               AppColors.primaryColor.withOpacity(.4),
+          //               AppColors.primaryColor.withOpacity(.4),
+          //               AppColors.primaryColor.withOpacity(.3),
+          //               Colors.transparent,
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
 
           // DraggableScrollableSheet at the bottom
           Align(

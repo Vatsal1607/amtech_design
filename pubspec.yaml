@@ -48,6 +48,7 @@ dependencies:
   marquee: ^2.3.0
   retrofit: ^4.4.1
   dio: ^5.7.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

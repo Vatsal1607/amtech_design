@@ -29,7 +29,7 @@ class ProductWidget extends StatelessWidget {
       children: [
         Container(
           height: 150.h,
-          width: 118.w,
+          width: 120.w,
           decoration: BoxDecoration(
             // gradient: LinearGradient(
             //   begin: Alignment.topCenter,

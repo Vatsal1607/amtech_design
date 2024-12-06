@@ -1,3 +1,4 @@
+import 'package:amtech_design/models/api_error_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -12,5 +13,12 @@ abstract class ApiClient {
   @POST(ApiEndpoints.userRegister)
   Future<PersonalRegisterModel> personalRegister(
     @Body() Map<String, dynamic> body,
+  );
+
+  @POST(ApiEndpoints.businessRegister)
+  @MultiPart()
+  Future<ApiGlobalModel> businessRegister(
+    @Body() Map<String, dynamic> body,
+    @Part() List<MultipartFile> images,
   );
 }

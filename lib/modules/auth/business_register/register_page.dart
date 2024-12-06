@@ -1,9 +1,11 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/validator.dart';
 import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +16,7 @@ import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/custom_textfield.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import 'register_provider.dart';
+import 'widgets/upload_doc_widget.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -21,7 +24,6 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    //Todo set dynamic accountType
     // String accountType = 'personal'; // static temp
     String accountType =
         sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
@@ -95,12 +97,21 @@ class RegisterPage extends StatelessWidget {
                               controller: provider.personalAddressController,
                             ),
                             SizedBox(height: 20.h),
-                            CustomTextField(
-                              hint: 'Enter Mobile Number',
-                              validator: Validator.validatePhoneNumber,
-                              prefixIcon: IconStrings.phone,
-                              iconColor: AppColors.seaMist,
-                              controller: provider.personalMobileController,
+                            Consumer<RegisterProvider>(
+                              builder: (context, _, child) => CustomTextField(
+                                hint: 'Enter Mobile Number',
+                                errorText: provider.personalMobileErrorText,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                validator: Validator.validatePhoneNumber,
+                                onChanged: provider.onChangePersonalNumber,
+                                prefixIcon: IconStrings.phone,
+                                iconColor: AppColors.seaMist,
+                                controller: provider.personalMobileController,
+                              ),
                             ),
                             SizedBox(height: 20.h),
                             // Upoad Adhar (doc)
@@ -155,179 +166,204 @@ class RegisterPage extends StatelessWidget {
                   :
                   //! Business register column
                   SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Register Your Business',
-                            style: GoogleFonts.publicSans(
-                              fontSize: 28.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.disabledColor,
-                            ),
-                          ),
-                          SizedBox(height: 18.h),
-                          //Todo Export widget textfield
-                          CustomTextField(
-                            hint: 'Enter Business Name',
-                            prefixIcon: IconStrings.business,
-                            controller: provider.businessNameController,
-                          ),
-                          SizedBox(height: 20.h),
-                          CustomTextField(
-                            controller: provider.businessOwnerController,
-                            hint: 'Enter Business Owner\'s Name',
-                            prefixIcon: IconStrings.owner,
-                          ),
-                          SizedBox(height: 20.h),
-                          CustomTextField(
-                            controller: provider.businessAddressController,
-                            hint: 'Enter Business Address',
-                            prefixIcon: IconStrings.locationWhite,
-                          ),
-                          SizedBox(height: 20.h),
-                          CustomTextField(
-                            controller: provider.businessMobileController,
-                            hint: 'Enter Mobile Number',
-                            prefixIcon: IconStrings.phone,
-                          ),
-                          SizedBox(height: 20.h),
-                          // Dropdown of Business property status
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: AppColors.seaShell,
-                                width: 2.w,
+                      child: Form(
+                        key: provider.businessFormKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Register Your Business',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 28.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.disabledColor,
                               ),
-                              borderRadius: BorderRadius.circular(100.r),
                             ),
-                            child: Row(
-                              children: [
-                                // Leading Icon (Outside the Dropdown)
-                                Padding(
-                                  padding: EdgeInsets.only(left: 15.0),
-                                  child: SvgIcon(
-                                    icon: IconStrings.property,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Consumer<RegisterProvider>(
-                                    builder: (context, value, child) =>
-                                        DropdownButton2<String>(
-                                      dropdownStyleData: DropdownStyleData(
-                                        decoration: BoxDecoration(
-                                          color: AppColors.seaShell,
-                                          borderRadius: BorderRadius.circular(
-                                              10), // Rounded corners
-                                          border: Border.all(
-                                            color: Colors.grey, // Border color
-                                            width: 1, // Border width
-                                          ),
-                                        ),
-                                      ),
-                                      value: provider.selectedPropertyStatus,
-                                      isExpanded: true,
-                                      style: GoogleFonts.publicSans(
-                                        fontSize: 14.sp,
-                                        color: AppColors.white,
-                                      ),
-                                      hint: Text(
-                                        'Business Property Status',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 14.sp,
-                                          color: AppColors.white,
-                                        ),
-                                      ),
-                                      items: provider.propertyStatusItems
-                                          .map<DropdownMenuItem<String>>(
-                                              (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            style: GoogleFonts.publicSans(
-                                              fontSize: 14.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: AppColors.primaryColor,
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged:
-                                          provider.onChangePropertyStatus,
-                                      iconStyleData: IconStyleData(
-                                        icon: Padding(
-                                          padding: EdgeInsets.only(right: 20.w),
-                                          child: SvgIcon(
-                                            icon: IconStrings.dropdown,
-                                          ),
-                                        ),
-                                      ),
-                                      selectedItemBuilder:
-                                          (BuildContext context) {
-                                        return provider.propertyStatusItems
-                                            .map<Widget>((String value) {
-                                          return Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              value,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors
-                                                    .white, // Style for the selected item
-                                              ),
-                                            ),
-                                          );
-                                        }).toList();
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            SizedBox(height: 18.h),
+                            CustomTextField(
+                              hint: 'Enter Business Name',
+                              prefixIcon: IconStrings.business,
+                              controller: provider.businessNameController,
+                              validator: Validator.validateName,
                             ),
-                          ),
-                          SizedBox(height: 20.h),
-                          // Upoad Adhar (doc)
-                          GestureDetector(
-                            onTap: () {
-                              debugPrint('Upload doc pressed');
-                            },
-                            child: Container(
-                              height: 54.h,
-                              padding: EdgeInsets.symmetric(horizontal: 18.w),
+                            SizedBox(height: 20.h),
+                            CustomTextField(
+                              controller: provider.businessOwnerController,
+                              hint: 'Enter Business Owner\'s Name',
+                              prefixIcon: IconStrings.owner,
+                              validator: Validator.validateName,
+                            ),
+                            SizedBox(height: 20.h),
+                            CustomTextField(
+                              controller: provider.businessAddressController,
+                              hint: 'Enter Business Address',
+                              prefixIcon: IconStrings.locationWhite,
+                              validator: Validator.validateAddress,
+                            ),
+                            SizedBox(height: 20.h),
+                            Consumer<RegisterProvider>(
+                              builder: (context, _, child) => CustomTextField(
+                                controller: provider.businessMobileController,
+                                hint: 'Enter Mobile Number',
+                                errorText: provider.businessMobileErrorText,
+                                prefixIcon: IconStrings.phone,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
+                                validator: Validator.validatePhoneNumber,
+                                onChanged: provider.onChangeBusinessNumber,
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+                            // Dropdown of Business property status
+                            Container(
                               decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(100.r),
                                 border: Border.all(
                                   color: AppColors.seaShell,
                                   width: 2.w,
                                 ),
+                                borderRadius: BorderRadius.circular(100.r),
                               ),
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    children: [
-                                      SvgIcon(icon: IconStrings.doc),
-                                      SizedBox(width: 12.w),
-                                      Text(
-                                        'Same Height as TextFormField',
-                                        textAlign: TextAlign.start,
+                                  // Leading Icon (Outside the Dropdown)
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 15.0),
+                                    child: SvgIcon(
+                                      icon: IconStrings.property,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Consumer<RegisterProvider>(
+                                      builder: (context, value, child) =>
+                                          DropdownButton2<String>(
+                                        dropdownStyleData: DropdownStyleData(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.seaShell,
+                                            borderRadius: BorderRadius.circular(
+                                                10), // Rounded corners
+                                            border: Border.all(
+                                              color:
+                                                  Colors.grey, // Border color
+                                              width: 1, // Border width
+                                            ),
+                                          ),
+                                        ),
+                                        value: provider.selectedPropertyStatus,
+                                        isExpanded: true,
                                         style: GoogleFonts.publicSans(
                                           fontSize: 14.sp,
                                           color: AppColors.white,
                                         ),
+                                        hint: Text(
+                                          'Business Property Status',
+                                          style: GoogleFonts.publicSans(
+                                            fontSize: 14.sp,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                        items: provider.propertyStatusItems
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged:
+                                            provider.onChangePropertyStatus,
+                                        iconStyleData: IconStyleData(
+                                          icon: Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 20.w),
+                                            child: SvgIcon(
+                                              icon: IconStrings.dropdown,
+                                            ),
+                                          ),
+                                        ),
+                                        selectedItemBuilder:
+                                            (BuildContext context) {
+                                          return provider.propertyStatusItems
+                                              .map<Widget>((String value) {
+                                            return Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors
+                                                      .white, // Style for the selected item
+                                                ),
+                                              ),
+                                            );
+                                          }).toList();
+                                        },
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                  SvgIcon(icon: IconStrings.upload),
                                 ],
                               ),
                             ),
-                          ),
-                          SizedBox(height: 20.h),
-                        ],
+
+                            Consumer<RegisterProvider>(
+                              builder: (context, _, child) {
+                                // Upoad lightbill & rent agreement condition
+                                return provider.selectedPropertyStatus ==
+                                        'Owner'
+                                    ? Padding(
+                                        padding: EdgeInsets.only(top: 20.h),
+                                        child: UploadDocWidget(
+                                          onTap: () {
+                                            debugPrint(
+                                                'Upload lightbill pressed');
+                                            //! lightbill upload
+                                            // provider.pickAndAddImage(context);
+                                            provider.getMultipartImages;
+                                          },
+                                          title: 'Upload Owner\'s Light Bill',
+                                        ),
+                                      )
+                                    : provider.selectedPropertyStatus ==
+                                            'Rental'
+                                        ? Padding(
+                                            padding: EdgeInsets.only(top: 20.h),
+                                            child: UploadDocWidget(
+                                              onTap: () {
+                                                //! agreement upload
+                                                // provider
+                                                //     .pickAndAddImage(context);
+                                                provider.getMultipartImages;
+                                                debugPrint(
+                                                    'Upload Rent pressed');
+                                              },
+                                              title: 'Upload Rent Agreement',
+                                            ),
+                                          )
+                                        : const SizedBox();
+                              },
+                            ),
+                            SizedBox(height: 20.h),
+                            //! Adhar upload
+                            UploadDocWidget(
+                              onTap: () {
+                                // provider.pickAndAddImage(context);
+                                provider.getMultipartImages;
+                                debugPrint('Upload doc pressed');
+                              },
+                              title: 'Upload Owner\'s Aadhaar Card',
+                            ),
+                            SizedBox(height: 200.h),
+                          ],
+                        ),
                       ),
                     ),
             ),
@@ -355,7 +391,14 @@ class RegisterPage extends StatelessWidget {
                         debugPrint('Personal form is not valid');
                       }
                     } else if (accountType == 'business') {
-                      //Todo Business register api call
+                      // Validate business fields
+                      if (provider.businessFormKey.currentState!.validate()) {
+                        //! Api call business register
+                        provider.businessRegister(context);
+                        debugPrint('Business form is valid');
+                      } else {
+                        debugPrint('Business form is not valid');
+                      }
                     }
                   },
                   // bgColor: AppColors.disabledColor,

@@ -101,18 +101,19 @@ class LoginPage extends StatelessWidget {
                       children: [
                         // Country Code Widget
                         Container(
-                          height: 48.h,
-                          width: 48.w,
+                          height: 52.h,
+                          width: 52.w,
                           decoration: const BoxDecoration(
                             color: AppColors.white,
                             shape: BoxShape.circle,
                           ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          // padding:  EdgeInsets.symmetric(horizontal: 8.w),
+                          margin:  EdgeInsets.only(top: 2.h),
                           child: Center(
                             child: Text(
                               context.read<LoginProvider>().countryCode,
                               style: GoogleFonts.publicSans(
-                                fontSize: 15.sp,
+                                fontSize: 14.sp,
                                 fontWeight: FontWeight.bold,
                                 color: accountType != '' &&
                                         accountType == 'business'

@@ -279,6 +279,7 @@ class RegisterPage extends StatelessWidget {
                                             ),
                                           );
                                         }).toList(),
+                                        underline: const SizedBox.shrink(),
                                         onChanged:
                                             provider.onChangePropertyStatus,
                                         iconStyleData: IconStyleData(

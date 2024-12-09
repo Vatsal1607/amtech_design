@@ -108,7 +108,7 @@ class LoginPage extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           // padding:  EdgeInsets.symmetric(horizontal: 8.w),
-                          margin:  EdgeInsets.only(top: 2.h),
+                          margin: EdgeInsets.only(top: 2.h),
                           child: Center(
                             child: Text(
                               context.read<LoginProvider>().countryCode,
@@ -168,7 +168,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 5.h),
                     GestureDetector(
                       onTap: () {
                         //* Navigate to Register page
@@ -184,7 +184,7 @@ class LoginPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              'Can’t find your business? ',
+                              'Don\'t have an account? ',
                               style: GoogleFonts.publicSans(
                                 fontSize: 13.sp,
                                 color: AppColors.seaShell,

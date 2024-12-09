@@ -96,7 +96,6 @@ class OtpPage extends StatelessWidget {
                   // OTP fields
                   OtpFields(),
 
-                  SizedBox(height: 18.h),
                   RichText(
                     text: TextSpan(
                       text: 'resend otp in '.toUpperCase(),

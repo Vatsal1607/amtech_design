@@ -89,6 +89,7 @@ class DropdownLocation extends StatelessWidget {
                         ),
                       );
                     }).toList(),
+                    underline: const SizedBox.shrink(),
                     onChanged: provider.onChangeDropdown,
                     selectedItemBuilder: (BuildContext context) {
                       return provider.dropdownItems.map<Widget>((String value) {

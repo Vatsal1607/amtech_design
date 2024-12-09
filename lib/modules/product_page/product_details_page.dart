@@ -213,7 +213,7 @@ class _ProductPageState extends State<ProductPage> {
               expand: false, // doesn’t take over the entire screen
               initialChildSize: 0.55, // Initial height of BottomSheet
               minChildSize: 0.55, // Minimum height of BottomSheet
-              maxChildSize: 0.8, // Maximum height of BottomSheet
+              maxChildSize: 1.0, // Maximum height of BottomSheet
               shouldCloseOnMinExtent: false,
               builder: (context, scrollController) {
                 return Container(

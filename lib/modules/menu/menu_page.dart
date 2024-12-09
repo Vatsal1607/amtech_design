@@ -553,6 +553,7 @@ class MenuPage extends StatelessWidget {
                           ],
                         ),
                         child: TextFormField(
+                          textAlignVertical: TextAlignVertical.bottom,
                           style: GoogleFonts.publicSans(
                             color: getColorAccountType(
                               accountType: accountType,
@@ -563,6 +564,7 @@ class MenuPage extends StatelessWidget {
                           ),
                           decoration: InputDecoration(
                             hintText: 'Search for Tea, Coffee or Snacks',
+
                             hintStyle: GoogleFonts.publicSans(
                               color: getColorAccountType(
                                 accountType: accountType,

@@ -27,7 +27,7 @@ class WelcomePage extends StatelessWidget {
 
           // 3-dot indicator at top-left corner
           Positioned(
-            top: 80.h,
+            top: 75.h,
             left: 34.w,
             child: Consumer<WelcomeProvider>(
               builder: (context, provider, child) => SmoothPageIndicator(

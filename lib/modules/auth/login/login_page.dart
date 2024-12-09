@@ -168,41 +168,40 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10.h),
-                    if (accountType == 'personal')
-                      GestureDetector(
-                        onTap: () {
-                          //* Navigate to Register page
-                          Navigator.pushNamed(
-                            context,
-                            Routes.register,
-                          );
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Don\'t have an account? '.toUpperCase(),
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 12.sp,
-                                  color: AppColors.seaShell,
-                                ),
+                    SizedBox(height: 20.h),
+                    GestureDetector(
+                      onTap: () {
+                        //* Navigate to Register page
+                        Navigator.pushNamed(
+                          context,
+                          Routes.register,
+                        );
+                      },
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Can’t find your business? ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 13.sp,
+                                color: AppColors.seaShell,
                               ),
-                              Text(
-                                'Register Now'.toUpperCase(),
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 12.sp,
-                                  color: AppColors.seaMist,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                            ),
+                            Text(
+                              'Register Now',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 14.sp,
+                                color: AppColors.disabledColor,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),

@@ -426,8 +426,7 @@ class RegisterPage extends StatelessWidget {
                                             debugPrint(
                                                 'Upload lightbill pressed');
                                             //! lightbill upload
-                                            // provider.pickAndAddImage(context);
-                                            provider.getMultipartImages;
+                                            provider.pickAndAddImageToLists();
                                           },
                                           leadingIcon: IconStrings.bill,
                                           title: 'Upload Owner\'s Light Bill',
@@ -440,9 +439,8 @@ class RegisterPage extends StatelessWidget {
                                             child: UploadDocWidget(
                                               onTap: () {
                                                 //! agreement upload
-                                                // provider
-                                                //     .pickAndAddImage(context);
-                                                provider.getMultipartImages;
+                                                provider
+                                                    .pickAndAddImageToLists();
                                                 debugPrint(
                                                     'Upload Rent pressed');
                                               },
@@ -457,8 +455,7 @@ class RegisterPage extends StatelessWidget {
                             //! Adhar upload
                             UploadDocWidget(
                               onTap: () {
-                                // provider.pickAndAddImage(context);
-                                provider.getMultipartImages;
+                                provider.pickAndAddImageToLists();
                                 debugPrint('Upload doc pressed');
                               },
                               title: 'Upload Owner\'s Aadhaar Card',
@@ -466,7 +463,7 @@ class RegisterPage extends StatelessWidget {
                             SizedBox(height: 20.h),
                             UploadDocWidget(
                               onTap: () {
-                                // provider.getMultipartImages;
+                                provider.pickAndAddImageToLists();
                                 debugPrint('GST card pressed');
                               },
                               title: 'Upload GST Document',
@@ -511,7 +508,6 @@ class RegisterPage extends StatelessWidget {
                       }
                     }
                   },
-                  // bgColor: AppColors.disabledColor,
                   bgColor: getColorAccountType(
                     accountType: accountType,
                     businessColor: AppColors.disabledColor,

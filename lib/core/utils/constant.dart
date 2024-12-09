@@ -39,3 +39,12 @@ InputBorder? kTextfieldBorderStyle = OutlineInputBorder(
     width: 2.w,
   ),
 );
+
+InputBorder? kSearchDropDownBorder = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(100.r),
+  borderSide: const BorderSide(
+    width: 2,
+    color: AppColors.seaShell,
+    style: BorderStyle.solid,
+  ),
+);

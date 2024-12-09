@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-import '../../../models/api_error_model.dart';
+import '../../../models/api_global_model.dart';
 
 class DioInterceptor extends Interceptor {
   @override

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:amtech_design/models/api_error_model.dart';
+import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +94,8 @@ class RegisterProvider extends ChangeNotifier {
   PersonalRegisterModel? get personalRegisterModel => _personalRegisterModel;
   bool get isLoading => _isLoading;
 
-  List<String> imagesList = [];
+  List<MultipartFile>? multipartImageList;
+  List<String> imageFileNames = []; // To store the filenames of selected images
 
   // Api method (personal register)
   Future<void> personalRegister(context) async {
@@ -140,129 +141,89 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
-  // Function to pick an image and add it to the list
-  Future<void> pickAndAddImage(context) async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //* Pick and add image to list
+  Future<void> pickAndAddImageToLists() async {
+    final ImagePicker picker = ImagePicker();
 
-    if (pickedFile != null) {
-      File imageFile = File(pickedFile.path);
-
-      // Convert the image to Base64
-      List<int> imageBytes = await imageFile.readAsBytes();
-      String base64Image = base64Encode(imageBytes);
-      imagesList.add(base64Image);
-      customSnackBar(context: context, message: 'Image Uploaded');
-      debugPrint("Image added to the list. Total images: ${imagesList.length}");
-    } else {
-      debugPrint("No image selected.");
-    }
-  }
-
-  // Get multipart images
-
-  Future<List<MultipartFile>> getMultipartImages(List<XFile> imageFiles) async {
-    List<MultipartFile> multipartImages = [];
-
-    for (var file in imageFiles) {
-      multipartImages.add(
-        await MultipartFile.fromFile(
-          file.path,
-          filename: file.name,
-        ),
-      );
-    }
-
-    return multipartImages;
-  }
-
-  //* Api method (business register)
-  // Future<void> businessRegister(context) async {
-  //   if (imagesList.isNotEmpty) {
-  //     Map<String, dynamic> body = {
-  //       'businessName': businessNameController.text,
-  //       'ownerName': businessOwnerController.text,
-  //       'ocupant': selectedPropertyStatus,
-  //       'images': imagesList,
-  //       'contact': businessMobileController.text,
-  //       'address': businessAddressController.text,
-  //     };
-  //     debugPrint('imageString is: ${imagesList.toString()}');
-  //     debugPrint('body is: $body');
-
-  //     _isLoading = true;
-  //     notifyListeners();
-  //     try {
-  //       ApiGlobalModel response = await apiService.businessRegister(body, images);
-  //       log('Business Register log: $response');
-  //       if (response.success == true) {
-  //         customSnackBar(
-  //           context: context,
-  //           message: response.message.toString(),
-  //           backgroundColor: AppColors.primaryColor,
-  //         );
-  //       }
-  //     } catch (e) {
-  //       debugPrint("businessRegister Error: $e");
-  //       if (e is DioException) {
-  //         // Extract ApiError from DioError
-  //         final apiError = ApiGlobalModel.fromJson(e.response?.data ?? {});
-  //         customSnackBar(
-  //           context: context,
-  //           message: apiError.message.toString(),
-  //           backgroundColor: AppColors.primaryColor,
-  //         );
-  //       } else {
-  //         // Handle other errors
-  //         customSnackBar(
-  //           context: context,
-  //           message: 'An unexpected error occurred',
-  //           backgroundColor: AppColors.primaryColor,
-  //         );
-  //       }
-  //     } finally {
-  //       _isLoading = false;
-  //       notifyListeners();
-  //     }
-  //   } else {
-  //     debugPrint("No images to upload.");
-  //   }
-  // }
-
-  Future<void> businessRegister(context) async {
     try {
+      // Pick a single image from the gallery
+      final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+      if (image != null) {
+        // Extract and store the filename in the List<String>
+        imageFileNames.add(image.name);
+
+        // Convert the selected image to MultipartFile and add to multipartImageList
+        MultipartFile multipartFile = await MultipartFile.fromFile(
+          image.path,
+          filename: image.name,
+        );
+        multipartImageList!.add(multipartFile);
+
+        debugPrint("Image added successfully: ${image.name}");
+      } else {
+        debugPrint("No image selected.");
+      }
+    } catch (e) {
+      debugPrint("Error selecting or adding image: $e");
+    }
+  }
+
+  //* Business Register API Call
+  Future<void> businessRegister(context) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      // Prepare the body for the API request
       Map<String, dynamic> body = {
         'businessName': businessNameController.text,
         'ownerName': businessOwnerController.text,
         'ocupant': selectedPropertyStatus,
-        // 'images': imagesList,
+        'images': imageFileNames, // Pass the filenames list as List<String>
         'contact': businessMobileController.text,
         'address': businessAddressController.text,
-        'buninessType': selectedBusinessType.toString,
+        'buninessType': selectedBusinessType.toString(),
       };
-      // Pick images
-      final ImagePicker picker = ImagePicker();
-      final List<XFile>? images = await picker.pickMultiImage();
 
-      if (images != null && images.isNotEmpty) {
-        // Convert images to MultipartFile
-        final multipartImages = await getMultipartImages(images);
+      debugPrint('Image filenames being sent: $imageFileNames');
 
-        // Upload images
-        final response =
-            await apiService.businessRegister(body, multipartImages);
-        debugPrint('business Register res: ${response.toString()}');
-        // Handle response
-        if (response.statusCode == 200) {
-          debugPrint("Upload successful: ${response.message}");
-        } else {
-          debugPrint("Upload failed: ${response.message}");
-        }
+      // Call the API
+      ApiGlobalModel response = await apiService.businessRegister(
+        body: body,
+        // images: multipartImageList, // Use the multipart list for file uploads
+      );
+
+      log('Business Register Response: $response');
+      if (response.success == true) {
+        Navigator.pop(context);
+        customSnackBar(
+          context: context,
+          message: response.message.toString(),
+          backgroundColor: AppColors.primaryColor,
+        );
       } else {
-        debugPrint("No images selected.");
+        debugPrint('Response Message: ${response.message}');
+        debugPrint('Response Success: ${response.success}');
       }
     } catch (e) {
-      debugPrint("Error uploading images: $e");
+      log("Business Register Error: $e");
+      if (e is DioException) {
+        final apiError = ApiGlobalModel.fromJson(e.response?.data ?? {});
+        customSnackBar(
+          context: context,
+          message: apiError.message.toString(),
+          backgroundColor: AppColors.primaryColor,
+        );
+      } else {
+        customSnackBar(
+          context: context,
+          message: 'An unexpected error occurred',
+          backgroundColor: AppColors.primaryColor,
+        );
+      }
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }

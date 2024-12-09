@@ -1,4 +1,5 @@
-import 'package:amtech_design/models/api_error_model.dart';
+import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:dio/dio.dart';
 import 'api_client.dart';
@@ -18,8 +19,21 @@ class ApiService {
     return await apiClient.personalRegister(body);
   }
 
-  Future<ApiGlobalModel> businessRegister(
-      Map<String, dynamic> body, List<MultipartFile> images) async {
-    return await apiClient.businessRegister(body, images);
+  Future<ApiGlobalModel> businessRegister({
+    required Map<String, dynamic> body,
+    // required List<MultipartFile> images,
+  }) async {
+    return await apiClient.businessRegister(
+      body,
+      // images,
+    );
+  }
+
+  Future<BusinessListModel> getBusinessList({
+    required int page,
+    required int limit,
+    required String search,
+  }) async {
+    return await apiClient.getBusinessList(page, limit, search);
   }
 }

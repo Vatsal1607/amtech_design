@@ -217,7 +217,7 @@ class RegisterPage extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 20.h),
-                            // Dropdown of Business property status
+                            //* Dropdown business type
                             Container(
                               decoration: BoxDecoration(
                                 border: Border.all(
@@ -230,7 +230,106 @@ class RegisterPage extends StatelessWidget {
                                 children: [
                                   // Leading Icon (Outside the Dropdown)
                                   Padding(
-                                    padding: EdgeInsets.only(left: 15.0),
+                                    padding: const EdgeInsets.only(left: 15.0),
+                                    child: SvgIcon(
+                                      icon: IconStrings.property,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Consumer<RegisterProvider>(
+                                      builder: (context, value, child) =>
+                                          DropdownButton2<String>(
+                                        dropdownStyleData: DropdownStyleData(
+                                          decoration: BoxDecoration(
+                                            color: AppColors.seaShell,
+                                            borderRadius: BorderRadius.circular(
+                                                10), // Rounded corners
+                                            border: Border.all(
+                                              color:
+                                                  Colors.grey, // Border color
+                                              width: 1, // Border width
+                                            ),
+                                          ),
+                                        ),
+                                        value: provider.selectedBusinessType,
+                                        isExpanded: true,
+                                        style: GoogleFonts.publicSans(
+                                          fontSize: 14.sp,
+                                          color: AppColors.white,
+                                        ),
+                                        hint: Text(
+                                          'Business Type',
+                                          style: GoogleFonts.publicSans(
+                                            fontSize: 14.sp,
+                                            color: AppColors.white,
+                                          ),
+                                        ),
+                                        items: provider.businessTypeItems
+                                            .map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                          return DropdownMenuItem<String>(
+                                            value: value,
+                                            child: Text(
+                                              value,
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 14.sp,
+                                                fontWeight: FontWeight.bold,
+                                                color: AppColors.primaryColor,
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        underline: const SizedBox.shrink(),
+                                        onChanged:
+                                            provider.onChangeBusinessType,
+                                        iconStyleData: IconStyleData(
+                                          icon: Padding(
+                                            padding:
+                                                EdgeInsets.only(right: 20.w),
+                                            child: SvgIcon(
+                                              icon: IconStrings.dropdown,
+                                            ),
+                                          ),
+                                        ),
+                                        selectedItemBuilder:
+                                            (BuildContext context) {
+                                          return provider.businessTypeItems
+                                              .map<Widget>((String value) {
+                                            return Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                value,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors
+                                                      .white, // Style for the selected item
+                                                ),
+                                              ),
+                                            );
+                                          }).toList();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(height: 20.h),
+
+                            //* Dropdown of Business property status
+                            Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  color: AppColors.seaShell,
+                                  width: 2.w,
+                                ),
+                                borderRadius: BorderRadius.circular(100.r),
+                              ),
+                              child: Row(
+                                children: [
+                                  // Leading Icon (Outside the Dropdown)
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 15.0),
                                     child: SvgIcon(
                                       icon: IconStrings.property,
                                     ),
@@ -330,6 +429,7 @@ class RegisterPage extends StatelessWidget {
                                             // provider.pickAndAddImage(context);
                                             provider.getMultipartImages;
                                           },
+                                          leadingIcon: IconStrings.bill,
                                           title: 'Upload Owner\'s Light Bill',
                                         ),
                                       )
@@ -346,6 +446,7 @@ class RegisterPage extends StatelessWidget {
                                                 debugPrint(
                                                     'Upload Rent pressed');
                                               },
+                                              leadingIcon: IconStrings.bill,
                                               title: 'Upload Rent Agreement',
                                             ),
                                           )
@@ -361,6 +462,14 @@ class RegisterPage extends StatelessWidget {
                                 debugPrint('Upload doc pressed');
                               },
                               title: 'Upload Owner\'s Aadhaar Card',
+                            ),
+                            SizedBox(height: 20.h),
+                            UploadDocWidget(
+                              onTap: () {
+                                // provider.getMultipartImages;
+                                debugPrint('GST card pressed');
+                              },
+                              title: 'Upload GST Document',
                             ),
                             SizedBox(height: 200.h),
                           ],

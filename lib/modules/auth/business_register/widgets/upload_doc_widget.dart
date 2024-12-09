@@ -8,10 +8,12 @@ import '../../../../custom_widgets/svg_icon.dart';
 class UploadDocWidget extends StatelessWidget {
   final String title;
   final void Function()? onTap;
+  final String leadingIcon;
   const UploadDocWidget({
     super.key,
     required this.title,
     this.onTap,
+    this.leadingIcon = IconStrings.doc,
   });
 
   @override
@@ -34,7 +36,9 @@ class UploadDocWidget extends StatelessWidget {
           children: [
             Row(
               children: [
-                SvgIcon(icon: IconStrings.doc),
+                SvgIcon(
+                  icon: leadingIcon,
+                ), // icon leading
                 SizedBox(width: 12.w),
                 Text(
                   title,

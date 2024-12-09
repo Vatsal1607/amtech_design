@@ -238,6 +238,7 @@ class RegisterProvider extends ChangeNotifier {
         // 'images': imagesList,
         'contact': businessMobileController.text,
         'address': businessAddressController.text,
+        'buninessType': selectedBusinessType.toString,
       };
       // Pick images
       final ImagePicker picker = ImagePicker();

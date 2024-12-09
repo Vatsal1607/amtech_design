@@ -19,6 +19,6 @@ abstract class ApiClient {
   @MultiPart()
   Future<ApiGlobalModel> businessRegister(
     @Body() Map<String, dynamic> body,
-    @Part() List<MultipartFile> images,
+    @Part(name: 'images') List<MultipartFile> images,
   );
 }

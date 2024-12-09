@@ -41,11 +41,22 @@ class RegisterProvider extends ChangeNotifier {
   }
 
   String? selectedPropertyStatus;
-
   List<String> propertyStatusItems = ['Owner', 'Rental'];
-
   onChangePropertyStatus(String? newValue) {
     selectedPropertyStatus = newValue;
+    notifyListeners();
+  }
+
+  String? selectedBusinessType;
+  List<String> businessTypeItems = [
+    'Sole Proprietorship',
+    '⁠Partnership',
+    '⁠Limited Liability Partnership (LLP)',
+    '⁠Limited Liability Company (LLC)',
+    '⁠Private Limited Company',
+  ];
+  onChangeBusinessType(String? newValue) {
+    selectedBusinessType = newValue;
     notifyListeners();
   }
 

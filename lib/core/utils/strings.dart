@@ -46,6 +46,7 @@ class IconStrings {
   static const dropdown = '${BaseIconPath.basePath}dropdown.svg';
   static const person = '${BaseIconPath.basePath}person.svg';
   static const bill = '${BaseIconPath.basePath}bill.svg';
+  static const selectBusiness = '${BaseIconPath.basePath}select_business.svg';
 }
 
 class ImageStrings {

@@ -170,6 +170,7 @@ class MenuPage extends StatelessWidget {
                         /// center title content
                         Column(
                           children: [
+                            SizedBox(height: 2.h),
                             Text(
                               'Good Afternoon,',
                               style: GoogleFonts.publicSans(
@@ -252,12 +253,6 @@ class MenuPage extends StatelessWidget {
                     // expandedHeight: 150.h,
                     /// Bottom content of appbar
                     // bottom: PreferredSize(
-                    //   preferredSize: Size.fromHeight(200.h),
-                    //   child: Container(
-                    //     color: Colors.amber,
-                    //     child: InitialContentSliver(accountType: accountType),
-                    //   ),
-                    // ),
                   ),
 
                   // Initial data in Sliver

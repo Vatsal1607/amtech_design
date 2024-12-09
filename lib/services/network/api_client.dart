@@ -1,7 +1,8 @@
-import 'package:amtech_design/models/api_error_model.dart';
+import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import '../../models/business_list_model.dart';
 import '../../models/personal_register_model.dart';
 import 'api/api_constants.dart';
 part 'api_client.g.dart';
@@ -16,9 +17,16 @@ abstract class ApiClient {
   );
 
   @POST(ApiEndpoints.businessRegister)
-  @MultiPart()
+  // @MultiPart()
   Future<ApiGlobalModel> businessRegister(
     @Body() Map<String, dynamic> body,
-    @Part(name: 'images') List<MultipartFile> images,
+    // @Part(name: 'images') List<MultipartFile> images,
+  );
+
+  @GET(ApiEndpoints.businessList)
+  Future<BusinessListModel> getBusinessList(
+    @Query('page') int page,
+    @Query('limit') int limit,
+    @Query('search') String search,
   );
 }

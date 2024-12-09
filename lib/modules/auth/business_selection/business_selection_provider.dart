@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,8 @@ class BusinessSelectionProvider extends ChangeNotifier {
   var selectedValue = null;
   BusinessSelectionProvider() {
     suggestions = [];
+    //* Api call get business list
+    getBusinessList();
   }
 
   String? dropdownValue;
@@ -40,7 +44,7 @@ class BusinessSelectionProvider extends ChangeNotifier {
         limit: 10,
         search: '',
       );
-      debugPrint('Personal Register log: $_businessListModel');
+      log('getBusinessList: $_businessListModel');
       if (_businessListModel?.success == true) {
         debugPrint('SUCCESS TRUE (get business list)');
       }

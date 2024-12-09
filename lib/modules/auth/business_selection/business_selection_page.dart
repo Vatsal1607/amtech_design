@@ -16,6 +16,7 @@ class BusinessSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPrint('Company selection page called');
     return Scaffold(
+      resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: AppColors.primaryColor,
       appBar: const AppBarWithBackButton(),
       extendBodyBehindAppBar: true, // show content of body behind appbar

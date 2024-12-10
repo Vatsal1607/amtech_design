@@ -4,7 +4,7 @@ import '../../../core/utils/constants/keys.dart';
 import '../../../services/local/shared_preferences_service.dart';
 
 class LocationSelectionProvider extends ChangeNotifier {
-  String? dropdownValue;
+  String? selectedLocation;
   String? accountType;
 
   void updateAccountType(String newAccountType) {
@@ -31,8 +31,8 @@ class LocationSelectionProvider extends ChangeNotifier {
   ];
 
   onChangeDropdown(String? newValue) {
-    dropdownValue = newValue!;
-    debugPrint(dropdownValue.toString());
+    selectedLocation = newValue!;
+    debugPrint(selectedLocation.toString());
     notifyListeners();
   }
 }

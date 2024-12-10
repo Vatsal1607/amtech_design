@@ -49,7 +49,7 @@ class DropdownLocation extends StatelessWidget {
                         ),
                       ),
                     ),
-                    value: provider.dropdownValue,
+                    value: provider.selectedLocation,
                     isExpanded: true,
                     style: const TextStyle(
                       fontSize: 15,

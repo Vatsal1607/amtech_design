@@ -2,12 +2,16 @@ import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import 'business_dropdown.dart';
+import 'business_selection_provider.dart';
 
 class BusinessSelectionPage extends StatelessWidget {
   const BusinessSelectionPage({super.key});
@@ -56,8 +60,43 @@ class BusinessSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: 16.h),
 
-                  /// Dropdown button
+                  //* Dropdown button
                   const BusinessDropdown(),
+
+                  GestureDetector(
+                    onTap: () {
+                      /// Navigator
+                      Navigator.pushNamed(context, Routes.register);
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(25.r),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Can’t find your business? '.toUpperCase(),
+                            style: GoogleFonts.publicSans(
+                              fontSize: 12.sp,
+                              color: AppColors.seaShell,
+                            ),
+                          ),
+                          Text(
+                            'Register Now'.toUpperCase(),
+                            style: GoogleFonts.publicSans(
+                              fontSize: 12.sp,
+                              color: AppColors.disabledColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -72,7 +111,16 @@ class BusinessSelectionPage extends StatelessWidget {
               ),
               child: CustomButton(
                 height: 48.h,
-                onTap: () {
+                onTap: () async {
+                  // store localy
+                  await SharedPreferencesService().setString(
+                    SharedPreferencesKeys.company,
+                    context
+                            .read<BusinessSelectionProvider>()
+                            .selectedBusiness
+                            ?.businessName ??
+                        '',
+                  );
                   debugPrint('Navigate to login page');
                   Navigator.pushNamed(context, Routes.login);
                 },

@@ -24,7 +24,7 @@ class BottomBarPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String accountType =
-        sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
             '';
     debugPrint('$accountType is from bottombar page (build)');
     return Scaffold(

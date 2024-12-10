@@ -22,15 +22,13 @@ class MenuProvider extends ChangeNotifier {
   }
 
   final PageController pageController = PageController();
-
   bool isVisibleSearchSpaceTop = false;
-
   bool onNotification(ScrollNotification scrollNotification) {
     if (scrollNotification.metrics.axis == Axis.vertical) {
       double scrollOffset = scrollNotification.metrics.pixels;
       debugPrint('scrollOffset: $scrollOffset');
       // Define the specific area range
-      if (scrollOffset > 230) {
+      if (scrollOffset > 220) {
         if (!isVisibleSearchSpaceTop) {
           isVisibleSearchSpaceTop = true;
           notifyListeners();
@@ -44,7 +42,6 @@ class MenuProvider extends ChangeNotifier {
     }
     return true;
   }
-  //
 
   final List<String> banners = [
     ImageStrings.masalaTeaBanner,
@@ -52,13 +49,14 @@ class MenuProvider extends ChangeNotifier {
   ];
 
   final List<String> productImage = [
+    // ImageStrings.masalaTea2,
+    // ImageStrings.masalaTea2,
+    // ImageStrings.masalaTea2,
+    // ImageStrings.masalaTea2,
     ImageStrings.masalaTea3,
     ImageStrings.masalaTea3,
     ImageStrings.masalaTea3,
     ImageStrings.masalaTea3,
-    // ImageStrings.bestSeller2,
-    // ImageStrings.bestSeller3,
-    // ImageStrings.bestSeller1,
   ];
 
   final List<String> productName = [
@@ -67,4 +65,16 @@ class MenuProvider extends ChangeNotifier {
     'tea w/o milk',
     'everyday tea',
   ];
+
+  // get dynamic greetings
+   String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return "Good Morning,";
+    } else if (hour < 17) {
+      return "Good Afternoon,";
+    } else {
+      return "Good Evening,";
+    }
+  }
 }

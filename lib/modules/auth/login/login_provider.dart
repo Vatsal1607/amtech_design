@@ -15,6 +15,7 @@ class LoginProvider extends ChangeNotifier {
   final TextEditingController phoneController = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
+  String? mobileErrorText;
 
   String? validateMobileNumber(String? value) {
     if (value == null || value.isEmpty) {
@@ -36,6 +37,16 @@ class LoginProvider extends ChangeNotifier {
     super.dispose();
   }
 
+  onChangePersonalNumber(value) {
+    if (value.length != 10) {
+      mobileErrorText = 'Please enter exactly 10 digits';
+      notifyListeners();
+    } else {
+      mobileErrorText = null;
+      notifyListeners();
+    }
+  }
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   final ApiService apiService = ApiService();
@@ -48,34 +59,28 @@ class LoginProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final location = await SharedPreferencesService()
-          .getString(SharedPreferencesKeys.location);
-      final company = await SharedPreferencesService()
-          .getString(SharedPreferencesKeys.company);
+      final location = sharedPrefsService
+          .getString(SharedPrefsKeys.location);
+      final company = sharedPrefsService
+          .getString(SharedPrefsKeys.company);
       final Map<String, dynamic> body = {
         'contact': int.parse(phoneController.text),
-        // 'location': location, // use sharedprefs //selectedLocation
-        'location': 'kashmir', //! statis
+        'location': location, // use sharedprefs //selectedLocation
         if (accountType == 'business')
-          // 'company': company, // business.businessName
-          'company': 'amTech company', //! static
+          'company': company, // business.businessName
         'role': accountType == 'business' ? '0' : '1',
         'fcmToken': 'xyzwefghhfdsdfffffffffftgfdfcdfds', //Todo add dynamic data
         'deviceId': 'jrkjfbsdnanhaifkbsfa', //Todo add dynamic data
       };
-      debugPrint('Request body: $body');
+      debugPrint('--Request body: $body');
       // Make the API call
       final UserLoginModel response = await apiService.userLogin(
         body: body,
-        // images: multipartImageList, // For multipart file uploads
       );
       log('User login Response: $response');
       if (response.success == true) {
-        customSnackBar(
-          context: context,
-          message: response.message!,
-          backgroundColor: AppColors.primaryColor,
-        );
+        log(response.message.toString());
+       
       } else {
         debugPrint('User login Message: ${response.message}');
       }

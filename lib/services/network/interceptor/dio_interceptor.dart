@@ -7,10 +7,13 @@ import '../../../models/api_global_model.dart';
 
 class DioInterceptor extends Interceptor {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    // Todo add bearer api token
-    options.headers['Authorization'] = 'Bearer your_api_token';
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {  
     debugPrint("Request: ${options.method} ${options.uri}");
+     options.headers.addAll({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer your_api_token', //Todo Add the bearer token
+    });
     handler.next(options);
   }
 
@@ -21,10 +24,6 @@ class DioInterceptor extends Interceptor {
   }
 
   @override
-  // void onError(DioException err, ErrorInterceptorHandler handler) {
-  //   debugPrint("Error: ${err.response?.statusCode} ${err.message}");
-  //   handler.next(err);
-  // }
   void onError(DioException error, ErrorInterceptorHandler handler) {
     // Global error handling
     ApiGlobalModel apiError;

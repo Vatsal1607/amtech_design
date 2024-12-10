@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:marquee/marquee.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
@@ -31,22 +28,14 @@ class ProductWidget extends StatelessWidget {
           height: 150.h,
           width: 120.w,
           decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [
-            //     AppColors.red.withOpacity(0.5),
-            //     AppColors.seaShell,
-            //   ],
-            // ),
             image: DecorationImage(
               image: AssetImage(image),
               fit: BoxFit.cover,
             ),
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(30.r),
             border: Border.all(
               color: AppColors.primaryColor, // Border color
-              width: 2.0, // Border width
+              width: 2.w, // Border width
             ),
             // gradient: LinearGradient(
             //   begin: Alignment.topCenter,
@@ -69,63 +58,43 @@ class ProductWidget extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // Blur effect
-                    Container(
-                      width: 100.0, // Width of blur area
-                      height: 30.0, // Height of blur area
-                      // color: AppColors.white.withOpacity(.8),
-                      decoration: BoxDecoration(
-                          // gradient: LinearGradient(
-                          //   begin: Alignment.topCenter,
-                          //   end: Alignment.bottomCenter,
-                          //   colors: [
-                          //     AppColors.seaShell.withOpacity(0.5),
-                          //     AppColors.seaShell,
-                          //   ],
-                          // ),
-                          ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  // Blur effect
+                  Container(
+                    width: 100.w,
+                    height: 30.h,
+                    // color: AppColors.white.withOpacity(.8),
+                    decoration: const BoxDecoration(
+                      // boxShadow: [
+                      //   BoxShadow(
+                      //     color: Colors.black.withOpacity(0.1),
+                      //     blurRadius: 10, // Blur effect
+                      //     offset: const Offset(4, 4),
+                      //   ),
+                      // ],
+                      // color: AppColors.seaShell,
                     ),
-                    // Text widget on top of the blur
-                    // SizedBox(
-                    //   height: 16.h,
-                    //   child: Marquee(
-                    //     scrollAxis: Axis.horizontal,
-                    //     text: name.toUpperCase(),
-                    //     style: GoogleFonts.publicSans(
-                    //       fontWeight: FontWeight.bold,
-                    //       fontSize: 12.sp, // Adjust font size
-                    //       color: getColorAccountType(
-                    //         accountType: accountType,
-                    //         businessColor: AppColors.primaryColor,
-                    //         personalColor: AppColors.darkGreenGrey,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
-                    Text(
-                      name.toUpperCase(),
-                      maxLines: 1,
-                      overflow: TextOverflow.visible,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.publicSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12.sp, // Adjust font size
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
+                  ),
+                  Text(
+                    name.toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.visible,
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.publicSans(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12.sp,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
             ],
           ),
         ),
@@ -145,9 +114,9 @@ class ProductWidget extends StatelessWidget {
                 /// showSnackbar(context, '{count} ITEMS ADDED');
               },
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 3,
-                  horizontal: 8,
+                padding: EdgeInsets.symmetric(
+                  vertical: 3.h,
+                  horizontal: 8.w,
                 ),
                 decoration: BoxDecoration(
                   color: getColorAccountType(
@@ -163,12 +132,12 @@ class ProductWidget extends StatelessWidget {
                     Text(
                       'ADD',
                       style: GoogleFonts.publicSans(
-                        fontSize: 12,
+                        fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
                         color: AppColors.white,
                       ),
                     ),
-                    const SizedBox(width: 4),
+                    SizedBox(width: 4.w),
                     SvgIcon(icon: IconStrings.add),
                   ],
                 ),

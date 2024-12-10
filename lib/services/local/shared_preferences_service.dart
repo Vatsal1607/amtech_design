@@ -37,4 +37,5 @@ class SharedPreferencesService {
   }
 }
 
-final sharedPreferencesService = SharedPreferencesService();
+// Note use this instance for access diff data of prefs
+final sharedPrefsService = SharedPreferencesService();

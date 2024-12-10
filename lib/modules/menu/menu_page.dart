@@ -27,11 +27,8 @@ class MenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String accountType =
-        sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
-            '';
-    final menuProvider = Provider.of<MenuProvider>(context);
-
-    debugPrint('$accountType is from menu page (build)');
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final provider = Provider.of<MenuProvider>(context);
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -134,7 +131,7 @@ class MenuPage extends StatelessWidget {
         children: [
           Expanded(
             child: NotificationListener(
-              onNotification: menuProvider.onNotification,
+              onNotification: provider.onNotification,
               child: CustomScrollView(
                 slivers: [
                   SliverAppBar(
@@ -147,11 +144,12 @@ class MenuPage extends StatelessWidget {
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        /// leading icon
+                        //! leading icon
                         Container(
                           height: 48.h,
                           width: 48.w,
                           decoration: BoxDecoration(
+                            boxShadow:  kDropShadow,
                             color: Colors.black,
                             shape: BoxShape.circle,
                             border: Border.all(
@@ -167,12 +165,12 @@ class MenuPage extends StatelessWidget {
                           ),
                         ),
 
-                        /// center title content
+                        //! center title content
                         Column(
                           children: [
                             SizedBox(height: 2.h),
                             Text(
-                              'Good Afternoon,',
+                              provider.getGreeting(),
                               style: GoogleFonts.publicSans(
                                 color: getColorAccountType(
                                   accountType: accountType,
@@ -197,11 +195,12 @@ class MenuPage extends StatelessWidget {
                           ],
                         ),
 
-                        /// trailing(action) icon
+                        //! trailing(action) icon
                         Container(
                           height: 48.h,
                           width: 48.w,
                           decoration: BoxDecoration(
+                            boxShadow: kDropShadow,
                             color: getColorAccountType(
                               accountType: accountType,
                               businessColor: AppColors.primaryColor,
@@ -335,6 +334,7 @@ class MenuPage extends StatelessWidget {
 
                         //* Slider details widget
                         SliderDetailsWidget(
+                          isShowRecharge: true,
                           accountType: accountType,
                           filledValue: '₹ 135',
                           totalValue: '₹ 2,000',
@@ -505,7 +505,7 @@ class MenuPage extends StatelessWidget {
                   ),
 
                   // Space above pinned content:
-                  menuProvider.isVisibleSearchSpaceTop == true
+                  provider.isVisibleSearchSpaceTop == true
                       ? SliverPersistentHeader(
                           pinned: true,
                           delegate: PinnedHeaderDelegate(
@@ -519,10 +519,7 @@ class MenuPage extends StatelessWidget {
                           delegate: PinnedHeaderDelegate(
                             minExtent: 30.h,
                             maxExtent: 30.h,
-                            child: Container(
-                              // color: Colors.amber,
-                              child: SizedBox(height: 30.h),
-                            ),
+                            child: SizedBox(height: 30.h),
                           ),
                         ),
                   // Pinned or Sticky Search field in Sliver
@@ -539,13 +536,7 @@ class MenuPage extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(100.r),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black26,
-                              offset: Offset(0, 4),
-                              blurRadius: 6,
-                            ),
-                          ],
+                          boxShadow: kDropShadow,
                         ),
                         child: TextFormField(
                           textAlignVertical: TextAlignVertical.bottom,
@@ -671,7 +662,7 @@ class MenuPage extends StatelessWidget {
                                         onTap: () {
                                           Navigator.push(
                                             context,
-                                            ProductPage.route(),
+                                            ProductDetailsPage.route(),
                                           );
                                         },
                                         child: ProductWidget(
@@ -712,7 +703,7 @@ class MenuPage extends StatelessWidget {
                                         onTap: () {
                                           Navigator.push(
                                             context,
-                                            ProductPage.route(),
+                                            ProductDetailsPage.route(),
                                           );
                                         },
                                         child: ProductWidget(
@@ -773,7 +764,7 @@ class MenuPage extends StatelessWidget {
                                                 onTap: () {
                                                   Navigator.push(
                                                     context,
-                                                    ProductPage.route(),
+                                                    ProductDetailsPage.route(),
                                                   );
                                                 },
                                                 child: ProductWidget(

@@ -26,7 +26,7 @@ class RegisterPage extends StatelessWidget {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
     // String accountType = 'personal'; // static temp
     String accountType =
-        sharedPreferencesService.getString(SharedPreferencesKeys.accountType) ??
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
             '';
     debugPrint(accountType);
     return Scaffold(

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../models/business_list_model.dart';
 import '../../models/personal_register_model.dart';
+import '../../models/user_login_model.dart';
 import 'api/api_constants.dart';
 part 'api_client.g.dart';
 
@@ -28,5 +29,11 @@ abstract class ApiClient {
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('search') String search,
+  );
+
+  //* for both personal & business
+  @POST(ApiEndpoints.userLogin)
+  Future<UserLoginModel> userLogin(
+    @Body() Map<String, dynamic> body,
   );
 }

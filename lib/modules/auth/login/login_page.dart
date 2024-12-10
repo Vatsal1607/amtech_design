@@ -18,6 +18,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
+    final provider = Provider.of<LoginProvider>(context, listen: false);
     debugPrint('Account type is: $accountType');
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't by the keyboard
@@ -168,40 +169,41 @@ class LoginPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20.h),
-                    GestureDetector(
-                      onTap: () {
-                        //* Navigate to Register page
-                        Navigator.pushNamed(
-                          context,
-                          Routes.register,
-                        );
-                      },
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Can’t find your business? ',
-                              style: GoogleFonts.publicSans(
-                                fontSize: 13.sp,
-                                color: AppColors.seaShell,
+                    SizedBox(height: 8.h),
+                    if (accountType == 'personal')
+                      GestureDetector(
+                        onTap: () {
+                          //* Navigate to Register page
+                          Navigator.pushNamed(
+                            context,
+                            Routes.register,
+                          );
+                        },
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'don\'t have an account? '.toUpperCase(),
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 13.sp,
+                                  color: AppColors.seaShell,
+                                ),
                               ),
-                            ),
-                            Text(
-                              'Register Now',
-                              style: GoogleFonts.publicSans(
-                                fontSize: 14.sp,
-                                color: AppColors.disabledColor,
-                                fontWeight: FontWeight.bold,
+                              Text(
+                                'Register Now'.toUpperCase(),
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 14.sp,
+                                  color: AppColors.disabledColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),
@@ -218,35 +220,22 @@ class LoginPage extends StatelessWidget {
                   height: 48.h,
                   onTap: () {
                     debugPrint('Login page, GET OTP pressed');
-                    Navigator.pushNamed(
-                      context,
-                      Routes.otp,
-                      arguments: {
-                        'mobile_number':
-                            context.read<LoginProvider>().phoneController.text,
-                      },
-                    );
-                    // Todo Uncomment
-                    // if (context
-                    //     .read<LoginProvider>()
-                    //     .formKey
-                    //     .currentState!
-                    //     .validate()) {
-                    //   debugPrint('Form is valid');
-                    //   Navigator.pushNamed(
-                    //     context,
-                    //     Routes.otp,
-                    //     arguments: {
-                    //       'mobile_number': context
-                    //           .read<LoginProvider>()
-                    //           .phoneController
-                    //           .text,
-                    //     },
-                    //   );
-                    // } else {
-                    //   debugPrint('Form is not valid');
-                    // }
-                    // context.read<LoginProvider>().phoneController.clear();
+                    if (provider.formKey.currentState!.validate()) {
+                      debugPrint('Form is valid');
+                      provider.userLogin(context, accountType);
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   Routes.otp,
+                      //   arguments: {
+                      //     'mobile_number': context
+                      //         .read<LoginProvider>()
+                      //         .phoneController
+                      //         .text,
+                      //   },
+                      // );
+                    } else {
+                      debugPrint('Form is not valid');
+                    }
                   },
                   text: 'GET OTP',
                   bgColor: accountType != '' && accountType == 'business'

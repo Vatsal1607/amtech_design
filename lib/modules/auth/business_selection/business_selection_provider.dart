@@ -1,30 +1,47 @@
-import 'dart:developer';
-
 import 'package:amtech_design/models/business_list_model.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../../services/network/api_service.dart';
 
 class BusinessSelectionProvider extends ChangeNotifier {
-  var suggestions = <String>[];
-  var selectedValue = null;
+  List<BusinessList> suggestionList = [];
+
+  bool isLoadingPagination = false;
+  int currentPage = 1;
+
   BusinessSelectionProvider() {
-    suggestions = [];
     //* Api call get business list
-    getBusinessList();
+    getBusinessList(currentPage: currentPage);
   }
 
-  String? dropdownValue;
+  List<BusinessList> _businessList = [];
+  List<BusinessList> _filteredBusinessList = [];
+  BusinessList? _selectedBusiness;
 
-  final List<String> dropdownItems = [
-    'AMTech Design',
-    'AMTech Design 2',
-    'AMTech Design 3',
-  ];
+  List<BusinessList> get businessList => _businessList;
+  List<BusinessList> get filteredBusinessList => _filteredBusinessList;
+  BusinessList? get selectedBusiness => _selectedBusiness;
 
-  onChangeDropdown(String? newValue) {
-    dropdownValue = newValue!;
-    debugPrint(dropdownValue.toString());
+  void setBusinessList(List<BusinessList> businesses) {
+    _businessList = businesses;
+    _filteredBusinessList = businesses;
+    notifyListeners();
+  }
+
+  void filterBusinesses(String query) {
+    if (query.isEmpty) {
+      _filteredBusinessList = _businessList;
+    } else {
+      _filteredBusinessList = _businessList
+          .where((business) => business.businessName!
+              .toLowerCase()
+              .contains(query.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
+
+  void selectBusiness(BusinessList business) {
+    _selectedBusiness = business;
     notifyListeners();
   }
 
@@ -35,24 +52,28 @@ class BusinessSelectionProvider extends ChangeNotifier {
   BusinessListModel? get personalRegisterModel => _businessListModel;
 
   // *getBusinessList
-  Future<void> getBusinessList() async {
+  Future<void> getBusinessList({
+    String searchText = '',
+    int currentPage = 1,
+  }) async {
     _isLoading = true;
     notifyListeners();
+    // _businessList.clear(); // for clear the list
     try {
       _businessListModel = await apiService.getBusinessList(
-        page: 1,
+        page: currentPage,
         limit: 10,
-        search: '',
+        search: searchText,
       );
-      log('getBusinessList: $_businessListModel');
-      if (_businessListModel?.success == true) {
-        debugPrint('SUCCESS TRUE (get business list)');
+
+      if (_businessListModel?.success == true &&
+          _businessListModel?.data != null) {
+        _businessList = _businessListModel!.data!.businessList ?? [];
+        suggestionList = _businessList; // Update suggestionList
+        notifyListeners();
       }
     } catch (e) {
-      debugPrint("getBusinessList Error: ${e.toString()}");
-      if (e is DioException) {
-        debugPrint('getBusinessList: $e');
-      }
+      debugPrint("Error fetching business list: ${e.toString()}");
     } finally {
       _isLoading = false;
       notifyListeners();

@@ -1,6 +1,7 @@
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
+import 'package:amtech_design/models/user_login_model.dart';
 import 'package:dio/dio.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
@@ -35,5 +36,13 @@ class ApiService {
     required String search,
   }) async {
     return await apiClient.getBusinessList(page, limit, search);
+  }
+
+  Future<UserLoginModel> userLogin({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.userLogin(
+      body,
+    );
   }
 }

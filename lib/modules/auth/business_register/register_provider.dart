@@ -97,7 +97,7 @@ class RegisterProvider extends ChangeNotifier {
   List<MultipartFile>? multipartImageList;
   List<String> imageFileNames = []; // To store the filenames of selected images
 
-  // Api method (personal register)
+  //* Api method (personal register)
   Future<void> personalRegister(context) async {
     _isLoading = true;
     notifyListeners();
@@ -195,6 +195,7 @@ class RegisterProvider extends ChangeNotifier {
 
       log('Business Register Response: $response');
       if (response.success == true) {
+        clearFields();
         Navigator.pop(context);
         customSnackBar(
           context: context,
@@ -225,5 +226,15 @@ class RegisterProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  clearFields() {
+    businessNameController.clear();
+    businessOwnerController.clear();
+    selectedPropertyStatus = null;
+    imageFileNames = [];
+    businessMobileController.clear();
+    businessAddressController.clear();
+    selectedBusinessType = null;
   }
 }

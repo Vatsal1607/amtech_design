@@ -48,3 +48,8 @@ InputBorder? kSearchDropDownBorder = OutlineInputBorder(
     style: BorderStyle.solid,
   ),
 );
+
+InputBorder? kDropdownBorderStyle = OutlineInputBorder(
+  borderRadius: BorderRadius.circular(100.r),
+  borderSide: const BorderSide(color: AppColors.seaShell, width: 2),
+);

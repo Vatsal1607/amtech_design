@@ -1,10 +1,12 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
 import 'package:amtech_design/modules/auth/location_selection/widgets/dropdown_location.dart';
 import 'package:amtech_design/routes.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -111,7 +113,15 @@ class LocationSelectionPage extends StatelessWidget {
               ),
               child: CustomButton(
                 height: 48.h,
-                onTap: () {
+                onTap: () async {
+                  // store locaton localy
+                  await SharedPreferencesService().setString(
+                    SharedPreferencesKeys.location,
+                    context
+                            .read<LocationSelectionProvider>()
+                            .selectedLocation ??
+                        '',
+                  );
                   debugPrint('Choose location next button $accountType');
                   if (accountType != '' && accountType == 'business') {
                     debugPrint('Navigate to select company page');

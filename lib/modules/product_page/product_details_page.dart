@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/product_page/widgets/bottomsheet_content.dart';
@@ -10,17 +7,17 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
 
-class ProductPage extends StatefulWidget {
+class ProductDetailsPage extends StatefulWidget {
   static route() => MaterialPageRoute(
-        builder: (context) => const ProductPage(),
+        builder: (context) => const ProductDetailsPage(),
       );
-  const ProductPage({super.key});
+  const ProductDetailsPage({super.key});
 
   @override
-  State<ProductPage> createState() => _ProductPageState();
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
 }
 
-class _ProductPageState extends State<ProductPage> {
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
   // // Bottom sheet
   // void _showScrollableBottomSheet() {
   //   showModalBottomSheet(

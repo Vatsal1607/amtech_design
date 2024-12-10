@@ -24,7 +24,7 @@ class BannerView extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                ProductPage.route(),
+                ProductDetailsPage.route(),
               );
             },
             child: Container(

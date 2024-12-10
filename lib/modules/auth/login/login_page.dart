@@ -93,10 +93,8 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-
                     /// TextField Widget for Mobile number
                     // Textfield(), // Extracted widget
-
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -135,17 +133,19 @@ class LoginPage extends StatelessWidget {
                                 TextFormField(
                               controller: provider.phoneController,
                               keyboardType: TextInputType.phone,
-                              inputFormatters: [
-                                FilteringTextInputFormatter
-                                    .digitsOnly, // Allows only numeric input
-                              ],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10),
+                                ],
                               validator: provider.validateMobileNumber,
+                              onChanged: provider.onChangePersonalNumber,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: AppColors.white,
                                 errorStyle:
                                     const TextStyle(color: AppColors.white),
                                 hintText: 'Enter mobile number',
+                                errorText: provider.mobileErrorText,
                                 hintStyle: GoogleFonts.publicSans(
                                   fontSize: 15.sp,
                                   fontWeight: FontWeight.bold,
@@ -216,38 +216,41 @@ class LoginPage extends StatelessWidget {
                   left: 34.w,
                   right: 34.w,
                 ),
-                child: CustomButton(
-                  height: 48.h,
-                  onTap: () {
-                    debugPrint('Login page, GET OTP pressed');
-                    if (provider.formKey.currentState!.validate()) {
-                      debugPrint('Form is valid');
-                      provider.userLogin(context, accountType);
-                      // Navigator.pushNamed(
-                      //   context,
-                      //   Routes.otp,
-                      //   arguments: {
-                      //     'mobile_number': context
-                      //         .read<LoginProvider>()
-                      //         .phoneController
-                      //         .text,
-                      //   },
-                      // );
-                    } else {
-                      debugPrint('Form is not valid');
-                    }
-                  },
-                  text: 'GET OTP',
-                  bgColor: accountType != '' && accountType == 'business'
-                      ? AppColors.disabledColor
-                      : accountType != '' && accountType == 'personal'
-                          ? AppColors.seaMist
-                          : AppColors.white,
-                  textColor: accountType != '' && accountType == 'business'
-                      ? AppColors.primaryColor
-                      : accountType != '' && accountType == 'personal'
-                          ? AppColors.darkGreenGrey
-                          : AppColors.white,
+                child: Consumer<LoginProvider>(
+                  builder: (context, _, child) =>  CustomButton(
+                    height: 50.h,
+                    isLoading: provider.isLoading,
+                    onTap: () {
+                      debugPrint('Login page, GET OTP pressed');
+                      if (provider.formKey.currentState!.validate()) {
+                        debugPrint('Form is valid');
+                        // provider.userLogin(context, accountType); //!Api call
+                        Navigator.pushNamed(
+                          context,
+                          Routes.otp,
+                          arguments: {
+                            'mobile_number': context
+                                .read<LoginProvider>()
+                                .phoneController
+                                .text,
+                          },
+                        );
+                      } else {
+                        debugPrint('Form is not valid');
+                      }
+                    },
+                    text: 'GET OTP',
+                    bgColor: accountType != '' && accountType == 'business'
+                        ? AppColors.disabledColor
+                        : accountType != '' && accountType == 'personal'
+                            ? AppColors.seaMist
+                            : AppColors.white,
+                    textColor: accountType != '' && accountType == 'business'
+                        ? AppColors.primaryColor
+                        : accountType != '' && accountType == 'personal'
+                            ? AppColors.darkGreenGrey
+                            : AppColors.white,
+                  ),
                 ),
               ),
             ),

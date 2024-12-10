@@ -26,14 +26,14 @@ class BottomsheetContent extends StatelessWidget {
                 'Masala Tea',
                 style: GoogleFonts.publicSans(
                     color: AppColors.primaryColor,
-                    fontSize: 24,
+                    fontSize: 24.sp,
                     fontWeight: FontWeight.bold),
               ),
               Container(
-                padding: const EdgeInsets.all(5),
+                padding:  EdgeInsets.all(5.w),
                 decoration: BoxDecoration(
                   color: AppColors.lightGreen,
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black
@@ -51,7 +51,7 @@ class BottomsheetContent extends StatelessWidget {
                       '4.5 ',
                       style: GoogleFonts.publicSans(
                         color: AppColors.white,
-                        fontSize: 13,
+                        fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -61,7 +61,7 @@ class BottomsheetContent extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+           SizedBox(height: 10.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -77,14 +77,14 @@ class BottomsheetContent extends StatelessWidget {
                     text: TextSpan(
                       text: 'Avg. ',
                       style: GoogleFonts.publicSans(
-                        fontSize: 14.0,
+                        fontSize: 14.sp,
                         color: AppColors.primaryColor,
                       ),
                       children: <TextSpan>[
                         TextSpan(
                           text: '15 Minutes',
                           style: GoogleFonts.publicSans(
-                            fontSize: 14.0,
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
                             color: AppColors.primaryColor,
                           ),
@@ -106,7 +106,7 @@ class BottomsheetContent extends StatelessWidget {
                     text: TextSpan(
                       text: '1.5K ',
                       style: GoogleFonts.publicSans(
-                        fontSize: 14.0,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         color: AppColors.primaryColor,
                       ),
@@ -114,7 +114,7 @@ class BottomsheetContent extends StatelessWidget {
                         TextSpan(
                           text: 'Ratings',
                           style: GoogleFonts.publicSans(
-                            fontSize: 14.0,
+                            fontSize: 14.sp,
                             color: AppColors.primaryColor,
                           ),
                         ),
@@ -125,13 +125,13 @@ class BottomsheetContent extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 17.0),
+           SizedBox(height: 17.h),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
               'Description'.toUpperCase(),
               style: GoogleFonts.publicSans(
-                fontSize: 14.0,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryColor,
               ),
@@ -139,11 +139,11 @@ class BottomsheetContent extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           Padding(
-            padding: const EdgeInsets.only(bottom: 5.0),
+            padding:  EdgeInsets.only(bottom: 5.h),
             child: Stack(
               children: [
-                const ReadMoreText(
-                  'Everyday Tea draws from tea’s rich history, dating back to 2737 BCE in ancient China. Sourced from Assam and Darjeeling, India’s finest tea regions, this blend offers a perfect balance of bold and aromatic flavors. Enjoy a cup steeped in centuries of tradition, bringing',
+                ReadMoreText(
+                  'Everyday Tea draws from tea\'s rich history, dating back to 2737 BCE in ancient China. Sourced from Assam and Darjeeling, India’s finest tea regions, this blend offers a perfect balance of bold and aromatic flavors. Enjoy a cup steeped in centuries of tradition, bringing',
                   trimLines: 5, // Number of lines to display before truncating
                   colorClickableText: AppColors.primaryColor,
                   trimMode: TrimMode.Line,
@@ -151,17 +151,20 @@ class BottomsheetContent extends StatelessWidget {
                   trimExpandedText: 'Read Less',
                   textAlign: TextAlign.justify,
                   delimiter: '    ',
+                  // isCollapsed: (collapsed){
+
+                  // },
                   style: TextStyle(
                     color: AppColors.primaryColor,
-                    fontSize: 14.0,
+                    fontSize: 14.sp,
                   ),
                   moreStyle: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor,
                   ),
                   lessStyle: TextStyle(
-                    fontSize: 14,
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.primaryColor,
                   ),
@@ -171,7 +174,7 @@ class BottomsheetContent extends StatelessWidget {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  height: 30,
+                  height: 30.h,
                   child: IgnorePointer(
                     child: Container(
                       decoration: BoxDecoration(
@@ -217,7 +220,7 @@ class BottomsheetContent extends StatelessWidget {
             child: Text(
               'ingredients'.toUpperCase(),
               style: GoogleFonts.publicSans(
-                fontSize: 14.0,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryColor,
               ),

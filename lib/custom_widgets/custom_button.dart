@@ -31,8 +31,8 @@ class CustomButton extends StatelessWidget {
         height: height,
         width: width,
         padding: EdgeInsets.only(
-          top: 14.h,
-          bottom: 16.h,
+          top: 4.h,
+          bottom: 6.h,
         ),
         decoration: BoxDecoration(
           color: bgColor,

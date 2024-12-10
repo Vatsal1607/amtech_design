@@ -111,10 +111,10 @@ class BusinessSelectionPage extends StatelessWidget {
               ),
               child: CustomButton(
                 height: 48.h,
-                onTap: () async {
-                  // store localy
-                  await SharedPreferencesService().setString(
-                    SharedPreferencesKeys.company,
+                onTap: () {
+                  // store data localy
+                  sharedPrefsService.setString(
+                    SharedPrefsKeys.company,
                     context
                             .read<BusinessSelectionProvider>()
                             .selectedBusiness

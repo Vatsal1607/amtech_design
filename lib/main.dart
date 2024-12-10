@@ -17,7 +17,7 @@ import 'routes.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  sharedPreferencesService.init();
+  sharedPrefsService.init();
   runApp(const MyApp());
 }
 

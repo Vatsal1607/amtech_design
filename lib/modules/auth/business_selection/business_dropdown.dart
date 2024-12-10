@@ -37,10 +37,11 @@ class BusinessDropdown extends StatelessWidget {
           //   provider.filterBusinesses('');
           // },
           searchInputDecoration: SearchInputDecoration(
+            cursorColor: AppColors.seaShell,
             hintStyle:
-                GoogleFonts.publicSans(color: AppColors.white.withOpacity(.8)),
+                GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
             searchStyle:
-                GoogleFonts.publicSans(color: AppColors.white.withOpacity(.8)),
+                GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
             border: kDropdownBorderStyle,
             enabledBorder: kDropdownBorderStyle,
             focusedBorder: kDropdownBorderStyle,

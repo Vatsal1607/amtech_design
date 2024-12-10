@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
@@ -113,10 +115,10 @@ class LocationSelectionPage extends StatelessWidget {
               ),
               child: CustomButton(
                 height: 48.h,
-                onTap: () async {
-                  // store locaton localy
-                  await SharedPreferencesService().setString(
-                    SharedPreferencesKeys.location,
+                onTap: () {
+                  /// store locaton localy
+                  sharedPrefsService.setString(
+                    SharedPrefsKeys.location,
                     context
                             .read<LocationSelectionProvider>()
                             .selectedLocation ??

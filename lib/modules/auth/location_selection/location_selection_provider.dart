@@ -8,11 +8,11 @@ class LocationSelectionProvider extends ChangeNotifier {
   String? accountType;
 
   void updateAccountType(String newAccountType) {
-    sharedPreferencesService.setString(
-        SharedPreferencesKeys.accountType, newAccountType);
+    sharedPrefsService.setString(
+        SharedPrefsKeys.accountType, newAccountType);
 
     accountType =
-        sharedPreferencesService.getString(SharedPreferencesKeys.accountType);
+        sharedPrefsService.getString(SharedPrefsKeys.accountType);
     debugPrint('Account type is: $accountType (update)');
     notifyListeners();
   }

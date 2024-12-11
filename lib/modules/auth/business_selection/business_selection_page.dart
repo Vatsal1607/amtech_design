@@ -8,7 +8,6 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/shared_prefs_keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
-import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import 'business_dropdown.dart';
@@ -36,7 +35,7 @@ class BusinessSelectionPage extends StatelessWidget {
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
-                top: 150.0,
+                top: 130.h,
                 left: 34.w,
                 right: 34.w,
               ),

@@ -48,6 +48,13 @@ class IconStrings {
   static const bill = '${BaseIconPath.basePath}bill.svg';
   static const selectBusiness = '${BaseIconPath.basePath}select_business.svg';
   static const otpVerified = '${BaseIconPath.basePath}otp_verifed.svg';
+  static const verifiedUser = '${BaseIconPath.basePath}verified_user.svg';
+  static const home = '${BaseIconPath.basePath}home.svg';
+  static const favorite = '${BaseIconPath.basePath}favorite.svg';
+  static const authorizedEmp = '${BaseIconPath.basePath}authorized_emp.svg';
+  static const feedback = '${BaseIconPath.basePath}feedback.svg';
+  static const aboutUs = '${BaseIconPath.basePath}about_us.svg';
+  static const logout = '${BaseIconPath.basePath}logout.svg';
 }
 
 class ImageStrings {

@@ -12,6 +12,7 @@ import 'modules/auth/business_register/register_page.dart';
 import 'modules/auth/business_selection/business_selection_page.dart';
 import 'modules/auth/otp/widgets/verify_success.dart';
 import 'modules/product_page/product_details_page.dart';
+import 'modules/profile/profile_page.dart';
 
 class Routes {
   static const String initial = '/';
@@ -26,6 +27,7 @@ class Routes {
   static const String otp = '/otp';
   static const String register = '/register';
   static const String verifySuccess = '/verifySuccess';
+  static const String profile = '/profile';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -40,5 +42,7 @@ class Routes {
     otp: (context) => const OtpPage(),
     register: (context) => const RegisterPage(),
     verifySuccess: (context) => const VerifySuccess(),
+    profile: (context) => const ProfilePage(),
+    
   };
 }

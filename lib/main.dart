@@ -6,7 +6,6 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'modules/auth/business_register/register_page.dart';
 import 'modules/auth/business_register/register_provider.dart';
 import 'modules/auth/business_selection/business_selection_provider.dart';
 import 'modules/auth/location_selection/location_selection_provider.dart';
@@ -55,7 +54,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
           ),
-          // home: RegisterPage(), //! temp route for dev, change to routes\
+          // home: VerifySuccess(), //! temp route for dev, change to routes
           initialRoute: Routes.initial,
           routes: Routes.routes,
         ),

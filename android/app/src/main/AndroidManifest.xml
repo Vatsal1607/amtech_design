@@ -2,10 +2,12 @@
      <!-- Add permissions here -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="135 Degrees"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">// allow clear-text traffic for your API's domain.
         <activity
             android:name=".MainActivity"
             android:exported="true"

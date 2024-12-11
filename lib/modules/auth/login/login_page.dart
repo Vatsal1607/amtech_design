@@ -93,6 +93,7 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
+
                     /// TextField Widget for Mobile number
                     // Textfield(), // Extracted widget
                     Row(
@@ -133,10 +134,10 @@ class LoginPage extends StatelessWidget {
                                 TextFormField(
                               controller: provider.phoneController,
                               keyboardType: TextInputType.phone,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(10),
-                                ],
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(10),
+                              ],
                               validator: provider.validateMobileNumber,
                               onChanged: provider.onChangePersonalNumber,
                               decoration: InputDecoration(
@@ -188,15 +189,15 @@ class LoginPage extends StatelessWidget {
                               Text(
                                 'don\'t have an account? '.toUpperCase(),
                                 style: GoogleFonts.publicSans(
-                                  fontSize: 13.sp,
-                                  color: AppColors.seaShell,
+                                  fontSize: 15.sp,
+                                  color: AppColors.seaMist,
                                 ),
                               ),
                               Text(
                                 'Register Now'.toUpperCase(),
                                 style: GoogleFonts.publicSans(
-                                  fontSize: 14.sp,
-                                  color: AppColors.disabledColor,
+                                  fontSize: 15.sp,
+                                  color: AppColors.seaMist,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -217,24 +218,24 @@ class LoginPage extends StatelessWidget {
                   right: 34.w,
                 ),
                 child: Consumer<LoginProvider>(
-                  builder: (context, _, child) =>  CustomButton(
+                  builder: (context, _, child) => CustomButton(
                     height: 50.h,
                     isLoading: provider.isLoading,
                     onTap: () {
-                      debugPrint('Login page, GET OTP pressed');
                       if (provider.formKey.currentState!.validate()) {
                         debugPrint('Form is valid');
-                        // provider.userLogin(context, accountType); //!Api call
-                        Navigator.pushNamed(
-                          context,
-                          Routes.otp,
-                          arguments: {
-                            'mobile_number': context
-                                .read<LoginProvider>()
-                                .phoneController
-                                .text,
-                          },
-                        );
+                        provider.userLogin(context, accountType); //!Api call
+
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   Routes.otp,
+                        //   arguments: {
+                        //     'mobile_number': context
+                        //         .read<LoginProvider>()
+                        //         .phoneController
+                        //         .text,
+                        //   },
+                        // );
                       } else {
                         debugPrint('Form is not valid');
                       }

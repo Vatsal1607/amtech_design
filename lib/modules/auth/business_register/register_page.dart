@@ -10,7 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/constants/keys.dart';
+import '../../../core/utils/constants/shared_prefs_keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/custom_textfield.dart';
@@ -26,8 +26,7 @@ class RegisterPage extends StatelessWidget {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
     // String accountType = 'personal'; // static temp
     String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
-            '';
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     debugPrint(accountType);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
@@ -48,7 +47,7 @@ class RegisterPage extends StatelessWidget {
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
-                top: 130.0,
+                top: 120.0,
                 left: 34.w,
                 right: 34.w,
               ),
@@ -57,6 +56,7 @@ class RegisterPage extends StatelessWidget {
                   ? Form(
                       key: provider.personalFormKey,
                       child: SingleChildScrollView(
+                        // physics: const ClampingScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -166,6 +166,7 @@ class RegisterPage extends StatelessWidget {
                   :
                   //! Business register column
                   SingleChildScrollView(
+                      // physics: const ClampingScrollPhysics(),
                       child: Form(
                         key: provider.businessFormKey,
                         child: Column(
@@ -468,7 +469,7 @@ class RegisterPage extends StatelessWidget {
                               },
                               title: 'Upload GST Document',
                             ),
-                            SizedBox(height: 200.h),
+                            SizedBox(height: 50.h), //* bottom space business
                           ],
                         ),
                       ),

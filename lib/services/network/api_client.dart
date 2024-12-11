@@ -36,4 +36,14 @@ abstract class ApiClient {
   Future<UserLoginModel> userLogin(
     @Body() Map<String, dynamic> body,
   );
+
+  @POST(ApiEndpoints.sendOtp)
+  Future<ApiGlobalModel> sendOtp(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST(ApiEndpoints.verifyOtp)
+  Future<ApiGlobalModel> verifyOtp(
+    @Body() Map<String, dynamic> body,
+  );
 }

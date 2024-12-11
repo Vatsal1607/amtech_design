@@ -1,10 +1,11 @@
 import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/constants/keys.dart';
+import '../../../core/utils/constants/shared_prefs_keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
@@ -18,7 +19,7 @@ class BusinessSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('Company selection page called');
+    final provider = Provider.of<BusinessSelectionProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: AppColors.primaryColor,
@@ -63,6 +64,7 @@ class BusinessSelectionPage extends StatelessWidget {
                   //* Dropdown button
                   const BusinessDropdown(),
 
+                  SizedBox(height: 8.h),
                   GestureDetector(
                     onTap: () {
                       /// Navigator
@@ -79,16 +81,16 @@ class BusinessSelectionPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Can’t find your business? '.toUpperCase(),
+                            'Can\'t find your business? '.toUpperCase(),
                             style: GoogleFonts.publicSans(
-                              fontSize: 12.sp,
+                              fontSize: 14.sp,
                               color: AppColors.seaShell,
                             ),
                           ),
                           Text(
                             'Register Now'.toUpperCase(),
                             style: GoogleFonts.publicSans(
-                              fontSize: 12.sp,
+                              fontSize: 14.sp,
                               color: AppColors.disabledColor,
                               fontWeight: FontWeight.bold,
                             ),
@@ -121,8 +123,14 @@ class BusinessSelectionPage extends StatelessWidget {
                             ?.businessName ??
                         '',
                   );
-                  debugPrint('Navigate to login page');
-                  Navigator.pushNamed(context, Routes.login);
+                  if (provider.selectedBusiness?.businessName != null &&
+                      provider.selectedBusiness!.businessName!.isNotEmpty) {
+                    Navigator.pushNamed(context, Routes.login);
+                  } else {
+                    customSnackBar(
+                        context: context,
+                        message: 'Please Select Your Business');
+                  }
                 },
                 bgColor: AppColors.disabledColor,
                 textColor: AppColors.primaryColor,

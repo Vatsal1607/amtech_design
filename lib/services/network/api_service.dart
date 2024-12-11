@@ -45,4 +45,16 @@ class ApiService {
       body,
     );
   }
+
+  Future<ApiGlobalModel> sendOtp({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.sendOtp(body);
+  }
+
+  Future<ApiGlobalModel> verifyOtp({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.verifyOtp(body);
+  }
 }

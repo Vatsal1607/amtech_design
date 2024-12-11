@@ -1,30 +1,20 @@
+import 'package:amtech_design/modules/auth/otp/otp_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 
-class OtpFields extends StatefulWidget {
+class OtpFields extends StatelessWidget {
   const OtpFields({super.key});
 
   @override
-  State<OtpFields> createState() => _OtpFieldsState();
-}
-
-class _OtpFieldsState extends State<OtpFields> {
-  final TextEditingController otpController = TextEditingController();
-
-  // @override
-  // void dispose() {
-  //   otpController.dispose();
-  //   super.dispose();
-  // }
-
-  @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<OtpProvider>(context, listen: false);
     return PinCodeTextField(
-      controller: otpController,
+      controller: provider.otpController,
       appContext: context,
       length: 6,
       textStyle: GoogleFonts.publicSans(

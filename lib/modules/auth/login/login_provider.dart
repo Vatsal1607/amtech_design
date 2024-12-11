@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/core/utils/constants/shared_prefs_keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../custom_widgets/snackbar.dart';
 import '../../../models/api_global_model.dart';
+import '../../../routes.dart';
 import '../../../services/network/api_service.dart';
 
 class LoginProvider extends ChangeNotifier {
@@ -30,12 +31,12 @@ class LoginProvider extends ChangeNotifier {
     return null;
   }
 
-  @override
-  void dispose() {
-    phoneController.clear();
-    phoneController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // phoneController.clear();
+  //   // phoneController.dispose();
+  //   super.dispose();
+  // }
 
   onChangePersonalNumber(value) {
     if (value.length != 10) {
@@ -59,10 +60,8 @@ class LoginProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final location = sharedPrefsService
-          .getString(SharedPrefsKeys.location);
-      final company = sharedPrefsService
-          .getString(SharedPrefsKeys.company);
+      final location = sharedPrefsService.getString(SharedPrefsKeys.location);
+      final company = sharedPrefsService.getString(SharedPrefsKeys.company);
       final Map<String, dynamic> body = {
         'contact': int.parse(phoneController.text),
         'location': location, // use sharedprefs //selectedLocation
@@ -80,12 +79,73 @@ class LoginProvider extends ChangeNotifier {
       log('User login Response: $response');
       if (response.success == true) {
         log(response.message.toString());
-       
+        if (response.data != null) {
+          //* Save User Token
+          sharedPrefsService.setString(
+              SharedPrefsKeys.userToken, response.data!.token!);
+        }
+
+        //! send otp API call
+        await sendOtp(context, accountType);
+        phoneController.clear();
       } else {
         debugPrint('User login Message: ${response.message}');
       }
     } catch (error) {
       log("Error during User login Response: $error");
+
+      if (error is DioException) {
+        // Parse API error response
+        final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
+        customSnackBar(
+          context: context,
+          message: apiError.message ?? 'An error occurred',
+          backgroundColor: AppColors.primaryColor,
+        );
+      } else {
+        // Handle unexpected errors
+        customSnackBar(
+          context: context,
+          message: 'An unexpected error occurred',
+          backgroundColor: AppColors.primaryColor,
+        );
+      }
+    } finally {
+      // Ensure loading state is reset
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  //! send Otp API
+  Future<void> sendOtp(
+    BuildContext context,
+    String accountType,
+  ) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      final Map<String, dynamic> body = {
+        'contact': int.parse(phoneController.text),
+        'role': accountType == 'business' ? '0' : '1',
+        // 'secondaryContact': '', // optional
+      };
+      debugPrint('--Request body OTP: $body');
+      // Make the API call
+      final ApiGlobalModel response = await apiService.sendOtp(
+        body: body,
+      );
+      log('send OTP Response: $response');
+      if (response.success == true) {
+        log('Success: sendotp: ${response.message.toString()}');
+        Navigator.pushNamed(context, Routes.otp, arguments: {
+          'mobile': phoneController.text,
+        });
+      } else {
+        debugPrint('User sendotp Message: ${response.message}');
+      }
+    } catch (error) {
+      log("Error during sendotp Response: $error");
 
       if (error is DioException) {
         // Parse API error response

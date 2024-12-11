@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:amtech_design/core/utils/constants/shared_prefs_keys.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -7,12 +9,13 @@ import '../../../models/api_global_model.dart';
 
 class DioInterceptor extends Interceptor {
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {  
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     debugPrint("Request: ${options.method} ${options.uri}");
-     options.headers.addAll({
+    options.headers.addAll({
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Authorization': 'Bearer your_api_token', //Todo Add the bearer token
+      'Authorization':
+          'Bearer ${sharedPrefsService.getString(SharedPrefsKeys.userToken)}',
     });
     handler.next(options);
   }

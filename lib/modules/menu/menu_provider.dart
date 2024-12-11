@@ -67,7 +67,7 @@ class MenuProvider extends ChangeNotifier {
   ];
 
   // get dynamic greetings
-   String getGreeting() {
+  String getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
       return "Good Morning,";
@@ -76,5 +76,28 @@ class MenuProvider extends ChangeNotifier {
     } else {
       return "Good Evening,";
     }
+  }
+
+  String? selectedValue;
+  bool isMenuOpen = false;
+  List<String> menuItemsName = [
+    'Tea',
+    'Coffee',
+    'Snacks',
+  ];
+
+  onSelectedMenuItem(value) {
+    selectedValue = value;
+    notifyListeners();
+  }
+
+  onCanceledMenuItem() {
+    isMenuOpen = false;
+    notifyListeners();
+  }
+
+  onOpenedMenuItem() {
+    isMenuOpen = true;
+    notifyListeners();
   }
 }

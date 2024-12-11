@@ -3,19 +3,16 @@ import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
-import 'package:amtech_design/modules/menu/widgets/custom_pinned_header_delegate.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
-import 'package:amtech_design/modules/menu/widgets/initial_content_sliver.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
 import 'package:amtech_design/modules/product_page/product_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gradient_slider/gradient_slider.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
-import '../../core/utils/constants/keys.dart';
+import '../../core/utils/constants/shared_prefs_keys.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'widgets/custom_slider_track_shape.dart';
@@ -95,35 +92,84 @@ class MenuPage extends StatelessWidget {
       //     ),
       //   ],
       // ),
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          debugPrint('Menu pressed');
-        },
-        child: Container(
-          height: 50.h,
-          width: 100.w,
-          decoration: BoxDecoration(
-            color: getColorAccountType(
-              accountType: accountType,
-              businessColor: AppColors.primaryColor,
-              personalColor: AppColors.darkGreenGrey,
+
+      floatingActionButton: Consumer<MenuProvider>(
+        builder: (context, _, child) => PopupMenuButton(
+          icon: Container(
+            height: 50.h,
+            width: 100.w,
+            decoration: BoxDecoration(
+              color: provider.isMenuOpen
+                  ? AppColors.red
+                  : getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+              borderRadius: BorderRadius.circular(30.r),
             ),
-            borderRadius: BorderRadius.circular(30.r),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SvgIcon(icon: IconStrings.cup),
-              SizedBox(width: 8.w),
-              Text(
-                'MENU',
-                style: GoogleFonts.publicSans(
-                  color: AppColors.white,
-                  fontSize: 12.sp,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgIcon(
+                  icon:
+                      provider.isMenuOpen ? IconStrings.close : IconStrings.cup,
                 ),
-              ),
-            ],
+                SizedBox(width: 8.w),
+                Text(
+                  provider.isMenuOpen ? 'CLOSE' : 'MENU',
+                  style: GoogleFonts.publicSans(
+                    color: AppColors.white,
+                    fontSize: 12.sp,
+                  ),
+                ),
+              ],
+            ),
           ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.r),
+          ),
+          color: AppColors.primaryColor,
+          itemBuilder: (context) {
+            return provider.menuItemsName.map<PopupMenuEntry<String>>(
+              (item) {
+                return PopupMenuItem(
+                  value: item,
+                  child: Container(
+                    width: double.infinity,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 15.h, horizontal: 23.w),
+                    decoration: BoxDecoration(
+                      color: provider.selectedValue == item
+                          ? AppColors.disabledColor
+                          : null,
+                      borderRadius: BorderRadius.circular(30.r),
+                    ),
+                    child: Text(
+                      item.toUpperCase(),
+                      textAlign: TextAlign.center,
+                      style: provider.selectedValue == item
+                          ? GoogleFonts.publicSans(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
+                            )
+                          : GoogleFonts.publicSans(
+                              fontSize: 15.sp,
+                              color: AppColors.seaShell,
+                            ),
+                    ),
+                  ),
+                );
+              },
+            ).toList();
+          },
+          offset: provider.menuItemsName.length == 1
+              ? Offset(-10, -70)
+              : Offset(-10, -180),
+          onSelected: provider.onSelectedMenuItem,
+          onCanceled: provider.onCanceledMenuItem,
+          onOpened: provider.onOpenedMenuItem,
         ),
       ),
       body: Column(
@@ -149,7 +195,7 @@ class MenuPage extends StatelessWidget {
                           height: 48.h,
                           width: 48.w,
                           decoration: BoxDecoration(
-                            boxShadow:  kDropShadow,
+                            boxShadow: kDropShadow,
                             color: Colors.black,
                             shape: BoxShape.circle,
                             border: Border.all(

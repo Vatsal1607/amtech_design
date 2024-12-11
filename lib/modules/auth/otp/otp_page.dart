@@ -1,3 +1,4 @@
+import 'package:amtech_design/modules/auth/otp/otp_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,8 +18,10 @@ class OtpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
+
     final arguments =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+            {};
 
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
@@ -80,7 +83,7 @@ class OtpPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'we\'ve sent the otp to +91 ${arguments['mobile_number']}'
+                    'we\'ve sent the otp to +91 ${arguments['mobile']}'
                         .toUpperCase(),
                     style: GoogleFonts.publicSans(
                       fontSize: 15.sp,
@@ -114,23 +117,34 @@ class OtpPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  CustomButton(
-                    height: 48.h,
-                    onTap: () {
-                      debugPrint('Verify pressed from OTP page');
-                      Navigator.pushNamed(context, Routes.bottomBarPage);
-                    },
-                    text: 'VERIFY',
-                    bgColor: accountType != '' && accountType == 'business'
-                        ? AppColors.disabledColor
-                        : accountType != '' && accountType == 'personal'
-                            ? AppColors.seaMist
-                            : AppColors.white,
-                    textColor: accountType != '' && accountType == 'business'
-                        ? AppColors.primaryColor
-                        : accountType != '' && accountType == 'personal'
-                            ? AppColors.darkGreenGrey
-                            : AppColors.white,
+                  Consumer<OtpProvider>(
+                    builder: (context, provider, child) => CustomButton(
+                      height: 48.h,
+                      isLoading: provider.isLoading,
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          Routes.verifySuccess,
+                        );
+                        //Todo Uncomment API call
+                        // provider.verifyOtp(
+                        //   context: context,
+                        //   accountType: accountType,
+                        //   mobile: arguments['mobile'],
+                        // );
+                      },
+                      text: 'VERIFY',
+                      bgColor: accountType != '' && accountType == 'business'
+                          ? AppColors.disabledColor
+                          : accountType != '' && accountType == 'personal'
+                              ? AppColors.seaMist
+                              : AppColors.white,
+                      textColor: accountType != '' && accountType == 'business'
+                          ? AppColors.primaryColor
+                          : accountType != '' && accountType == 'personal'
+                              ? AppColors.darkGreenGrey
+                              : AppColors.white,
+                    ),
                   ),
                 ],
               ),

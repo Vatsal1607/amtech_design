@@ -8,7 +8,7 @@ import 'package:amtech_design/modules/reorder/reorder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import '../../core/utils/constants/keys.dart';
+import '../../core/utils/constants/shared_prefs_keys.dart';
 import '../../core/utils/strings.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'bottom_bar_provider.dart';
@@ -23,9 +23,9 @@ class BottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
-            '';
+    String accountType = 'business'; //Todo replace with bottom data
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
+    //     '';
     debugPrint('$accountType is from bottombar page (build)');
     return Scaffold(
       body: Consumer<BottomBarProvider>(

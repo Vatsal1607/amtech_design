@@ -1,9 +1,10 @@
 import 'dart:developer';
 
 import 'package:amtech_design/core/utils/app_colors.dart';
-import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/core/utils/constants/shared_prefs_keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
 import 'package:amtech_design/modules/auth/location_selection/widgets/dropdown_location.dart';
@@ -19,9 +20,9 @@ class LocationSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // IMP: account type (Change color of items according)
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
+    final provider = Provider.of<LocationSelectionProvider>(context);
     return Scaffold(
       backgroundColor: accountType != '' && accountType == 'business'
           ? AppColors.primaryColor
@@ -96,8 +97,10 @@ class LocationSelectionPage extends StatelessWidget {
                   SizedBox(height: 16.h),
 
                   /// Dropdown button
-                  DropdownLocation(
-                    accountType: accountType,
+                  Consumer<LocationSelectionProvider>(
+                    builder: (context, _, child) => DropdownLocation(
+                      accountType: accountType,
+                    ),
                   ),
 
                   // New dropdown search
@@ -119,18 +122,24 @@ class LocationSelectionPage extends StatelessWidget {
                   /// store locaton localy
                   sharedPrefsService.setString(
                     SharedPrefsKeys.location,
-                    context
-                            .read<LocationSelectionProvider>()
-                            .selectedLocation ??
-                        '',
+                    provider.selectedLocation ?? '',
+                    // context
+                    //         .read<LocationSelectionProvider>()
+                    //         .selectedLocation ??
+                    //     '',
                   );
-                  debugPrint('Choose location next button $accountType');
-                  if (accountType != '' && accountType == 'business') {
-                    debugPrint('Navigate to select company page');
-                    Navigator.pushNamed(context, Routes.companySelection);
-                  } else if (accountType != '' && accountType == 'personal') {
-                    debugPrint('Navigate to Login page');
-                    Navigator.pushNamed(context, Routes.login);
+                  if (provider.selectedLocation != null &&
+                      provider.selectedLocation!.isNotEmpty) {
+                    if (accountType != '' && accountType == 'business') {
+                      Navigator.pushNamed(context, Routes.companySelection);
+                      provider.clearSelectedLocation();
+                    } else if (accountType != '' && accountType == 'personal') {
+                      Navigator.pushNamed(context, Routes.login);
+                      provider.clearSelectedLocation();
+                    }
+                  } else {
+                    customSnackBar(
+                        context: context, message: 'Please Select Location');
                   }
                 },
                 bgColor: accountType != '' && accountType == 'business'

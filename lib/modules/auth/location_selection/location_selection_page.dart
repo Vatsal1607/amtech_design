@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/constants/shared_prefs_keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
@@ -62,7 +60,7 @@ class LocationSelectionPage extends StatelessWidget {
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
-                top: 150.0,
+                top: 130.h,
                 left: 34.w,
                 right: 34.w,
               ),

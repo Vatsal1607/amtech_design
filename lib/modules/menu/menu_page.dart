@@ -7,6 +7,7 @@ import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
 import 'package:amtech_design/modules/product_page/product_details_page.dart';
+import 'package:amtech_design/modules/profile/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -191,22 +192,28 @@ class MenuPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         //! leading icon
-                        Container(
-                          height: 48.h,
-                          width: 48.w,
-                          decoration: BoxDecoration(
-                            boxShadow: kDropShadow,
-                            color: Colors.black,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: AppColors.primaryColor,
-                              width: 2.0,
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.pushNamed(context, Routes.profile);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),));
+                          },
+                          child: Container(
+                            height: 48.h,
+                            width: 48.w,
+                            decoration: BoxDecoration(
+                              boxShadow: kDropShadow,
+                              color: Colors.black,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: AppColors.primaryColor,
+                                width: 2.0,
+                              ),
                             ),
-                          ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              ImageStrings.logo,
-                              fit: BoxFit.cover,
+                            child: ClipOval(
+                              child: Image.asset(
+                                ImageStrings.logo,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           ),
                         ),

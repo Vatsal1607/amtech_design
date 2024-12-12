@@ -24,8 +24,8 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType = 'business'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context);
 
     return Scaffold(
@@ -195,7 +195,12 @@ class MenuPage extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             // Navigator.pushNamed(context, Routes.profile);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilePage(),));
+                            // Todo imp: Replace with named routes
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ProfilePage(),
+                                ));
                           },
                           child: Container(
                             height: 48.h,
@@ -440,7 +445,7 @@ class MenuPage extends StatelessWidget {
                           //   ),
                           // ),
                         ),
-                        SizedBox(height: 10.h),
+                        // SizedBox(height: 10.h),
 
                         /// Credit Slider widget old
                         // Consumer<MenuProvider>(
@@ -475,83 +480,80 @@ class MenuPage extends StatelessWidget {
                         //   ),
                         // ),
 
-                        // SizedBox(height: 18.h),
-
                         //* Slider details widget
-                        SliderDetailsWidget(
-                          accountType: accountType,
-                          filledValue: '140',
-                          totalValue: '200',
-                          label: 'reward points',
-                          icon: IconStrings.reward,
-                        ),
-                        SizedBox(height: 13.h),
+                        // SliderDetailsWidget(
+                        //   accountType: accountType,
+                        //   filledValue: '140',
+                        //   totalValue: '200',
+                        //   label: 'reward points',
+                        //   icon: IconStrings.reward,
+                        // ),
                         // Slider widget REWARD points
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 20.h),
-                          child: Consumer<MenuProvider>(
-                            builder: (BuildContext context, provider,
-                                    Widget? child) =>
-                                SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                thumbShape: SliderComponentShape.noThumb,
-                                overlayShape: SliderComponentShape
-                                    .noOverlay, // Remove thumb shadow overlay
-                                activeTrackColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                inactiveTrackColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.disabledColor,
-                                  personalColor: AppColors.bayLeaf,
-                                ),
-                                trackShape: CustomTrackShape(),
-                              ),
-                              child: Slider(
-                                // value: provider.currentSliderValue,
-                                value: 140,
-                                max: 200,
-                                onChanged: provider.onChangeSlider,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 13.0),
-                        Container(
-                          height: 28.0,
-                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                          decoration: BoxDecoration(
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
-                            borderRadius: BorderRadius.circular(100.0),
-                          ),
-                          child: Center(
-                            child: RichText(
-                              text: TextSpan(
-                                text: '60 points left '.toUpperCase(),
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 10.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.white,
-                                ),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'to your next reward'.toUpperCase(),
-                                    style: GoogleFonts.publicSans(
-                                      fontSize: 10.0,
-                                      color: AppColors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Padding(
+                        //   padding: EdgeInsets.symmetric(horizontal: 20.h),
+                        //   child: Consumer<MenuProvider>(
+                        //     builder: (BuildContext context, provider,
+                        //             Widget? child) =>
+                        //         SliderTheme(
+                        //       data: SliderTheme.of(context).copyWith(
+                        //         thumbShape: SliderComponentShape.noThumb,
+                        //         overlayShape: SliderComponentShape
+                        //             .noOverlay, // Remove thumb shadow overlay
+                        //         activeTrackColor: getColorAccountType(
+                        //           accountType: accountType,
+                        //           businessColor: AppColors.primaryColor,
+                        //           personalColor: AppColors.darkGreenGrey,
+                        //         ),
+                        //         inactiveTrackColor: getColorAccountType(
+                        //           accountType: accountType,
+                        //           businessColor: AppColors.disabledColor,
+                        //           personalColor: AppColors.bayLeaf,
+                        //         ),
+                        //         trackShape: CustomTrackShape(),
+                        //       ),
+                        //       child: Slider(
+                        //         // value: provider.currentSliderValue,
+                        //         value: 140,
+                        //         max: 200,
+                        //         onChanged: provider.onChangeSlider,
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 13.0),
+                        // Container(
+                        //   height: 28.0,
+                        //   margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                        //   decoration: BoxDecoration(
+                        //     color: getColorAccountType(
+                        //       accountType: accountType,
+                        //       businessColor: AppColors.primaryColor,
+                        //       personalColor: AppColors.darkGreenGrey,
+                        //     ),
+                        //     borderRadius: BorderRadius.circular(100.0),
+                        //   ),
+                        //   child: Center(
+                        //     child: RichText(
+                        //       text: TextSpan(
+                        //         text: '60 points left '.toUpperCase(),
+                        //         style: GoogleFonts.publicSans(
+                        //           fontSize: 10.0,
+                        //           fontWeight: FontWeight.bold,
+                        //           color: AppColors.white,
+                        //         ),
+                        //         children: <TextSpan>[
+                        //           TextSpan(
+                        //             text: 'to your next reward'.toUpperCase(),
+                        //             style: GoogleFonts.publicSans(
+                        //               fontSize: 10.0,
+                        //               color: AppColors.white,
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         // SizedBox(height: 22.h),
                       ],
                     ),

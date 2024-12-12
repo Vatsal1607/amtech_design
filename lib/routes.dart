@@ -3,6 +3,7 @@ import 'package:amtech_design/modules/auth/location_selection/location_selection
 import 'package:amtech_design/modules/auth/login/login_page.dart';
 import 'package:amtech_design/modules/auth/otp/otp_page.dart';
 import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
+import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
 // import 'package:amtech_design/pages/menu/menu_page.dart';
@@ -28,6 +29,7 @@ class Routes {
   static const String register = '/register';
   static const String verifySuccess = '/verifySuccess';
   static const String profile = '/profile';
+  static const String cart = '/cart';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -43,6 +45,6 @@ class Routes {
     register: (context) => const RegisterPage(),
     verifySuccess: (context) => const VerifySuccess(),
     profile: (context) => const ProfilePage(),
-    
+    cart: (context) => const CartPage(),
   };
 }

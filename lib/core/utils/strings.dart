@@ -55,6 +55,8 @@ class IconStrings {
   static const feedback = '${BaseIconPath.basePath}feedback.svg';
   static const aboutUs = '${BaseIconPath.basePath}about_us.svg';
   static const logout = '${BaseIconPath.basePath}logout.svg';
+  static const youMayLike = '${BaseIconPath.basePath}you_may_like.svg';
+  static const totalBill = '${BaseIconPath.basePath}total_bill.svg';
 }
 
 class ImageStrings {
@@ -83,6 +85,7 @@ class ImageStrings {
   static const navratiBanner = '${BaseImagePath.basePath}navrati_banner.png';
   static const masalaTea2 = '${BaseImagePath.basePath}masala_tea_2.jpg';
   static const masalaTea3 = '${BaseImagePath.basePath}masala_tea3.png';
+  static const cartDoodle = '${BaseImagePath.basePath}cart_doodle.png';
 }
 
 class GifStrings {

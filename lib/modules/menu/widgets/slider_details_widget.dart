@@ -71,15 +71,16 @@ class SliderDetailsWidget extends StatelessWidget {
           ),
           if (isShowRecharge)
             Container(
-              height: 30.h,
+              height: 35.h,
               width: 100.w,
               padding: EdgeInsets.all(3.w),
               decoration: BoxDecoration(
-                boxShadow: kDropShadow,
+                // boxShadow: kDropShadow,
                 color: AppColors.lightGreen,
                 borderRadius: BorderRadius.circular(100.r),
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
                     icon: IconStrings.rupee,

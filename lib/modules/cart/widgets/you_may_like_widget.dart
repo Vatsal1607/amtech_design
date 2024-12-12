@@ -59,7 +59,7 @@ class YouMayLikeWidget extends StatelessWidget {
                   SizedBox(height: 4.h),
                   Container(
                     height: 20.h,
-                    width: 79.0,
+                    width: 72.0,
                     margin: EdgeInsets.only(bottom: 6.h),
                     decoration: BoxDecoration(
                       color: AppColors.disabledColor,

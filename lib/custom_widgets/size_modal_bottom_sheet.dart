@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,15 @@ import 'product_size_widget.dart';
 
 void showSizeModalBottomSheet({
   required BuildContext context,
+  required String accountType,
 }) {
   showModalBottomSheet(
     context: context,
-    // isDismissible: false,
-    backgroundColor: AppColors.primaryColor,
+    backgroundColor: getColorAccountType(
+      accountType: accountType,
+      businessColor: AppColors.primaryColor,
+      personalColor: AppColors.darkGreenGrey,
+    ),
     // isScrollControlled: true,
     builder: (context) {
       return Stack(
@@ -32,19 +37,26 @@ void showSizeModalBottomSheet({
                     style: GoogleFonts.publicSans(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.seaShell,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                     ),
                   ),
                   SizedBox(height: 17.h),
-                  const ProductSizeWidget(
+                  ProductSizeWidget(
+                    accountType: accountType,
                     size: 'regular',
                   ),
                   SizedBox(height: 9.h),
-                  const ProductSizeWidget(
+                  ProductSizeWidget(
+                    accountType: accountType,
                     size: 'medium',
                   ),
                   SizedBox(height: 9.h),
-                  const ProductSizeWidget(
+                  ProductSizeWidget(
+                    accountType: accountType,
                     size: 'large',
                   ),
                   SizedBox(height: 9.h),
@@ -68,14 +80,22 @@ void showSizeModalBottomSheet({
                               style: GoogleFonts.publicSans(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
                               ),
                             ),
                             Text(
                               'added to cart'.toUpperCase(),
                               style: GoogleFonts.publicSans(
                                 fontSize: 16.sp,
-                                color: AppColors.primaryColor,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
                               ),
                             ),
                           ],
@@ -93,7 +113,11 @@ void showSizeModalBottomSheet({
                             height: 30.h,
                             width: 45.w,
                             decoration: BoxDecoration(
-                              color: AppColors.primaryColor,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                               borderRadius: BorderRadius.circular(100.r),
                             ),
                             child: SvgIcon(

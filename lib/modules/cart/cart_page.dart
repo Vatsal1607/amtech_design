@@ -16,7 +16,9 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CartProvider>(context);
+    // String accountType = 'business'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final provider = Provider.of<CartProvider>(context, listen: false);
     return Scaffold(
       // extendBodyBehindAppBar: true, // show content of body behind appbar
       appBar: const CustomAppbarWithCenterTitle(
@@ -37,13 +39,13 @@ class CartPage extends StatelessWidget {
                 ListView.separated(
                   shrinkWrap: true,
                   itemCount: 3,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 31.w, vertical: 27.h),
+                  padding: EdgeInsets.only(left: 31.w, right: 31.w, top: 27.h),
                   separatorBuilder: (context, index) => SizedBox(height: 18.h),
                   itemBuilder: (context, index) {
                     return const CartWidget();
                   },
                 ),
+                SizedBox(height: 18.h),
                 Container(
                   height: 170.h,
                   width: 1.sw,

@@ -24,7 +24,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    // String accountType = 'personal'; // static temp
+    // String accountType = 'business'; // static temp
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     debugPrint(accountType);
@@ -236,7 +236,8 @@ class RegisterPage extends StatelessWidget {
                                   children: [
                                     // Leading Icon (Outside the Dropdown)
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 15.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 15.0),
                                       child: SvgIcon(
                                         icon: IconStrings.property,
                                       ),
@@ -248,8 +249,9 @@ class RegisterPage extends StatelessWidget {
                                           dropdownStyleData: DropdownStyleData(
                                             decoration: BoxDecoration(
                                               color: AppColors.seaShell,
-                                              borderRadius: BorderRadius.circular(
-                                                  10), // Rounded corners
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10), // Rounded corners
                                               border: Border.all(
                                                 color:
                                                     Colors.grey, // Border color
@@ -321,7 +323,7 @@ class RegisterPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 20.h),
-                          
+
                               //* Dropdown of Business property status
                               Container(
                                 decoration: BoxDecoration(
@@ -335,7 +337,8 @@ class RegisterPage extends StatelessWidget {
                                   children: [
                                     // Leading Icon (Outside the Dropdown)
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 15.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 15.0),
                                       child: SvgIcon(
                                         icon: IconStrings.property,
                                       ),
@@ -347,8 +350,9 @@ class RegisterPage extends StatelessWidget {
                                           dropdownStyleData: DropdownStyleData(
                                             decoration: BoxDecoration(
                                               color: AppColors.seaShell,
-                                              borderRadius: BorderRadius.circular(
-                                                  10), // Rounded corners
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10), // Rounded corners
                                               border: Border.all(
                                                 color:
                                                     Colors.grey, // Border color
@@ -356,7 +360,8 @@ class RegisterPage extends StatelessWidget {
                                               ),
                                             ),
                                           ),
-                                          value: provider.selectedPropertyStatus,
+                                          value:
+                                              provider.selectedPropertyStatus,
                                           isExpanded: true,
                                           style: GoogleFonts.publicSans(
                                             fontSize: 14.sp,
@@ -419,7 +424,7 @@ class RegisterPage extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                          
+
                               Consumer<RegisterProvider>(
                                 builder: (context, _, child) {
                                   // Upoad lightbill & rent agreement condition
@@ -441,7 +446,8 @@ class RegisterPage extends StatelessWidget {
                                       : provider.selectedPropertyStatus ==
                                               'Rental'
                                           ? Padding(
-                                              padding: EdgeInsets.only(top: 20.h),
+                                              padding:
+                                                  EdgeInsets.only(top: 20.h),
                                               child: UploadDocWidget(
                                                 onTap: () {
                                                   //! agreement upload

@@ -57,6 +57,7 @@ class IconStrings {
   static const logout = '${BaseIconPath.basePath}logout.svg';
   static const youMayLike = '${BaseIconPath.basePath}you_may_like.svg';
   static const totalBill = '${BaseIconPath.basePath}total_bill.svg';
+  static const cart = '${BaseIconPath.basePath}cart.svg';
 }
 
 class ImageStrings {

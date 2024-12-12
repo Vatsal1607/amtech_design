@@ -12,6 +12,8 @@ class CartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'business'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Container(
       height: 95.h,
       decoration: BoxDecoration(
@@ -91,6 +93,7 @@ class CartWidget extends StatelessWidget {
                   borderRadius: BorderRadius.circular(100.r),
                 ),
                 child: ItemQuantityWidget(
+                  accountType: accountType,
                   quantity: 1,
                   color: AppColors.disabledColor,
                   onIncrease: () {},

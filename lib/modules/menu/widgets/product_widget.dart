@@ -22,6 +22,8 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'business'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Stack(
       children: [
         Container(
@@ -121,7 +123,10 @@ class ProductWidget extends StatelessWidget {
               onTap: () {
                 debugPrint('Add button pressed at index $index');
                 //* Custom Size bottomsheet
-                showSizeModalBottomSheet(context: context);
+                showSizeModalBottomSheet(
+                  context: context,
+                  accountType: accountType,
+                );
                 // showSnackbar(context, '{count} ITEMS ADDED');
               },
               child: Container(

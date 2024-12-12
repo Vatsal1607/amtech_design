@@ -1,5 +1,5 @@
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
+import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
 import 'package:flutter/material.dart';
@@ -14,54 +14,33 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.seaShell,
-      appBar: AppBar(
-        backgroundColor: AppColors.seaShell,
-        leading: Container(
-          height: 48.h,
-          width: 48.w,
-          margin: EdgeInsets.only(left: 20.w),
-          decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.primaryColor,
-          ),
-          child: SvgIcon(icon: IconStrings.arrowBack),
-        ),
-        title: Text(
-          'Account',
-          style: GoogleFonts.publicSans(
-            fontSize: 24.sp,
-            fontWeight: FontWeight.w700,
-            color: AppColors.primaryColor,
-          ),
-        ),
-        centerTitle: true,
+      appBar: const CustomAppbarWithCenterTitle(
+        title: 'Account',
       ),
       floatingActionButton: Container(
-            height: 50.h,
-            width: 100.w,
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              
-              borderRadius: BorderRadius.circular(30.r),
+        height: 50.h,
+        width: 120.w,
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+          borderRadius: BorderRadius.circular(30.r),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgIcon(
+              icon: IconStrings.logout,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgIcon(
-                  icon:
-                       IconStrings.logout,
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                   'Logout',
-                  style: GoogleFonts.publicSans(
-                    color: AppColors.white,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ],
+            SizedBox(width: 13.w),
+            Text(
+              'Logout',
+              style: GoogleFonts.publicSans(
+                color: AppColors.white,
+                fontSize: 12.sp,
+              ),
             ),
-          ),
+          ],
+        ),
+      ),
       body: Column(
         children: [
           Padding(
@@ -143,26 +122,42 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 ProfileTile(
+                  onTap: () {
+                    debugPrint('pressed');
+                  },
                   title: 'Home',
                   icon: IconStrings.home,
+                  bgColor: AppColors.primaryColor,
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  onTap: () {
+                    debugPrint('pressed');
+                  },
                   title: 'Favorite Products',
                   icon: IconStrings.favorite,
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  onTap: () {
+                    debugPrint('pressed');
+                  },
                   title: 'Authorized Employees',
                   icon: IconStrings.authorizedEmp,
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  onTap: () {
+                    debugPrint('pressed');
+                  },
                   title: 'Feedback',
                   icon: IconStrings.feedback,
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  onTap: () {
+                    debugPrint('pressed');
+                  },
                   title: 'About Us',
                   icon: IconStrings.aboutUs,
                 ),

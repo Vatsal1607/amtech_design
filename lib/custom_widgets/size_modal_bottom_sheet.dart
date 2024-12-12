@@ -1,4 +1,5 @@
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,7 +49,7 @@ void showSizeModalBottomSheet({
                   ),
                   SizedBox(height: 9.h),
 
-                  // Added to cart button
+                  // * Added to cart button
                   Container(
                     height: 55.h,
                     margin: EdgeInsets.symmetric(horizontal: 32.w),
@@ -79,15 +80,25 @@ void showSizeModalBottomSheet({
                             ),
                           ],
                         ),
-                        Container(
-                          height: 30.h,
-                          width: 42.w,
-                          decoration: BoxDecoration(
-                            color: AppColors.primaryColor,
-                            borderRadius: BorderRadius.circular(100.r),
-                          ),
-                          child: SvgIcon(
-                            icon: IconStrings.arrowNext,
+                        GestureDetector(
+                          onTap: () {
+                            // Todo imp: Replace with named routes
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const CartPage(),
+                                ));
+                          },
+                          child: Container(
+                            height: 30.h,
+                            width: 45.w,
+                            decoration: BoxDecoration(
+                              color: AppColors.primaryColor,
+                              borderRadius: BorderRadius.circular(100.r),
+                            ),
+                            child: SvgIcon(
+                              icon: IconStrings.arrowNext,
+                            ),
                           ),
                         ),
                       ],

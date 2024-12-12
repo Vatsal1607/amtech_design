@@ -1,3 +1,4 @@
+import 'package:amtech_design/custom_widgets/item_quantity_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -55,52 +56,10 @@ class ProductSizeWidget extends StatelessWidget {
             ),
           ],
         ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                //
-              },
-              child: Container(
-                height: 30.h,
-                width: 30.w,
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: SvgIcon(
-                  icon: IconStrings.minus,
-                ),
-              ),
-            ),
-            SizedBox(width: 10.w),
-            Text(
-              '1',
-              style: GoogleFonts.publicSans(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
-              ),
-            ),
-            SizedBox(width: 10.w),
-            GestureDetector(
-              onTap: () {
-                //
-              },
-              child: Container(
-                height: 30.h,
-                width: 30.w,
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryColor,
-                  shape: BoxShape.circle,
-                ),
-                child: SvgIcon(
-                  icon: IconStrings.plus,
-                ),
-              ),
-            ),
-          ],
+        trailing: ItemQuantityWidget(
+          quantity: 1,
+          onIncrease: () {},
+          onDecrease: () {},
         ),
       ),
     );

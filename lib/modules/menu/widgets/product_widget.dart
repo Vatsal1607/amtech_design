@@ -37,23 +37,6 @@ class ProductWidget extends StatelessWidget {
               color: AppColors.primaryColor, // Border color
               width: 2.w, // Border width
             ),
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [
-            //     getColorAccountType(
-            //       accountType: accountType,
-            //       businessColor: AppColors.primaryColor.withOpacity(.15),
-            //       personalColor: AppColors.darkGreenGrey.withOpacity(.3),
-            //     ),
-            //     getColorAccountType(
-            //       accountType: accountType,
-            //       businessColor: AppColors.disabledColor.withOpacity(.15),
-            //       personalColor: AppColors.mineralGreen.withOpacity(0.3),
-            //     ),
-            //     AppColors.white.withOpacity(0.2),
-            //   ],
-            // ),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -61,22 +44,51 @@ class ProductWidget extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  // Blur effect
-                  Container(
-                    width: 100.w,
-                    height: 30.h,
-                    // color: AppColors.white.withOpacity(.8),
-                    decoration: const BoxDecoration(
-                      // boxShadow: [
-                      //   BoxShadow(
-                      //     color: Colors.black.withOpacity(0.1),
-                      //     blurRadius: 10, // Blur effect
-                      //     offset: const Offset(4, 4),
-                      //   ),
-                      // ],
-                      // color: AppColors.seaShell,
+                  // Gradient Overlay at the Bottom
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 60
+                          .h, // Adjust this height as per the desired blur effect
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.transparent,
+                            AppColors.seaShell.withOpacity(
+                                0.7), // Gradient color at the bottom
+                          ],
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          stops: const [0.0, 1.0],
+                        ),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(30.r),
+                          bottomRight: Radius.circular(30.r),
+                        ),
+                      ),
                     ),
                   ),
+                  // * old blur effect
+                  // Positioned.fill(
+                  //   child: Container(
+                  //     // width: 100.w,
+                  //     // height: 30.h,
+                  //     height: 60.h,
+                  //     decoration: BoxDecoration(
+                  //       gradient: LinearGradient(
+                  //         colors: [
+                  //           AppColors.primaryColor
+                  //               .withOpacity(0.1), // Gradient color
+                  //           AppColors.primaryColor.withOpacity(.7),
+                  //         ],
+                  //         begin: Alignment.topCenter,
+                  //         end: Alignment.bottomCenter,
+                  //         stops: const [0.0, 0.5],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+                  // * Foreground Content
                   Text(
                     name.toUpperCase(),
                     maxLines: 1,
@@ -108,10 +120,9 @@ class ProductWidget extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 debugPrint('Add button pressed at index $index');
-                // Custom Size bottomsheet
+                //* Custom Size bottomsheet
                 showSizeModalBottomSheet(context: context);
-
-                /// showSnackbar(context, '{count} ITEMS ADDED');
+                // showSnackbar(context, '{count} ITEMS ADDED');
               },
               child: Container(
                 padding: EdgeInsets.symmetric(

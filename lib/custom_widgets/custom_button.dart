@@ -42,7 +42,7 @@ class CustomButton extends StatelessWidget {
           child: isLoading
               ? const CircularProgressIndicator.adaptive()
               : Text(
-                  text,
+                  text.toUpperCase(),
                   style: GoogleFonts.publicSans(
                     fontSize: 15.sp,
                     fontWeight: FontWeight.bold,

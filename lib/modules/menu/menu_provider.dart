@@ -49,14 +49,14 @@ class MenuProvider extends ChangeNotifier {
   ];
 
   final List<String> productImage = [
-    // ImageStrings.masalaTea2,
-    // ImageStrings.masalaTea2,
-    // ImageStrings.masalaTea2,
-    // ImageStrings.masalaTea2,
-    ImageStrings.masalaTea3,
-    ImageStrings.masalaTea3,
-    ImageStrings.masalaTea3,
-    ImageStrings.masalaTea3,
+    ImageStrings.masalaTea2,
+    ImageStrings.masalaTea2,
+    ImageStrings.masalaTea2,
+    ImageStrings.masalaTea2,
+    // ImageStrings.masalaTea3,
+    // ImageStrings.masalaTea3,
+    // ImageStrings.masalaTea3,
+    // ImageStrings.masalaTea3,
   ];
 
   final List<String> productName = [

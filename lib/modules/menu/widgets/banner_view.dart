@@ -28,7 +28,7 @@ class BannerView extends StatelessWidget {
               );
             },
             child: Container(
-              height: 122.h,
+              height: 122.h, // banner height
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.r),
                 boxShadow: [

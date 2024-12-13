@@ -1,12 +1,14 @@
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
+import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
+import '../../custom_widgets/size_modal_bottom_sheet.dart';
 import '../../custom_widgets/svg_icon.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
@@ -16,7 +18,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
     return Scaffold(
@@ -156,7 +158,12 @@ class CartPage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: CustomButton(
-                  onTap: () {},
+                  onTap: () {
+                    showProcessToPayBottomSheeet(
+                      context: context,
+                      accountType: accountType,
+                    );
+                  },
                   height: 55.h,
                   width: double.infinity,
                   bgColor: AppColors.primaryColor,

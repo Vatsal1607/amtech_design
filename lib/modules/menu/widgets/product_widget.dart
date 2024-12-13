@@ -44,24 +44,29 @@ class ProductWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Stack(
+                clipBehavior: Clip.none,
                 alignment: Alignment.center,
                 children: [
                   // Gradient Overlay at the Bottom
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: 60
-                          .h, // Adjust this height as per the desired blur effect
+                      height: 55.h, // Adjust height blur effect
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            Colors.transparent,
-                            AppColors.seaShell.withOpacity(
-                                0.7), // Gradient color at the bottom
+                            // AppColors.seaShell.withOpacity(0.1),
+                            // AppColors.seaShell.withOpacity(0.9),
+                            // AppColors.seaShell,
+                            AppColors.seaShell
+                                .withOpacity(0.0), // Fully transparent
+                            AppColors.seaShell
+                                .withOpacity(0.8), // Semi-transparent
+                            AppColors.seaShell, // Fully opaque
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
-                          stops: const [0.0, 1.0],
+                          stops: const [0.0, 0.5, 1.0],
                         ),
                         borderRadius: BorderRadius.only(
                           bottomLeft: Radius.circular(30.r),
@@ -70,26 +75,6 @@ class ProductWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  // * old blur effect
-                  // Positioned.fill(
-                  //   child: Container(
-                  //     // width: 100.w,
-                  //     // height: 30.h,
-                  //     height: 60.h,
-                  //     decoration: BoxDecoration(
-                  //       gradient: LinearGradient(
-                  //         colors: [
-                  //           AppColors.primaryColor
-                  //               .withOpacity(0.1), // Gradient color
-                  //           AppColors.primaryColor.withOpacity(.7),
-                  //         ],
-                  //         begin: Alignment.topCenter,
-                  //         end: Alignment.bottomCenter,
-                  //         stops: const [0.0, 0.5],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   // * Foreground Content
                   Text(
                     name.toUpperCase(),
@@ -108,7 +93,7 @@ class ProductWidget extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 8.h),
+              // SizedBox(height: 8.h),
             ],
           ),
         ),

@@ -75,15 +75,15 @@ class SliderDetailsWidget extends StatelessWidget {
               width: 100.w,
               padding: EdgeInsets.all(3.w),
               decoration: BoxDecoration(
-                // boxShadow: kDropShadow,
-                color: AppColors.lightGreen,
+                color: AppColors.black,
                 borderRadius: BorderRadius.circular(100.r),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SvgIcon(
-                    icon: IconStrings.rupee,
+                    icon: IconStrings.rupeeGreen,
+                    color: AppColors.lightGreen,
                   ),
                   SizedBox(
                     width: 5.w,

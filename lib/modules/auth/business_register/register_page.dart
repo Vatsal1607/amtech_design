@@ -24,9 +24,9 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    // String accountType = 'business'; // static temp
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType = 'business'; // static temp
+    // String accountType =
+    //     sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     debugPrint(accountType);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
@@ -47,7 +47,7 @@ class RegisterPage extends StatelessWidget {
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
-                top: 60.0,
+                top: 100.h,
                 left: 34.w,
                 right: 34.w,
               ),
@@ -425,61 +425,63 @@ class RegisterPage extends StatelessWidget {
                                 ),
                               ),
 
-                              Consumer<RegisterProvider>(
-                                builder: (context, _, child) {
-                                  // Upoad lightbill & rent agreement condition
-                                  return provider.selectedPropertyStatus ==
-                                          'Owner'
-                                      ? Padding(
-                                          padding: EdgeInsets.only(top: 20.h),
-                                          child: UploadDocWidget(
-                                            onTap: () {
-                                              debugPrint(
-                                                  'Upload lightbill pressed');
-                                              //! lightbill upload
-                                              provider.pickAndAddImageToLists();
-                                            },
-                                            leadingIcon: IconStrings.bill,
-                                            title: 'Upload Owner\'s Light Bill',
-                                          ),
-                                        )
-                                      : provider.selectedPropertyStatus ==
-                                              'Rental'
-                                          ? Padding(
-                                              padding:
-                                                  EdgeInsets.only(top: 20.h),
-                                              child: UploadDocWidget(
-                                                onTap: () {
-                                                  //! agreement upload
-                                                  provider
-                                                      .pickAndAddImageToLists();
-                                                  debugPrint(
-                                                      'Upload Rent pressed');
-                                                },
-                                                leadingIcon: IconStrings.bill,
-                                                title: 'Upload Rent Agreement',
-                                              ),
-                                            )
-                                          : const SizedBox();
-                                },
-                              ),
+                              // Consumer<RegisterProvider>(
+                              //   builder: (context, _, child) {
+                              //     // Upoad lightbill & rent agreement condition
+                              //     return provider.selectedPropertyStatus ==
+                              //             'Owner'
+                              //         ? Padding(
+                              //             padding: EdgeInsets.only(top: 20.h),
+                              //             child: UploadDocWidget(
+                              //               onTap: () {
+                              //                 debugPrint(
+                              //                     'Upload lightbill pressed');
+                              //                 //! lightbill upload
+                              //                 provider.pickAndAddImageToLists();
+                              //               },
+                              //               leadingIcon: IconStrings.bill,
+                              //               title: 'Upload Owner\'s Light Bill',
+                              //             ),
+                              //           )
+                              //         : provider.selectedPropertyStatus ==
+                              //                 'Rental'
+                              //             ? Padding(
+                              //                 padding:
+                              //                     EdgeInsets.only(top: 20.h),
+                              //                 child: UploadDocWidget(
+                              //                   onTap: () {
+                              //                     //! agreement upload
+                              //                     provider
+                              //                         .pickAndAddImageToLists();
+                              //                     debugPrint(
+                              //                         'Upload Rent pressed');
+                              //                   },
+                              //                   leadingIcon: IconStrings.bill,
+                              //                   title: 'Upload Rent Agreement',
+                              //                 ),
+                              //               )
+                              //             : const SizedBox();
+                              //   },
+                              // ),
                               SizedBox(height: 20.h),
+                              // Todo add GST number field:
+
                               //! Adhar upload
-                              UploadDocWidget(
-                                onTap: () {
-                                  provider.pickAndAddImageToLists();
-                                  debugPrint('Upload doc pressed');
-                                },
-                                title: 'Upload Owner\'s Aadhaar Card',
-                              ),
-                              SizedBox(height: 20.h),
-                              UploadDocWidget(
-                                onTap: () {
-                                  provider.pickAndAddImageToLists();
-                                  debugPrint('GST card pressed');
-                                },
-                                title: 'Upload GST Document',
-                              ),
+                              // UploadDocWidget(
+                              //   onTap: () {
+                              //     provider.pickAndAddImageToLists();
+                              //     debugPrint('Upload doc pressed');
+                              //   },
+                              //   title: 'Upload Owner\'s Aadhaar Card',
+                              // ),
+                              // SizedBox(height: 20.h),
+                              // UploadDocWidget(
+                              //   onTap: () {
+                              //     provider.pickAndAddImageToLists();
+                              //     debugPrint('GST card pressed');
+                              //   },
+                              //   title: 'Upload GST Document',
+                              // ),
                               SizedBox(height: 150.h), //* bottom space business
                             ],
                           ),

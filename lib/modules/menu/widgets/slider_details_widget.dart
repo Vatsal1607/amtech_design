@@ -1,3 +1,4 @@
+import 'package:amtech_design/modules/recharge/recharge_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -70,33 +71,43 @@ class SliderDetailsWidget extends StatelessWidget {
             ),
           ),
           if (isShowRecharge)
-            Container(
-              height: 35.h,
-              width: 100.w,
-              padding: EdgeInsets.all(3.w),
-              decoration: BoxDecoration(
-                color: AppColors.black,
-                borderRadius: BorderRadius.circular(100.r),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgIcon(
-                    icon: IconStrings.rupeeGreen,
-                    color: AppColors.lightGreen,
-                  ),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  Text(
-                    'recharge'.toUpperCase(),
-                    style: GoogleFonts.publicSans(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.seaShell,
+            GestureDetector(
+              onTap: () {
+                // Todo replace with named routes
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const RechargePage(),
+                    ));
+              },
+              child: Container(
+                height: 35.h,
+                width: 100.w,
+                padding: EdgeInsets.all(3.w),
+                decoration: BoxDecoration(
+                  color: AppColors.black,
+                  borderRadius: BorderRadius.circular(100.r),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgIcon(
+                      icon: IconStrings.rupeeGreen,
+                      color: AppColors.lightGreen,
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    Text(
+                      'recharge'.toUpperCase(),
+                      style: GoogleFonts.publicSans(
+                        fontSize: 10.sp,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.seaShell,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           if (!isShowRecharge)

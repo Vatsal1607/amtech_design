@@ -1,4 +1,5 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
+import 'package:amtech_design/modules/auth/business_register/register_page.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
 import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/menu/menu_page.dart';
@@ -16,6 +17,7 @@ import 'modules/auth/otp/otp_provider.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/menu/menu_provider.dart';
+import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
 import 'routes.dart';
 
@@ -43,6 +45,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RegisterProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => ReorderProvider()),
+        ChangeNotifierProvider(create: (_) => RechargeProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

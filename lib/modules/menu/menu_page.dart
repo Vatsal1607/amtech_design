@@ -262,6 +262,7 @@ class MenuPage extends StatelessWidget {
 
                         //* Slider details widget
                         SliderDetailsWidget(
+                          
                           isShowRecharge: true,
                           accountType: accountType,
                           filledValue: '₹ 135',

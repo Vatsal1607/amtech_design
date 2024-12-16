@@ -13,7 +13,9 @@ class CustomSlidableButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(
-      builder: (context, provider, child) => GestureDetector(
+      builder: (context, provider, child) =>
+          // * New Slidable button
+          GestureDetector(
         onHorizontalDragUpdate: provider.onHorizontalDragUpdate,
         onHorizontalDragEnd: provider.onHorizontalDragEnd,
         child: Stack(
@@ -29,18 +31,14 @@ class CustomSlidableButton extends StatelessWidget {
               ),
             ),
 
-            // "Slide to Place Order" Text
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 100),
-              left: (MediaQuery.of(context).size.width / 2) -
-                  (provider.dragPosition / 2) -
-                  100.w, // Moves to the right
-              top: 79.h / 2 - 15.h, // Center vertically
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 100),
-                opacity: provider.dragPosition < provider.maxDrag * 0.8
-                    ? 1.0
-                    : 0.0, // Fade out when dragging reaches 80%
+            // Text 1: Slide to Place Order - Moves Right
+            Positioned(
+              left: provider.dragPosition +
+                  1.sw / 3.5.w, // Moves right as the user drags
+              top: 79.h / 2 - 10.h, // Center vertically
+              child: Opacity(
+                opacity:
+                    1 - (provider.dragPosition / provider.maxDrag), // Fades out
                 child: Text(
                   'Slide to Place Order'.toUpperCase(),
                   style: GoogleFonts.publicSans(
@@ -52,18 +50,14 @@ class CustomSlidableButton extends StatelessWidget {
               ),
             ),
 
-            // "Release to Confirm" Text
-            AnimatedPositioned(
-              duration: const Duration(milliseconds: 100),
-              left: provider.dragPosition -
-                  (MediaQuery.of(context).size.width / 2) +
-                  100.w, // Comes from the left
-              top: 79.h / 2 - 15.h, // Center vertically
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 100),
-                opacity: provider.dragPosition >= provider.maxDrag * 0.2
-                    ? 1.0
-                    : 0.0, // Fade in when dragging reaches 20%
+            // Text 2: Release to Confirm - Moves to Center
+            Positioned(
+              left: -provider.maxDrag +
+                  provider.dragPosition +
+                  1.sw / 6.w, // Moves from left to center
+              top: 79.h / 2 - 10.h, // Center vertically
+              child: Opacity(
+                opacity: provider.dragPosition / provider.maxDrag, // Fades in
                 child: Text(
                   'Release to Confirm'.toUpperCase(),
                   style: GoogleFonts.publicSans(
@@ -75,14 +69,13 @@ class CustomSlidableButton extends StatelessWidget {
               ),
             ),
 
-            // Slidable Button
+            // Sliding Button (Arrow Icon)
             Positioned(
-              left: provider.dragPosition,
+              left: provider.dragPosition + 30.w, // Moves with user drag
               top: 79.h / 2 - 30.5.h, // Center vertically
               child: Container(
                 width: 61.h,
                 height: 61.h,
-                margin: EdgeInsets.symmetric(horizontal: 32.w),
                 decoration: BoxDecoration(
                   color: AppColors.primaryColor,
                   borderRadius: BorderRadius.circular(30.r),
@@ -93,9 +86,11 @@ class CustomSlidableButton extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: AppColors.seaShell,
+                child: Center(
+                  child: Icon(
+                    Icons.arrow_forward_ios,
+                    color: AppColors.seaShell,
+                  ),
                 ),
               ),
             ),
@@ -104,7 +99,7 @@ class CustomSlidableButton extends StatelessWidget {
       ),
 
       // * OLD slidable button (Keep)
-      // GestureDetector(
+      //     GestureDetector(
       //   onHorizontalDragUpdate: provider.onHorizontalDragUpdate,
       //   onHorizontalDragEnd: provider.onHorizontalDragEnd,
       //   child: Stack(
@@ -121,8 +116,8 @@ class CustomSlidableButton extends StatelessWidget {
       //         ),
       //         alignment: Alignment.center,
       //         child: Text(
-      //           provider.dragPosition >= provider.maxDrag * 1.0
-      //               ? 'Release to Confirm'.toUpperCase() // At the end
+      //           provider.dragPosition >= provider.maxDrag * 0.8
+      //               ? 'Release to Confirm'.toUpperCase() // almost At the end
       //               : 'Slide to Place Order'.toUpperCase(), // Initial text
       //           style: GoogleFonts.publicSans(
       //             color: AppColors.primaryColor,

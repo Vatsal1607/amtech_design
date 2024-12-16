@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,6 +23,8 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return AppBar(
       backgroundColor: backgroundColor,
       automaticallyImplyLeading: false,
@@ -35,11 +38,22 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
                 height: 48.h,
                 width: 48.w,
                 margin: EdgeInsets.only(left: 20.w),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
-                child: SvgIcon(icon: IconStrings.arrowBack),
+                child: SvgIcon(
+                  icon: IconStrings.arrowBack,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
+                ),
               ),
             ),
           ),
@@ -51,7 +65,11 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
                 style: GoogleFonts.publicSans(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +13,7 @@ class CartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Container(
       height: 95.h,
@@ -27,14 +28,22 @@ class CartWidget extends StatelessWidget {
             child: ListTile(
               contentPadding:
                   EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
-              tileColor: AppColors.primaryColor,
+              tileColor: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
               leading: Container(
                 height: 60.h,
                 width: 60.w,
                 decoration: BoxDecoration(
                   border: Border.all(
                     width: 3.w,
-                    color: AppColors.disabledColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
                   ),
                   borderRadius: BorderRadius.circular(20.r),
                   image: const DecorationImage(
@@ -49,7 +58,11 @@ class CartWidget extends StatelessWidget {
                 style: GoogleFonts.publicSans(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.seaShell,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                 ),
               ),
               subtitle: Row(
@@ -58,7 +71,11 @@ class CartWidget extends StatelessWidget {
                     'PRICE ',
                     style: GoogleFonts.publicSans(
                       fontSize: 10.sp,
-                      color: AppColors.disabledColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.disabledColor,
+                        personalColor: AppColors.bayLeaf,
+                      ),
                     ),
                   ),
                   Text(
@@ -66,14 +83,22 @@ class CartWidget extends StatelessWidget {
                     style: GoogleFonts.publicSans(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.seaShell,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                     ),
                   ),
                   Text(
                     'size '.toUpperCase(),
                     style: GoogleFonts.publicSans(
                       fontSize: 10.sp,
-                      color: AppColors.disabledColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.disabledColor,
+                        personalColor: AppColors.bayLeaf,
+                      ),
                     ),
                   ),
                   Text(
@@ -81,7 +106,11 @@ class CartWidget extends StatelessWidget {
                     style: GoogleFonts.publicSans(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.seaShell,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                     ),
                   ),
                 ],
@@ -89,13 +118,21 @@ class CartWidget extends StatelessWidget {
               trailing: Container(
                 padding: EdgeInsets.all(4.w),
                 decoration: BoxDecoration(
-                  color: AppColors.disabledColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.disabledColor,
+                    personalColor: AppColors.bayLeaf,
+                  ),
                   borderRadius: BorderRadius.circular(100.r),
                 ),
                 child: ItemQuantityWidget(
                   accountType: accountType,
                   quantity: 1,
-                  color: AppColors.disabledColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.disabledColor,
+                    personalColor: AppColors.bayLeaf,
+                  ),
                   onIncrease: () {},
                   onDecrease: () {},
                 ),

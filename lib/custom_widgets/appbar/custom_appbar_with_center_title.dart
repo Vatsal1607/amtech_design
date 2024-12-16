@@ -10,12 +10,14 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   final String title;
   final VoidCallback? onBackButtonPressed;
   final Color? backgroundColor;
+  final bool isAction;
 
   const CustomAppbarWithCenterTitle({
     super.key,
     required this.title,
     this.onBackButtonPressed,
     this.backgroundColor = AppColors.seaShell,
+    this.isAction = false,
   });
 
   @override
@@ -54,6 +56,16 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
               ),
             ),
           ),
+          if (isAction)
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: SvgIcon(
+                  icon: IconStrings.info,
+                  color: AppColors.disabledColor,
+                ),
+              ),
+            ),
         ],
       ),
     );

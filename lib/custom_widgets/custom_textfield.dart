@@ -16,6 +16,8 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final void Function(String)? onChanged;
   final String? errorText;
+  final Color textColor;
+  final Color borderColor;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -27,6 +29,8 @@ class CustomTextField extends StatelessWidget {
     this.inputFormatters,
     this.onChanged,
     this.errorText,
+    this.textColor = AppColors.seaShell,
+    this.borderColor = AppColors.seaShell,
   });
 
   @override
@@ -37,7 +41,7 @@ class CustomTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       style: GoogleFonts.publicSans(
         fontSize: 14.sp,
-        color: AppColors.seaShell,
+        color: textColor,
       ),
       validator: validator,
       onChanged: onChanged,
@@ -46,15 +50,30 @@ class CustomTextField extends StatelessWidget {
         errorText: errorText,
         hintStyle: GoogleFonts.publicSans(
           fontSize: 14.sp,
-          color: AppColors.white,
+          color: textColor,
         ),
         prefixIcon: SvgIcon(
           icon: prefixIcon,
           color: iconColor,
         ),
-        border: kTextfieldBorderStyle,
-        enabledBorder: kTextfieldBorderStyle,
-        focusedBorder: kTextfieldBorderStyle,
+        border: kTextfieldBorderStyle?.copyWith(
+          borderSide: BorderSide(
+            color: borderColor,
+            width: 2.w,
+          ),
+        ),
+        enabledBorder: kTextfieldBorderStyle?.copyWith(
+          borderSide: BorderSide(
+            color: borderColor,
+            width: 2.w,
+          ),
+        ),
+        focusedBorder: kTextfieldBorderStyle?.copyWith(
+          borderSide: BorderSide(
+            color: borderColor,
+            width: 2,
+          ),
+        ),
         errorBorder: kTextfieldBorderStyle?.copyWith(
           borderSide: BorderSide(
             color: AppColors.red,

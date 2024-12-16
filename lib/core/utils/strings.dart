@@ -59,7 +59,9 @@ class IconStrings {
   static const totalBill = '${BaseIconPath.basePath}total_bill.svg';
   static const cart = '${BaseIconPath.basePath}cart.svg';
   static const rupeeGreen = '${BaseIconPath.basePath}rupee_green.svg';
-  static const selected = '${BaseIconPath.basePath}selected\.svg';
+  static const selected = '${BaseIconPath.basePath}selected.svg';
+  static const reorderBtn = '${BaseIconPath.basePath}reorder_btn.svg';
+  static const info = '${BaseIconPath.basePath}info.svg';
 }
 
 class ImageStrings {

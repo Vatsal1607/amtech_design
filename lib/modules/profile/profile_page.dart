@@ -6,22 +6,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/constant.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
-      backgroundColor: AppColors.seaShell,
-      appBar: const CustomAppbarWithCenterTitle(
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
+      appBar: CustomAppbarWithCenterTitle(
+        backgroundColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.seaShell,
+          personalColor: AppColors.seaMist,
+        ),
         title: 'Account',
       ),
       floatingActionButton: Container(
         height: 50.h,
         width: 120.w,
         decoration: BoxDecoration(
-          color: AppColors.primaryColor,
+          color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey),
           borderRadius: BorderRadius.circular(30.r),
         ),
         child: Row(
@@ -29,12 +44,17 @@ class ProfilePage extends StatelessWidget {
           children: [
             SvgIcon(
               icon: IconStrings.logout,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.seaShell,
+                personalColor: AppColors.seaMist,
+              ),
             ),
             SizedBox(width: 13.w),
             Text(
               'Logout',
               style: GoogleFonts.publicSans(
-                color: AppColors.white,
+                color: AppColors.seaShell,
                 fontSize: 12.sp,
               ),
             ),
@@ -78,11 +98,15 @@ class ProfilePage extends StatelessWidget {
                           style: GoogleFonts.publicSans(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w700,
-                            color: AppColors.primaryColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                           ),
                         ),
                         SizedBox(width: 10.w),
-                        SvgIcon(
+                        const SvgIcon(
                           icon: IconStrings.verifiedUser,
                           color: AppColors.disabledColor,
                         ),
@@ -91,7 +115,11 @@ class ProfilePage extends StatelessWidget {
                     Text(
                       'Business Account',
                       style: GoogleFonts.publicSans(
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                         fontWeight: FontWeight.w400,
                         fontSize: 15.sp,
                       ),
@@ -101,7 +129,12 @@ class ProfilePage extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontSize: 15.sp,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.disabledColor,
+                        // color: AppColors.disabledColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                       ),
                     )
                   ],
@@ -114,7 +147,11 @@ class ProfilePage extends StatelessWidget {
             height: 2.h,
             indent: 33.w,
             endIndent: 33.w,
-            color: AppColors.disabledColor,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.disabledColor,
+              personalColor: AppColors.bayLeaf,
+            ),
           ),
           SizedBox(height: 29.h),
           Padding(
@@ -127,7 +164,11 @@ class ProfilePage extends StatelessWidget {
                   },
                   title: 'Home',
                   icon: IconStrings.home,
-                  bgColor: AppColors.primaryColor,
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(

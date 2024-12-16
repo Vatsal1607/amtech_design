@@ -22,6 +22,8 @@ class ProfileTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -30,14 +32,28 @@ class ProfileTile extends StatelessWidget {
             ? BoxDecoration(
                 boxShadow: kDropShadow,
                 borderRadius: BorderRadius.circular(30.r),
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               )
             : const BoxDecoration(color: Colors.transparent),
         child: Row(
           children: [
             SvgIcon(
               icon: icon,
-              color: bgColor != null ? iconColor : AppColors.disabledColor,
+              color: bgColor != null
+                  ? getColorAccountType(
+                      accountType: accountType,
+                      businessColor: iconColor,
+                      personalColor: AppColors.seaMist,
+                    )
+                  : getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
             ),
             SizedBox(width: 10.h),
             Text(
@@ -46,11 +62,19 @@ class ProfileTile extends StatelessWidget {
                   ? GoogleFonts.publicSans(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w700,
-                      color: AppColors.seaShell,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                     )
                   : GoogleFonts.publicSans(
                       fontSize: 15.sp,
-                      color: AppColors.primaryColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                     ),
             )
           ],

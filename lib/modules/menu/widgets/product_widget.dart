@@ -22,7 +22,7 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Stack(
       children: [
@@ -36,8 +36,8 @@ class ProductWidget extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(30.r),
             border: Border.all(
-              color: AppColors.primaryColor, // Border color
-              width: 2.w, // Border width
+              color: AppColors.primaryColor,
+              width: 2.w,
             ),
           ),
           child: Column(
@@ -51,18 +51,26 @@ class ProductWidget extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      height: 55.h, // Adjust height blur effect
+                      height: 55.h,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            // AppColors.seaShell.withOpacity(0.1),
-                            // AppColors.seaShell.withOpacity(0.9),
-                            // AppColors.seaShell,
-                            AppColors.seaShell
-                                .withOpacity(0.0), // Fully transparent
-                            AppColors.seaShell
-                                .withOpacity(0.8), // Semi-transparent
-                            AppColors.seaShell, // Fully opaque
+                            getColorAccountType(
+                                accountType: accountType,
+                                businessColor:
+                                    AppColors.seaShell.withOpacity(0.0),
+                                personalColor:
+                                    AppColors.seaMist.withOpacity(0.0)),
+                            getColorAccountType(
+                                accountType: accountType,
+                                businessColor:
+                                    AppColors.seaShell.withOpacity(0.8),
+                                personalColor:
+                                    AppColors.seaMist.withOpacity(0.8)),
+                            getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.seaShell,
+                                personalColor: AppColors.seaMist),
                           ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,

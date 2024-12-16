@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -11,11 +12,19 @@ class YouMayLikeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Container(
       height: 100.h,
       width: 100.w,
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: AppColors.primaryColor),
+        border: Border.all(
+            width: 2,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            )),
         borderRadius: BorderRadius.circular(20.r),
         image: const DecorationImage(
           image: AssetImage(ImageStrings.masalaTea2),
@@ -32,8 +41,16 @@ class YouMayLikeWidget extends StatelessWidget {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppColors.primaryColor.withOpacity(0.1), // Gradient color
-                      AppColors.primaryColor.withOpacity(.7),
+                      getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor.withOpacity(0.1),
+                        personalColor: AppColors.darkGreenGrey.withOpacity(0.1),
+                      ),
+                      getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor.withOpacity(0.7),
+                        personalColor: AppColors.darkGreenGrey.withOpacity(0.7),
+                      ),
                     ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -53,7 +70,11 @@ class YouMayLikeWidget extends StatelessWidget {
                     style: GoogleFonts.publicSans(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.seaShell,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                     ),
                   ),
                   SizedBox(height: 4.h),
@@ -62,7 +83,11 @@ class YouMayLikeWidget extends StatelessWidget {
                     width: 72.0,
                     margin: EdgeInsets.only(bottom: 6.h),
                     decoration: BoxDecoration(
-                      color: AppColors.disabledColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.disabledColor,
+                        personalColor: AppColors.bayLeaf,
+                      ),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Center(
@@ -71,7 +96,11 @@ class YouMayLikeWidget extends StatelessWidget {
                         style: GoogleFonts.publicSans(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                       ),
                     ),

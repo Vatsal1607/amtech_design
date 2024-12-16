@@ -8,7 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
-import '../../custom_widgets/size_modal_bottom_sheet.dart';
+import '../../core/utils/constant.dart';
 import '../../custom_widgets/svg_icon.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
@@ -18,14 +18,19 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
     return Scaffold(
       // extendBodyBehindAppBar: true, // show content of body behind appbar
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
       appBar: const CustomAppbarWithCenterTitle(
         title: 'Cart',
-        // backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
       ),
       body: Stack(
         children: [
@@ -55,7 +60,11 @@ class CartPage extends StatelessWidget {
                     horizontal: 31.w,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.disabledColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
                     borderRadius: BorderRadius.circular(30.r),
                   ),
                   child: Column(
@@ -70,7 +79,11 @@ class CartPage extends StatelessWidget {
                           children: [
                             SvgIcon(
                               icon: IconStrings.youMayLike,
-                              color: AppColors.primaryColor,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                             ),
                             SizedBox(width: 6.w),
                             Text(
@@ -78,7 +91,11 @@ class CartPage extends StatelessWidget {
                               style: GoogleFonts.publicSans(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.primaryColor,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
                               ),
                             ),
                           ],
@@ -108,12 +125,23 @@ class CartPage extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 31.w),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     borderRadius: BorderRadius.circular(30.r),
                   ),
                   child: ExpansionTile(
                     onExpansionChanged: provider.onExpansionChanged,
-                    leading: SvgIcon(icon: IconStrings.totalBill),
+                    leading: SvgIcon(
+                      icon: IconStrings.totalBill,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
+                    ),
                     trailing: Icon(
                       provider.isExpanded
                           ? Icons.expand_less
@@ -126,7 +154,11 @@ class CartPage extends StatelessWidget {
                           'Total Bill ',
                           style: GoogleFonts.publicSans(
                             fontSize: 12.sp,
-                            color: AppColors.seaShell,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ),
                           ),
                         ),
                         Text(
@@ -134,14 +166,22 @@ class CartPage extends StatelessWidget {
                           style: GoogleFonts.publicSans(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.seaShell,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ),
                           ),
                         ),
                         Text(
                           'Incl. taxes & charges',
                           style: GoogleFonts.publicSans(
                             fontSize: 10.sp,
-                            color: AppColors.seaShell,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ),
                           ),
                         ),
                       ],
@@ -166,7 +206,11 @@ class CartPage extends StatelessWidget {
                   },
                   height: 55.h,
                   width: double.infinity,
-                  bgColor: AppColors.primaryColor,
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   text: 'proceed to pay ₹ 11',
                 ),
               ),

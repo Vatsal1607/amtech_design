@@ -21,7 +21,7 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context);
 
@@ -262,7 +262,6 @@ class MenuPage extends StatelessWidget {
 
                         //* Slider details widget
                         SliderDetailsWidget(
-                          
                           isShowRecharge: true,
                           accountType: accountType,
                           filledValue: '₹ 135',

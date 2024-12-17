@@ -1,6 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,10 +7,9 @@ import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
 import '../modules/cart/widgets/custom_slidable_button.dart';
 import '../modules/cart/widgets/select_payment_method_widget.dart';
-import 'product_size_widget.dart';
 
 double dragPosition = 0.0; // Track the drag position
-final double maxDrag = 250.0; // Maximum drag length
+const double maxDrag = 250.0; // Maximum drag length
 bool isConfirmed = false; // Track if the action is confirmed
 
 void showProcessToPayBottomSheeet({
@@ -66,7 +64,7 @@ void showProcessToPayBottomSheeet({
 
                   SizedBox(height: 10.h),
                   // * Extract widget slidable button
-                  CustomSlidableButton(),
+                  const CustomSlidableButton(),
                 ],
               ),
             ),
@@ -89,7 +87,7 @@ void showProcessToPayBottomSheeet({
                     color: AppColors.red,
                     shape: BoxShape.circle,
                   ),
-                  child: SvgIcon(
+                  child: const SvgIcon(
                     icon: IconStrings.close,
                   ),
                 ),

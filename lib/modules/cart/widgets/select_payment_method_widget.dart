@@ -95,7 +95,10 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                   ],
                 ),
               ),
-            SvgIcon(icon: IconStrings.selected, color: AppColors.primaryColor),
+            const SvgIcon(
+              icon: IconStrings.selected,
+              color: AppColors.primaryColor,
+            ),
           ],
         ),
       ),

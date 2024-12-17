@@ -25,7 +25,7 @@ class BottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; //Todo replace with bottom data
+    String accountType = 'business'; //Todo replace with bottom data
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
     //     '';
     debugPrint('$accountType is from bottombar page (build)');

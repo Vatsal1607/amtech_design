@@ -51,6 +51,8 @@ dependencies:
   image_picker: ^1.1.2
   searchfield: ^1.2.0
   intl: ^0.20.1
+  dotted_dashed_line: ^0.0.3
+  lottie: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +87,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

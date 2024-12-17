@@ -19,6 +19,10 @@ class ReorderPage extends StatelessWidget {
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<ReorderProvider>(context);
     return Scaffold(
+      backgroundColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.seaShell,
+          personalColor: AppColors.seaMist),
       body: Stack(
         children: [
           CustomScrollView(

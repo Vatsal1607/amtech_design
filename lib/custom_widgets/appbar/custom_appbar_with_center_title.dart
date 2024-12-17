@@ -12,6 +12,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   final VoidCallback? onBackButtonPressed;
   final Color? backgroundColor;
   final bool isAction;
+  final VoidCallback? onTapAction;
 
   const CustomAppbarWithCenterTitle({
     super.key,
@@ -19,11 +20,12 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
     this.onBackButtonPressed,
     this.backgroundColor = AppColors.seaShell,
     this.isAction = false,
+    this.onTapAction,
   });
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return AppBar(
       backgroundColor: backgroundColor,
@@ -76,11 +78,15 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
           ),
           if (isAction)
             Positioned.fill(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: SvgIcon(
-                  icon: IconStrings.info,
-                  color: AppColors.disabledColor,
+              right: 15.w,
+              child: GestureDetector(
+                onTap: onTapAction,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: SvgIcon(
+                    icon: IconStrings.info,
+                    color: AppColors.disabledColor,
+                  ),
                 ),
               ),
             ),

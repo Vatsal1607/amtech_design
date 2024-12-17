@@ -6,7 +6,11 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 
 class ReorderCard extends StatelessWidget {
-  const ReorderCard({super.key});
+  // final String accountType;
+  const ReorderCard({
+    super.key,
+    // required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -22,7 +22,7 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Stack(
       children: [
@@ -85,7 +85,7 @@ class ProductWidget extends StatelessWidget {
                   ),
                   // * Foreground Content
                   Text(
-                    name.toUpperCase(),
+                    capitalizeEachWord(name),
                     maxLines: 1,
                     overflow: TextOverflow.visible,
                     textAlign: TextAlign.center,

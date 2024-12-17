@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class RechargeProvider extends ChangeNotifier {
+  final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
-
   final NumberFormat _indianFormat = NumberFormat('#,##,##,###', 'en_IN');
 
   RechargeProvider() {

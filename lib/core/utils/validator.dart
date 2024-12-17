@@ -28,4 +28,21 @@ class Validator {
     }
     return null;
   }
+
+  // Recharge Amount Validator
+  static String? rechargeAmountValidator(value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter an amount";
+    }
+    final cleanValue = value.replaceAll(',', '');
+    final intAmount = int.tryParse(cleanValue);
+    if (intAmount == null) {
+      return "Invalid number format";
+    } else if (intAmount < 500) {
+      return "Amount must be at least ₹500";
+    } else if (intAmount > 50000) {
+      return "Amount cannot exceed ₹50,000";
+    }
+    return null; // No error
+  }
 }

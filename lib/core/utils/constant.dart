@@ -61,3 +61,13 @@ List<BoxShadow>? kDropShadow = [
     offset: Offset(0, 4), // x: 0, y: 4
   ),
 ];
+
+// Capitalized first word:
+String capitalizeEachWord(String text) {
+  return text
+      .split(' ') // Split the text by spaces
+      .map((word) => word.isNotEmpty
+          ? '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}'
+          : '') // Capitalize the first letter
+      .join(' '); // Join the words back together
+}

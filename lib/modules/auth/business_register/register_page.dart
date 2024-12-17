@@ -1,7 +1,6 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/validator.dart';
 import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
-import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -10,13 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/constants/shared_prefs_keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/custom_button.dart';
 import '../../../custom_widgets/custom_textfield.dart';
-import '../../../services/local/shared_preferences_service.dart';
 import 'register_provider.dart';
-import 'widgets/upload_doc_widget.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -170,320 +166,357 @@ class RegisterPage extends StatelessWidget {
                   //! Business register column
                   SingleChildScrollView(
                       // physics: const ClampingScrollPhysics(),
-                      child: Form(
-                        key: provider.businessFormKey,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 40.h),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Register Your Business',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 28.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.disabledColor,
-                                ),
-                              ),
-                              SizedBox(height: 18.h),
-                              CustomTextField(
-                                hint: 'Enter Business Name',
-                                prefixIcon: IconStrings.business,
-                                controller: provider.businessNameController,
-                                validator: Validator.validateName,
-                              ),
-                              SizedBox(height: 20.h),
-                              CustomTextField(
-                                controller: provider.businessOwnerController,
-                                hint: 'Enter Business Owner\'s Name',
-                                prefixIcon: IconStrings.owner,
-                                validator: Validator.validateName,
-                              ),
-                              SizedBox(height: 20.h),
-                              CustomTextField(
-                                controller: provider.businessAddressController,
-                                hint: 'Enter Business Address',
-                                prefixIcon: IconStrings.locationWhite,
-                                validator: Validator.validateAddress,
-                              ),
-                              SizedBox(height: 20.h),
-                              Consumer<RegisterProvider>(
-                                builder: (context, _, child) => CustomTextField(
-                                  controller: provider.businessMobileController,
-                                  hint: 'Enter Mobile Number',
-                                  errorText: provider.businessMobileErrorText,
-                                  prefixIcon: IconStrings.phone,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.digitsOnly,
-                                    LengthLimitingTextInputFormatter(10),
-                                  ],
-                                  validator: Validator.validatePhoneNumber,
-                                  onChanged: provider.onChangeBusinessNumber,
-                                ),
-                              ),
-                              SizedBox(height: 20.h),
-                              //* Dropdown business type
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.seaShell,
-                                    width: 2.w,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context)
+                              .viewInsets
+                              .bottom, // Adjust for keyboard
+                        ),
+                        child: Form(
+                          key: provider.businessFormKey,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 40.h),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Register Your Business',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 28.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.disabledColor,
                                   ),
-                                  borderRadius: BorderRadius.circular(100.r),
                                 ),
-                                child: Row(
-                                  children: [
-                                    // Leading Icon (Outside the Dropdown)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
-                                      child: SvgIcon(
-                                        icon: IconStrings.property,
-                                      ),
+                                SizedBox(height: 18.h),
+                                CustomTextField(
+                                  hint: 'Enter Business Name',
+                                  prefixIcon: IconStrings.business,
+                                  controller: provider.businessNameController,
+                                  validator: Validator.validateName,
+                                ),
+                                SizedBox(height: 20.h),
+                                CustomTextField(
+                                  controller: provider.businessOwnerController,
+                                  hint: 'Enter Business Owner\'s Name',
+                                  prefixIcon: IconStrings.owner,
+                                  validator: Validator.validateName,
+                                ),
+                                SizedBox(height: 20.h),
+                                CustomTextField(
+                                  controller:
+                                      provider.businessAddressController,
+                                  hint: 'Enter Business Address',
+                                  prefixIcon: IconStrings.locationWhite,
+                                  validator: Validator.validateAddress,
+                                ),
+                                SizedBox(height: 20.h),
+                                Consumer<RegisterProvider>(
+                                  builder: (context, _, child) =>
+                                      CustomTextField(
+                                    controller:
+                                        provider.businessMobileController,
+                                    hint: 'Enter Mobile Number',
+                                    errorText: provider.businessMobileErrorText,
+                                    prefixIcon: IconStrings.phone,
+                                    keyboardType: TextInputType.number,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.digitsOnly,
+                                      LengthLimitingTextInputFormatter(10),
+                                    ],
+                                    validator: Validator.validatePhoneNumber,
+                                    onChanged: provider.onChangeBusinessNumber,
+                                  ),
+                                ),
+                                SizedBox(height: 20.h),
+                                //* Dropdown business type
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColors.seaShell,
+                                      width: 2.w,
                                     ),
-                                    Expanded(
-                                      child: Consumer<RegisterProvider>(
-                                        builder: (context, value, child) =>
-                                            DropdownButton2<String>(
-                                          dropdownStyleData: DropdownStyleData(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.seaShell,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10), // Rounded corners
-                                              border: Border.all(
-                                                color:
-                                                    Colors.grey, // Border color
-                                                width: 1, // Border width
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      // Leading Icon (Outside the Dropdown)
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 15.0),
+                                        child: SvgIcon(
+                                          icon: IconStrings.property,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Consumer<RegisterProvider>(
+                                          builder: (context, value, child) =>
+                                              DropdownButton2<String>(
+                                            dropdownStyleData:
+                                                DropdownStyleData(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.seaShell,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10), // Rounded corners
+                                                border: Border.all(
+                                                  color: Colors
+                                                      .grey, // Border color
+                                                  width: 1, // Border width
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          value: provider.selectedBusinessType,
-                                          isExpanded: true,
-                                          style: GoogleFonts.publicSans(
-                                            fontSize: 14.sp,
-                                            color: AppColors.white,
-                                          ),
-                                          hint: Text(
-                                            'Business Type',
+                                            value:
+                                                provider.selectedBusinessType,
+                                            isExpanded: true,
                                             style: GoogleFonts.publicSans(
                                               fontSize: 14.sp,
                                               color: AppColors.white,
                                             ),
-                                          ),
-                                          items: provider.businessTypeItems
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: GoogleFonts.publicSans(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          underline: const SizedBox.shrink(),
-                                          onChanged:
-                                              provider.onChangeBusinessType,
-                                          iconStyleData: IconStyleData(
-                                            icon: Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 20.w),
-                                              child: SvgIcon(
-                                                icon: IconStrings.dropdown,
+                                            hint: Text(
+                                              'Business Type',
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 14.sp,
+                                                color: AppColors.white,
                                               ),
                                             ),
-                                          ),
-                                          selectedItemBuilder:
-                                              (BuildContext context) {
-                                            return provider.businessTypeItems
-                                                .map<Widget>((String value) {
-                                              return Align(
-                                                alignment: Alignment.centerLeft,
+                                            items: provider.businessTypeItems
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
                                                 child: Text(
                                                   value,
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors
-                                                        .white, // Style for the selected item
+                                                  style: GoogleFonts.publicSans(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        AppColors.primaryColor,
                                                   ),
                                                 ),
                                               );
-                                            }).toList();
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(height: 20.h),
-
-                              //* Dropdown of Business property status
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.seaShell,
-                                    width: 2.w,
-                                  ),
-                                  borderRadius: BorderRadius.circular(100.r),
-                                ),
-                                child: Row(
-                                  children: [
-                                    // Leading Icon (Outside the Dropdown)
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 15.0),
-                                      child: SvgIcon(
-                                        icon: IconStrings.property,
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Consumer<RegisterProvider>(
-                                        builder: (context, value, child) =>
-                                            DropdownButton2<String>(
-                                          dropdownStyleData: DropdownStyleData(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.seaShell,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10), // Rounded corners
-                                              border: Border.all(
-                                                color:
-                                                    Colors.grey, // Border color
-                                                width: 1, // Border width
+                                            }).toList(),
+                                            underline: const SizedBox.shrink(),
+                                            onChanged:
+                                                provider.onChangeBusinessType,
+                                            iconStyleData: IconStyleData(
+                                              icon: Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: 20.w),
+                                                child: const SvgIcon(
+                                                  icon: IconStrings.dropdown,
+                                                ),
                                               ),
                                             ),
+                                            selectedItemBuilder:
+                                                (BuildContext context) {
+                                              return provider.businessTypeItems
+                                                  .map<Widget>((String value) {
+                                                return Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors
+                                                          .white, // Style for the selected item
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
                                           ),
-                                          value:
-                                              provider.selectedPropertyStatus,
-                                          isExpanded: true,
-                                          style: GoogleFonts.publicSans(
-                                            fontSize: 14.sp,
-                                            color: AppColors.white,
-                                          ),
-                                          hint: Text(
-                                            'Business Property Status',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(height: 20.h),
+
+                                //* Dropdown of Business property status
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColors.seaShell,
+                                      width: 2.w,
+                                    ),
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      // Leading Icon (Outside the Dropdown)
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 15.0),
+                                        child: SvgIcon(
+                                          icon: IconStrings.property,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Consumer<RegisterProvider>(
+                                          builder: (context, value, child) =>
+                                              DropdownButton2<String>(
+                                            dropdownStyleData:
+                                                DropdownStyleData(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.seaShell,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10), // Rounded corners
+                                                border: Border.all(
+                                                  color: Colors
+                                                      .grey, // Border color
+                                                  width: 1, // Border width
+                                                ),
+                                              ),
+                                            ),
+                                            value:
+                                                provider.selectedPropertyStatus,
+                                            isExpanded: true,
                                             style: GoogleFonts.publicSans(
                                               fontSize: 14.sp,
                                               color: AppColors.white,
                                             ),
-                                          ),
-                                          items: provider.propertyStatusItems
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: GoogleFonts.publicSans(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          underline: const SizedBox.shrink(),
-                                          onChanged:
-                                              provider.onChangePropertyStatus,
-                                          iconStyleData: IconStyleData(
-                                            icon: Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 20.w),
-                                              child: SvgIcon(
-                                                icon: IconStrings.dropdown,
+                                            hint: Text(
+                                              'Business Property Status',
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 14.sp,
+                                                color: AppColors.white,
                                               ),
                                             ),
-                                          ),
-                                          selectedItemBuilder:
-                                              (BuildContext context) {
-                                            return provider.propertyStatusItems
-                                                .map<Widget>((String value) {
-                                              return Align(
-                                                alignment: Alignment.centerLeft,
+                                            items: provider.propertyStatusItems
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
                                                 child: Text(
                                                   value,
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors
-                                                        .white, // Style for the selected item
+                                                  style: GoogleFonts.publicSans(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        AppColors.primaryColor,
                                                   ),
                                                 ),
                                               );
-                                            }).toList();
-                                          },
+                                            }).toList(),
+                                            underline: const SizedBox.shrink(),
+                                            onChanged:
+                                                provider.onChangePropertyStatus,
+                                            iconStyleData: IconStyleData(
+                                              icon: Padding(
+                                                padding: EdgeInsets.only(
+                                                    right: 20.w),
+                                                child: const SvgIcon(
+                                                  icon: IconStrings.dropdown,
+                                                ),
+                                              ),
+                                            ),
+                                            selectedItemBuilder:
+                                                (BuildContext context) {
+                                              return provider
+                                                  .propertyStatusItems
+                                                  .map<Widget>((String value) {
+                                                return Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors
+                                                          .white, // Style for the selected item
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
 
-                              // Consumer<RegisterProvider>(
-                              //   builder: (context, _, child) {
-                              //     // Upoad lightbill & rent agreement condition
-                              //     return provider.selectedPropertyStatus ==
-                              //             'Owner'
-                              //         ? Padding(
-                              //             padding: EdgeInsets.only(top: 20.h),
-                              //             child: UploadDocWidget(
-                              //               onTap: () {
-                              //                 debugPrint(
-                              //                     'Upload lightbill pressed');
-                              //                 //! lightbill upload
-                              //                 provider.pickAndAddImageToLists();
-                              //               },
-                              //               leadingIcon: IconStrings.bill,
-                              //               title: 'Upload Owner\'s Light Bill',
-                              //             ),
-                              //           )
-                              //         : provider.selectedPropertyStatus ==
-                              //                 'Rental'
-                              //             ? Padding(
-                              //                 padding:
-                              //                     EdgeInsets.only(top: 20.h),
-                              //                 child: UploadDocWidget(
-                              //                   onTap: () {
-                              //                     //! agreement upload
-                              //                     provider
-                              //                         .pickAndAddImageToLists();
-                              //                     debugPrint(
-                              //                         'Upload Rent pressed');
-                              //                   },
-                              //                   leadingIcon: IconStrings.bill,
-                              //                   title: 'Upload Rent Agreement',
-                              //                 ),
-                              //               )
-                              //             : const SizedBox();
-                              //   },
-                              // ),
-                              SizedBox(height: 20.h),
-                              // Todo add GST number field:
+                                // Consumer<RegisterProvider>(
+                                //   builder: (context, _, child) {
+                                //     // Upoad lightbill & rent agreement condition
+                                //     return provider.selectedPropertyStatus ==
+                                //             'Owner'
+                                //         ? Padding(
+                                //             padding: EdgeInsets.only(top: 20.h),
+                                //             child: UploadDocWidget(
+                                //               onTap: () {
+                                //                 debugPrint(
+                                //                     'Upload lightbill pressed');
+                                //                 //! lightbill upload
+                                //                 provider.pickAndAddImageToLists();
+                                //               },
+                                //               leadingIcon: IconStrings.bill,
+                                //               title: 'Upload Owner\'s Light Bill',
+                                //             ),
+                                //           )
+                                //         : provider.selectedPropertyStatus ==
+                                //                 'Rental'
+                                //             ? Padding(
+                                //                 padding:
+                                //                     EdgeInsets.only(top: 20.h),
+                                //                 child: UploadDocWidget(
+                                //                   onTap: () {
+                                //                     //! agreement upload
+                                //                     provider
+                                //                         .pickAndAddImageToLists();
+                                //                     debugPrint(
+                                //                         'Upload Rent pressed');
+                                //                   },
+                                //                   leadingIcon: IconStrings.bill,
+                                //                   title: 'Upload Rent Agreement',
+                                //                 ),
+                                //               )
+                                //             : const SizedBox();
+                                //   },
+                                // ),
+                                SizedBox(height: 20.h),
+                                CustomTextField(
+                                  hint: 'GST Number',
+                                  prefixIcon: IconStrings.bill,
+                                  controller: provider.gstNumberController,
+                                  suffixWidget: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(right: 18.w),
+                                        child: Text(
+                                          'VERIFY',
+                                          style: TextStyle(
+                                            color: AppColors.seaShell,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
 
-                              //! Adhar upload
-                              // UploadDocWidget(
-                              //   onTap: () {
-                              //     provider.pickAndAddImageToLists();
-                              //     debugPrint('Upload doc pressed');
-                              //   },
-                              //   title: 'Upload Owner\'s Aadhaar Card',
-                              // ),
-                              // SizedBox(height: 20.h),
-                              // UploadDocWidget(
-                              //   onTap: () {
-                              //     provider.pickAndAddImageToLists();
-                              //     debugPrint('GST card pressed');
-                              //   },
-                              //   title: 'Upload GST Document',
-                              // ),
-                              SizedBox(height: 150.h), //* bottom space business
-                            ],
+                                //! Adhar upload
+                                // UploadDocWidget(
+                                //   onTap: () {
+                                //     provider.pickAndAddImageToLists();
+                                //     debugPrint('Upload doc pressed');
+                                //   },
+                                //   title: 'Upload Owner\'s Aadhaar Card',
+                                // ),
+                                // SizedBox(height: 20.h),
+                                // UploadDocWidget(
+                                //   onTap: () {
+                                //     provider.pickAndAddImageToLists();
+                                //     debugPrint('GST card pressed');
+                                //   },
+                                //   title: 'Upload GST Document',
+                                // ),
+                                SizedBox(
+                                    height: 150.h), //* bottom space business
+                              ],
+                            ),
                           ),
                         ),
                       ),

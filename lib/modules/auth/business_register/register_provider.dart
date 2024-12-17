@@ -19,6 +19,7 @@ class RegisterProvider extends ChangeNotifier {
   TextEditingController businessOwnerController = TextEditingController();
   TextEditingController businessAddressController = TextEditingController();
   TextEditingController businessMobileController = TextEditingController();
+  TextEditingController gstNumberController = TextEditingController();
 
   //! Personal account controllers
   TextEditingController firstNameController = TextEditingController();

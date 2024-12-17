@@ -18,6 +18,8 @@ class CustomTextField extends StatelessWidget {
   final String? errorText;
   final Color textColor;
   final Color borderColor;
+  final Widget? suffixWidget;
+  final EdgeInsetsGeometry? contentPadding;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -31,16 +33,19 @@ class CustomTextField extends StatelessWidget {
     this.errorText,
     this.textColor = AppColors.seaShell,
     this.borderColor = AppColors.seaShell,
+    this.suffixWidget,
+    this.contentPadding,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: AppColors.seaShell,
       controller: controller,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       style: GoogleFonts.publicSans(
-        fontSize: 14.sp,
+        fontSize: 15.sp,
         color: textColor,
       ),
       validator: validator,
@@ -49,13 +54,15 @@ class CustomTextField extends StatelessWidget {
         hintText: hint,
         errorText: errorText,
         hintStyle: GoogleFonts.publicSans(
-          fontSize: 14.sp,
+          fontSize: 15.sp,
           color: textColor,
         ),
         prefixIcon: SvgIcon(
           icon: prefixIcon,
           color: iconColor,
         ),
+        suffixIcon: suffixWidget,
+        contentPadding: contentPadding,
         border: kTextfieldBorderStyle?.copyWith(
           borderSide: BorderSide(
             color: borderColor,

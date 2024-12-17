@@ -6,8 +6,8 @@ class BaseImagePath {
   static const basePath = 'assets/images/';
 }
 
-class BaseGifPath {
-  static const basePath = 'assets/gif/';
+class BaseLottiePath {
+  static const basePath = 'assets/lottie/';
 }
 
 class IconStrings {
@@ -95,6 +95,7 @@ class ImageStrings {
   static const razorpayLogo = '${BaseImagePath.basePath}razorpay_logo.png';
 }
 
-class GifStrings {
-  static const smoke = '${BaseGifPath.basePath}smoke.gif';
+class LottieStrings {
+  static const orderConfirm =
+      '${BaseLottiePath.basePath}order_confirm_lottie.json';
 }

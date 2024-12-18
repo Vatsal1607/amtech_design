@@ -2,6 +2,8 @@ import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
+import 'package:amtech_design/models/user_recharge_model.dart';
+import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
@@ -56,5 +58,17 @@ class ApiService {
     required Map<String, dynamic> body,
   }) async {
     return await apiClient.verifyOtp(body);
+  }
+
+  Future<UserRechargeModel> userRecharge({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.userRecharge(body);
+  }
+
+  Future<VerifyRechargeModel> verifyRecharge({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.verifyRecharge(body);
   }
 }

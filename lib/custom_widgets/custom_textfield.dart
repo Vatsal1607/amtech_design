@@ -20,6 +20,7 @@ class CustomTextField extends StatelessWidget {
   final Color borderColor;
   final Widget? suffixWidget;
   final EdgeInsetsGeometry? contentPadding;
+  final Color cursorColor;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -35,12 +36,13 @@ class CustomTextField extends StatelessWidget {
     this.borderColor = AppColors.seaShell,
     this.suffixWidget,
     this.contentPadding,
+    this.cursorColor = AppColors.seaShell,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      cursorColor: AppColors.seaShell,
+      cursorColor: cursorColor,
       controller: controller,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,

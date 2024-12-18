@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 
@@ -71,3 +72,15 @@ String capitalizeEachWord(String text) {
           : '') // Capitalize the first letter
       .join(' '); // Join the words back together
 }
+
+TextStyle? kRechargeTableHeaderStyle = GoogleFonts.publicSans(
+  fontSize: 12.sp,
+  fontWeight: FontWeight.bold,
+  color: AppColors.primaryColor,
+);
+
+TextStyle? kRechargeTableValueStyle = GoogleFonts.publicSans(
+  fontSize: 16.sp,
+  fontWeight: FontWeight.bold,
+  color: AppColors.primaryColor,
+);

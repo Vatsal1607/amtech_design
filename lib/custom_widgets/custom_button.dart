@@ -40,7 +40,9 @@ class CustomButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? const CircularProgressIndicator.adaptive()
+              ? const CircularProgressIndicator.adaptive(
+                  backgroundColor: AppColors.seaShell,
+                )
               : Text(
                   text.toUpperCase(),
                   style: GoogleFonts.publicSans(

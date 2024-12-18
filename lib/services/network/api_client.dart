@@ -1,10 +1,12 @@
 import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../models/business_list_model.dart';
 import '../../models/personal_register_model.dart';
 import '../../models/user_login_model.dart';
+import '../../models/user_recharge_model.dart';
 import 'api/api_constants.dart';
 part 'api_client.g.dart';
 
@@ -44,6 +46,16 @@ abstract class ApiClient {
 
   @POST(ApiEndpoints.verifyOtp)
   Future<ApiGlobalModel> verifyOtp(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST(ApiEndpoints.userRecharge)
+  Future<UserRechargeModel> userRecharge(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @POST(ApiEndpoints.verifyRecharge)
+  Future<VerifyRechargeModel> verifyRecharge(
     @Body() Map<String, dynamic> body,
   );
 }

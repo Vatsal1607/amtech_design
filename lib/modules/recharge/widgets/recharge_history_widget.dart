@@ -1,8 +1,12 @@
+import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constant.dart';
+import '../../../core/utils/strings.dart';
+import 'recharge_history_value.dart';
 
 class RechargeHistoryWidget extends StatelessWidget {
   const RechargeHistoryWidget({super.key});
@@ -43,38 +47,37 @@ class RechargeHistoryWidget extends StatelessWidget {
           ),
         ),
         SizedBox(height: 16.h),
-        // Table Headers
+        // * New table headers
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'DATE',
-              style: GoogleFonts.publicSans(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
+            Expanded(
+              flex: 2,
+              child: Text(
+                "DATE",
+                style: kRechargeTableHeaderStyle,
               ),
             ),
-            Text(
-              'AMOUNT',
-              style: GoogleFonts.publicSans(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
-              ),
+            Expanded(
+              flex: 2,
+              child: Center(
+                  child: Text("AMOUNT", style: kRechargeTableHeaderStyle)),
             ),
-            Text(
-              'PERKS',
-              style: GoogleFonts.publicSans(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
-              ),
+            Expanded(
+              flex: 1,
+              child: Center(
+                  child: Text("STATUS", style: kRechargeTableHeaderStyle)),
+            ),
+            Expanded(
+              flex: 1,
+              child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text("PERKS", style: kRechargeTableHeaderStyle)),
             ),
           ],
         ),
         SizedBox(height: 8.h),
-        // List Items
+        // * List Items
         ListView.separated(
           shrinkWrap: true,
           physics: const ClampingScrollPhysics(),
@@ -92,34 +95,11 @@ class RechargeHistoryWidget extends StatelessWidget {
             ],
           ),
           itemBuilder: (context, index) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '9/12/2024',
-                  style: GoogleFonts.publicSans(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text(
-                  '₹ 500',
-                  style: GoogleFonts.publicSans(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Text(
-                  '₹ 10',
-                  style: GoogleFonts.publicSans(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-              ],
+            return const RechargeHistoryValue(
+              date: '9/12/2024',
+              amount: '₹ 500',
+              perks: '₹ 10',
+              isSuccess: true,
             );
           },
         ),

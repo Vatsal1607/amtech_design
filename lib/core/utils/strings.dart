@@ -62,6 +62,8 @@ class IconStrings {
   static const selected = '${BaseIconPath.basePath}selected.svg';
   static const reorderBtn = '${BaseIconPath.basePath}reorder_btn.svg';
   static const info = '${BaseIconPath.basePath}info.svg';
+  static const success = '${BaseIconPath.basePath}success.svg';
+  static const failure = '${BaseIconPath.basePath}failure.svg';
 }
 
 class ImageStrings {

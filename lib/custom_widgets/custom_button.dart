@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../core/utils/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
@@ -16,7 +15,7 @@ class CustomButton extends StatelessWidget {
     super.key,
     this.text = 'NEXT',
     this.bgColor = AppColors.black,
-    this.textColor = AppColors.white,
+    this.textColor = AppColors.seaShell,
     required this.onTap,
     this.height,
     this.width,

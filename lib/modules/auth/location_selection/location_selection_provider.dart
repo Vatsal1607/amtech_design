@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/utils/constants/shared_prefs_keys.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../services/local/shared_preferences_service.dart';
 
 class LocationSelectionProvider extends ChangeNotifier {

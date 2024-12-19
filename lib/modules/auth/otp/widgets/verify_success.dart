@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../../../../core/utils/constants/shared_prefs_keys.dart';
+import '../../../../core/utils/constants/keys.dart';
 import '../../../../routes.dart';
 import '../../../../services/local/shared_preferences_service.dart';
 

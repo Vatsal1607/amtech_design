@@ -64,6 +64,10 @@ class IconStrings {
   static const info = '${BaseIconPath.basePath}info.svg';
   static const success = '${BaseIconPath.basePath}success.svg';
   static const failure = '${BaseIconPath.basePath}failure.svg';
+  static const orderStatus1 = '${BaseIconPath.basePath}order_status1.svg';
+  static const orderStatus2 = '${BaseIconPath.basePath}order_status2.svg';
+  static const orderStatus3 = '${BaseIconPath.basePath}order_status3.svg';
+  static const orderStatus4 = '${BaseIconPath.basePath}order_status4.svg';
 }
 
 class ImageStrings {
@@ -98,6 +102,12 @@ class ImageStrings {
 }
 
 class LottieStrings {
-  static const orderConfirm =
-      '${BaseLottiePath.basePath}order_confirm_lottie.json';
+  static const orderPlaced = '${BaseLottiePath.basePath}order-placed.json';
+  static const orderConfirm = '${BaseLottiePath.basePath}order-confirmed.json';
+  static const orderPreparation =
+      '${BaseLottiePath.basePath}order-preparation.json';
+  static const orderOutForDelivery =
+      '${BaseLottiePath.basePath}order-out-for-delivery.json';
+  static const orderDelivered =
+      '${BaseLottiePath.basePath}order-delivered.json';
 }

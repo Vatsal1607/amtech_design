@@ -1,22 +1,19 @@
-import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/custom_widgets/perks_chart_bottom_sheet.dart';
-import 'package:amtech_design/modules/razorpay/razorpay_page.dart';
 import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:amtech_design/modules/recharge/widgets/recharge_history_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../core/utils/validator.dart';
 import '../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
-import '../../routes.dart';
 
 class RechargePage extends StatefulWidget {
   const RechargePage({super.key});
@@ -173,9 +170,7 @@ class _RechargePageState extends State<RechargePage> {
                 ),
                 SizedBox(height: 23.h),
                 // * RechargeHistoryWidget
-                RechargeHistoryWidget(),
-                //! Temp Lottie file
-                // Lottie.asset(LottieStrings.orderConfirm),
+                const RechargeHistoryWidget(),
               ],
             ),
           ),
@@ -188,8 +183,8 @@ class _RechargePageState extends State<RechargePage> {
   void openRazorpay() {
     final cleanValue = provider.amountController.text.replaceAll(',', '');
     var options = {
-      'key': 'rzp_test_gvsZVEPcujnlQ5', // Replace with your Razorpay Test Key
-      // 'key': 'rzp_live_YbWaocbWfEYdCO', // Live key
+      'key': RazorPayKeys.testKey,
+      // 'key': RazorPayKeys.liveKey,
       'amount': int.parse(cleanValue) * 100,
       'currency': 'INR',
       'order_id': provider.razorpayOrderId,
@@ -199,9 +194,13 @@ class _RechargePageState extends State<RechargePage> {
         'contact': '9876543210',
         'email': 'customer@example.com',
       },
-      'external': {
-        'wallets': ['paytm'], // Optional: Enable external wallets like PayTM
-      }
+      'method': {
+        'upi': true,
+        'card': true,
+        'wallet': false,
+        'netbanking': false,
+        'paylater': false,
+      },
     };
 
     try {

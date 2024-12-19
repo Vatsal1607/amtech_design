@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:amtech_design/core/utils/constants/shared_prefs_keys.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';

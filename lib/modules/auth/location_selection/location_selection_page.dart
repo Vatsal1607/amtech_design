@@ -1,5 +1,5 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
-import 'package:amtech_design/core/utils/constants/shared_prefs_keys.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';

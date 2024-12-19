@@ -35,7 +35,7 @@ class Routes {
   static const String cart = '/cart';
   static const String recharge = '/rechargePage';
   static const String orderStatusPage = '/orderStatusPage';
-  static const String razorPayPage = '/razorPayPage';
+  // static const String razorPayPage = '/razorPayPage';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -54,6 +54,6 @@ class Routes {
     cart: (context) => const CartPage(),
     recharge: (context) => const RechargePage(),
     orderStatusPage: (context) => const OrderStatusPage(),
-    razorPayPage: (context) => const RazorPayPage(),
+    // razorPayPage: (context) => const RazorPayPage(),
   };
 }

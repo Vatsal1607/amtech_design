@@ -1001,18 +1001,23 @@ class MenuPage extends StatelessWidget {
               bottom: 25.w,
               child: Align(
                 alignment: Alignment.bottomLeft,
-                child: Container(
-                  height: 50.h,
-                  width: 70.w,
-                  decoration: BoxDecoration(
-                      color: AppColors.primaryColor,
-                      borderRadius: BorderRadius.circular(30.r)),
-                  child: Center(
-                    child: Text(
-                      'ORDER', // Todo Navigate to status page!
-                      style: GoogleFonts.publicSans(
-                        color: AppColors.white,
-                        fontSize: 12.sp,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.orderStatusPage);
+                  },
+                  child: Container(
+                    height: 50.h,
+                    width: 70.w,
+                    decoration: BoxDecoration(
+                        color: AppColors.primaryColor,
+                        borderRadius: BorderRadius.circular(30.r)),
+                    child: Center(
+                      child: Text(
+                        'ORDER',
+                        style: GoogleFonts.publicSans(
+                          color: AppColors.white,
+                          fontSize: 12.sp,
+                        ),
                       ),
                     ),
                   ),

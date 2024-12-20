@@ -70,9 +70,9 @@ dev_dependencies:
   retrofit_generator: ^9.1.5
 
 flutter_icons:
-  image_path: "assets/icons/app_icon_2.png"
   android: true
   ios: true
+  image_path: "assets/icons/app_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

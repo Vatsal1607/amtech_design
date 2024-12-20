@@ -6,6 +6,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
+import '../../../routes.dart';
 
 class SliderDetailsWidget extends StatelessWidget {
   final String icon;
@@ -73,12 +74,7 @@ class SliderDetailsWidget extends StatelessWidget {
           if (isShowRecharge)
             GestureDetector(
               onTap: () {
-                // Todo replace with named routes
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const RechargePage(),
-                    ));
+                Navigator.pushNamed(context, Routes.recharge);
               },
               child: Container(
                 height: 35.h,

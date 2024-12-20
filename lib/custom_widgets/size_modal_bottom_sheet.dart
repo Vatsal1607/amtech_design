@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
+import '../routes.dart';
 import 'product_size_widget.dart';
 
 void showSizeModalBottomSheet({
@@ -102,12 +103,7 @@ void showSizeModalBottomSheet({
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Todo imp: Replace with named routes
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const CartPage(),
-                                ));
+                            Navigator.pushNamed(context, Routes.cart);
                           },
                           child: Container(
                             height: 30.h,

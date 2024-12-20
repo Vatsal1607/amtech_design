@@ -7,13 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
+import '../../routes.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -22,12 +23,12 @@ class ProfilePage extends StatelessWidget {
         personalColor: AppColors.seaMist,
       ),
       appBar: CustomAppbarWithCenterTitle(
+        title: 'Account',
         backgroundColor: getColorAccountType(
           accountType: accountType,
           businessColor: AppColors.seaShell,
           personalColor: AppColors.seaMist,
         ),
-        title: 'Account',
       ),
       floatingActionButton: Container(
         height: 50.h,
@@ -159,6 +160,7 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               children: [
                 ProfileTile(
+                  accountType: accountType,
                   onTap: () {
                     debugPrint('pressed');
                   },
@@ -172,6 +174,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  accountType: accountType,
                   onTap: () {
                     debugPrint('pressed');
                   },
@@ -180,14 +183,16 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  accountType: accountType,
                   onTap: () {
-                    debugPrint('pressed');
+                    Navigator.pushNamed(context, Routes.authorizedEmp);
                   },
                   title: 'Authorized Employees',
                   icon: IconStrings.authorizedEmp,
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  accountType: accountType,
                   onTap: () {
                     debugPrint('pressed');
                   },
@@ -196,6 +201,7 @@ class ProfilePage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 ProfileTile(
+                  accountType: accountType,
                   onTap: () {
                     debugPrint('pressed');
                   },

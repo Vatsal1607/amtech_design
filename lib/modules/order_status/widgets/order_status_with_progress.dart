@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
-import '../../../custom_widgets/svg_icon.dart';
+import 'order_status_icon_widget.dart';
+import 'progress_line_widget.dart';
 
 class OrderStatusWithProgress extends StatelessWidget {
   const OrderStatusWithProgress({
@@ -20,44 +21,42 @@ class OrderStatusWithProgress extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Row(
+          const Row(
             children: [
-              const SvgIcon(
+              // * Status Icon widget
+              OrderStatusIconWidget(
+                isActive: true,
                 icon: IconStrings.orderStatus1,
-                color: AppColors.seaShell,
               ),
-              Expanded(
-                child: Container(
-                  height: 2.h,
-                  margin: EdgeInsets.symmetric(horizontal: 8.w),
-                  color: Colors.black,
-                ),
+
+              // * Progress line 1
+              ProgressLineWidget(
+                value: 0.5,
               ),
-              const SvgIcon(
+
+              // * Status Icon widget
+              OrderStatusIconWidget(
                 icon: IconStrings.orderStatus2,
-                color: AppColors.seaShell,
               ),
-              Expanded(
-                child: Container(
-                  height: 2.h,
-                  margin: EdgeInsets.symmetric(horizontal: 8.w),
-                  color: Colors.black,
-                ),
+
+              // * Progress line 2
+              ProgressLineWidget(
+                value: 0.0,
               ),
-              const SvgIcon(
+
+              // * Status Icon widget
+              OrderStatusIconWidget(
                 icon: IconStrings.orderStatus3,
-                color: AppColors.seaShell,
               ),
-              Expanded(
-                child: Container(
-                  height: 2.h,
-                  margin: EdgeInsets.symmetric(horizontal: 8.w),
-                  color: Colors.black,
-                ),
+
+              // * Progress line 3
+              ProgressLineWidget(
+                value: 0.0,
               ),
-              const SvgIcon(
+
+              // * Status Icon widget
+              OrderStatusIconWidget(
                 icon: IconStrings.orderStatus4,
-                color: AppColors.seaShell,
               ),
             ],
           ),
@@ -95,26 +94,6 @@ class OrderStatusWithProgress extends StatelessWidget {
             ),
             child: ExpansionTile(
               minTileHeight: 20.h,
-              // showTrailingIcon: false,
-              // * new title
-              // title: Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   mainAxisSize: MainAxisSize.max,
-              //   children: [
-              //     Text(
-              //       'View Order Details',
-              //       style: GoogleFonts.publicSans(
-              //         fontSize: 12.sp,
-              //         fontWeight: FontWeight.bold,
-              //         color: Colors.black,
-              //       ),
-              //     ),
-              //     Icon(
-              //       true ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              //       color: Colors.black,
-              //     ),
-              //   ],
-              // ),
               // * Old title
               title: Text(
                 'View Order Details',
@@ -122,9 +101,11 @@ class OrderStatusWithProgress extends StatelessWidget {
                 style: GoogleFonts.publicSans(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: AppColors.primaryColor,
                 ),
               ),
+              iconColor: AppColors.primaryColor,
+              collapsedIconColor: AppColors.primaryColor,
               children: const [
                 Text('data 1'),
                 Text('data 2'),

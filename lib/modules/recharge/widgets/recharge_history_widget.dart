@@ -1,11 +1,9 @@
-import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
-import '../../../core/utils/strings.dart';
 import 'recharge_history_value.dart';
 
 class RechargeHistoryWidget extends StatelessWidget {

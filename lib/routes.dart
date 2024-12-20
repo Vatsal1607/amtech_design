@@ -6,16 +6,14 @@ import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
-// import 'package:amtech_design/pages/menu/menu_page.dart';
 import 'package:flutter/material.dart';
-
 import 'modules/auth/business_register/register_page.dart';
 import 'modules/auth/business_selection/business_selection_page.dart';
 import 'modules/auth/otp/widgets/verify_success.dart';
+import 'modules/authorized_emp/authorized_emp_page.dart';
 import 'modules/order_status/order_status_page.dart';
 import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
-import 'modules/razorpay/razorpay_page.dart';
 import 'modules/recharge/recharge_page.dart';
 
 class Routes {
@@ -34,8 +32,9 @@ class Routes {
   static const String profile = '/profile';
   static const String cart = '/cart';
   static const String recharge = '/rechargePage';
-  static const String orderStatusPage = '/orderStatusPage';
-  // static const String razorPayPage = '/razorPayPage';
+  static const String orderStatus = '/orderStatus';
+  // static const String razorPay = '/razorPay';
+  static const String authorizedEmp = '/authorizedEmp';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -53,7 +52,8 @@ class Routes {
     profile: (context) => const ProfilePage(),
     cart: (context) => const CartPage(),
     recharge: (context) => const RechargePage(),
-    orderStatusPage: (context) => const OrderStatusPage(),
+    orderStatus: (context) => const OrderStatusPage(),
     // razorPayPage: (context) => const RazorPayPage(),
+    authorizedEmp: (context) => const AuthorizedEmpPage(),
   };
 }

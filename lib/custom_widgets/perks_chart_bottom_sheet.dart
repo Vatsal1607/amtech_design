@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/constant.dart';
 import '../core/utils/strings.dart';
-import '../modules/cart/widgets/select_payment_method_widget.dart';
 import 'svg_icon.dart';
 
 void showPerksChartBottomSheeet({
@@ -132,7 +131,7 @@ void showPerksChartBottomSheeet({
                         ),
                         children: <TextSpan>[
                           TextSpan(
-                            text: capitalizeEachWord('perks you can earn'),
+                            text: capitalizeEachWord('perks you can earn '),
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,

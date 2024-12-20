@@ -14,13 +14,14 @@ class OrderStatusPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.seaShell,
       appBar: const CustomAppbarWithCenterTitle(
         title: 'Order',
       ),
       body: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.only(bottom: 100.h),
+            padding: EdgeInsets.only(bottom: 80.h),
             child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
               child: Padding(
@@ -28,8 +29,11 @@ class OrderStatusPage extends StatelessWidget {
                 child: Column(
                   children: [
                     // * Lottie file
-                    Lottie.asset(
-                      LottieStrings.orderPlaced,
+                    SizedBox(
+                      height: 340.h,
+                      child: Lottie.asset(
+                        LottieStrings.orderPlaced,
+                      ),
                     ),
                     Text(
                       "Your Order Has Been",
@@ -65,7 +69,7 @@ class OrderStatusPage extends StatelessWidget {
                   height: 55.h,
                   bgColor: AppColors.primaryColor,
                   onTap: () {
-                    // Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   text: 'GO TO HOME',
                 ),

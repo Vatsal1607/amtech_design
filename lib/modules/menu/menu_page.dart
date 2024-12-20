@@ -94,8 +94,8 @@ class MenuPage extends StatelessWidget {
       floatingActionButton: Consumer<MenuProvider>(
         builder: (context, _, child) => PopupMenuButton(
           offset: provider.menuItemsName.length == 1
-              ? Offset(-10, -70)
-              : Offset(-10, -180),
+              ? const Offset(-10, -70)
+              : const Offset(-10, -180),
           onSelected: provider.onSelectedMenuItem,
           onCanceled: provider.onCanceledMenuItem,
           onOpened: provider.onOpenedMenuItem,
@@ -103,6 +103,7 @@ class MenuPage extends StatelessWidget {
             height: 50.h,
             width: 100.w,
             decoration: BoxDecoration(
+              boxShadow: kDropShadow,
               color: provider.isMenuOpen
                   ? AppColors.red
                   : getColorAccountType(
@@ -506,7 +507,8 @@ class MenuPage extends StatelessWidget {
                                   personalColor:
                                       AppColors.darkGreenGrey.withOpacity(0.8),
                                 ),
-                                prefixIcon: SvgIcon(icon: IconStrings.search),
+                                prefixIcon:
+                                    const SvgIcon(icon: IconStrings.search),
                               ),
                             ),
                           ),
@@ -997,32 +999,42 @@ class MenuPage extends StatelessWidget {
             ],
           ),
           Positioned(
-              left: 32.w,
-              bottom: 25.w,
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.orderStatusPage);
-                  },
-                  child: Container(
-                    height: 50.h,
-                    width: 70.w,
-                    decoration: BoxDecoration(
-                        color: AppColors.primaryColor,
-                        borderRadius: BorderRadius.circular(30.r)),
-                    child: Center(
-                      child: Text(
-                        'ORDER',
+            left: 32.w,
+            bottom: 25.w,
+            child: Align(
+              alignment: Alignment.bottomLeft,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, Routes.orderStatus);
+                },
+                child: Container(
+                  height: 50.h,
+                  width: 142.w,
+                  decoration: BoxDecoration(
+                      color: AppColors.lightGreen,
+                      boxShadow: kDropShadow,
+                      borderRadius: BorderRadius.circular(30.r)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SvgIcon(
+                        icon: IconStrings.viewOrder,
+                      ),
+                      SizedBox(width: 8.w),
+                      Text(
+                        'VIEW ORDER',
                         style: GoogleFonts.publicSans(
-                          color: AppColors.white,
+                          color: AppColors.seaShell,
                           fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ))
+              ),
+            ),
+          )
         ],
       ),
     );

@@ -68,6 +68,9 @@ class IconStrings {
   static const orderStatus2 = '${BaseIconPath.basePath}order_status2.svg';
   static const orderStatus3 = '${BaseIconPath.basePath}order_status3.svg';
   static const orderStatus4 = '${BaseIconPath.basePath}order_status4.svg';
+  static const viewOrder = '${BaseIconPath.basePath}view_order.svg';
+  static const position = '${BaseIconPath.basePath}position.svg';
+  static const fullname = '${BaseIconPath.basePath}fullname.svg';
 }
 
 class ImageStrings {

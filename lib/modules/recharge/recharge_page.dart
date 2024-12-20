@@ -60,6 +60,10 @@ class _RechargePageState extends State<RechargePage> {
     // final provider = Provider.of<RechargeProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
+        onBackButtonPressed: () {
+          provider.amountController.clear();
+          Navigator.pop(context);
+        },
         title: 'Recharge',
         isAction: true,
         onTapAction: () {
@@ -99,13 +103,24 @@ class _RechargePageState extends State<RechargePage> {
                 SizedBox(height: 5.h),
                 Padding(
                   padding: EdgeInsets.only(left: 8.w),
-                  child: Text(
-                    'Available Balance: 11'.toUpperCase(),
-                    style: GoogleFonts.publicSans(
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.black,
-                    ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Available Balance: ',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 13.sp,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                      Text(
+                        '₹ 11'.toUpperCase(),
+                        style: GoogleFonts.publicSans(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 15.h),

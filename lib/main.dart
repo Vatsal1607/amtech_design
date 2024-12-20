@@ -10,6 +10,7 @@ import 'modules/auth/business_register/register_provider.dart';
 import 'modules/auth/business_selection/business_selection_provider.dart';
 import 'modules/auth/location_selection/location_selection_provider.dart';
 import 'modules/auth/otp/otp_provider.dart';
+import 'modules/authorized_emp/authorized_emp_provider.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/menu/menu_provider.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ReorderProvider()),
         ChangeNotifierProvider(create: (_) => RechargeProvider()),
         ChangeNotifierProvider(create: (_) => OrderStatusProvider()),
+        ChangeNotifierProvider(create: (_) => AuthorizedEmpProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)
@@ -55,16 +57,15 @@ class MyApp extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
             scaffoldBackgroundColor: AppColors.seaShell,
-            // Snackbar global theme
             snackBarTheme: const SnackBarThemeData(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.zero, // Removes border radius
               ),
             ),
           ),
-          // home: BottomBarPage(), //! temp route for dev, change to routes
           initialRoute: Routes.initial,
           routes: Routes.routes,
+          // onGenerateRoute: (settings) {},
         ),
       ),
     );

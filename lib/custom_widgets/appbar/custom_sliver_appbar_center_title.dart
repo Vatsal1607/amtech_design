@@ -6,8 +6,7 @@ import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
 import '../svg_icon.dart';
 
-class CustomAppbarWithCenterTitle extends StatelessWidget
-    implements PreferredSizeWidget {
+class CustomSliverAppbarWithCenterTitle extends StatelessWidget {
   final String title;
   final VoidCallback? onBackButtonPressed;
   final Color? backgroundColor;
@@ -15,7 +14,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   final VoidCallback? onTapAction;
   final double? leftPadTitle;
 
-  const CustomAppbarWithCenterTitle({
+  const CustomSliverAppbarWithCenterTitle({
     super.key,
     required this.title,
     this.onBackButtonPressed,
@@ -29,10 +28,12 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   Widget build(BuildContext context) {
     String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    return AppBar(
+    return SliverAppBar(
       elevation: 0.0,
       backgroundColor: backgroundColor,
       automaticallyImplyLeading: false,
+      // floating: false,
+      pinned: true,
       title: Stack(
         children: [
           Align(
@@ -99,7 +100,4 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
       ),
     );
   }
-
-  @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

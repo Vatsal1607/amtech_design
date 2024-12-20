@@ -6,7 +6,7 @@ import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/strings.dart';
 import '../../modules/menu/menu_provider.dart';
-import '../../modules/profile/profile_page.dart';
+import '../../routes.dart';
 import '../svg_icon.dart';
 
 class CustomSliverAppbar extends StatelessWidget {
@@ -34,13 +34,7 @@ class CustomSliverAppbar extends StatelessWidget {
           //! leading icon
           GestureDetector(
             onTap: () {
-              // Navigator.pushNamed(context, Routes.profile);
-              // Todo imp: Replace with named routes
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfilePage(),
-                  ));
+              Navigator.pushNamed(context, Routes.profile);
             },
             child: Container(
               height: 48.h,

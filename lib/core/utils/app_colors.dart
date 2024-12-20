@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const primaryColor = Color(0XFF0B2545); // Navy blue
   static const disabledColor = Color(0XFF8DA9C4);
+  static const disabledBg = Color(0XFF4B6684);
   static const white = Colors.white;
   static const black = Colors.black;
   static const red = Color(0XFFFF0000);

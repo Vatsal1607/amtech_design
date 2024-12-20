@@ -11,6 +11,7 @@ class ProfileTile extends StatelessWidget {
   final Color iconColor;
   final Color? bgColor;
   final VoidCallback? onTap;
+  final String accountType;
   const ProfileTile({
     super.key,
     required this.title,
@@ -18,11 +19,12 @@ class ProfileTile extends StatelessWidget {
     this.iconColor = AppColors.seaShell,
     this.bgColor,
     this.onTap,
+    required this.accountType,
   });
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    // String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return GestureDetector(
       onTap: onTap,

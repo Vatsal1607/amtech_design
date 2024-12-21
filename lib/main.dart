@@ -71,3 +71,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//! worked on notification page ui & fix appbar color issue on scroll

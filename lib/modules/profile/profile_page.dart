@@ -62,157 +62,160 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 33.w, right: 33.w, top: 30.h),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  height: 80.h,
-                  width: 80.w,
-                  decoration: BoxDecoration(
-                    // boxShadow: kDropShadow,
-                    color: Colors.black,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: AppColors.primaryColor,
-                      width: 2.0,
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 33.w, right: 33.w, top: 30.h),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 80.h,
+                    width: 80.w,
+                    decoration: BoxDecoration(
+                      // boxShadow: kDropShadow,
+                      color: Colors.black,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: AppColors.primaryColor,
+                        width: 2.0,
+                      ),
+                    ),
+                    child: ClipOval(
+                      child: Image.asset(
+                        ImageStrings.logo,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                  child: ClipOval(
-                    child: Image.asset(
-                      ImageStrings.logo,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                SizedBox(width: 24.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Text(
-                          'AMTech Design',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w700,
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
+                  SizedBox(width: 24.w),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'AMTech Design',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w700,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 10.w),
-                        const SvgIcon(
-                          icon: IconStrings.verifiedUser,
-                          color: AppColors.disabledColor,
-                        ),
-                      ],
-                    ),
-                    Text(
-                      'Business Account',
-                      style: GoogleFonts.publicSans(
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 15.sp,
+                          SizedBox(width: 10.w),
+                          const SvgIcon(
+                            icon: IconStrings.verifiedUser,
+                            color: AppColors.disabledColor,
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      'EDIT PROFILE',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 15.sp,
-                        fontWeight: FontWeight.w700,
-                        // color: AppColors.disabledColor,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.disabledColor,
-                          personalColor: AppColors.bayLeaf,
+                      Text(
+                        'Business Account',
+                        style: GoogleFonts.publicSans(
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15.sp,
                         ),
                       ),
-                    )
-                  ],
-                )
-              ],
+                      Text(
+                        'EDIT PROFILE',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.w700,
+                          // color: AppColors.disabledColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.disabledColor,
+                            personalColor: AppColors.bayLeaf,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 29.h),
-          Divider(
-            height: 2.h,
-            indent: 33.w,
-            endIndent: 33.w,
-            color: getColorAccountType(
-              accountType: accountType,
-              businessColor: AppColors.disabledColor,
-              personalColor: AppColors.bayLeaf,
+            SizedBox(height: 29.h),
+            Divider(
+              height: 2.h,
+              indent: 33.w,
+              endIndent: 33.w,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.disabledColor,
+                personalColor: AppColors.bayLeaf,
+              ),
             ),
-          ),
-          SizedBox(height: 29.h),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 33.w),
-            child: Column(
-              children: [
-                ProfileTile(
-                  accountType: accountType,
-                  onTap: () {
-                    debugPrint('pressed');
-                  },
-                  title: 'Home',
-                  icon: IconStrings.home,
-                  bgColor: getColorAccountType(
+            SizedBox(height: 29.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 33.w),
+              child: Column(
+                children: [
+                  ProfileTile(
                     accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
+                    onTap: () {
+                      debugPrint('pressed');
+                    },
+                    title: 'Home',
+                    icon: IconStrings.home,
+                    bgColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
-                ),
-                SizedBox(height: 20.h),
-                ProfileTile(
-                  accountType: accountType,
-                  onTap: () {
-                    debugPrint('pressed');
-                  },
-                  title: 'Favorite Products',
-                  icon: IconStrings.favorite,
-                ),
-                SizedBox(height: 20.h),
-                ProfileTile(
-                  accountType: accountType,
-                  onTap: () {
-                    Navigator.pushNamed(context, Routes.authorizedEmp);
-                  },
-                  title: 'Authorized Employees',
-                  icon: IconStrings.authorizedEmp,
-                ),
-                SizedBox(height: 20.h),
-                ProfileTile(
-                  accountType: accountType,
-                  onTap: () {
-                    debugPrint('pressed');
-                  },
-                  title: 'Feedback',
-                  icon: IconStrings.feedback,
-                ),
-                SizedBox(height: 20.h),
-                ProfileTile(
-                  accountType: accountType,
-                  onTap: () {
-                    debugPrint('pressed');
-                  },
-                  title: 'About Us',
-                  icon: IconStrings.aboutUs,
-                ),
-                SizedBox(height: 20.h),
-              ],
+                  SizedBox(height: 20.h),
+                  ProfileTile(
+                    accountType: accountType,
+                    onTap: () {
+                      debugPrint('pressed');
+                    },
+                    title: 'Favorite Products',
+                    icon: IconStrings.favorite,
+                  ),
+                  SizedBox(height: 20.h),
+                  ProfileTile(
+                    accountType: accountType,
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.authorizedEmp);
+                    },
+                    title: 'Authorized Employees',
+                    icon: IconStrings.authorizedEmp,
+                  ),
+                  SizedBox(height: 20.h),
+                  ProfileTile(
+                    accountType: accountType,
+                    onTap: () {
+                      debugPrint('pressed');
+                    },
+                    title: 'Feedback',
+                    icon: IconStrings.feedback,
+                  ),
+                  SizedBox(height: 20.h),
+                  ProfileTile(
+                    accountType: accountType,
+                    onTap: () {
+                      debugPrint('pressed');
+                    },
+                    title: 'About Us',
+                    icon: IconStrings.aboutUs,
+                  ),
+                  SizedBox(height: 20.h),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -558,8 +558,8 @@ class MenuPage extends StatelessWidget {
                                             onTap: () {
                                               debugPrint(
                                                   'Product item pressed $index');
-                                              Navigator.pushNamed(
-                                                  context, Routes.productPage);
+                                              Navigator.pushNamed(context,
+                                                  Routes.productDetails);
                                             },
                                             child: ProductWidget(
                                               image:

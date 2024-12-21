@@ -71,6 +71,7 @@ class IconStrings {
   static const viewOrder = '${BaseIconPath.basePath}view_order.svg';
   static const position = '${BaseIconPath.basePath}position.svg';
   static const fullname = '${BaseIconPath.basePath}fullname.svg';
+  static const more = '${BaseIconPath.basePath}more.svg';
 }
 
 class ImageStrings {

@@ -14,7 +14,8 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   final bool isAction;
   final VoidCallback? onTapAction;
   final double? leftPadTitle;
-
+  final String actionIcon;
+  final Color actionIconColor;
   const CustomAppbarWithCenterTitle({
     super.key,
     required this.title,
@@ -23,6 +24,8 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
     this.isAction = false,
     this.onTapAction,
     this.leftPadTitle = 0.0,
+    this.actionIcon = IconStrings.info,
+    this.actionIconColor = AppColors.disabledColor,
   });
 
   @override
@@ -30,6 +33,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
     String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return AppBar(
+      forceMaterialTransparency: true, // * disable color change on scroll
       elevation: 0.0,
       backgroundColor: backgroundColor,
       automaticallyImplyLeading: false,
@@ -86,11 +90,11 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
               right: 15.w,
               child: GestureDetector(
                 onTap: onTapAction,
-                child: const Align(
+                child: Align(
                   alignment: Alignment.centerRight,
                   child: SvgIcon(
-                    icon: IconStrings.info,
-                    color: AppColors.disabledColor,
+                    icon: actionIcon,
+                    color: actionIconColor,
                   ),
                 ),
               ),

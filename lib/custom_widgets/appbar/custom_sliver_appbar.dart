@@ -99,54 +99,59 @@ class CustomSliverAppbar extends StatelessWidget {
           ),
 
           //! trailing(action) icon
-          Container(
-            height: 48.h,
-            width: 48.w,
-            decoration: BoxDecoration(
-              boxShadow: kDropShadow,
-              color: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
-              ),
-              shape: BoxShape.circle,
-            ),
-            child: Stack(
-              children: [
-                const Positioned.fill(
-                  // child: SvgIcon(
-                  //   icon: IconStrings.notification,
-                  //   color: AppColors.white,
-                  // ),
-                  // Todo: Replace with svg icon (above commented) // ReLaunch
-                  child: Icon(
-                    Icons.notifications_outlined,
-                    color: AppColors.white,
-                  ),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, Routes.notification);
+            },
+            child: Container(
+              height: 48.h,
+              width: 48.w,
+              decoration: BoxDecoration(
+                boxShadow: kDropShadow,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
                 ),
-                Positioned(
-                  top: 0,
-                  right: 0,
-                  child: Container(
-                    height: 20.h,
-                    width: 20.h,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.red,
+                shape: BoxShape.circle,
+              ),
+              child: Stack(
+                children: [
+                  const Positioned.fill(
+                    // child: SvgIcon(
+                    //   icon: IconStrings.notification,
+                    //   color: AppColors.white,
+                    // ),
+                    // Todo: Replace with svg icon (above commented) // ReLaunch
+                    child: Icon(
+                      Icons.notifications_outlined,
+                      color: AppColors.white,
                     ),
-                    child: Center(
-                      child: Text(
-                        '99+',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 8.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.white,
+                  ),
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      height: 20.h,
+                      width: 20.h,
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.red,
+                      ),
+                      child: Center(
+                        child: Text(
+                          '99+',
+                          style: GoogleFonts.publicSans(
+                            fontSize: 8.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.white,
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],

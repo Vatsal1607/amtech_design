@@ -65,6 +65,7 @@ class _RechargePageState extends State<RechargePage> {
           Navigator.pop(context);
         },
         title: 'Recharge',
+        // actionIcon: IconStrings.info,
         isAction: true,
         onTapAction: () {
           // * Show Perks chart

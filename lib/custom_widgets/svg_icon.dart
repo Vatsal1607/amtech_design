@@ -5,10 +5,14 @@ import '../core/utils/app_colors.dart';
 class SvgIcon extends StatelessWidget {
   final String icon;
   final Color color;
+  final double? height;
+  final double? width;
   const SvgIcon({
     super.key,
     required this.icon,
     this.color = AppColors.seaShell,
+    this.height,
+    this.width,
   });
 
   @override
@@ -20,6 +24,8 @@ class SvgIcon extends StatelessWidget {
         BlendMode.srcIn, // Use srcIn to apply color
       ),
       fit: BoxFit.scaleDown,
+      height: height,
+      width: width,
     );
   }
 }

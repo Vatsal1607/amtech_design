@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,20 +14,23 @@ void showPerksChartBottomSheeet({
 }) {
   showModalBottomSheet(
     context: context,
+    barrierColor: Colors.transparent,
     backgroundColor: getColorAccountType(
       accountType: accountType,
       businessColor: AppColors.primaryColor,
       personalColor: AppColors.darkGreenGrey,
     ),
-    // isScrollControlled: true,
     builder: (context) {
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+            child: Container(),
+          ),
           Positioned(
             child: Container(
               padding: EdgeInsets.only(top: 19.h, left: 32.w, right: 32.w),
-              // height: 323.h,
               width: 1.sw,
               child: Column(
                 mainAxisSize: MainAxisSize.min,

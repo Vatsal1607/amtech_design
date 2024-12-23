@@ -103,6 +103,9 @@ class ImageStrings {
   static const cartDoodle = '${BaseImagePath.basePath}cart_doodle.png';
   static const perksLogo = '${BaseImagePath.basePath}perks_logo.png';
   static const razorpayLogo = '${BaseImagePath.basePath}razorpay_logo.png';
+  static const blogPng = '${BaseImagePath.basePath}blog_png.png';
+  static const healthFirstBanner =
+      '${BaseImagePath.basePath}health_first_banner.png';
 }
 
 class LottieStrings {

@@ -26,8 +26,8 @@ class MenuProvider extends ChangeNotifier {
   bool onNotification(ScrollNotification scrollNotification) {
     if (scrollNotification.metrics.axis == Axis.vertical) {
       double scrollOffset = scrollNotification.metrics.pixels;
-      debugPrint('scrollOffset: $scrollOffset');
-      // Define the specific area range
+      // debugPrint('scrollOffset: $scrollOffset');
+      // * Define the specific area range
       if (scrollOffset > 220) {
         if (!isVisibleSearchSpaceTop) {
           isVisibleSearchSpaceTop = true;
@@ -44,8 +44,8 @@ class MenuProvider extends ChangeNotifier {
   }
 
   final List<String> banners = [
-    ImageStrings.masalaTeaBanner,
-    ImageStrings.navratiBanner,
+    ImageStrings.healthFirstBanner,
+    ImageStrings.healthFirstBanner,
   ];
 
   final List<String> productImage = [
@@ -53,10 +53,6 @@ class MenuProvider extends ChangeNotifier {
     ImageStrings.masalaTea2,
     ImageStrings.masalaTea2,
     ImageStrings.masalaTea2,
-    // ImageStrings.masalaTea3,
-    // ImageStrings.masalaTea3,
-    // ImageStrings.masalaTea3,
-    // ImageStrings.masalaTea3,
   ];
 
   final List<String> productName = [
@@ -66,7 +62,7 @@ class MenuProvider extends ChangeNotifier {
     'everyday tea',
   ];
 
-  // get dynamic greetings
+  // * get dynamic greetings
   String getGreeting() {
     final hour = DateTime.now().hour;
     if (hour < 12) {
@@ -80,15 +76,25 @@ class MenuProvider extends ChangeNotifier {
 
   String? selectedValue;
   bool isMenuOpen = false;
+
+  // * Menu items (Also values of items)
   List<String> menuItemsName = [
     'Tea',
     'Coffee',
-    'Snacks',
+    'Best Seller',
   ];
 
   onSelectedMenuItem(value) {
     selectedValue = value;
+    isMenuOpen = false;
     notifyListeners();
+    if (value == "Best Seller") {
+      scrollToSection(bestSellerKey);
+    } else if (value == "Tea") {
+      scrollToSection(teaKey);
+    } else if (value == "Coffee") {
+      scrollToSection(coffeeKey);
+    }
   }
 
   onCanceledMenuItem() {
@@ -99,5 +105,22 @@ class MenuProvider extends ChangeNotifier {
   onOpenedMenuItem() {
     isMenuOpen = true;
     notifyListeners();
+  }
+
+  // * Create keys for each section
+  final GlobalKey bestSellerKey = GlobalKey();
+  final GlobalKey teaKey = GlobalKey();
+  final GlobalKey coffeeKey = GlobalKey();
+
+  // * Scroll to the section with its key
+  void scrollToSection(GlobalKey sectionKey) {
+    final context = sectionKey.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
   }
 }

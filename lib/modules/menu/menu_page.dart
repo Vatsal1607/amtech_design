@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
 import '../../routes.dart';
+import 'widgets/fab_menu_button.dart';
 import 'widgets/slider_details_widget.dart';
 
 class MenuPage extends StatelessWidget {
@@ -31,145 +32,10 @@ class MenuPage extends StatelessWidget {
         businessColor: AppColors.seaShell,
         personalColor: AppColors.seaMist,
       ),
-
-      // appBar: CustomAppBar(
-      //   backgroundColor: AppColors.seaShell.withOpacity(0.4),
-      //   title: 'Good Afternoon,',
-      //   subTitle: 'AMTech Design',
-      //   leading: Container(
-      //     height: 48.h,
-      //     width: 48.w,
-      //     decoration: BoxDecoration(
-      //       shape: BoxShape.circle,
-      //       border: Border.all(
-      //         color: AppColors.primaryColor,
-      //         width: 2.w,
-      //       ), // Border color and width
-      //     ),
-      //     child: ClipOval(
-      //       child: Image.asset(
-      //         ImageStrings.logo,
-      //         height: 48.h,
-      //         width: 48.w,
-      //       ),
-      //     ),
-      //   ),
-      //   actions: [
-      //     Container(
-      //       height: 45.h,
-      //       width: 45.w,
-      //       margin: const EdgeInsets.only(right: 15.0),
-      //       decoration: const BoxDecoration(
-      //         color: AppColors.primaryColor,
-      //         shape: BoxShape.circle,
-      //       ),
-      //       child: Stack(
-      //         children: [
-      //           const Positioned.fill(
-      //             child: Icon(
-      //               Icons.notifications_outlined,
-      //               color: AppColors.white,
-      //             ),
-      //           ),
-      //           Positioned.fill(
-      //             top: 2,
-      //             child: Align(
-      //               alignment: Alignment.topRight,
-      //               child: Container(
-      //                 height: 12.h,
-      //                 width: 12.w,
-      //                 decoration: const BoxDecoration(
-      //                   shape: BoxShape.circle,
-      //                   color: AppColors.red,
-      //                 ),
-      //               ),
-      //             ),
-      //           ),
-      //         ],
-      //       ),
-      //     ),
-      //   ],
-      // ),
-
-      floatingActionButton: Consumer<MenuProvider>(
-        builder: (context, _, child) => PopupMenuButton(
-          offset: provider.menuItemsName.length == 1
-              ? const Offset(-10, -70)
-              : const Offset(-10, -180),
-          onSelected: provider.onSelectedMenuItem,
-          onCanceled: provider.onCanceledMenuItem,
-          onOpened: provider.onOpenedMenuItem,
-          icon: Container(
-            height: 50.h,
-            width: 100.w,
-            decoration: BoxDecoration(
-              boxShadow: kDropShadow,
-              color: provider.isMenuOpen
-                  ? AppColors.red
-                  : getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-              borderRadius: BorderRadius.circular(30.r),
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgIcon(
-                  icon:
-                      provider.isMenuOpen ? IconStrings.close : IconStrings.cup,
-                ),
-                SizedBox(width: 8.w),
-                Text(
-                  provider.isMenuOpen ? 'CLOSE' : 'MENU',
-                  style: GoogleFonts.publicSans(
-                    color: AppColors.white,
-                    fontSize: 12.sp,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.r),
-          ),
-          color: AppColors.primaryColor,
-          itemBuilder: (context) {
-            return provider.menuItemsName.map<PopupMenuEntry<String>>(
-              (item) {
-                return PopupMenuItem(
-                  value: item,
-                  child: Container(
-                    width: double.infinity,
-                    padding:
-                        EdgeInsets.symmetric(vertical: 15.h, horizontal: 23.w),
-                    decoration: BoxDecoration(
-                      color: provider.selectedValue == item
-                          ? AppColors.disabledColor
-                          : null,
-                      borderRadius: BorderRadius.circular(30.r),
-                    ),
-                    child: Text(
-                      item.toUpperCase(),
-                      textAlign: TextAlign.center,
-                      style: provider.selectedValue == item
-                          ? GoogleFonts.publicSans(
-                              fontSize: 15.sp,
-                              fontWeight: FontWeight.bold,
-                              color: AppColors.primaryColor,
-                            )
-                          : GoogleFonts.publicSans(
-                              fontSize: 15.sp,
-                              color: AppColors.seaShell,
-                            ),
-                    ),
-                  ),
-                );
-              },
-            ).toList();
-          },
-        ),
+      // * FAB
+      floatingActionButton: FabMenuButton(
+        provider: provider,
+        accountType: accountType,
       ),
       body: Stack(
         children: [
@@ -185,7 +51,7 @@ class MenuPage extends StatelessWidget {
                         accountType: accountType,
                       ),
 
-                      // Initial data in Sliver
+                      // * Initial data in Sliver
                       SliverToBoxAdapter(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -277,7 +143,7 @@ class MenuPage extends StatelessWidget {
                             ),
                             SizedBox(height: 13.h),
 
-                            // Linear progress indicator:
+                            // * Linear progress indicator:
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 22.0),
@@ -360,82 +226,6 @@ class MenuPage extends StatelessWidget {
                             //     ),
                             //   ),
                             // ),
-
-                            //* Slider details widget
-                            // SliderDetailsWidget(
-                            //   accountType: accountType,
-                            //   filledValue: '140',
-                            //   totalValue: '200',
-                            //   label: 'reward points',
-                            //   icon: IconStrings.reward,
-                            // ),
-                            // Slider widget REWARD points
-                            // Padding(
-                            //   padding: EdgeInsets.symmetric(horizontal: 20.h),
-                            //   child: Consumer<MenuProvider>(
-                            //     builder: (BuildContext context, provider,
-                            //             Widget? child) =>
-                            //         SliderTheme(
-                            //       data: SliderTheme.of(context).copyWith(
-                            //         thumbShape: SliderComponentShape.noThumb,
-                            //         overlayShape: SliderComponentShape
-                            //             .noOverlay, // Remove thumb shadow overlay
-                            //         activeTrackColor: getColorAccountType(
-                            //           accountType: accountType,
-                            //           businessColor: AppColors.primaryColor,
-                            //           personalColor: AppColors.darkGreenGrey,
-                            //         ),
-                            //         inactiveTrackColor: getColorAccountType(
-                            //           accountType: accountType,
-                            //           businessColor: AppColors.disabledColor,
-                            //           personalColor: AppColors.bayLeaf,
-                            //         ),
-                            //         trackShape: CustomTrackShape(),
-                            //       ),
-                            //       child: Slider(
-                            //         // value: provider.currentSliderValue,
-                            //         value: 140,
-                            //         max: 200,
-                            //         onChanged: provider.onChangeSlider,
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 13.0),
-                            // Container(
-                            //   height: 28.0,
-                            //   margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                            //   decoration: BoxDecoration(
-                            //     color: getColorAccountType(
-                            //       accountType: accountType,
-                            //       businessColor: AppColors.primaryColor,
-                            //       personalColor: AppColors.darkGreenGrey,
-                            //     ),
-                            //     borderRadius: BorderRadius.circular(100.0),
-                            //   ),
-                            //   child: Center(
-                            //     child: RichText(
-                            //       text: TextSpan(
-                            //         text: '60 points left '.toUpperCase(),
-                            //         style: GoogleFonts.publicSans(
-                            //           fontSize: 10.0,
-                            //           fontWeight: FontWeight.bold,
-                            //           color: AppColors.white,
-                            //         ),
-                            //         children: <TextSpan>[
-                            //           TextSpan(
-                            //             text: 'to your next reward'.toUpperCase(),
-                            //             style: GoogleFonts.publicSans(
-                            //               fontSize: 10.0,
-                            //               color: AppColors.white,
-                            //             ),
-                            //           ),
-                            //         ],
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
-                            // SizedBox(height: 22.h),
                           ],
                         ),
                       ),
@@ -529,18 +319,19 @@ class MenuPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10.0),
 
-                                  // Best Seller Divider
+                                  // * Best Seller Divider
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20.0),
                                     child: DividerLabel(
+                                      key: provider.bestSellerKey,
                                       label: 'BEST SELLER',
                                       accountType: accountType,
                                     ),
                                   ),
                                   const SizedBox(height: 15.0),
 
-                                  // Best seller horizontal view
+                                  // * Best seller horizontal view
                                   SizedBox(
                                     height: 157.h,
                                     child: ListView.separated(
@@ -578,12 +369,13 @@ class MenuPage extends StatelessWidget {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20.w),
                                     child: DividerLabel(
+                                      key: provider.teaKey,
                                       label: 'TEA',
                                       accountType: accountType,
                                     ),
                                   ),
                                   const SizedBox(height: 15),
-                                  // TEA seller horizontal view
+                                  // * TEA horizontal view
                                   SizedBox(
                                     height: 157.h,
                                     child: ListView.separated(
@@ -621,12 +413,13 @@ class MenuPage extends StatelessWidget {
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20.w),
                                     child: DividerLabel(
+                                      key: provider.coffeeKey,
                                       label: 'Coffee',
                                       accountType: accountType,
                                     ),
                                   ),
                                   const SizedBox(height: 15),
-                                  // TEA seller horizontal view
+                                  // * TEA horizontal view
                                   SizedBox(
                                     height: 157.h,
                                     child: ListView.separated(
@@ -666,69 +459,70 @@ class MenuPage extends StatelessWidget {
                                         height: 210.h,
                                         width: double.infinity,
                                         margin: EdgeInsets.symmetric(
-                                          horizontal: 10.w,
+                                          horizontal: 20.w,
                                         ),
                                         decoration: BoxDecoration(
-                                          color:
-                                              AppColors.lightGreen.withOpacity(
-                                            .4,
-                                          ),
+                                          color: AppColors.lightGreen
+                                              .withOpacity(.3),
                                           borderRadius:
                                               BorderRadius.circular(30.r),
                                         ),
-                                      ),
-                                      Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 20.w,
-                                                vertical: 10.h),
-                                            child: DividerLabel(
-                                              label: 'Health first',
-                                              accountType: accountType,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 20.w,
+                                                  vertical: 10.h),
+                                              child: DividerLabel(
+                                                isHealthFirst: true,
+                                                label: 'Health first',
+                                                accountType: accountType,
+                                              ),
                                             ),
-                                          ),
-                                          // const SizedBox(height: 8),
-                                          // Health first horizontal view
-                                          SizedBox(
-                                            height: 157.h,
-                                            child: ListView.separated(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20.0),
-                                              shrinkWrap: true,
-                                              itemCount: 4,
-                                              scrollDirection: Axis.horizontal,
-                                              separatorBuilder:
-                                                  (context, index) =>
-                                                      const SizedBox(width: 10),
-                                              itemBuilder: (context, index) {
-                                                return Consumer<MenuProvider>(
-                                                  builder: (context, provider,
-                                                          child) =>
-                                                      GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                        context,
-                                                        ProductDetailsPage
-                                                            .route(),
-                                                      );
-                                                    },
-                                                    child: ProductWidget(
-                                                      image: provider
-                                                          .productImage[index],
-                                                      name: provider
-                                                          .productName[index],
-                                                      index: index,
-                                                      accountType: accountType,
+                                            // * Health first horizontal view
+                                            SizedBox(
+                                              height: 157.h,
+                                              child: ListView.separated(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 20.0),
+                                                shrinkWrap: true,
+                                                itemCount: 4,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                separatorBuilder: (context,
+                                                        index) =>
+                                                    const SizedBox(width: 10),
+                                                itemBuilder: (context, index) {
+                                                  return Consumer<MenuProvider>(
+                                                    builder: (context, provider,
+                                                            child) =>
+                                                        GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            ProductDetailsPage
+                                                                .route());
+                                                      },
+                                                      child: ProductWidget(
+                                                        isHealthFirst: true,
+                                                        image: provider
+                                                                .productImage[
+                                                            index],
+                                                        name: provider
+                                                            .productName[index],
+                                                        index: index,
+                                                        accountType:
+                                                            accountType,
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              },
+                                                  );
+                                                },
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -1000,7 +794,7 @@ class MenuPage extends StatelessWidget {
           ),
           Positioned(
             left: 32.w,
-            bottom: 25.w,
+            bottom: 28.h,
             child: Align(
               alignment: Alignment.bottomLeft,
               child: GestureDetector(

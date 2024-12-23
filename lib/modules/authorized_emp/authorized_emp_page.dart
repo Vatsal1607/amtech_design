@@ -4,6 +4,7 @@ import 'package:amtech_design/custom_widgets/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -92,7 +93,7 @@ class AuthorizedEmpPage extends StatelessWidget {
                     cursorColor: AppColors.primaryColor,
                     hint: 'Position',
                     prefixIcon: IconStrings.position,
-                    controller: provider.fullNameController,
+                    controller: provider.positionController,
                     borderColor: AppColors.primaryColor,
                     iconColor: AppColors.primaryColor,
                     textColor: AppColors.primaryColor,
@@ -100,9 +101,14 @@ class AuthorizedEmpPage extends StatelessWidget {
                   SizedBox(height: 10.h),
                   CustomTextField(
                     cursorColor: AppColors.primaryColor,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [
+                      FilteringTextInputFormatter.digitsOnly,
+                      LengthLimitingTextInputFormatter(10),
+                    ],
                     hint: 'Mobile Number',
                     prefixIcon: IconStrings.phone,
-                    controller: provider.fullNameController,
+                    controller: provider.mobileController,
                     borderColor: AppColors.primaryColor,
                     iconColor: AppColors.primaryColor,
                     textColor: AppColors.primaryColor,
@@ -122,7 +128,7 @@ class AuthorizedEmpPage extends StatelessWidget {
                     bgColor: AppColors.disabledColor,
                     textColor: AppColors.primaryColor,
                   ),
-                  SizedBox(height: 200.h),
+                  SizedBox(height: 13.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -173,6 +179,8 @@ class AuthorizedEmpPage extends StatelessWidget {
                 child: CustomButton(
                   height: 55.h,
                   onTap: () {},
+                  text: 'Done',
+                  bgColor: AppColors.primaryColor,
                 ),
               ),
             ),

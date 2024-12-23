@@ -5,7 +5,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../routes.dart';
-import '../../product_page/product_details_page.dart';
 import '../menu_provider.dart';
 
 class BannerView extends StatelessWidget {
@@ -29,34 +28,28 @@ class BannerView extends StatelessWidget {
               );
             },
             child: Container(
-              height: 122.h, // banner height
-              // width: 328.w,
+              height: 120.h, // banner height
+              // width: 340.w,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30.r),
-                // boxShadow: [
-                //   bottomShadow(),
-                // ],
+                boxShadow: kDropShadow,
               ),
-              child: SizedBox(
-                height: 120.h,
-                // * Pageview
-                child: Consumer<MenuProvider>(
-                  builder: (context, provider, child) => PageView.builder(
-                    controller: provider.pageController,
-                    itemCount: provider.banners.length,
-                    itemBuilder: (context, index) {
-                      /// New banner
-                      return Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.r),
-                          image: DecorationImage(
-                            image: AssetImage(provider.banners[index]),
-                            fit: BoxFit.fill,
-                          ),
+              child: Consumer<MenuProvider>(
+                builder: (context, provider, child) => PageView.builder(
+                  controller: provider.pageController,
+                  itemCount: provider.banners.length,
+                  itemBuilder: (context, index) {
+                    /// New banner
+                    return Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.r),
+                        image: DecorationImage(
+                          image: AssetImage(provider.banners[index]),
+                          fit: BoxFit.fill,
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               ),
             ),

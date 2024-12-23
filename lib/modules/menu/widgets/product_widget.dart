@@ -12,12 +12,14 @@ class ProductWidget extends StatelessWidget {
   final String name;
   final int index;
   final String accountType;
+  final bool isHealthFirst;
   const ProductWidget({
     super.key,
     required this.image,
     required this.name,
     required this.index,
     required this.accountType,
+    this.isHealthFirst = false,
   });
 
   @override
@@ -36,7 +38,8 @@ class ProductWidget extends StatelessWidget {
             ),
             borderRadius: BorderRadius.circular(30.r),
             border: Border.all(
-              color: AppColors.primaryColor,
+              color:
+                  isHealthFirst ? AppColors.deepGreen : AppColors.primaryColor,
               width: 2.w,
             ),
           ),
@@ -47,31 +50,37 @@ class ProductWidget extends StatelessWidget {
                 clipBehavior: Clip.none,
                 alignment: Alignment.center,
                 children: [
-                  // Gradient Overlay at the Bottom
+                  // * Gradient Overlay at the Bottom
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
                       height: 55.h,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          colors: [
-                            getColorAccountType(
-                                accountType: accountType,
-                                businessColor:
-                                    AppColors.seaShell.withOpacity(0.0),
-                                personalColor:
-                                    AppColors.seaMist.withOpacity(0.0)),
-                            getColorAccountType(
-                                accountType: accountType,
-                                businessColor:
-                                    AppColors.seaShell.withOpacity(0.8),
-                                personalColor:
-                                    AppColors.seaMist.withOpacity(0.8)),
-                            getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.seaShell,
-                                personalColor: AppColors.seaMist),
-                          ],
+                          colors: isHealthFirst
+                              ? [
+                                  AppColors.teaGreen.withOpacity(0.0),
+                                  AppColors.teaGreen.withOpacity(0.8),
+                                  AppColors.teaGreen,
+                                ]
+                              : [
+                                  getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor:
+                                          AppColors.seaShell.withOpacity(0.0),
+                                      personalColor:
+                                          AppColors.seaMist.withOpacity(0.0)),
+                                  getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor:
+                                          AppColors.seaShell.withOpacity(0.8),
+                                      personalColor:
+                                          AppColors.seaMist.withOpacity(0.8)),
+                                  getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.seaShell,
+                                      personalColor: AppColors.seaMist),
+                                ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           stops: const [0.0, 0.5, 1.0],
@@ -92,11 +101,13 @@ class ProductWidget extends StatelessWidget {
                     style: GoogleFonts.publicSans(
                       fontWeight: FontWeight.bold,
                       fontSize: 12.sp,
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.primaryColor,
-                        personalColor: AppColors.darkGreenGrey,
-                      ),
+                      color: isHealthFirst
+                          ? AppColors.deepGreen
+                          : getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                     ),
                   ),
                 ],
@@ -128,11 +139,13 @@ class ProductWidget extends StatelessWidget {
                   horizontal: 8.w,
                 ),
                 decoration: BoxDecoration(
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
+                  color: isHealthFirst
+                      ? AppColors.deepGreen
+                      : getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Row(

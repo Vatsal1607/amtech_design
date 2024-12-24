@@ -1,16 +1,11 @@
-import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
-
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../core/utils/app_colors.dart';
 import '../../../custom_widgets/snackbar.dart';
-import '../../../routes.dart';
 import '../../../services/network/api_service.dart';
 
 class RegisterProvider extends ChangeNotifier {

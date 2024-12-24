@@ -1,4 +1,7 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
+import 'package:amtech_design/custom_widgets/custom_button.dart';
+import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/product_page/widgets/bottomsheet_content.dart';
 import 'package:flutter/material.dart';
@@ -7,125 +10,45 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
 
-class ProductDetailsPage extends StatefulWidget {
-  static route() => MaterialPageRoute(
-        builder: (context) => const ProductDetailsPage(),
-      );
+class ProductDetailsPage extends StatelessWidget {
   const ProductDetailsPage({super.key});
 
   @override
-  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
-}
-
-class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  // // Bottom sheet
-  // void _showScrollableBottomSheet() {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true, // Allows the BottomSheet to take more space
-  //     backgroundColor: Colors.transparent, // transparent for full effect
-  //     barrierColor: Colors.transparent, // Prevent dimming of background
-  //     isDismissible: false,
-  //     builder: (BuildContext context) {
-  //       return DraggableScrollableSheet(
-  //         initialChildSize: 0.6, // Initial height of BottomSheet
-  //         minChildSize: 0.6, // Minimum height of BottomSheet
-  //         maxChildSize: 0.8, // Maximum height of BottomSheet
-  //         expand: true,
-  //         shouldCloseOnMinExtent: false,
-  //         builder: (BuildContext context, ScrollController scrollController) {
-  //           return Container(
-  //             decoration: const BoxDecoration(
-  //               color: AppColors.seaShell,
-  //               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-  //             ),
-  //             child: Column(
-  //               children: [
-  //                 // Handle to indicate dragging
-  //                 Container(
-  //                   width: 40,
-  //                   height: 6,
-  //                   margin: const EdgeInsets.only(top: 8),
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.grey[300],
-  //                     borderRadius: BorderRadius.circular(3),
-  //                   ),
-  //                 ),
-  //                 Expanded(
-  //                   // Content goes here
-  //                   child: Stack(
-  //                     children: [
-  //                       SingleChildScrollView(
-  //                         controller: scrollController,
-  //                         child: const BottomsheetContent(),
-  //                       ),
-  //                       Positioned(
-  //                         bottom: 50.h,
-  //                         left: 0,
-  //                         right: 0,
-  //                         child: GestureDetector(
-  //                           onTap: () {
-  //                             //
-  //                           },
-  //                           child: Container(
-  //                             height: 55.h,
-  //                             width: double.infinity,
-  //                             margin: EdgeInsets.symmetric(horizontal: 34.w),
-  //                             decoration: BoxDecoration(
-  //                               color: AppColors.primaryColor,
-  //                               borderRadius: BorderRadius.circular(40.0),
-  //                             ),
-  //                             child: Center(
-  //                               child: Text(
-  //                                 'ADD TO CART',
-  //                                 style: GoogleFonts.publicSans(
-  //                                   fontSize: 16.0,
-  //                                   fontWeight: FontWeight.bold,
-  //                                   color: AppColors.seaShell,
-  //                                 ),
-  //                               ),
-  //                             ),
-  //                           ),
-  //                         ),
-  //                       ),
-  //                     ],
-  //                   ),
-  //                 ),
-  //               ],
-  //             ),
-  //           );
-  //         },
-  //       );
-  //     },
-  //   );
-  // }
-
-  @override
   Widget build(BuildContext context) {
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _showScrollableBottomSheet();
-    // });
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       extendBodyBehindAppBar: true, // Ensures content goes behind the AppBar
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.primaryColor,
+        personalColor: AppColors.darkGreenGrey,
+      ),
       appBar: CustomAppBar(
         backgroundColor: Colors.transparent,
         title: '',
         onTapLeading: () {
-          debugPrint('details leading pressed');
           Navigator.pop(context);
         },
         leading: Container(
           height: 48.h,
           width: 48.w,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.seaShell,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.seaShell,
+              personalColor: AppColors.seaMist,
+            ),
           ),
           child: ClipOval(
             child: SvgIcon(
               icon: IconStrings.arrowBack,
-              color: AppColors.primaryColor,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
             ),
           ),
         ),
@@ -133,12 +56,16 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           Container(
             height: 45.h,
             width: 45.w,
-            margin: const EdgeInsets.only(right: 15.0),
-            decoration: const BoxDecoration(
-              color: AppColors.primaryColor,
+            margin: EdgeInsets.only(right: 15.w),
+            decoration: BoxDecoration(
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
               shape: BoxShape.circle,
             ),
-            child: SvgIcon(
+            child: const SvgIcon(
               icon: IconStrings.heart,
             ),
           ),
@@ -146,7 +73,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       ),
       body: Stack(
         children: [
-          // Top content above the DraggableScrollableSheet
+          // * Top content above the DraggableScrollableSheet
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -173,37 +100,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               // ),
             ],
           ),
-          // Blur Effect
-          // Fixed Height Blur Effect
-          // Positioned(
-          //   top: 0,
-          //   left: 0,
-          //   right: 0,
-          //   child: ClipRect(
-          //     child: BackdropFilter(
-          //       filter: ImageFilter.blur(
-          //           sigmaX: 10, sigmaY: 10), // Adjust blur intensity
-          //       child: Container(
-          //         height: 100.h, // Fixed height for the blur
-          //         decoration: BoxDecoration(
-          //           gradient: LinearGradient(
-          //             begin: Alignment.topCenter,
-          //             end: Alignment.bottomCenter,
-          //             colors: [
-          //               AppColors.primaryColor.withOpacity(0.8),
-          //               AppColors.primaryColor.withOpacity(.4),
-          //               AppColors.primaryColor.withOpacity(.4),
-          //               AppColors.primaryColor.withOpacity(.3),
-          //               Colors.transparent,
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
-
-          // DraggableScrollableSheet at the bottom
+          // * DraggableScrollableSheet at the bottom
           Align(
             alignment: Alignment.bottomCenter,
             child: DraggableScrollableSheet(
@@ -214,22 +111,26 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               shouldCloseOnMinExtent: false,
               builder: (context, scrollController) {
                 return Container(
-                  decoration: const BoxDecoration(
-                    color: AppColors.seaShell,
+                  decoration: BoxDecoration(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell,
+                      personalColor: AppColors.seaMist,
+                    ),
                     borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(16)),
+                        BorderRadius.vertical(top: Radius.circular(16.r)),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Handle to indicate dragging
                       Container(
-                        width: 40,
-                        height: 6,
-                        margin: const EdgeInsets.only(top: 8),
+                        width: 40.w,
+                        height: 6.h,
+                        margin: EdgeInsets.only(top: 8.h),
                         decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(3),
+                          color: AppColors.shipGrey.withOpacity(.3),
+                          borderRadius: BorderRadius.circular(3.r),
                         ),
                       ),
                       Expanded(
@@ -238,36 +139,32 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                             SingleChildScrollView(
                               controller: scrollController,
                               physics: const ClampingScrollPhysics(),
-                              child: const BottomsheetContent(),
+                              child: BottomsheetContent(
+                                accountType: accountType,
+                              ),
                             ),
                             // Add to cart button
                             Positioned(
                               bottom: 50.h,
-                              left: 0,
-                              right: 0,
-                              child: GestureDetector(
+                              left: 34.w,
+                              right: 34.w,
+                              child: CustomButton(
+                                height: 55.h,
                                 onTap: () {
-                                  //
+                                  showSizeModalBottomSheet(
+                                      context: context,
+                                      accountType: accountType);
                                 },
-                                child: Container(
-                                  height: 55.h,
-                                  width: double.infinity,
-                                  margin:
-                                      EdgeInsets.symmetric(horizontal: 34.w),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor,
-                                    borderRadius: BorderRadius.circular(40.0),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'ADD TO CART',
-                                      style: GoogleFonts.publicSans(
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
-                                        color: AppColors.seaShell,
-                                      ),
-                                    ),
-                                  ),
+                                text: 'ADD TO CART',
+                                textColor: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
+                                ),
+                                bgColor: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
                                 ),
                               ),
                             ),
@@ -282,34 +179,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
           ),
         ],
       ),
-
-      /// Old body code
-      // body: Column(
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: [
-      //     Image.asset(
-      //       height: 439.h,
-      //       width: double.infinity,
-      //       ImageStrings.teaImg,
-      //       fit: BoxFit.cover,
-      //     ),
-      //     // Expanded(
-      //     //   child: DraggableScrollableSheet(
-      //     //     initialChildSize: 0.7,
-      //     //     minChildSize: 0.7,
-      //     //     maxChildSize: 0.9,
-      //     //     expand: true, // set true for scrollable sheet itself
-      //     //     builder:
-      //     //         (BuildContext context, ScrollController scrollController) {
-      //     //       return SingleChildScrollView(
-      //     //         controller: scrollController,
-      //     //         child:
-      //     //       );
-      //     //     },
-      //     //   ),
-      //     // ),
-      //   ],
-      // ),
     );
   }
 }

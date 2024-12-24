@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,7 @@ void showPerksChartBottomSheeet({
 }) {
   showModalBottomSheet(
     context: context,
-    barrierColor: Colors.transparent,
+    // barrierColor: Colors.transparent,
     backgroundColor: getColorAccountType(
       accountType: accountType,
       businessColor: AppColors.primaryColor,
@@ -24,10 +23,10 @@ void showPerksChartBottomSheeet({
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
-            child: Container(),
-          ),
+          // BackdropFilter(
+          //   filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+          //   child: Container(),
+          // ),
           Positioned(
             child: Container(
               padding: EdgeInsets.only(top: 19.h, left: 32.w, right: 32.w),
@@ -55,7 +54,11 @@ void showPerksChartBottomSheeet({
                         "AMOUNT",
                         style: GoogleFonts.publicSans(
                           fontSize: 12.sp,
-                          color: AppColors.seaShell,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -63,7 +66,11 @@ void showPerksChartBottomSheeet({
                         "PERKS",
                         style: GoogleFonts.publicSans(
                           fontSize: 12.sp,
-                          color: AppColors.seaShell,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -295,7 +302,11 @@ Widget _buildPerkRow({
             Text(
               perks,
               style: GoogleFonts.publicSans(
-                color: Colors.white,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.seaShell,
+                  personalColor: AppColors.seaMist,
+                ),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -308,7 +319,11 @@ Widget _buildPerkRow({
               height: 0.h,
               width: double.infinity,
               axis: Axis.horizontal,
-              dashColor: AppColors.seaShell.withOpacity(.5),
+              dashColor: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.seaShell.withOpacity(.5),
+                personalColor: AppColors.seaMist.withOpacity(.5),
+              ),
             ),
           ),
       ],

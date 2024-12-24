@@ -68,7 +68,11 @@ class FabMenuButton extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25.r),
         ),
-        color: AppColors.primaryColor,
+        color: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
         itemBuilder: (context) {
           return provider.menuItemsName.map<PopupMenuEntry<String>>(
             (item) {
@@ -80,7 +84,11 @@ class FabMenuButton extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 15.h, horizontal: 23.w),
                   decoration: BoxDecoration(
                     color: provider.selectedValue == item
-                        ? AppColors.disabledColor
+                        ? getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.disabledColor,
+                            personalColor: AppColors.bayLeaf,
+                          )
                         : null,
                     borderRadius: BorderRadius.circular(30.r),
                   ),
@@ -91,7 +99,11 @@ class FabMenuButton extends StatelessWidget {
                         ? GoogleFonts.publicSans(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                           )
                         : GoogleFonts.publicSans(
                             fontSize: 15.sp,

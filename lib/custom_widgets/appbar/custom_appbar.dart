@@ -4,7 +4,7 @@ import '../../core/utils/app_colors.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
-  TextStyle? titleStyle;
+  final TextStyle? titleStyle;
   final String? subTitle;
   final Color? backgroundColor;
   final Widget? leading;
@@ -12,8 +12,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<Widget>? actions;
   final bool centerTitle;
 
-  CustomAppBar({
-    Key? key,
+  const CustomAppBar({
+    super.key,
     required this.title,
     this.titleStyle,
     this.subTitle,
@@ -22,7 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.onTapLeading,
     this.actions,
     this.centerTitle = true,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

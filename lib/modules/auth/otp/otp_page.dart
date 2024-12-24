@@ -18,11 +18,10 @@ class OtpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
-
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
             {};
-
+    final provider = Provider.of<OtpProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
@@ -97,7 +96,9 @@ class OtpPage extends StatelessWidget {
                   SizedBox(height: 16.h),
 
                   // OTP fields
-                  OtpFields(),
+                  OtpFields(
+                    controller: provider.otpController,
+                  ),
 
                   RichText(
                     text: TextSpan(

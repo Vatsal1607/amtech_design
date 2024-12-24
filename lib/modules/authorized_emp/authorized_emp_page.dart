@@ -1,8 +1,10 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
+import 'package:amtech_design/modules/authorized_emp/widgets/otp_verify_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,13 +14,22 @@ import '../../core/utils/app_colors.dart';
 import 'authorized_emp_provider.dart';
 
 class AuthorizedEmpPage extends StatelessWidget {
-  const AuthorizedEmpPage({super.key});
+  AuthorizedEmpPage({super.key});
 
+  final TextEditingController otpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    String accountType = 'business'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<AuthorizedEmpProvider>(context, listen: false);
     return Scaffold(
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
       appBar: CustomAppbarWithCenterTitle(
+        accountType: accountType,
         title: 'Authorized Employees',
         leftPadTitle: 50.w,
       ),
@@ -39,7 +50,11 @@ class AuthorizedEmpPage extends StatelessWidget {
                         style: GoogleFonts.publicSans(
                           fontSize: 15.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                       ),
                       GestureDetector(
@@ -48,6 +63,7 @@ class AuthorizedEmpPage extends StatelessWidget {
                             context: context,
                             builder: (context) {
                               return CustomConfirmDialog(
+                                accountType: accountType,
                                 onTapCancel: () => Navigator.pop(context),
                                 onTapYes: () => Navigator.pop(context),
                                 title: "ARE YOU SURE?",
@@ -70,7 +86,11 @@ class AuthorizedEmpPage extends StatelessWidget {
                               style: GoogleFonts.publicSans(
                                 fontSize: 10.sp,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.seaShell,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
+                                ),
                               ),
                             ),
                           ),
@@ -84,9 +104,21 @@ class AuthorizedEmpPage extends StatelessWidget {
                     hint: 'Full Name',
                     prefixIcon: IconStrings.fullname,
                     controller: provider.fullNameController,
-                    borderColor: AppColors.primaryColor,
-                    iconColor: AppColors.primaryColor,
-                    textColor: AppColors.primaryColor,
+                    borderColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    iconColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
@@ -94,9 +126,21 @@ class AuthorizedEmpPage extends StatelessWidget {
                     hint: 'Position',
                     prefixIcon: IconStrings.position,
                     controller: provider.positionController,
-                    borderColor: AppColors.primaryColor,
-                    iconColor: AppColors.primaryColor,
-                    textColor: AppColors.primaryColor,
+                    borderColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    iconColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
@@ -109,24 +153,60 @@ class AuthorizedEmpPage extends StatelessWidget {
                     hint: 'Mobile Number',
                     prefixIcon: IconStrings.phone,
                     controller: provider.mobileController,
-                    borderColor: AppColors.primaryColor,
-                    iconColor: AppColors.primaryColor,
-                    textColor: AppColors.primaryColor,
+                    borderColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    iconColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   CustomButton(
                     height: 50.h,
-                    onTap: () {},
+                    onTap: () {
+                      // *
+                      otpVerifyBottomSheeet(
+                        context: context,
+                        accountType: accountType,
+                        controller: otpController,
+                      );
+                    },
                     text: 'verify',
-                    bgColor: AppColors.primaryColor,
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell,
+                      personalColor: AppColors.seaMist,
+                    ),
+                    bgColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   CustomButton(
                     height: 50.h,
                     onTap: () {},
                     text: '+ ADD MORE',
-                    bgColor: AppColors.disabledColor,
-                    textColor: AppColors.primaryColor,
+                    bgColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                   SizedBox(height: 13.h),
                   Align(
@@ -136,7 +216,11 @@ class AuthorizedEmpPage extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                   ),
@@ -146,14 +230,22 @@ class AuthorizedEmpPage extends StatelessWidget {
                         text: 'You can authorize up to ',
                         style: GoogleFonts.publicSans(
                           fontSize: 12.sp,
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                         children: <TextSpan>[
                           TextSpan(
                             text: 'Three Employees ',
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,
-                              color: AppColors.primaryColor,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -162,7 +254,11 @@ class AuthorizedEmpPage extends StatelessWidget {
                                 'to act on behalf of the business owner. These authorized employees will have the ability to place orders, manage billing details, view and track order history, reorder past items, and handle subscriptions for the account. This ensures smooth and efficient operations while maintaining secure access control. Please select your authorized employees carefully to avoid any misuse.',
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,
-                              color: AppColors.primaryColor,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                             ),
                           ),
                         ]),
@@ -180,7 +276,16 @@ class AuthorizedEmpPage extends StatelessWidget {
                   height: 55.h,
                   onTap: () {},
                   text: 'Done',
-                  bgColor: AppColors.primaryColor,
+                  textColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
             ),

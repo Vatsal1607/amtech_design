@@ -1,5 +1,6 @@
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
+import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class ProfilePage extends StatelessWidget {
         personalColor: AppColors.seaMist,
       ),
       appBar: CustomAppbarWithCenterTitle(
+        accountType: accountType,
         title: 'Account',
         backgroundColor: getColorAccountType(
           accountType: accountType,
@@ -30,36 +32,53 @@ class ProfilePage extends StatelessWidget {
           personalColor: AppColors.seaMist,
         ),
       ),
-      floatingActionButton: Container(
-        height: 50.h,
-        width: 120.w,
-        decoration: BoxDecoration(
-          color: getColorAccountType(
-              accountType: accountType,
-              businessColor: AppColors.primaryColor,
-              personalColor: AppColors.darkGreenGrey),
-          borderRadius: BorderRadius.circular(30.r),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgIcon(
-              icon: IconStrings.logout,
-              color: getColorAccountType(
+      floatingActionButton: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return CustomConfirmDialog(
                 accountType: accountType,
-                businessColor: AppColors.seaShell,
-                personalColor: AppColors.seaMist,
+                onTapCancel: () => Navigator.pop(context),
+                onTapYes: () => Navigator.pop(context),
+                yesBtnText: 'LOGOUT',
+                title: 'ARE YOU SURE?',
+                subTitle: 'You really want to Logout?',
+              );
+            },
+          );
+        },
+        child: Container(
+          height: 50.h,
+          width: 120.w,
+          decoration: BoxDecoration(
+            color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey),
+            borderRadius: BorderRadius.circular(30.r),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgIcon(
+                icon: IconStrings.logout,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.seaShell,
+                  personalColor: AppColors.seaMist,
+                ),
               ),
-            ),
-            SizedBox(width: 13.w),
-            Text(
-              'Logout',
-              style: GoogleFonts.publicSans(
-                color: AppColors.seaShell,
-                fontSize: 12.sp,
+              SizedBox(width: 13.w),
+              Text(
+                'Logout',
+                style: GoogleFonts.publicSans(
+                  color: AppColors.seaShell,
+                  fontSize: 12.sp,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -184,15 +203,19 @@ class ProfilePage extends StatelessWidget {
                     icon: IconStrings.favorite,
                   ),
                   SizedBox(height: 20.h),
-                  ProfileTile(
-                    accountType: accountType,
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.authorizedEmp);
-                    },
-                    title: 'Authorized Employees',
-                    icon: IconStrings.authorizedEmp,
-                  ),
-                  SizedBox(height: 20.h),
+                  if (accountType == 'business')
+                    ProfileTile(
+                      accountType: accountType,
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.authorizedEmp);
+                      },
+                      title: 'Authorized Employees',
+                      icon: IconStrings.authorizedEmp,
+                    ),
+                  if (accountType == 'business')
+                    SizedBox(
+                      height: 20.h,
+                    ),
                   ProfileTile(
                     accountType: accountType,
                     onTap: () {

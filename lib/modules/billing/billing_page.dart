@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
@@ -14,9 +12,13 @@ class BillingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
+      backgroundColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.seaShell,
+          personalColor: AppColors.seaMist),
       body: Stack(
         children: [
           CustomScrollView(
@@ -30,8 +32,11 @@ class BillingPage extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 20.h, horizontal: 32.w),
                   child: Column(
                     children: [
-                      const SelectOrderDateWidget(),
+                      SelectOrderDateWidget(
+                        accountType: accountType,
+                      ),
                       SizedBox(height: 20.h),
+
                       // * Billing card widget
                       ListView.separated(
                         padding: EdgeInsets.zero,
@@ -41,7 +46,9 @@ class BillingPage extends StatelessWidget {
                         separatorBuilder: (context, index) =>
                             SizedBox(height: 20.h),
                         itemBuilder: (context, index) {
-                          return const BillingCardWidget();
+                          return BillingCardWidget(
+                            accountType: accountType,
+                          );
                         },
                       ),
                     ],
@@ -50,7 +57,7 @@ class BillingPage extends StatelessWidget {
               ),
             ],
           ), // Bottom edge gradient
-          BottomBlurReorderAndBillingPage(accountType: accountType),
+          BottomBlurOnPage(accountType: accountType),
         ],
       ),
     );

@@ -1,14 +1,17 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/strings.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/strings.dart';
 import 'order_status_icon_widget.dart';
 import 'progress_line_widget.dart';
 
-class OrderStatusWithProgress extends StatelessWidget {
-  const OrderStatusWithProgress({
+class OrderStatusWithProgressWidget extends StatelessWidget {
+  final String accountType;
+  const OrderStatusWithProgressWidget({
     super.key,
+    required this.accountType,
   });
 
   @override
@@ -16,15 +19,20 @@ class OrderStatusWithProgress extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
-        color: AppColors.disabledColor,
+        color: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.disabledColor,
+          personalColor: AppColors.bayLeaf,
+        ),
         borderRadius: BorderRadius.circular(30.r),
       ),
       child: Column(
         children: [
-          const Row(
+          Row(
             children: [
               // * Status Icon widget
               OrderStatusIconWidget(
+                accountType: accountType,
                 isActive: true,
                 icon: IconStrings.orderStatus1,
               ),
@@ -36,6 +44,7 @@ class OrderStatusWithProgress extends StatelessWidget {
 
               // * Status Icon widget
               OrderStatusIconWidget(
+                accountType: accountType,
                 icon: IconStrings.orderStatus2,
               ),
 
@@ -46,6 +55,7 @@ class OrderStatusWithProgress extends StatelessWidget {
 
               // * Status Icon widget
               OrderStatusIconWidget(
+                accountType: accountType,
                 icon: IconStrings.orderStatus3,
               ),
 
@@ -56,6 +66,7 @@ class OrderStatusWithProgress extends StatelessWidget {
 
               // * Status Icon widget
               OrderStatusIconWidget(
+                accountType: accountType,
                 icon: IconStrings.orderStatus4,
               ),
             ],
@@ -67,7 +78,11 @@ class OrderStatusWithProgress extends StatelessWidget {
               "Your Order Is",
               style: GoogleFonts.publicSans(
                 fontSize: 12.sp,
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
           ),
@@ -79,13 +94,21 @@ class OrderStatusWithProgress extends StatelessWidget {
               style: GoogleFonts.publicSans(
                 fontWeight: FontWeight.bold,
                 fontSize: 20.sp,
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
           ),
           SizedBox(height: 16.h),
           Divider(
-            color: AppColors.primaryColor.withOpacity(.3),
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor.withOpacity(.3),
+              personalColor: AppColors.darkGreenGrey.withOpacity(.3),
+            ),
             thickness: 2,
           ),
           Theme(
@@ -94,18 +117,29 @@ class OrderStatusWithProgress extends StatelessWidget {
             ),
             child: ExpansionTile(
               minTileHeight: 20.h,
-              // * Old title
               title: Text(
                 'View Order Details',
                 textAlign: TextAlign.center,
                 style: GoogleFonts.publicSans(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
-              iconColor: AppColors.primaryColor,
-              collapsedIconColor: AppColors.primaryColor,
+              iconColor: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
+              collapsedIconColor: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
               children: const [
                 Text('data 1'),
                 Text('data 2'),

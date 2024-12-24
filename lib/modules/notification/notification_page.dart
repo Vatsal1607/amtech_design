@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +11,24 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
-      appBar: const CustomAppbarWithCenterTitle(
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
+      appBar: CustomAppbarWithCenterTitle(
+        accountType: accountType,
         title: 'Notifications',
         isAction: true,
         actionIcon: IconStrings.more,
-        actionIconColor: AppColors.primaryColor,
+        actionIconColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
       ),
       body: ListView.separated(
         padding: EdgeInsets.symmetric(
@@ -27,7 +40,8 @@ class NotificationPage extends StatelessWidget {
           return SizedBox(height: 18.h);
         },
         itemBuilder: (context, index) {
-          return const NotificationTile(
+          return NotificationTile(
+            accountType: accountType,
             isOpened: false,
           );
         },

@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,21 +6,24 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 
-class ReorderCard extends StatelessWidget {
-  // final String accountType;
-  const ReorderCard({
+class ReorderCardWidget extends StatelessWidget {
+  final String accountType;
+  const ReorderCardWidget({
     super.key,
-    // required this.accountType,
+    required this.accountType,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 329.w,
       height: 145.h,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Column(
@@ -31,7 +35,11 @@ class ReorderCard extends StatelessWidget {
               Text(
                 '9/12/2024 05:55PM',
                 style: GoogleFonts.publicSans(
-                  color: AppColors.seaShell,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -39,7 +47,11 @@ class ReorderCard extends StatelessWidget {
               Text(
                 '₹155.00',
                 style: GoogleFonts.publicSans(
-                  color: AppColors.seaShell,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                   fontSize: 12.sp,
                   fontWeight: FontWeight.bold,
                 ),
@@ -48,7 +60,11 @@ class ReorderCard extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Divider(
-            color: AppColors.seaShell.withOpacity(.5),
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.seaShell.withOpacity(.5),
+              personalColor: AppColors.seaMist.withOpacity(.5),
+            ),
             thickness: 1,
           ),
           SizedBox(height: 8.h),
@@ -62,7 +78,11 @@ class ReorderCard extends StatelessWidget {
                   Text(
                     '1× Masala Tea',
                     style: GoogleFonts.publicSans(
-                      color: Colors.white,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -71,7 +91,11 @@ class ReorderCard extends StatelessWidget {
                   Text(
                     '2× Hot Coffee',
                     style: GoogleFonts.publicSans(
-                      color: Colors.white,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -80,7 +104,11 @@ class ReorderCard extends StatelessWidget {
                   Text(
                     '& MORE',
                     style: GoogleFonts.publicSans(
-                      color: AppColors.seaShell.withOpacity(.5),
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell.withOpacity(.5),
+                        personalColor: AppColors.seaMist.withOpacity(.5),
+                      ),
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                     ),
@@ -92,7 +120,11 @@ class ReorderCard extends StatelessWidget {
                 height: 30.h,
                 width: 100.w,
                 decoration: BoxDecoration(
-                  color: AppColors.white,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                   borderRadius: BorderRadius.circular(30.r),
                 ),
                 child: Row(
@@ -100,7 +132,11 @@ class ReorderCard extends StatelessWidget {
                   children: [
                     SvgIcon(
                       icon: IconStrings.reorderBtn,
-                      color: AppColors.primaryColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                     ),
                     SizedBox(width: 4.w),
                     Text(
@@ -108,7 +144,11 @@ class ReorderCard extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontWeight: FontWeight.bold,
                         fontSize: 12.sp,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                   ],

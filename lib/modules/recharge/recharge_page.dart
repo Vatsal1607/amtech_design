@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/custom_widgets/perks_chart_bottom_sheet.dart';
@@ -55,17 +56,28 @@ class _RechargePageState extends State<RechargePage> {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     // final provider = Provider.of<RechargeProvider>(context, listen: false);
     return Scaffold(
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
       appBar: CustomAppbarWithCenterTitle(
+        accountType: accountType,
         onBackButtonPressed: () {
           provider.amountController.clear();
           Navigator.pop(context);
         },
         title: 'Recharge',
         isAction: true,
+        actionIconColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.disabledColor,
+          personalColor: AppColors.bayLeaf,
+        ),
         onTapAction: () {
           // * Show Perks chart
           showPerksChartBottomSheeet(
@@ -88,9 +100,21 @@ class _RechargePageState extends State<RechargePage> {
                     hint: 'Enter Amount',
                     cursorColor: AppColors.primaryColor,
                     validator: Validator.rechargeAmountValidator,
-                    textColor: AppColors.primaryColor,
-                    borderColor: AppColors.primaryColor,
-                    iconColor: AppColors.primaryColor,
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    borderColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    iconColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     prefixIcon: IconStrings.rupee,
                     controller: provider.amountController,
                     keyboardType: TextInputType.number,
@@ -109,7 +133,11 @@ class _RechargePageState extends State<RechargePage> {
                         'Available Balance: ',
                         style: GoogleFonts.publicSans(
                           fontSize: 13.sp,
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                       ),
                       Text(
@@ -117,7 +145,11 @@ class _RechargePageState extends State<RechargePage> {
                         style: GoogleFonts.publicSans(
                           fontSize: 13.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                       ),
                     ],
@@ -129,7 +161,11 @@ class _RechargePageState extends State<RechargePage> {
                   style: GoogleFonts.publicSans(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 Row(
@@ -138,7 +174,11 @@ class _RechargePageState extends State<RechargePage> {
                       'You Can Recharge ',
                       style: GoogleFonts.publicSans(
                         fontSize: 12.sp,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                     Text(
@@ -146,14 +186,22 @@ class _RechargePageState extends State<RechargePage> {
                       style: GoogleFonts.publicSans(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                     Text(
                       'At Once.',
                       style: GoogleFonts.publicSans(
                         fontSize: 12.sp,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                   ],
@@ -179,13 +227,24 @@ class _RechargePageState extends State<RechargePage> {
                       }
                     },
                     text: 'recharge',
-                    textColor: AppColors.seaShell,
-                    bgColor: AppColors.primaryColor,
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell,
+                      personalColor: AppColors.seaMist,
+                    ),
+                    bgColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 SizedBox(height: 23.h),
+
                 // * RechargeHistoryWidget
-                const RechargeHistoryWidget(),
+                RechargeHistoryWidget(
+                  accountType: accountType,
+                ),
               ],
             ),
           ),

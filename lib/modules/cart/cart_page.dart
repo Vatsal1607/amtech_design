@@ -28,7 +28,8 @@ class CartPage extends StatelessWidget {
         businessColor: AppColors.seaShell,
         personalColor: AppColors.seaMist,
       ),
-      appBar: const CustomAppbarWithCenterTitle(
+      appBar: CustomAppbarWithCenterTitle(
+        accountType: accountType,
         title: 'Cart',
         backgroundColor: Colors.transparent,
       ),

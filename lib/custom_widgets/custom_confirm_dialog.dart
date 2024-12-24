@@ -1,19 +1,26 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 
+// ! Note: to show, Call this in showDialog's builder () =>
 class CustomConfirmDialog extends StatelessWidget {
   final String title;
   final String subTitle;
   final VoidCallback? onTapCancel;
   final VoidCallback? onTapYes;
+  final String accountType;
+  final String yesBtnText;
+
   const CustomConfirmDialog({
     super.key,
     required this.title,
     required this.subTitle,
     this.onTapCancel,
     this.onTapYes,
+    required this.accountType,
+    this.yesBtnText = 'YES, REMOVE',
   });
 
   @override
@@ -35,7 +42,11 @@ class CustomConfirmDialog extends StatelessWidget {
               style: GoogleFonts.publicSans(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
             SizedBox(height: 23.h),
@@ -45,7 +56,11 @@ class CustomConfirmDialog extends StatelessWidget {
               textAlign: TextAlign.center,
               style: GoogleFonts.publicSans(
                 fontSize: 14.sp,
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
             SizedBox(height: 25.h),
@@ -65,7 +80,7 @@ class CustomConfirmDialog extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          "YES, REMOVE",
+                          yesBtnText,
                           style: GoogleFonts.publicSans(
                             fontSize: 14.sp,
                             color: AppColors.seaShell,

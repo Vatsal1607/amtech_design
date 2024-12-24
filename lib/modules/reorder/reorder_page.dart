@@ -14,7 +14,7 @@ class ReorderPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<ReorderProvider>(context);
     return Scaffold(
@@ -35,9 +35,11 @@ class ReorderPage extends StatelessWidget {
                       EdgeInsets.symmetric(vertical: 20.h, horizontal: 32.w),
                   child: Column(
                     children: [
-                      const SelectOrderDateWidget(),
+                      SelectOrderDateWidget(
+                        accountType: accountType,
+                      ),
                       SizedBox(height: 20.h),
-                      // * Reorder card
+                      // * Reorder card listview
                       ListView.separated(
                         padding: EdgeInsets.zero,
                         shrinkWrap: true,
@@ -46,7 +48,9 @@ class ReorderPage extends StatelessWidget {
                         separatorBuilder: (context, index) =>
                             SizedBox(height: 20.h),
                         itemBuilder: (context, index) {
-                          return const ReorderCard();
+                          return ReorderCardWidget(
+                            accountType: accountType,
+                          );
                         },
                       ),
                     ],
@@ -55,7 +59,7 @@ class ReorderPage extends StatelessWidget {
               ),
             ],
           ),
-          BottomBlurReorderAndBillingPage(accountType: accountType),
+          BottomBlurOnPage(accountType: accountType),
         ],
       ),
     );

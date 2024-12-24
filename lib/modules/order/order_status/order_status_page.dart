@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/custom_button.dart';
@@ -5,7 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
-import '../../core/utils/app_colors.dart';
+import '../../../core/utils/app_colors.dart';
+import '../../../routes.dart';
 import 'widgets/order_status_with_progress.dart';
 
 class OrderStatusPage extends StatelessWidget {
@@ -13,9 +15,16 @@ class OrderStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String accountType = 'personal'; // Todo imp set dynamic
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
-      backgroundColor: AppColors.seaShell,
-      appBar: const CustomAppbarWithCenterTitle(
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
+      appBar: CustomAppbarWithCenterTitle(
+        accountType: accountType,
         title: 'Order',
       ),
       body: Stack(
@@ -40,7 +49,11 @@ class OrderStatusPage extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontWeight: FontWeight.bold,
                         fontSize: 16.sp,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                     SizedBox(height: 8.h),
@@ -49,12 +62,18 @@ class OrderStatusPage extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontWeight: FontWeight.bold,
                         fontSize: 30.sp,
-                        color: AppColors.disabledColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                       ),
                     ),
                     SizedBox(height: 40.h),
                     // * Order status with progress indicator
-                    const OrderStatusWithProgress(),
+                    OrderStatusWithProgressWidget(
+                      accountType: accountType,
+                    ),
                   ],
                 ),
               ),
@@ -67,11 +86,22 @@ class OrderStatusPage extends StatelessWidget {
                 padding: EdgeInsets.only(left: 32.w, right: 32.w, bottom: 48.h),
                 child: CustomButton(
                   height: 55.h,
-                  bgColor: AppColors.primaryColor,
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   onTap: () {
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    Navigator.popUntil(
+                        context, ModalRoute.withName(Routes.bottomBarPage));
                   },
                   text: 'GO TO HOME',
+                  textColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                 ),
               ),
             ),

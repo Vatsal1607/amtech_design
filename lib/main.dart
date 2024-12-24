@@ -14,7 +14,7 @@ import 'modules/authorized_emp/authorized_emp_provider.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/menu/menu_provider.dart';
-import 'modules/order_status/order_status_provider.dart';
+import 'modules/order/order_status/order_status_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
 import 'routes.dart';
@@ -71,5 +71,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-//! worked on notification page ui & fix appbar color issue on scroll

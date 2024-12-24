@@ -24,8 +24,6 @@ class ProductWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Stack(
       children: [
         Container(

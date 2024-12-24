@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/modules/product_page/widgets/ingredient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,7 +9,11 @@ import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
 
 class BottomsheetContent extends StatelessWidget {
-  const BottomsheetContent({super.key});
+  final String accountType;
+  const BottomsheetContent({
+    super.key,
+    required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,23 +30,25 @@ class BottomsheetContent extends StatelessWidget {
               Text(
                 'Masala Tea',
                 style: GoogleFonts.publicSans(
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     fontSize: 24.sp,
                     fontWeight: FontWeight.bold),
               ),
               Container(
-                padding:  EdgeInsets.all(5.w),
+                padding: EdgeInsets.all(5.w),
                 decoration: BoxDecoration(
                   color: AppColors.lightGreen,
                   borderRadius: BorderRadius.circular(10.r),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black
-                          .withOpacity(0.2), // Shadow color with opacity
-                      offset:
-                          const Offset(0, 4), // Horizontal and vertical offsets
-                      blurRadius: 8, // Blur radius for softness
-                      spreadRadius: 2, // Spread radius for shadow expansion
+                      color: Colors.black.withOpacity(0.2),
+                      offset: const Offset(0, 4),
+                      blurRadius: 8,
+                      spreadRadius: 2,
                     ),
                   ],
                 ),
@@ -50,18 +57,18 @@ class BottomsheetContent extends StatelessWidget {
                     Text(
                       '4.5 ',
                       style: GoogleFonts.publicSans(
-                        color: AppColors.white,
+                        color: AppColors.seaShell,
                         fontSize: 13.sp,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SvgIcon(icon: IconStrings.ratings),
+                    const SvgIcon(icon: IconStrings.ratings),
                   ],
                 ),
               ),
             ],
           ),
-           SizedBox(height: 10.h),
+          SizedBox(height: 10.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -69,7 +76,11 @@ class BottomsheetContent extends StatelessWidget {
                 children: [
                   SvgIcon(
                     icon: IconStrings.time,
-                    color: AppColors.disabledColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
                   ),
                   RichText(
                     maxLines: 1,
@@ -78,7 +89,11 @@ class BottomsheetContent extends StatelessWidget {
                       text: 'Avg. ',
                       style: GoogleFonts.publicSans(
                         fontSize: 14.sp,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                       children: <TextSpan>[
                         TextSpan(
@@ -86,7 +101,11 @@ class BottomsheetContent extends StatelessWidget {
                           style: GoogleFonts.publicSans(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                           ),
                         ),
                       ],
@@ -98,7 +117,11 @@ class BottomsheetContent extends StatelessWidget {
                 children: [
                   SvgIcon(
                     icon: IconStrings.ratingsPerson,
-                    color: AppColors.disabledColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
                   ),
                   RichText(
                     maxLines: 1,
@@ -108,14 +131,22 @@ class BottomsheetContent extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                       children: <TextSpan>[
                         TextSpan(
                           text: 'Ratings',
                           style: GoogleFonts.publicSans(
                             fontSize: 14.sp,
-                            color: AppColors.primaryColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                           ),
                         ),
                       ],
@@ -125,7 +156,7 @@ class BottomsheetContent extends StatelessWidget {
               ),
             ],
           ),
-           SizedBox(height: 17.h),
+          SizedBox(height: 17.h),
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -133,40 +164,59 @@ class BottomsheetContent extends StatelessWidget {
               style: GoogleFonts.publicSans(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
           ),
           SizedBox(height: 10.h),
           Padding(
-            padding:  EdgeInsets.only(bottom: 5.h),
+            padding: EdgeInsets.only(bottom: 5.h),
             child: Stack(
               children: [
                 ReadMoreText(
                   'Everyday Tea draws from tea\'s rich history, dating back to 2737 BCE in ancient China. Sourced from Assam and Darjeeling, India’s finest tea regions, this blend offers a perfect balance of bold and aromatic flavors. Enjoy a cup steeped in centuries of tradition, bringing',
                   trimLines: 5, // Number of lines to display before truncating
-                  colorClickableText: AppColors.primaryColor,
+                  colorClickableText: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   trimMode: TrimMode.Line,
                   trimCollapsedText: 'Read More',
                   trimExpandedText: 'Read Less',
                   textAlign: TextAlign.justify,
                   delimiter: '    ',
                   // isCollapsed: (collapsed){
-
                   // },
-                  style: TextStyle(
-                    color: AppColors.primaryColor,
+                  style: GoogleFonts.publicSans(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     fontSize: 14.sp,
                   ),
-                  moreStyle: TextStyle(
+                  moreStyle: GoogleFonts.publicSans(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
-                  lessStyle: TextStyle(
+                  lessStyle: GoogleFonts.publicSans(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 // Overlay gradient effect
@@ -182,9 +232,20 @@ class BottomsheetContent extends StatelessWidget {
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
                           colors: [
-                            AppColors.seaShell.withOpacity(0.0), // Transparent
-                            AppColors.seaShell
-                                .withOpacity(0.8), // Fade to background color
+                            // * color 1
+                            getColorAccountType(
+                                accountType: accountType,
+                                businessColor:
+                                    AppColors.seaShell.withOpacity(0.0),
+                                personalColor:
+                                    AppColors.seaMist.withOpacity(0.0)),
+                            // * color 2
+                            getColorAccountType(
+                                accountType: accountType,
+                                businessColor:
+                                    AppColors.seaShell.withOpacity(0.8),
+                                personalColor:
+                                    AppColors.seaMist.withOpacity(0.8)),
                           ],
                         ),
                       ),
@@ -195,25 +256,6 @@ class BottomsheetContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15.h),
-
-          // // Size Widget
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     const SizeWidget(
-          //       text: 'S',
-          //     ),
-          //     const SizeWidget(
-          //       text: 'M',
-          //       bgColor: AppColors.disabledColor,
-          //     ),
-          //     SizeWidget(
-          //       text: 'L',
-          //       bgColor: AppColors.disabledColor.withOpacity(.4),
-          //       borderColor: AppColors.primaryColor.withOpacity(.4),
-          //     ),
-          //   ],
-          // ),
 
           Align(
             alignment: Alignment.centerLeft,

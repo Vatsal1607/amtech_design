@@ -8,6 +8,7 @@ class RechargeHistoryValue extends StatelessWidget {
   final String perks;
   final Color iconColor;
   final bool isSuccess;
+  final String accountType;
   const RechargeHistoryValue({
     super.key,
     required this.date,
@@ -15,6 +16,7 @@ class RechargeHistoryValue extends StatelessWidget {
     required this.perks,
     this.iconColor = AppColors.lightGreen,
     this.isSuccess = true,
+    required this.accountType,
   });
 
   @override
@@ -25,13 +27,31 @@ class RechargeHistoryValue extends StatelessWidget {
           flex: 2,
           child: Align(
             alignment: Alignment.centerLeft,
-            child: Text(date, style: kRechargeTableValueStyle),
+            child: Text(
+              date,
+              style: kRechargeTableValueStyle?.copyWith(
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+              ),
+            ),
           ),
         ),
         Expanded(
           flex: 2,
           child: Center(
-            child: Text(amount, style: kRechargeTableValueStyle),
+            child: Text(
+              amount,
+              style: kRechargeTableValueStyle?.copyWith(
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+              ),
+            ),
           ),
         ),
         Expanded(
@@ -49,7 +69,16 @@ class RechargeHistoryValue extends StatelessWidget {
           flex: 1,
           child: Align(
             alignment: Alignment.centerRight,
-            child: Text(perks, style: kRechargeTableValueStyle),
+            child: Text(
+              perks,
+              style: kRechargeTableValueStyle?.copyWith(
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+              ),
+            ),
           ),
         ),
       ],

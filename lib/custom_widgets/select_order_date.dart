@@ -1,11 +1,14 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 
 class SelectOrderDateWidget extends StatelessWidget {
+  final String accountType;
   const SelectOrderDateWidget({
     super.key,
+    required this.accountType,
   });
 
   @override
@@ -17,7 +20,11 @@ class SelectOrderDateWidget extends StatelessWidget {
           'Select order Date:'.toUpperCase(),
           style: GoogleFonts.publicSans(
             fontSize: 14.sp,
-            color: AppColors.primaryColor,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            ),
           ),
         ),
         SizedBox(width: 20.w),
@@ -25,7 +32,11 @@ class SelectOrderDateWidget extends StatelessWidget {
           height: 48.h,
           width: 185.w,
           decoration: BoxDecoration(
-            color: AppColors.primaryColor,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            ),
             borderRadius: BorderRadius.circular(100.r),
           ),
           child: Center(
@@ -34,7 +45,12 @@ class SelectOrderDateWidget extends StatelessWidget {
               style: GoogleFonts.publicSans(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.bold,
-                color: AppColors.seaShell,
+                // color: AppColors.seaShell,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.seaShell,
+                  personalColor: AppColors.seaMist,
+                ),
               ),
             ),
           ),

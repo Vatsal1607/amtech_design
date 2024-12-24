@@ -11,7 +11,7 @@ class BlogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -33,7 +33,11 @@ class BlogPage extends StatelessWidget {
                       width: 105.w,
                       child: Image.asset(
                         ImageStrings.blogPng,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                       ),
                     ),
                     SizedBox(height: 10.h),
@@ -45,7 +49,11 @@ class BlogPage extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: GoogleFonts.publicSans(
                           fontSize: 40.sp,
-                          color: AppColors.primaryColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

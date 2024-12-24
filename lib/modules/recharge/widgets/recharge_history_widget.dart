@@ -7,7 +7,11 @@ import '../../../core/utils/constant.dart';
 import 'recharge_history_value.dart';
 
 class RechargeHistoryWidget extends StatelessWidget {
-  const RechargeHistoryWidget({super.key});
+  final String accountType;
+  const RechargeHistoryWidget({
+    super.key,
+    required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,11 @@ class RechargeHistoryWidget extends StatelessWidget {
             children: [
               Expanded(
                 child: Divider(
-                  color: AppColors.primaryColor.withOpacity(.5),
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor.withOpacity(.5),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(.5),
+                  ),
                   thickness: 2,
                   endIndent: 8,
                 ),
@@ -31,12 +39,20 @@ class RechargeHistoryWidget extends StatelessWidget {
                 style: GoogleFonts.publicSans(
                   fontSize: 24.sp,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
               Expanded(
                 child: Divider(
-                  color: AppColors.primaryColor.withOpacity(.5),
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor.withOpacity(.5),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(.5),
+                  ),
                   thickness: 2,
                   indent: 8,
                 ),
@@ -53,28 +69,65 @@ class RechargeHistoryWidget extends StatelessWidget {
               flex: 2,
               child: Text(
                 "DATE",
-                style: kRechargeTableHeaderStyle,
+                style: kRechargeTableHeaderStyle?.copyWith(
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
+                ),
               ),
             ),
             Expanded(
               flex: 2,
               child: Center(
-                  child: Text("AMOUNT", style: kRechargeTableHeaderStyle)),
+                child: Text(
+                  "AMOUNT",
+                  style: kRechargeTableHeaderStyle?.copyWith(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                  ),
+                ),
+              ),
             ),
             Expanded(
               flex: 1,
               child: Center(
-                  child: Text("STATUS", style: kRechargeTableHeaderStyle)),
+                child: Text(
+                  "STATUS",
+                  style: kRechargeTableHeaderStyle?.copyWith(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                  ),
+                ),
+              ),
             ),
             Expanded(
               flex: 1,
               child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Text("PERKS", style: kRechargeTableHeaderStyle)),
+                alignment: Alignment.centerRight,
+                child: Text(
+                  "PERKS",
+                  style: kRechargeTableHeaderStyle?.copyWith(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                  ),
+                ),
+              ),
             ),
           ],
         ),
         SizedBox(height: 8.h),
+
         // * List Items
         ListView.separated(
           shrinkWrap: true,
@@ -88,12 +141,17 @@ class RechargeHistoryWidget extends StatelessWidget {
                 height: 16.h,
                 axis: Axis.horizontal,
                 width: double.infinity,
-                dashColor: AppColors.primaryColor.withOpacity(.5),
+                dashColor: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor.withOpacity(.5),
+                  personalColor: AppColors.darkGreenGrey.withOpacity(.5),
+                ),
               ),
             ],
           ),
           itemBuilder: (context, index) {
-            return const RechargeHistoryValue(
+            return RechargeHistoryValue(
+              accountType: accountType,
               date: '9/12/2024',
               amount: '₹ 500',
               perks: '₹ 10',

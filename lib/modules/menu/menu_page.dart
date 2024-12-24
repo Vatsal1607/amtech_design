@@ -6,7 +6,6 @@ import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
-import 'package:amtech_design/modules/product_page/product_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,7 +21,7 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
+    String accountType = 'personal'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context);
 
@@ -46,6 +45,7 @@ class MenuPage extends StatelessWidget {
                 child: NotificationListener(
                   onNotification: provider.onNotification,
                   child: CustomScrollView(
+                    physics: const ClampingScrollPhysics(),
                     slivers: [
                       CustomSliverAppbar(
                         accountType: accountType,
@@ -74,7 +74,7 @@ class MenuPage extends StatelessWidget {
                                     width: 360.w,
                                     child: RichText(
                                       maxLines: 1,
-                                      overflow: TextOverflow.visible,
+                                      overflow: TextOverflow.ellipsis,
                                       text: TextSpan(
                                         text: 'Deliver to, ',
                                         style: GoogleFonts.publicSans(
@@ -349,8 +349,10 @@ class MenuPage extends StatelessWidget {
                                             onTap: () {
                                               debugPrint(
                                                   'Product item pressed $index');
-                                              Navigator.pushNamed(context,
-                                                  Routes.productDetails);
+                                              Navigator.pushNamed(
+                                                context,
+                                                Routes.productDetails,
+                                              );
                                             },
                                             child: ProductWidget(
                                               image:
@@ -391,9 +393,9 @@ class MenuPage extends StatelessWidget {
                                           builder: (context, provider, child) =>
                                               GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
+                                              Navigator.pushNamed(
                                                 context,
-                                                ProductDetailsPage.route(),
+                                                Routes.productDetails,
                                               );
                                             },
                                             child: ProductWidget(
@@ -435,9 +437,9 @@ class MenuPage extends StatelessWidget {
                                           builder: (context, provider, child) =>
                                               GestureDetector(
                                             onTap: () {
-                                              Navigator.push(
+                                              Navigator.pushNamed(
                                                 context,
-                                                ProductDetailsPage.route(),
+                                                Routes.productDetails,
                                               );
                                             },
                                             child: ProductWidget(
@@ -500,10 +502,10 @@ class MenuPage extends StatelessWidget {
                                                             child) =>
                                                         GestureDetector(
                                                       onTap: () {
-                                                        Navigator.push(
-                                                            context,
-                                                            ProductDetailsPage
-                                                                .route());
+                                                        Navigator.pushNamed(
+                                                          context,
+                                                          Routes.productDetails,
+                                                        );
                                                       },
                                                       child: ProductWidget(
                                                         isHealthFirst: true,
@@ -799,7 +801,8 @@ class MenuPage extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.orderStatus);
+                  // Navigator.pushNamed(context, Routes.orderStatus);
+                  Navigator.pushNamed(context, Routes.orderList);
                 },
                 child: Container(
                   height: 50.h,

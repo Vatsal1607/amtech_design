@@ -1,6 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -62,6 +61,7 @@ void showSizeModalBottomSheet({
                   ),
                   SizedBox(height: 9.h),
 
+                  // Todo create custom button
                   // * Added to cart button
                   Container(
                     height: 55.h,
@@ -116,7 +116,7 @@ void showSizeModalBottomSheet({
                               ),
                               borderRadius: BorderRadius.circular(100.r),
                             ),
-                            child: SvgIcon(
+                            child: const SvgIcon(
                               icon: IconStrings.arrowNext,
                             ),
                           ),
@@ -146,7 +146,7 @@ void showSizeModalBottomSheet({
                     color: AppColors.red,
                     shape: BoxShape.circle,
                   ),
-                  child: SvgIcon(
+                  child: const SvgIcon(
                     icon: IconStrings.close,
                   ),
                 ),

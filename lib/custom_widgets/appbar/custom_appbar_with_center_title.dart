@@ -16,6 +16,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   final double? leftPadTitle;
   final String actionIcon;
   final Color actionIconColor;
+  final String accountType;
   const CustomAppbarWithCenterTitle({
     super.key,
     required this.title,
@@ -26,12 +27,11 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
     this.leftPadTitle = 0.0,
     this.actionIcon = IconStrings.info,
     this.actionIconColor = AppColors.disabledColor,
+    required this.accountType,
   });
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return AppBar(
       forceMaterialTransparency: true, // * disable color change on scroll
       elevation: 0.0,

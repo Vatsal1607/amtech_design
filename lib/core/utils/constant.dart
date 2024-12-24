@@ -10,7 +10,7 @@ InputBorder textFieldBorderStyle = OutlineInputBorder(
       const BorderSide(color: Colors.transparent), // Optional: no border color
 );
 
-// Condition of get color according to accountType
+// * Condition of get color according to accountType
 Color getColorAccountType({
   required String accountType,
   required Color businessColor,

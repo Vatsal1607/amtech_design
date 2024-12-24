@@ -3,8 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 
 class AddToCartButton extends StatelessWidget {
-  VoidCallback onTap;
-  AddToCartButton({super.key, required this.onTap});
+  final VoidCallback onTap;
+  const AddToCartButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {

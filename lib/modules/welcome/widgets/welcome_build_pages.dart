@@ -81,7 +81,7 @@ class WelcomeBuildPages extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(width: 8.w),
-                                  SvgIcon(
+                                  const SvgIcon(
                                     icon: IconStrings.arrowNext,
                                   ),
                                 ],

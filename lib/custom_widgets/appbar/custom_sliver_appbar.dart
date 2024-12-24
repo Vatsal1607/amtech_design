@@ -89,7 +89,7 @@ class CustomSliverAppbar extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 5.w),
-                  SvgIcon(
+                  const SvgIcon(
                     icon: IconStrings.verifiedUser,
                     color: AppColors.disabledColor,
                   ),

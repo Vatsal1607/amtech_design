@@ -1,3 +1,4 @@
+import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/modules/auth/otp/widgets/otp_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -99,6 +100,15 @@ void otpVerifyBottomSheeet({
                             ],
                           ),
                         ),
+                        SizedBox(height: 20.h),
+                        CustomButtonWithArrow(
+                          isMargin: false,
+                          accountType: accountType,
+                          onTap: () {
+                            debugPrint('Pressed ');
+                          },
+                          text: 'VERIFY',
+                        )
                       ],
                     ),
                   ),

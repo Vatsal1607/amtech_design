@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
-import '../../../custom_widgets/custom_button.dart';
+import '../../../custom_widgets/buttons/custom_button.dart';
 import '../../../custom_widgets/custom_textfield.dart';
 import 'register_provider.dart';
 

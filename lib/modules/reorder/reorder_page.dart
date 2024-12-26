@@ -59,7 +59,10 @@ class ReorderPage extends StatelessWidget {
               ),
             ],
           ),
-          BottomBlurOnPage(accountType: accountType),
+          BottomBlurOnPage(
+            height: 20.h,
+            accountType: accountType,
+          ),
         ],
       ),
     );

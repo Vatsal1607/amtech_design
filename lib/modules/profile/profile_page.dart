@@ -3,6 +3,7 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
+import 'package:amtech_design/modules/ratings/ratings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -234,6 +235,24 @@ class ProfilePage extends StatelessWidget {
                     icon: IconStrings.aboutUs,
                   ),
                   SizedBox(height: 20.h),
+                  // ! TEMP
+                  ProfileTile(
+                    accountType: accountType,
+                    onTap: () {
+                      // * showDialog(
+                      showGeneralDialog(
+                        context: context,
+                        // barrierDismissible: true,
+                        // * builder: (context) => const RatingsPage(),
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return const RatingsPage();
+                        },
+                      );
+                    },
+                    title: 'TEMP RATING UI VIEW --> ⭐',
+                    icon: IconStrings.aboutUs,
+                  ),
+                  // !
                 ],
               ),
             ),

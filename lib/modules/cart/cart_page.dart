@@ -1,6 +1,6 @@
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
-import 'package:amtech_design/custom_widgets/custom_button.dart';
+import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';

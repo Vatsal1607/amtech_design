@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
 import '../routes.dart';
+import 'buttons/custom_button_with_arrow.dart';
 import 'product_size_widget.dart';
 
 void showSizeModalBottomSheet({
@@ -61,68 +62,12 @@ void showSizeModalBottomSheet({
                   ),
                   SizedBox(height: 9.h),
 
-                  // Todo create custom button
                   // * Added to cart button
-                  Container(
-                    height: 55.h,
-                    margin: EdgeInsets.symmetric(horizontal: 32.w),
-                    padding: EdgeInsets.symmetric(horizontal: 22.w),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40.r),
-                      color: AppColors.white,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              '1 item '.toUpperCase(),
-                              style: GoogleFonts.publicSans(
-                                fontSize: 16.sp,
-                                fontWeight: FontWeight.bold,
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                              ),
-                            ),
-                            Text(
-                              'added to cart'.toUpperCase(),
-                              style: GoogleFonts.publicSans(
-                                fontSize: 16.sp,
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(context, Routes.cart);
-                          },
-                          child: Container(
-                            height: 30.h,
-                            width: 45.w,
-                            decoration: BoxDecoration(
-                              color: getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.primaryColor,
-                                personalColor: AppColors.darkGreenGrey,
-                              ),
-                              borderRadius: BorderRadius.circular(100.r),
-                            ),
-                            child: const SvgIcon(
-                              icon: IconStrings.arrowNext,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  CustomButtonWithArrow(
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.cart);
+                    },
+                    accountType: accountType,
                   ),
                 ],
               ),

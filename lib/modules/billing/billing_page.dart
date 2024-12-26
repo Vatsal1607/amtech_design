@@ -57,7 +57,10 @@ class BillingPage extends StatelessWidget {
               ),
             ],
           ), // Bottom edge gradient
-          BottomBlurOnPage(accountType: accountType),
+          BottomBlurOnPage(
+            height: 20.h,
+            accountType: accountType,
+          ),
         ],
       ),
     );

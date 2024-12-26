@@ -23,4 +23,11 @@ class RatingsProvider extends ChangeNotifier {
     currentIndex = index;
     notifyListeners();
   }
+
+  double currentRating = 0;
+
+  onRatingUpdate(rating) {
+    currentRating = rating;
+    notifyListeners();
+  }
 }

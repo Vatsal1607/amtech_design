@@ -198,7 +198,7 @@ class ProfilePage extends StatelessWidget {
                   ProfileTile(
                     accountType: accountType,
                     onTap: () {
-                      debugPrint('pressed');
+                      Navigator.pushNamed(context, Routes.favoriteItems);
                     },
                     title: 'Favorite Products',
                     icon: IconStrings.favorite,

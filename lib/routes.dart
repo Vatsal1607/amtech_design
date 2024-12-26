@@ -4,6 +4,7 @@ import 'package:amtech_design/modules/auth/login/login_page.dart';
 import 'package:amtech_design/modules/auth/otp/otp_page.dart';
 import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/cart/cart_page.dart';
+import 'package:amtech_design/modules/favorite_items/favorite_items_page.dart';
 import 'package:amtech_design/modules/notification/notification_page.dart';
 import 'package:amtech_design/modules/order/order_list/order_list_page.dart';
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
@@ -40,6 +41,7 @@ class Routes {
   static const String authorizedEmp = '/authorizedEmp';
   static const String notification = '/notification';
   static const String ratings = '/ratings';
+  static const String favoriteItems = '/favoriteItems';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -62,5 +64,6 @@ class Routes {
     authorizedEmp: (context) => AuthorizedEmpPage(),
     notification: (context) => const NotificationPage(),
     ratings: (context) => const RatingsPage(),
+    favoriteItems: (context) => const FavoriteItemsPage(),
   };
 }

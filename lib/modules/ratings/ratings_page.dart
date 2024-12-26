@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
 
+// * Dialog
 class RatingsPage extends StatelessWidget {
   const RatingsPage({super.key});
 
@@ -141,22 +142,26 @@ class RatingsPage extends StatelessWidget {
                                             SizedBox(height: 10.h),
                                             // * Star Rating
                                             RatingBar.builder(
-                                              initialRating: 3,
+                                              initialRating:
+                                                  provider.currentRating,
                                               minRating: 1,
                                               direction: Axis.horizontal,
                                               // allowHalfRating: true,
                                               itemCount: 5,
                                               itemSize: 25.w,
                                               itemPadding: EdgeInsets.symmetric(
-                                                  horizontal: 2.w),
+                                                horizontal: 2.w,
+                                              ),
                                               itemBuilder: (context, _) =>
-                                                  const Icon(
-                                                Icons.star,
+                                                  SvgIcon(
+                                                icon: index <
+                                                        provider.currentRating
+                                                    ? IconStrings.ratedStar
+                                                    : IconStrings.unratedStar,
                                                 color: AppColors.lightGreen,
                                               ),
-                                              onRatingUpdate: (rating) {
-                                                debugPrint(rating.toString());
-                                              },
+                                              onRatingUpdate:
+                                                  provider.onRatingUpdate,
                                             ),
                                           ],
                                         ),

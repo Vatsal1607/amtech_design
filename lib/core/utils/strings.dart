@@ -72,6 +72,8 @@ class IconStrings {
   static const position = '${BaseIconPath.basePath}position.svg';
   static const fullname = '${BaseIconPath.basePath}fullname.svg';
   static const more = '${BaseIconPath.basePath}more.svg';
+  static const ratedStar = '${BaseIconPath.basePath}rated_star.svg';
+  static const unratedStar = '${BaseIconPath.basePath}unrated_star.svg';
 }
 
 class ImageStrings {

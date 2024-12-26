@@ -6,6 +6,7 @@ import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:amtech_design/modules/notification/notification_page.dart';
 import 'package:amtech_design/modules/order/order_list/order_list_page.dart';
+import 'package:amtech_design/modules/ratings/ratings_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class Routes {
   // static const String razorPay = '/razorPay';
   static const String authorizedEmp = '/authorizedEmp';
   static const String notification = '/notification';
+  static const String ratings = '/ratings';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -59,5 +61,6 @@ class Routes {
     // razorPayPage: (context) => const RazorPayPage(),
     authorizedEmp: (context) => AuthorizedEmpPage(),
     notification: (context) => const NotificationPage(),
+    ratings: (context) => const RatingsPage(),
   };
 }

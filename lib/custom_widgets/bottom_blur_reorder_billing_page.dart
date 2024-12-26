@@ -4,14 +4,15 @@ import '../core/utils/app_colors.dart';
 import '../core/utils/constant.dart';
 
 class BottomBlurOnPage extends StatelessWidget {
+  final String accountType;
   final bool isTopBlur;
-  const BottomBlurOnPage({
+  double height;
+  BottomBlurOnPage({
     super.key,
     required this.accountType,
     this.isTopBlur = false,
+    this.height = 36,
   });
-
-  final String accountType;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,7 @@ class BottomBlurOnPage extends StatelessWidget {
       left: 0,
       right: 0,
       bottom: isTopBlur ? null : 0,
-      height: 36.h,
+      height: height.h,
       child: IgnorePointer(
         child: Container(
           decoration: BoxDecoration(

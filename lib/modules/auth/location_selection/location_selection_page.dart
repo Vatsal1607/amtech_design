@@ -1,7 +1,7 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/custom_button.dart';
+import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';

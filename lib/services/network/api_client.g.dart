@@ -14,7 +14,6 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    // baseUrl ??= 'http://192.168.1.8:9000/';
     baseUrl ??=
         'https://fed7-2409-40c1-d-e1dd-dc03-9285-7212-a1d0.ngrok-free.app/';
   }
@@ -298,6 +297,39 @@ class _ApiClient implements ApiClient {
     late VerifyRechargeModel _value;
     try {
       _value = VerifyRechargeModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<GstVerifyModel> gstVerify(String gstNumber) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<GstVerifyModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/${gstNumber}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late GstVerifyModel _value;
+    try {
+      _value = GstVerifyModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -1,4 +1,5 @@
 import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
@@ -58,4 +59,8 @@ abstract class ApiClient {
   Future<VerifyRechargeModel> verifyRecharge(
     @Body() Map<String, dynamic> body,
   );
+
+  @GET(
+      "http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/{gstNumber}")
+  Future<GstVerifyModel> gstVerify(@Path("gstNumber") String gstNumber);
 }

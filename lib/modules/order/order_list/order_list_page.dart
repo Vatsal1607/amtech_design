@@ -1,5 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/custom_widgets/bottom_blur_reorder_billing_page.dart';
+import 'package:amtech_design/custom_widgets/bottom_blur_on_page.dart';
 import 'package:amtech_design/modules/order/order_list/widgets/order_list_status_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

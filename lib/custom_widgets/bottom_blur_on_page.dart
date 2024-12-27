@@ -6,8 +6,8 @@ import '../core/utils/constant.dart';
 class BottomBlurOnPage extends StatelessWidget {
   final String accountType;
   final bool isTopBlur;
-  double height;
-  BottomBlurOnPage({
+  final double height;
+  const BottomBlurOnPage({
     super.key,
     required this.accountType,
     this.isTopBlur = false,

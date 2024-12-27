@@ -56,7 +56,7 @@ class _RechargePageState extends State<RechargePage> {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     // final provider = Provider.of<RechargeProvider>(context, listen: false);
     return Scaffold(

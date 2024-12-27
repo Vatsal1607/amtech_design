@@ -13,14 +13,13 @@ class CustomSliverAppbar extends StatelessWidget {
   const CustomSliverAppbar({
     super.key,
     required this.accountType,
-    // required this.provider,
   });
 
   final String accountType;
-  // final Provider provider;
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<MenuProvider>(context, listen: false);
     return SliverAppBar(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -33,9 +32,8 @@ class CustomSliverAppbar extends StatelessWidget {
         children: [
           //! leading icon
           GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, Routes.profile);
-            },
+            onTap: () => Navigator.pushNamed(context, Routes.profile),
+            onVerticalDragEnd: provider.onVerticalDragDownLeading,
             child: Container(
               height: 48.h,
               width: 48.w,
@@ -45,7 +43,7 @@ class CustomSliverAppbar extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(
                   color: AppColors.primaryColor,
-                  width: 2.0,
+                  width: 2.w,
                 ),
               ),
               child: ClipOval(

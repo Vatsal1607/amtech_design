@@ -1,6 +1,6 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
-import 'package:amtech_design/modules/favorite_items/favorite_items_provider.dart';
+import 'package:amtech_design/modules/favorite/favorite_items_provider.dart';
 import 'package:amtech_design/modules/product_page/product_details_provider.dart';
 import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';

@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -179,6 +180,7 @@ class RegisterProvider extends ChangeNotifier {
         'contact': businessMobileController.text,
         'address': businessAddressController.text,
         'buninessType': selectedBusinessType.toString(),
+        'gst': gstNumberController.text,
       };
 
       debugPrint('Image filenames being sent: $imageFileNames');
@@ -224,10 +226,49 @@ class RegisterProvider extends ChangeNotifier {
     }
   }
 
+  bool isValidGst = false;
+  bool isLoadingVerifyGst = false;
+  //* gstVerify API
+  Future<void> gstVerify(context) async {
+    isLoadingVerifyGst = true;
+    notifyListeners();
+    GstVerifyModel? response;
+    try {
+      // Call the API
+      response =
+          await apiService.gstVerify(gstNumber: gstNumberController.text);
+
+      log('gstVerify Response: $response');
+      if (response.flag == true) {
+        isValidGst = true;
+      }
+    } catch (e) {
+      log("gstVerify Error: $e");
+      if (e is DioException) {
+        final apiError = ApiGlobalModel.fromJson(e.response?.data ?? {});
+        customSnackBar(
+          context: context,
+          message: apiError.message.toString(),
+          backgroundColor: AppColors.primaryColor,
+        );
+      } else {
+        debugPrint('${response?.message.toString()}');
+        customSnackBar(
+          context: context,
+          message: 'Invalid GSTIN Number',
+        );
+      }
+    } finally {
+      isLoadingVerifyGst = false;
+      notifyListeners();
+    }
+  }
+
   clearFields() {
     businessNameController.clear();
     businessOwnerController.clear();
     selectedPropertyStatus = null;
+    gstNumberController.clear();
     imageFileNames = [];
     businessMobileController.clear();
     businessAddressController.clear();

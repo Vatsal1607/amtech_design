@@ -7,28 +7,33 @@ import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
 
-class ProductWidget extends StatelessWidget {
+class FavoriteItemsWidget extends StatelessWidget {
   final String image;
   final String name;
   final int index;
   final String accountType;
   final bool isHealthFirst;
-  const ProductWidget({
+  final double? height;
+  final double? width;
+  const FavoriteItemsWidget({
     super.key,
     required this.image,
     required this.name,
     required this.index,
     required this.accountType,
     this.isHealthFirst = false,
+    this.height,
+    this.width,
   });
 
   @override
   Widget build(BuildContext context) {
     return Stack(
+      clipBehavior: Clip.none,
       children: [
         Container(
-          height: 150.h,
-          width: 120.w,
+          height: height,
+          width: width,
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage(image),
@@ -52,8 +57,7 @@ class ProductWidget extends StatelessWidget {
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: Container(
-                      // height: 55.h,
-                      height: 58.h,
+                      height: 55.h,
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: isHealthFirst
@@ -116,12 +120,25 @@ class ProductWidget extends StatelessWidget {
           ),
         ),
         Positioned(
-          bottom: 0,
+          top: 13.h,
+          right: 25.w,
+          child: GestureDetector(
+            onTap: () {
+              debugPrint('pressed');
+            },
+            child: const Icon(
+              Icons.favorite,
+              color: AppColors.lightGreen,
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: -7,
           left: 0,
           right: 0,
           child: Align(
             alignment: Alignment.bottomCenter,
-            // Add button of Product widget
+            // * Add button
             child: GestureDetector(
               onTap: () {
                 debugPrint('Add button pressed at index $index');
@@ -159,7 +176,7 @@ class ProductWidget extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 4.w),
-                    SvgIcon(icon: IconStrings.add),
+                    const SvgIcon(icon: IconStrings.add),
                   ],
                 ),
               ),

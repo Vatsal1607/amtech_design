@@ -4,11 +4,13 @@ import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/billing/billing_page.dart';
 import 'package:amtech_design/modules/blog/blog_page.dart';
 import 'package:amtech_design/modules/menu/menu_page.dart';
+import 'package:amtech_design/modules/menu/widgets/account_selection_widget.dart';
 import 'package:amtech_design/modules/reorder/reorder_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/strings.dart';
+import '../menu/menu_provider.dart';
 import 'bottom_bar_provider.dart';
 
 class BottomBarPage extends StatelessWidget {
@@ -23,16 +25,25 @@ class BottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; //Todo replace with bottom data
+    String accountType = 'business'; //Todo replace with bottom data
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
     //     '';
-    debugPrint('$accountType is from bottombar page (build)');
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     return Scaffold(
-      body: Consumer<BottomBarProvider>(
-        builder: (context, provider, child) {
-          // Display the screen based on the selected index
-          return _screens[provider.selectedIndex];
-        },
+      body: Stack(
+        children: [
+          GestureDetector(
+            onTap: menuProvider.onTapOutsideAccountUI,
+            child: Consumer<BottomBarProvider>(
+              builder: (context, provider, child) {
+                return _screens[provider.selectedIndex];
+              },
+            ),
+          ),
+          AccountSelectionWidget(
+            accountType: accountType,
+          ),
+        ],
       ),
       bottomNavigationBar: Consumer<BottomBarProvider>(
         builder: (context, provider, child) {

@@ -7,4 +7,7 @@ class ApiEndpoints {
   static const String verifyOtp = 'verify-otp';
   static const String userRecharge = 'user/recharge';
   static const String verifyRecharge = 'recharge/verify';
+  // Todo Reformat
+  static const String gstVerify =
+      'http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/';
 }

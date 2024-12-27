@@ -11,7 +11,7 @@ class BlogPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(

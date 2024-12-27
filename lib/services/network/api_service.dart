@@ -1,5 +1,6 @@
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
+import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
@@ -70,5 +71,11 @@ class ApiService {
     required Map<String, dynamic> body,
   }) async {
     return await apiClient.verifyRecharge(body);
+  }
+
+  Future<GstVerifyModel> gstVerify({
+    required String gstNumber,
+  }) async {
+    return await apiClient.gstVerify(gstNumber);
   }
 }

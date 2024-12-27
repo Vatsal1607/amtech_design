@@ -20,8 +20,7 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    String accountType = 'business'; // static temp
-    // String accountType =
+    String accountType = 'business'; // Todo
     //     sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     debugPrint(accountType);
     return Scaffold(
@@ -330,111 +329,110 @@ class RegisterPage extends StatelessWidget {
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: 20.h),
 
                                 //* Dropdown of Business property status
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      color: AppColors.seaShell,
-                                      width: 2.w,
-                                    ),
-                                    borderRadius: BorderRadius.circular(100.r),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      // Leading Icon (Outside the Dropdown)
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 15.0),
-                                        child: SvgIcon(
-                                          icon: IconStrings.property,
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Consumer<RegisterProvider>(
-                                          builder: (context, value, child) =>
-                                              DropdownButton2<String>(
-                                            dropdownStyleData:
-                                                DropdownStyleData(
-                                              decoration: BoxDecoration(
-                                                color: AppColors.seaShell,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10), // Rounded corners
-                                                border: Border.all(
-                                                  color: Colors
-                                                      .grey, // Border color
-                                                  width: 1, // Border width
-                                                ),
-                                              ),
-                                            ),
-                                            value:
-                                                provider.selectedPropertyStatus,
-                                            isExpanded: true,
-                                            style: GoogleFonts.publicSans(
-                                              fontSize: 14.sp,
-                                              color: AppColors.white,
-                                            ),
-                                            hint: Text(
-                                              'Business Property Status',
-                                              style: GoogleFonts.publicSans(
-                                                fontSize: 14.sp,
-                                                color: AppColors.white,
-                                              ),
-                                            ),
-                                            items: provider.propertyStatusItems
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(
-                                                  value,
-                                                  style: GoogleFonts.publicSans(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
-                                                        AppColors.primaryColor,
-                                                  ),
-                                                ),
-                                              );
-                                            }).toList(),
-                                            underline: const SizedBox.shrink(),
-                                            onChanged:
-                                                provider.onChangePropertyStatus,
-                                            iconStyleData: IconStyleData(
-                                              icon: Padding(
-                                                padding: EdgeInsets.only(
-                                                    right: 20.w),
-                                                child: const SvgIcon(
-                                                  icon: IconStrings.dropdown,
-                                                ),
-                                              ),
-                                            ),
-                                            selectedItemBuilder:
-                                                (BuildContext context) {
-                                              return provider
-                                                  .propertyStatusItems
-                                                  .map<Widget>((String value) {
-                                                return Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    value,
-                                                    style: const TextStyle(
-                                                      fontSize: 14,
-                                                      color: Colors
-                                                          .white, // Style for the selected item
-                                                    ),
-                                                  ),
-                                                );
-                                              }).toList();
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //     border: Border.all(
+                                //       color: AppColors.seaShell,
+                                //       width: 2.w,
+                                //     ),
+                                //     borderRadius: BorderRadius.circular(100.r),
+                                //   ),
+                                //   child: Row(
+                                //     children: [
+                                //       // Leading Icon (Outside the Dropdown)
+                                //       const Padding(
+                                //         padding: EdgeInsets.only(left: 15.0),
+                                //         child: SvgIcon(
+                                //           icon: IconStrings.property,
+                                //         ),
+                                //       ),
+                                //       Expanded(
+                                //         child: Consumer<RegisterProvider>(
+                                //           builder: (context, value, child) =>
+                                //               DropdownButton2<String>(
+                                //             dropdownStyleData:
+                                //                 DropdownStyleData(
+                                //               decoration: BoxDecoration(
+                                //                 color: AppColors.seaShell,
+                                //                 borderRadius:
+                                //                     BorderRadius.circular(
+                                //                         10), // Rounded corners
+                                //                 border: Border.all(
+                                //                   color: Colors
+                                //                       .grey, // Border color
+                                //                   width: 1, // Border width
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //             value:
+                                //                 provider.selectedPropertyStatus,
+                                //             isExpanded: true,
+                                //             style: GoogleFonts.publicSans(
+                                //               fontSize: 14.sp,
+                                //               color: AppColors.white,
+                                //             ),
+                                //             hint: Text(
+                                //               'Business Property Status',
+                                //               style: GoogleFonts.publicSans(
+                                //                 fontSize: 14.sp,
+                                //                 color: AppColors.white,
+                                //               ),
+                                //             ),
+                                //             items: provider.propertyStatusItems
+                                //                 .map<DropdownMenuItem<String>>(
+                                //                     (String value) {
+                                //               return DropdownMenuItem<String>(
+                                //                 value: value,
+                                //                 child: Text(
+                                //                   value,
+                                //                   style: GoogleFonts.publicSans(
+                                //                     fontSize: 14.sp,
+                                //                     fontWeight: FontWeight.bold,
+                                //                     color:
+                                //                         AppColors.primaryColor,
+                                //                   ),
+                                //                 ),
+                                //               );
+                                //             }).toList(),
+                                //             underline: const SizedBox.shrink(),
+                                //             onChanged:
+                                //                 provider.onChangePropertyStatus,
+                                //             iconStyleData: IconStyleData(
+                                //               icon: Padding(
+                                //                 padding: EdgeInsets.only(
+                                //                     right: 20.w),
+                                //                 child: const SvgIcon(
+                                //                   icon: IconStrings.dropdown,
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //             selectedItemBuilder:
+                                //                 (BuildContext context) {
+                                //               return provider
+                                //                   .propertyStatusItems
+                                //                   .map<Widget>((String value) {
+                                //                 return Align(
+                                //                   alignment:
+                                //                       Alignment.centerLeft,
+                                //                   child: Text(
+                                //                     value,
+                                //                     style: const TextStyle(
+                                //                       fontSize: 14,
+                                //                       color: Colors
+                                //                           .white, // Style for the selected item
+                                //                     ),
+                                //                   ),
+                                //                 );
+                                //               }).toList();
+                                //             },
+                                //           ),
+                                //         ),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
 
                                 // Consumer<RegisterProvider>(
                                 //   builder: (context, _, child) {
@@ -484,12 +482,43 @@ class RegisterPage extends StatelessWidget {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.only(right: 18.w),
-                                        child: Text(
-                                          'VERIFY',
-                                          style: TextStyle(
-                                            color: AppColors.seaShell,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 14.sp,
+                                        child: GestureDetector(
+                                          onTap: provider.isValidGst
+                                              ? null
+                                              : () {
+                                                  if (provider
+                                                      .gstNumberController
+                                                      .text
+                                                      .isNotEmpty) {
+                                                    provider.gstVerify(context);
+                                                  }
+                                                },
+                                          child: Consumer<RegisterProvider>(
+                                            builder: (context, value, child) =>
+                                                provider.isLoadingVerifyGst
+                                                    ? const CircularProgressIndicator
+                                                        .adaptive(
+                                                        backgroundColor:
+                                                            AppColors.white,
+                                                      )
+                                                    : provider.isValidGst
+                                                        ? const SvgIcon(
+                                                            icon: IconStrings
+                                                                .selected,
+                                                            color: AppColors
+                                                                .lightGreen,
+                                                          )
+                                                        : Text(
+                                                            'VERIFY',
+                                                            style: TextStyle(
+                                                              color: AppColors
+                                                                  .seaShell,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 14.sp,
+                                                            ),
+                                                          ),
                                           ),
                                         ),
                                       ),

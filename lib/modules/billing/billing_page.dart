@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
-import '../../custom_widgets/bottom_blur_reorder_billing_page.dart';
+import '../../custom_widgets/bottom_blur_on_page.dart';
 import '../../custom_widgets/select_order_date.dart';
 import 'widgets/billing_card_widgets.dart';
 
@@ -12,7 +12,7 @@ class BillingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(

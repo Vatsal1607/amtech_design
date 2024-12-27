@@ -74,6 +74,7 @@ class IconStrings {
   static const more = '${BaseIconPath.basePath}more.svg';
   static const ratedStar = '${BaseIconPath.basePath}rated_star.svg';
   static const unratedStar = '${BaseIconPath.basePath}unrated_star.svg';
+  static const unselected = '${BaseIconPath.basePath}unselected.svg';
 }
 
 class ImageStrings {
@@ -108,6 +109,7 @@ class ImageStrings {
   static const blogPng = '${BaseImagePath.basePath}blog_png.png';
   static const healthFirstBanner =
       '${BaseImagePath.basePath}health_first_banner.png';
+  static const personalPic = '${BaseImagePath.basePath}personal_pic.png';
 }
 
 class LottieStrings {

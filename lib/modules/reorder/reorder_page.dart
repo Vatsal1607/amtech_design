@@ -7,14 +7,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
-import '../../custom_widgets/bottom_blur_reorder_billing_page.dart';
+import '../../custom_widgets/bottom_blur_on_page.dart';
 
 class ReorderPage extends StatelessWidget {
   const ReorderPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<ReorderProvider>(context);
     return Scaffold(

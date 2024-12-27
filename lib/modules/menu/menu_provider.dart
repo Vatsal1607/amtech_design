@@ -123,4 +123,19 @@ class MenuProvider extends ChangeNotifier {
       );
     }
   }
+
+  // * Account Selection UI data
+  double panelHeight = 0.0;
+  final double panelMaxHeight = 235.0;
+
+  onVerticalDragDownLeading(details) {
+    panelHeight = panelMaxHeight;
+    debugPrint('drag end details: ${details.toString()}');
+    notifyListeners();
+  }
+
+  onTapOutsideAccountUI() {
+    panelHeight = 0;
+    notifyListeners();
+  }
 }

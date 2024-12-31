@@ -15,6 +15,7 @@ class RegisterProvider extends ChangeNotifier {
   TextEditingController businessOwnerController = TextEditingController();
   TextEditingController businessAddressController = TextEditingController();
   TextEditingController businessMobileController = TextEditingController();
+  TextEditingController businessEmailController = TextEditingController();
   TextEditingController gstNumberController = TextEditingController();
 
   //! Personal account controllers
@@ -177,12 +178,13 @@ class RegisterProvider extends ChangeNotifier {
         'ownerName': businessOwnerController.text,
         'ocupant': selectedPropertyStatus,
         'images': imageFileNames, // Pass the filenames list as List<String>
-        'contact': businessMobileController.text,
+        'contact': '91${businessMobileController.text}',
         'address': businessAddressController.text,
         'buninessType': selectedBusinessType.toString(),
         'gst': gstNumberController.text,
+        'email': businessEmailController.text,
       };
-
+      print('Mobile number is: ---- 91${businessMobileController.text}------');
       debugPrint('Image filenames being sent: $imageFileNames');
 
       // Call the API

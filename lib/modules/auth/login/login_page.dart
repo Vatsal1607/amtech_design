@@ -16,6 +16,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final String accountType = 'business'; // Todo set dynamic accountType
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
     final provider = Provider.of<LoginProvider>(context, listen: false);

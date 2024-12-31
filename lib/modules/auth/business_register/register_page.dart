@@ -9,9 +9,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/buttons/custom_button.dart';
 import '../../../custom_widgets/custom_textfield.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import 'register_provider.dart';
 
 class RegisterPage extends StatelessWidget {
@@ -20,8 +22,9 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    String accountType = 'business'; // Todo
-    //     sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    // String accountType = 'business'; // Todo set dynamic accountType
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     debugPrint(accountType);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
@@ -223,6 +226,20 @@ class RegisterPage extends StatelessWidget {
                                       LengthLimitingTextInputFormatter(10),
                                     ],
                                     validator: Validator.validatePhoneNumber,
+                                    onChanged: provider.onChangeBusinessNumber,
+                                  ),
+                                ),
+                                SizedBox(height: 20.h),
+                                Consumer<RegisterProvider>(
+                                  builder: (context, _, child) =>
+                                      CustomTextField(
+                                    controller:
+                                        provider.businessEmailController,
+                                    hint: 'Enter Email Address',
+                                    // errorText: provider.businessMobileErrorText,
+                                    prefixIcon: IconStrings.phone,
+                                    keyboardType: TextInputType.number,
+                                    // validator: Validator.validatePhoneNumber,
                                     onChanged: provider.onChangeBusinessNumber,
                                   ),
                                 ),

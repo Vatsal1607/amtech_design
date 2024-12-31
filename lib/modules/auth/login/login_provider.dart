@@ -63,7 +63,7 @@ class LoginProvider extends ChangeNotifier {
       final location = sharedPrefsService.getString(SharedPrefsKeys.location);
       final company = sharedPrefsService.getString(SharedPrefsKeys.company);
       final Map<String, dynamic> body = {
-        'contact': int.parse(phoneController.text),
+        'contact': int.parse('91${phoneController.text}'),
         'location': location, // use sharedprefs //selectedLocation
         if (accountType == 'business')
           'company': company, // business.businessName
@@ -126,7 +126,7 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final Map<String, dynamic> body = {
-        'contact': int.parse(phoneController.text),
+        'contact': int.parse('91${phoneController.text}'),
         'role': accountType == 'business' ? '0' : '1',
         // 'secondaryContact': '', // optional
       };

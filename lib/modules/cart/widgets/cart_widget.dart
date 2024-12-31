@@ -7,13 +7,15 @@ import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/item_quantity_widget.dart';
 
 class CartWidget extends StatelessWidget {
+  final String accountType;
   const CartWidget({
     super.key,
+    required this.accountType,
   });
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    // String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Container(
       height: 95.h,

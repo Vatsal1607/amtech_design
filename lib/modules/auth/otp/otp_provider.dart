@@ -25,7 +25,7 @@ class OtpProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final Map<String, dynamic> body = {
-        'contact': int.parse(mobile),
+        'contact': int.parse('91$mobile'),
         'otp': int.parse(otpController.text),
         'role': accountType == 'business' ? '0' : '1',
         // 'secondaryContact': '', // optional
@@ -51,14 +51,16 @@ class OtpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message ?? 'An error occurred',
-          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.white,
         );
       } else {
         // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.white,
         );
       }
     } finally {

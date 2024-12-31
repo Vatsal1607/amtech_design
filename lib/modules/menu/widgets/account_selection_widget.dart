@@ -1,8 +1,6 @@
-import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
@@ -22,7 +20,7 @@ class AccountSelectionWidget extends StatelessWidget {
     return Consumer<MenuProvider>(
       builder: (context, _, child) => AnimatedContainer(
         height: provider.panelHeight.h,
-        duration: const Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.only(left: 32.w, right: 32.w, top: 60.h),
         decoration: BoxDecoration(
           color: getColorAccountType(
@@ -31,8 +29,8 @@ class AccountSelectionWidget extends StatelessWidget {
             personalColor: AppColors.darkGreenGrey,
           ),
           borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(30.r),
-            bottomRight: Radius.circular(30.r),
+            bottomLeft: Radius.circular(35.r),
+            bottomRight: Radius.circular(35.r),
           ),
         ),
         child: ListView(

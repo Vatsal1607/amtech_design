@@ -20,7 +20,7 @@ class WelcomePage extends StatelessWidget {
                 physics: const ClampingScrollPhysics(),
                 controller: provider.pageController,
                 onPageChanged: provider.updatePage,
-                children: provider.welcomePages,
+                children: provider.welcomePages, // * welcome pages
               );
             },
           ),

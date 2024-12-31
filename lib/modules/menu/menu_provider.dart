@@ -128,9 +128,14 @@ class MenuProvider extends ChangeNotifier {
   double panelHeight = 0.0;
   final double panelMaxHeight = 235.0;
 
-  onVerticalDragDownLeading(details) {
+  // onVerticalDragDownLeading(details) {
+  //   panelHeight = panelMaxHeight;
+  //   debugPrint('drag end details: ${details.toString()}');
+  //   notifyListeners();
+  // }
+
+  onVerticalDragDownLeading() {
     panelHeight = panelMaxHeight;
-    debugPrint('drag end details: ${details.toString()}');
     notifyListeners();
   }
 

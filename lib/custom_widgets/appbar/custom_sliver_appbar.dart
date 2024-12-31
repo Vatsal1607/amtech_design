@@ -33,7 +33,8 @@ class CustomSliverAppbar extends StatelessWidget {
           //! leading icon
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, Routes.profile),
-            onVerticalDragEnd: provider.onVerticalDragDownLeading,
+            // onVerticalDragEnd: provider.onVerticalDragDownLeading
+            onLongPress: provider.onVerticalDragDownLeading,
             child: Container(
               height: 48.h,
               width: 48.w,

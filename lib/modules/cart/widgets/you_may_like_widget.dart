@@ -6,13 +6,15 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 
 class YouMayLikeWidget extends StatelessWidget {
+  final String accountType;
   const YouMayLikeWidget({
     super.key,
+    required this.accountType,
   });
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    // String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Container(
       height: 100.h,

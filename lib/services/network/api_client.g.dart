@@ -14,8 +14,9 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??=
-        'https://fed7-2409-40c1-d-e1dd-dc03-9285-7212-a1d0.ngrok-free.app/';
+    // baseUrl ??= 'http://192.168.1.2:9000/';
+    baseUrl ??= 'http://192.168.1.12:9000/';
+    // 'https://fed7-2409-40c1-d-e1dd-dc03-9285-7212-a1d0.ngrok-free.app/';
   }
 
   final Dio _dio;

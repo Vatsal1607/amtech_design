@@ -18,7 +18,7 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
     return Scaffold(
@@ -50,7 +50,9 @@ class CartPage extends StatelessWidget {
                   padding: EdgeInsets.only(left: 31.w, right: 31.w, top: 27.h),
                   separatorBuilder: (context, index) => SizedBox(height: 18.h),
                   itemBuilder: (context, index) {
-                    return const CartWidget();
+                    return CartWidget(
+                      accountType: accountType,
+                    );
                   },
                 ),
                 SizedBox(height: 18.h),
@@ -114,7 +116,9 @@ class CartPage extends StatelessWidget {
                             return SizedBox(width: 21.w);
                           },
                           itemBuilder: (context, index) {
-                            return YouMayLikeWidget();
+                            return YouMayLikeWidget(
+                              accountType: accountType,
+                            );
                           },
                         ),
                       )

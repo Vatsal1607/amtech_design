@@ -14,7 +14,7 @@ class ProductDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'personal'; // Todo imp set dynamic
+    String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       extendBodyBehindAppBar: true, // Ensures content goes behind the AppBar

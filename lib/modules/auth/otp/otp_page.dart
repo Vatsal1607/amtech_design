@@ -123,16 +123,16 @@ class OtpPage extends StatelessWidget {
                       height: 48.h,
                       isLoading: provider.isLoading,
                       onTap: () {
-                        Navigator.pushNamed(
-                          context,
-                          Routes.verifySuccess,
-                        );
-                        //Todo Uncomment API call
-                        // provider.verifyOtp(
-                        //   context: context,
-                        //   accountType: accountType,
-                        //   mobile: arguments['mobile'],
+                        // Navigator.pushNamed(
+                        //   context,
+                        //   Routes.verifySuccess,
                         // );
+                        //Todo Uncomment API call
+                        provider.verifyOtp(
+                          context: context,
+                          accountType: accountType,
+                          mobile: arguments['mobile'],
+                        );
                       },
                       text: 'VERIFY',
                       bgColor: accountType != '' && accountType == 'business'

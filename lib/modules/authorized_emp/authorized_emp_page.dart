@@ -120,6 +120,7 @@ class AuthorizedEmpPage extends StatelessWidget {
                         LengthLimitingTextInputFormatter(10),
                       ],
                       hint: 'Mobile Number',
+                      prefixText: '+91 ',
                       validator: Validator.validatePhoneNumber,
                       prefixIcon: IconStrings.phone,
                       controller: provider.mobileController,

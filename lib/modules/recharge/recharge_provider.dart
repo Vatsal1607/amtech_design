@@ -67,10 +67,10 @@ class RechargeProvider extends ChangeNotifier {
           razorpayOrderId = response.data!.razorpayOrderId;
         }
 
-        return true; // Indicating success
+        return true; // * Indicating success
       } else {
         debugPrint('UserRecharge Response: ${response.message}');
-        return false; // Indicating failure
+        return false; // * Indicating failure
       }
     } catch (error) {
       log("Error user Recharge: $error");

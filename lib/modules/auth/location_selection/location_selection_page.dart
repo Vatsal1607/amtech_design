@@ -137,7 +137,11 @@ class LocationSelectionPage extends StatelessWidget {
                     }
                   } else {
                     customSnackBar(
-                        context: context, message: 'Please Select Location');
+                      context: context,
+                      message: 'Please Select Location',
+                      backgroundColor: AppColors.seaShell,
+                      textColor: AppColors.primaryColor,
+                    );
                   }
                 },
                 bgColor: accountType != '' && accountType == 'business'

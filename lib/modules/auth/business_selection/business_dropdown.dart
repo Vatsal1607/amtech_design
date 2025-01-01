@@ -17,19 +17,19 @@ class BusinessDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider =
-        Provider.of<BusinessSelectionProvider>(context, listen: false);
-    Widget searchChild(x, {bool isSelected = false}) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: Text(x,
-              style: TextStyle(
-                  fontSize: 18,
-                  color: isSelected ? Colors.green : Colors.black)),
-        );
+    // final provider =
+    //     Provider.of<BusinessSelectionProvider>(context, listen: false);
+    // Widget searchChild(x, {bool isSelected = false}) => Padding(
+    //       padding: const EdgeInsets.symmetric(horizontal: 12),
+    //       child: Text(x,
+    //           style: TextStyle(
+    //               fontSize: 18,
+    //               color: isSelected ? Colors.green : Colors.black)),
+    //     );
 
     // * New2 dropdown
     return Consumer<BusinessSelectionProvider>(
-      builder: (context, _, child) {
+      builder: (context, provider, child) {
         return SearchField<BusinessList>(
           suggestionDirection: SuggestionDirection.down,
           hint: 'Select Your Company',
@@ -38,10 +38,10 @@ class BusinessDropdown extends StatelessWidget {
           // },
           searchInputDecoration: SearchInputDecoration(
             cursorColor: AppColors.seaShell,
-            hintStyle:
-                GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
-            searchStyle:
-                GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
+            hintStyle: GoogleFonts.publicSans(
+                color: AppColors.seaShell.withOpacity(.8)),
+            searchStyle: GoogleFonts.publicSans(
+                color: AppColors.seaShell.withOpacity(.8)),
             border: kDropdownBorderStyle,
             enabledBorder: kDropdownBorderStyle,
             focusedBorder: kDropdownBorderStyle,
@@ -59,7 +59,6 @@ class BusinessDropdown extends StatelessWidget {
                 .toList(),
           ],
           onScroll: (scrollOffset, maxScrollExtent) {
-            log('scrollOffset: $scrollOffset');
             log('scrollOffset: $maxScrollExtent');
             if (scrollOffset == maxScrollExtent && !provider.isLoading) {
               debugPrint('Api called from scrolling');

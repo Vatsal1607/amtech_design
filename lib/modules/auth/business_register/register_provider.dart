@@ -23,6 +23,7 @@ class RegisterProvider extends ChangeNotifier {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController personalAddressController = TextEditingController();
   TextEditingController personalMobileController = TextEditingController();
+  TextEditingController personalEmailController = TextEditingController();
 
   @override
   void dispose() {
@@ -59,6 +60,7 @@ class RegisterProvider extends ChangeNotifier {
   }
 
   String? businessMobileErrorText;
+  String? businessAddressErrorText;
   String? personalMobileErrorText;
 
   onChangeBusinessNumber(value) {
@@ -112,7 +114,8 @@ class RegisterProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: _personalRegisterModel!.message.toString(),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       }
     } catch (e) {
@@ -123,14 +126,16 @@ class RegisterProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message.toString(),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       } else {
         // Handle other errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       }
     } finally {
@@ -177,7 +182,7 @@ class RegisterProvider extends ChangeNotifier {
         'businessName': businessNameController.text,
         'ownerName': businessOwnerController.text,
         'ocupant': selectedPropertyStatus,
-        'images': imageFileNames, // Pass the filenames list as List<String>
+        // 'images': imageFileNames, // Pass the filenames list as List<String>
         'contact': '91${businessMobileController.text}',
         'address': businessAddressController.text,
         'buninessType': selectedBusinessType.toString(),
@@ -200,7 +205,8 @@ class RegisterProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: response.message.toString(),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       } else {
         debugPrint('Response Message: ${response.message}');
@@ -213,13 +219,15 @@ class RegisterProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message.toString(),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       } else {
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       }
     } finally {
@@ -251,13 +259,16 @@ class RegisterProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message.toString(),
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       } else {
         debugPrint('${response?.message.toString()}');
         customSnackBar(
           context: context,
           message: 'Invalid GSTIN Number',
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       }
     } finally {

@@ -137,7 +137,7 @@ class MenuPage extends StatelessWidget {
                               accountType: accountType,
                               filledValue: '₹ 135',
                               totalValue: '₹ 2,000',
-                              label: 'credits used',
+                              label: 'perks used',
                               icon: IconStrings.rupee,
                             ),
                             SizedBox(height: 13.h),
@@ -163,8 +163,7 @@ class MenuPage extends StatelessWidget {
                                 child: Stack(
                                   children: [
                                     FractionallySizedBox(
-                                      widthFactor:
-                                          0.4, // Width based on progress
+                                      widthFactor: 0.4, // * based on progress
                                       child: Container(
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
@@ -175,8 +174,8 @@ class MenuPage extends StatelessWidget {
                                                   .withOpacity(.5),
                                             ], // Gradient for active
                                           ),
-                                          borderRadius: BorderRadius.circular(
-                                              5.0), // Rounded corners
+                                          borderRadius:
+                                              BorderRadius.circular(5.0),
                                         ),
                                       ),
                                     ),
@@ -191,40 +190,6 @@ class MenuPage extends StatelessWidget {
                               //   ),
                               // ),
                             ),
-                            // SizedBox(height: 10.h),
-
-                            /// Credit Slider widget old
-                            // Consumer<MenuProvider>(
-                            //   builder:
-                            //       (BuildContext context, provider, Widget? child) =>
-                            //           GradientSlider(
-                            //     thumbAsset: '',
-                            //     thumbHeight: 0,
-                            //     thumbWidth: 0,
-                            //     trackHeight: 3,
-                            //     trackBorderColor: Colors.transparent,
-                            //     activeTrackGradient: const LinearGradient(
-                            //       colors: [
-                            //         AppColors.lightGreen,
-                            //         AppColors.lightGreen,
-                            //       ],
-                            //     ),
-                            //     inactiveTrackGradient: LinearGradient(
-                            //       colors: [
-                            //         AppColors.lightGreen.withOpacity(0.5),
-                            //         AppColors.red.withOpacity(0.5),
-                            //       ],
-                            //     ),
-                            //     inactiveTrackColor: Colors.transparent,
-                            //     slider: Slider(
-                            //       value: provider.sliderCreditValue,
-                            //       min: 1,
-                            //       max: 2000,
-                            //       thumbColor: Colors.transparent,
-                            //       onChanged: provider.onChangeCreditSlider,
-                            //     ),
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),

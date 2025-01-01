@@ -1,3 +1,5 @@
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/foundation.dart';
 
 class BottomBarProvider extends ChangeNotifier {
@@ -7,6 +9,22 @@ class BottomBarProvider extends ChangeNotifier {
 
   void updateIndex(int index) {
     _selectedIndex = index;
+    notifyListeners();
+  }
+
+  BottomBarProvider() {
+    getCurrentAccountType();
+  }
+
+  String? selectedAccountType;
+  getCurrentAccountType() {
+    selectedAccountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType);
+    return selectedAccountType;
+  }
+
+  setCurrentAccountType(String accountType) {
+    sharedPrefsService.setString(SharedPrefsKeys.accountType, accountType);
     notifyListeners();
   }
 }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
@@ -10,10 +11,41 @@ import '../../../routes.dart';
 import '../../../services/network/api_service.dart';
 
 class OtpProvider extends ChangeNotifier {
+  OtpProvider() {
+    startTimer();
+  }
+
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   final ApiService apiService = ApiService();
   final TextEditingController otpController = TextEditingController();
+  int remainingSeconds = 30;
+  Timer? timer;
+
+  void startTimer() {
+    remainingSeconds = 30;
+    timer?.cancel(); // * Cancel any existing timer
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (remainingSeconds > 0) {
+        remainingSeconds--;
+        notifyListeners(); // Notify listeners about the updated state
+      } else {
+        timer.cancel();
+      }
+    });
+  }
+
+  void stopTimer() {
+    timer?.cancel();
+    remainingSeconds = 0;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
 
   //* verifyOtp
   Future<void> verifyOtp({
@@ -38,7 +70,7 @@ class OtpProvider extends ChangeNotifier {
       log('send OTP Response: $response');
       if (response.success == true) {
         log('Success: verify otp: ${response.message.toString()}');
-        Navigator.pushNamed(context, Routes.bottomBarPage);
+        Navigator.pushNamed(context, Routes.verifySuccess);
       } else {
         debugPrint('verify otp: ${response.message}');
       }

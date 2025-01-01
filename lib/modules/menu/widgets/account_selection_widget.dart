@@ -1,10 +1,13 @@
+import 'package:amtech_design/modules/bottom_bar/bottom_bar_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import 'account_tile.dart';
 
 class AccountSelectionWidget extends StatelessWidget {
@@ -16,10 +19,15 @@ class AccountSelectionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MenuProvider>(context, listen: false);
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    final bottomBarProvider =
+        Provider.of<BottomBarProvider>(context, listen: false);
+    debugPrint(bottomBarProvider.selectedAccountType);
+    // debugPrint(
+    //     'Usertoken: ${sharedPrefsService.getString(SharedPrefsKeys.userToken)}');
     return Consumer<MenuProvider>(
       builder: (context, _, child) => AnimatedContainer(
-        height: provider.panelHeight.h,
+        height: menuProvider.panelHeight.h,
         duration: const Duration(milliseconds: 200),
         padding: EdgeInsets.only(left: 32.w, right: 32.w, top: 60.h),
         decoration: BoxDecoration(
@@ -37,14 +45,28 @@ class AccountSelectionWidget extends StatelessWidget {
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          children: const [
+          children: [
             AccountTile(
+              onTap: () {
+                // * Change Save account type
+                sharedPrefsService.setString(
+                  SharedPrefsKeys.accountType,
+                  Strings.accountTypeBusiness,
+                );
+              },
               title: 'AMTech Design',
               subTitle: 'Business Account',
-              isCurrentAccount: true,
+              // isCurrentAccount: bottomBarProvider.selectedAccountType == ,
               profilePic: ImageStrings.logo,
             ),
             AccountTile(
+              onTap: () {
+                // * Change Save account type
+                sharedPrefsService.setString(
+                  SharedPrefsKeys.accountType,
+                  Strings.accountTypePersonal,
+                );
+              },
               title: 'Anup Parekh',
               subTitle: 'Personal Account',
               isCurrentAccount: false,

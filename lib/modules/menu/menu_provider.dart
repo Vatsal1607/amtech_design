@@ -1,12 +1,12 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/strings.dart';
 
 class MenuProvider extends ChangeNotifier {
-  @override
-  void dispose() {
-    pageController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  // }
 
   double sliderCreditValue = 135;
   final double sliderTotalCreditValue = 2000;
@@ -21,7 +21,13 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  final PageController pageController = PageController();
+  // final CarouselSliderController pageController = CarouselSliderController();
+  int carouselCurrentIndex = 0;
+  onPageChangedCarousel(index, reason) {
+    carouselCurrentIndex = index;
+    notifyListeners();
+  }
+
   bool isVisibleSearchSpaceTop = false;
   bool onNotification(ScrollNotification scrollNotification) {
     if (scrollNotification.metrics.axis == Axis.vertical) {

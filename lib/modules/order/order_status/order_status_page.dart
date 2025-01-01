@@ -41,7 +41,9 @@ class OrderStatusPage extends StatelessWidget {
                     SizedBox(
                       height: 340.h,
                       child: Lottie.asset(
-                        LottieStrings.orderPlaced,
+                        accountType == 'business'
+                            ? LottieStrings.orderPlaced
+                            : LottieStrings.orderPlacedPersonal,
                       ),
                     ),
                     Text(

@@ -226,17 +226,6 @@ class LoginPage extends StatelessWidget {
                       if (provider.formKey.currentState!.validate()) {
                         debugPrint('Form is valid');
                         provider.userLogin(context, accountType); //!Api call
-
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   Routes.otp,
-                        //   arguments: {
-                        //     'mobile_number': context
-                        //         .read<LoginProvider>()
-                        //         .phoneController
-                        //         .text,
-                        //   },
-                        // );
                       } else {
                         debugPrint('Form is not valid');
                       }

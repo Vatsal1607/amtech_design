@@ -64,7 +64,7 @@ class LoginProvider extends ChangeNotifier {
       final company = sharedPrefsService.getString(SharedPrefsKeys.company);
       final Map<String, dynamic> body = {
         'contact': int.parse('91${phoneController.text}'),
-        'location': location, // use sharedprefs //selectedLocation
+        'location': location, // * use sharedprefs //selectedLocation
         if (accountType == 'business')
           'company': company, // business.businessName
         'role': accountType == 'business' ? '0' : '1',
@@ -84,9 +84,13 @@ class LoginProvider extends ChangeNotifier {
           sharedPrefsService.setString(
               SharedPrefsKeys.userToken, response.data!.token!);
         }
-
-        //! send otp API call
-        await sendOtp(context, accountType);
+        // * send otp API call
+        await sendOtp(
+          context: context,
+          mobile: phoneController.text,
+          accountType: accountType,
+          isNavigateToOtpPage: true,
+        );
         phoneController.clear();
       } else {
         debugPrint('User login Message: ${response.message}');
@@ -100,14 +104,16 @@ class LoginProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message ?? 'An error occurred',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       } else {
         // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       }
     } finally {
@@ -117,16 +123,18 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  //! send Otp API
-  Future<void> sendOtp(
-    BuildContext context,
-    String accountType,
-  ) async {
+  // * send Otp API
+  Future sendOtp({
+    required BuildContext context,
+    required String accountType,
+    bool isNavigateToOtpPage = false,
+    required String mobile,
+  }) async {
     _isLoading = true;
     notifyListeners();
     try {
       final Map<String, dynamic> body = {
-        'contact': int.parse('91${phoneController.text}'),
+        'contact': int.parse('91$mobile'),
         'role': accountType == 'business' ? '0' : '1',
         // 'secondaryContact': '', // optional
       };
@@ -138,11 +146,21 @@ class LoginProvider extends ChangeNotifier {
       log('send OTP Response: $response');
       if (response.success == true) {
         log('Success: sendotp: ${response.message.toString()}');
-        Navigator.pushNamed(context, Routes.otp, arguments: {
-          'mobile': phoneController.text,
-        });
+        customSnackBar(
+          context: context,
+          message: response.message.toString(),
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
+        );
+        if (isNavigateToOtpPage) {
+          Navigator.pushNamed(context, Routes.otp, arguments: {
+            'mobile': phoneController.text,
+          });
+        }
+        return true; // * Indicat success
       } else {
         debugPrint('User sendotp Message: ${response.message}');
+        return false; // * Indicat failure
       }
     } catch (error) {
       log("Error during sendotp Response: $error");
@@ -153,14 +171,16 @@ class LoginProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message ?? 'An error occurred',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       } else {
         // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.seaShell,
+          textColor: AppColors.primaryColor,
         );
       }
     } finally {

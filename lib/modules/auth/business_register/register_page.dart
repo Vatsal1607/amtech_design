@@ -49,12 +49,11 @@ class RegisterPage extends StatelessWidget {
                 left: 34.w,
                 right: 34.w,
               ),
-              //! Personal register column
+              //! Personal form
               child: accountType == 'personal'
                   ? Form(
                       key: provider.personalFormKey,
                       child: SingleChildScrollView(
-                        // physics: const ClampingScrollPhysics(),
                         child: Padding(
                           padding: EdgeInsets.only(top: 30.h),
                           child: Column(
@@ -91,6 +90,7 @@ class RegisterPage extends StatelessWidget {
                               SizedBox(height: 20.h),
                               CustomTextField(
                                 hint: 'Enter Full Address',
+                                maxLines: 2,
                                 validator: Validator.validateAddress,
                                 prefixIcon: IconStrings.locationWhite,
                                 iconColor: AppColors.seaMist,
@@ -114,6 +114,14 @@ class RegisterPage extends StatelessWidget {
                                 ),
                               ),
                               SizedBox(height: 20.h),
+                              CustomTextField(
+                                controller: provider.personalEmailController,
+                                hint: 'Enter Email Address',
+                                prefixIcon: IconStrings.email,
+                                iconColor: AppColors.seaMist,
+                                keyboardType: TextInputType.number,
+                                validator: Validator.validateEmail,
+                              ),
                               // Upoad Adhar (doc)
                               // GestureDetector(
                               //   onTap: () {
@@ -165,7 +173,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                     )
                   :
-                  //! Business register column
+                  //! Business form
                   SingleChildScrollView(
                       // physics: const ClampingScrollPhysics(),
                       child: Padding(
@@ -208,6 +216,9 @@ class RegisterPage extends StatelessWidget {
                                   controller:
                                       provider.businessAddressController,
                                   hint: 'Enter Business Address',
+                                  errorText: provider.businessAddressErrorText,
+                                  maxLines: 2,
+                                  errorMaxLines: 2,
                                   prefixIcon: IconStrings.locationWhite,
                                   validator: Validator.validateAddress,
                                 ),
@@ -230,18 +241,12 @@ class RegisterPage extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 20.h),
-                                Consumer<RegisterProvider>(
-                                  builder: (context, _, child) =>
-                                      CustomTextField(
-                                    controller:
-                                        provider.businessEmailController,
-                                    hint: 'Enter Email Address',
-                                    // errorText: provider.businessMobileErrorText,
-                                    prefixIcon: IconStrings.phone,
-                                    keyboardType: TextInputType.number,
-                                    // validator: Validator.validatePhoneNumber,
-                                    onChanged: provider.onChangeBusinessNumber,
-                                  ),
+                                CustomTextField(
+                                  controller: provider.businessEmailController,
+                                  hint: 'Enter Email Address',
+                                  prefixIcon: IconStrings.email,
+                                  keyboardType: TextInputType.number,
+                                  validator: Validator.validateEmail,
                                 ),
                                 SizedBox(height: 20.h),
                                 //* Dropdown business type

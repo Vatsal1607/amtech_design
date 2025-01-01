@@ -14,6 +14,11 @@ class Validator {
   static String? validateAddress(String? value) {
     if (value == null || value.isEmpty) {
       return "Please enter your Address";
+    } else if (value == null ||
+        !RegExp(r'Titanium City Center', caseSensitive: false)
+            .hasMatch(value)) {
+      return "We're delivering only in 'Titanium City Center'";
+      // * Changed by AJAY PANCHAL by Backend dev.
     }
     return null;
   }
@@ -44,5 +49,19 @@ class Validator {
       return "Amount cannot exceed ₹50,000";
     }
     return null; // No error
+  }
+
+  // * Email validation
+  static String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter an email address';
+    }
+    // * Regular expression to validate email
+    String pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+    RegExp regex = RegExp(pattern);
+    if (!regex.hasMatch(value)) {
+      return 'Please enter a valid email address';
+    }
+    return null;
   }
 }

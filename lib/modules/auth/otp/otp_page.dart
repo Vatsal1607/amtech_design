@@ -1,3 +1,4 @@
+import 'package:amtech_design/modules/auth/login/login_provider.dart';
 import 'package:amtech_design/modules/auth/otp/otp_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -100,22 +101,50 @@ class OtpPage extends StatelessWidget {
                     controller: provider.otpController,
                   ),
 
-                  RichText(
-                    text: TextSpan(
-                      text: 'resend otp in '.toUpperCase(),
-                      style: GoogleFonts.publicSans(
-                        fontSize: 10.sp,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: '00:30',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    ),
+                  Consumer<OtpProvider>(
+                    builder: (context, _, child) =>
+                        provider.remainingSeconds == 0
+                            ? GestureDetector(
+                                onTap: () {
+                                  context
+                                      .read<LoginProvider>()
+                                      .sendOtp(
+                                        mobile: arguments['mobile'],
+                                        context: context,
+                                        accountType: accountType,
+                                      )
+                                      .then((isSuccess) {
+                                    if (isSuccess != null && isSuccess) {
+                                      provider.startTimer();
+                                    }
+                                  });
+                                },
+                                child: Text(
+                                  'RESEND OTP',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 10.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.seaShell,
+                                  ),
+                                ),
+                              )
+                            : RichText(
+                                text: TextSpan(
+                                  text: 'resend otp in '.toUpperCase(),
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 10.sp,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: '00:${provider.remainingSeconds}',
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 10.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
                   ),
                   SizedBox(height: 20.h),
                   Consumer<OtpProvider>(
@@ -128,11 +157,13 @@ class OtpPage extends StatelessWidget {
                         //   Routes.verifySuccess,
                         // );
                         //Todo Uncomment API call
-                        provider.verifyOtp(
-                          context: context,
-                          accountType: accountType,
-                          mobile: arguments['mobile'],
-                        );
+                        if (provider.otpController.text.isNotEmpty) {
+                          provider.verifyOtp(
+                            context: context,
+                            accountType: accountType,
+                            mobile: arguments['mobile'],
+                          );
+                        }
                       },
                       text: 'VERIFY',
                       bgColor: accountType != '' && accountType == 'business'

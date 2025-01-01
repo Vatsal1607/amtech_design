@@ -75,6 +75,7 @@ class IconStrings {
   static const ratedStar = '${BaseIconPath.basePath}rated_star.svg';
   static const unratedStar = '${BaseIconPath.basePath}unrated_star.svg';
   static const unselected = '${BaseIconPath.basePath}unselected.svg';
+  static const email = '${BaseIconPath.basePath}email.svg';
 }
 
 class ImageStrings {
@@ -110,6 +111,7 @@ class ImageStrings {
   static const healthFirstBanner =
       '${BaseImagePath.basePath}health_first_banner.png';
   static const personalPic = '${BaseImagePath.basePath}personal_pic.png';
+  static const splashDoodle = '${BaseImagePath.basePath}splash_doodle.png';
 }
 
 class LottieStrings {
@@ -121,4 +123,20 @@ class LottieStrings {
       '${BaseLottiePath.basePath}order-out-for-delivery.json';
   static const orderDelivered =
       '${BaseLottiePath.basePath}order-delivered.json';
+  // * personal files
+  static const orderPlacedPersonal =
+      '${BaseLottiePath.basePath}order-placed-personal.json';
+  static const orderConfirmPersonal =
+      '${BaseLottiePath.basePath}order-confirmed-personal.json';
+  static const orderPreparationPersonal =
+      '${BaseLottiePath.basePath}order-preparation-personal.json';
+  static const orderOutForDeliveryPersonal =
+      '${BaseLottiePath.basePath}order-out-for-delivery-personal.json';
+  static const orderDeliveredPersonal =
+      '${BaseLottiePath.basePath}order-delivered-personal.json';
+}
+
+class Strings {
+  static const accountTypeBusiness = 'business';
+  static const accountTypePersonal = 'personal';
 }

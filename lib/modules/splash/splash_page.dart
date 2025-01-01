@@ -19,8 +19,8 @@ class _SplashPageState extends State<SplashPage> {
 
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, Routes.accountSelection);
-        // Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        // Navigator.pushReplacementNamed(context, Routes.accountSelection);
+        Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
       }
     });
   }
@@ -29,12 +29,21 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
-      body: Center(
-        child: Image.asset(
-          width: 250.w,
-          height: 73.h,
-          ImageStrings.appLogo,
-        ),
+      body: Stack(
+        children: [
+          Image.asset(
+            ImageStrings.cartDoodle,
+            height: 1.sh,
+            width: 1.sw,
+          ),
+          Center(
+            child: Image.asset(
+              width: 250.w,
+              height: 73.h,
+              ImageStrings.appLogo,
+            ),
+          ),
+        ],
       ),
     );
   }

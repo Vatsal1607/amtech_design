@@ -21,6 +21,10 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixWidget;
   final EdgeInsetsGeometry? contentPadding;
   final Color cursorColor;
+  final int errorMaxLines;
+  final String? prefixText;
+  final int? maxLines;
+  final int? minLines;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -37,6 +41,10 @@ class CustomTextField extends StatelessWidget {
     this.suffixWidget,
     this.contentPadding,
     this.cursorColor = AppColors.seaShell,
+    this.errorMaxLines = 1,
+    this.prefixText,
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   @override
@@ -52,9 +60,13 @@ class CustomTextField extends StatelessWidget {
       ),
       validator: validator,
       onChanged: onChanged,
+      maxLines: maxLines,
+      minLines: minLines,
       decoration: InputDecoration(
         hintText: hint,
+        prefixText: prefixText,
         errorText: errorText,
+        errorMaxLines: errorMaxLines,
         hintStyle: GoogleFonts.publicSans(
           fontSize: 15.sp,
           color: textColor,

@@ -127,8 +127,11 @@ class BusinessSelectionPage extends StatelessWidget {
                     Navigator.pushNamed(context, Routes.login);
                   } else {
                     customSnackBar(
-                        context: context,
-                        message: 'Please Select Your Business');
+                      context: context,
+                      message: 'Please Select Your Business',
+                      backgroundColor: AppColors.seaShell,
+                      textColor: AppColors.primaryColor,
+                    );
                   }
                 },
                 bgColor: AppColors.disabledColor,

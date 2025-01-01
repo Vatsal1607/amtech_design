@@ -2,7 +2,6 @@ import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/billing/billing_page.dart';
-import 'package:amtech_design/modules/blog/blog_page.dart';
 import 'package:amtech_design/modules/menu/menu_page.dart';
 import 'package:amtech_design/modules/menu/widgets/account_selection_widget.dart';
 import 'package:amtech_design/modules/reorder/reorder_page.dart';
@@ -18,7 +17,7 @@ class BottomBarPage extends StatelessWidget {
     const MenuPage(),
     const ReorderPage(),
     const BillingPage(),
-    const BlogPage(),
+    // const BlogPage(), // * Blog page nav item
   ];
 
   BottomBarPage({super.key});
@@ -151,23 +150,24 @@ class BottomBarPage extends StatelessWidget {
                       ),
                       label: 'BILLING',
                     ),
-                    BottomNavigationBarItem(
-                      icon: SvgIcon(
-                        icon: IconStrings.blog,
-                        color: provider.selectedIndex == 3
-                            ? getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.white,
-                                personalColor: AppColors.seaMist,
-                              )
-                            : getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.disabledColor,
-                                personalColor: AppColors.bayLeaf,
-                              ),
-                      ),
-                      label: 'BLOG',
-                    ),
+                    // * Blog Nav Item
+                    // BottomNavigationBarItem(
+                    //   icon: SvgIcon(
+                    //     icon: IconStrings.blog,
+                    //     color: provider.selectedIndex == 3
+                    //         ? getColorAccountType(
+                    //             accountType: accountType,
+                    //             businessColor: AppColors.white,
+                    //             personalColor: AppColors.seaMist,
+                    //           )
+                    //         : getColorAccountType(
+                    //             accountType: accountType,
+                    //             businessColor: AppColors.disabledColor,
+                    //             personalColor: AppColors.bayLeaf,
+                    //           ),
+                    //   ),
+                    //   label: 'BLOG',
+                    // ),
                   ],
                 ),
               ],

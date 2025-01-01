@@ -11,17 +11,20 @@ class AccountTile extends StatelessWidget {
   final String subTitle;
   final bool isCurrentAccount;
   final String profilePic;
+  final VoidCallback? onTap;
   const AccountTile({
     super.key,
     required this.title,
     required this.subTitle,
     this.isCurrentAccount = false,
     required this.profilePic,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       leading: Container(
         height: 50.h,
         width: 50.w,
@@ -45,7 +48,7 @@ class AccountTile extends StatelessWidget {
         title,
         style: GoogleFonts.publicSans(
           fontSize: 20.sp,
-          fontWeight: FontWeight.bold,
+          fontWeight: isCurrentAccount ? FontWeight.bold : null,
           color: AppColors.white,
         ),
       ),

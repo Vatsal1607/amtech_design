@@ -220,7 +220,7 @@ class ProfilePage extends StatelessWidget {
                   ProfileTile(
                     accountType: accountType,
                     onTap: () {
-                      debugPrint('pressed');
+                      Navigator.pushNamed(context, Routes.feedback);
                     },
                     title: 'Feedback',
                     icon: IconStrings.feedback,

@@ -2,11 +2,13 @@ import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/profile/profile_provider.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../routes.dart';
@@ -18,6 +20,8 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     String accountType = 'business'; // Todo imp set dynamic
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final provider = Provider.of<ProfileProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -181,58 +185,78 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 33.w),
               child: Column(
                 children: [
-                  ProfileTile(
-                    accountType: accountType,
-                    onTap: () {
-                      debugPrint('pressed');
-                    },
-                    title: 'Home',
-                    icon: IconStrings.home,
-                    bgColor: getColorAccountType(
+                  // * Consider tile Index 0
+                  Consumer<ProfileProvider>(
+                    builder: (context, _, child) => ProfileTile(
                       accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+                      onTap: () {
+                        provider.updateTileIndex(0);
+                      },
+                      isSelected: provider.selectedTileIndex == 0,
+                      title: 'Home',
+                      icon: IconStrings.home,
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  ProfileTile(
-                    accountType: accountType,
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.favoriteItems);
-                    },
-                    title: 'Favorite Products',
-                    icon: IconStrings.favorite,
+                  Consumer<ProfileProvider>(
+                    builder: (context, _, child) => ProfileTile(
+                      // * Consider tile Index 1
+                      accountType: accountType,
+                      onTap: () {
+                        provider.updateTileIndex(1);
+                        Navigator.pushNamed(context, Routes.favoriteItems);
+                      },
+                      isSelected: provider.selectedTileIndex == 1,
+                      title: 'Favorite Products',
+                      icon: IconStrings.favorite,
+                    ),
                   ),
                   SizedBox(height: 20.h),
                   if (accountType == 'business')
-                    ProfileTile(
-                      accountType: accountType,
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.authorizedEmp);
-                      },
-                      title: 'Authorized Employees',
-                      icon: IconStrings.authorizedEmp,
+                    Consumer<ProfileProvider>(
+                      builder: (context, _, child) => ProfileTile(
+                        // * Consider tile Index 2
+                        accountType: accountType,
+                        onTap: () {
+                          provider.updateTileIndex(2);
+                          Navigator.pushNamed(context, Routes.authorizedEmp);
+                        },
+                        isSelected: provider.selectedTileIndex == 2,
+                        title: 'Authorized Employees',
+                        icon: IconStrings.authorizedEmp,
+                      ),
                     ),
                   if (accountType == 'business')
                     SizedBox(
                       height: 20.h,
                     ),
-                  ProfileTile(
-                    accountType: accountType,
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.feedback);
-                    },
-                    title: 'Feedback',
-                    icon: IconStrings.feedback,
+                  Consumer<ProfileProvider>(
+                    builder: (context, _, child) => ProfileTile(
+                      // * Consider tile Index 3
+                      accountType: accountType,
+                      onTap: () {
+                        provider.updateTileIndex(3);
+                        Navigator.pushNamed(context, Routes.feedback);
+                      },
+                      isSelected: provider.selectedTileIndex == 3,
+                      title: 'Feedback',
+                      icon: IconStrings.feedback,
+                    ),
                   ),
                   SizedBox(height: 20.h),
-                  ProfileTile(
-                    accountType: accountType,
-                    onTap: () {
-                      debugPrint('pressed');
-                    },
-                    title: 'About Us',
-                    icon: IconStrings.aboutUs,
+
+                  Consumer<ProfileProvider>(
+                    builder: (context, _, child) => ProfileTile(
+                      // * Consider tile Index 4
+                      accountType: accountType,
+                      onTap: () {
+                        provider.updateTileIndex(4);
+                        debugPrint('pressed');
+                      },
+                      isSelected: provider.selectedTileIndex == 4,
+                      title: 'About Us',
+                      icon: IconStrings.aboutUs,
+                    ),
                   ),
                   SizedBox(height: 20.h),
                   // ! TEMP

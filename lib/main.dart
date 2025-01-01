@@ -17,6 +17,7 @@ import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';
 import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
+import 'modules/profile/profile_provider.dart';
 import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RatingsProvider()),
         ChangeNotifierProvider(create: (_) => FavoriteItemsProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
+        ChangeNotifierProvider(create: (_) => ProfileProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

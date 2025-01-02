@@ -35,11 +35,6 @@ class CartPage extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          Image.asset(
-            ImageStrings.cartDoodle,
-            height: 1.sh,
-            width: 1.sw,
-          ),
           Positioned.fill(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -47,6 +42,7 @@ class CartPage extends StatelessWidget {
                 ListView.separated(
                   shrinkWrap: true,
                   itemCount: 3,
+                  physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.only(left: 31.w, right: 31.w, top: 27.h),
                   separatorBuilder: (context, index) => SizedBox(height: 18.h),
                   itemBuilder: (context, index) {

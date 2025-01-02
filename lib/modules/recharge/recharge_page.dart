@@ -117,6 +117,7 @@ class _RechargePageState extends State<RechargePage> {
                     ),
                     prefixIcon: IconStrings.rupee,
                     controller: provider.amountController,
+                    focusNode: provider.amountFocusNode,
                     keyboardType: TextInputType.number,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -213,6 +214,7 @@ class _RechargePageState extends State<RechargePage> {
                     isLoading: provider.isLoading,
                     onTap: () {
                       if (provider.formKey.currentState!.validate()) {
+                        provider.amountFocusNode.unfocus();
                         // * userRecharge API * open Razorpay on success
                         provider.userRecharge(context).then((isSuccess) {
                           if (isSuccess != null && isSuccess) {

@@ -17,16 +17,6 @@ class BusinessDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final provider =
-    //     Provider.of<BusinessSelectionProvider>(context, listen: false);
-    // Widget searchChild(x, {bool isSelected = false}) => Padding(
-    //       padding: const EdgeInsets.symmetric(horizontal: 12),
-    //       child: Text(x,
-    //           style: TextStyle(
-    //               fontSize: 18,
-    //               color: isSelected ? Colors.green : Colors.black)),
-    //     );
-
     // * New2 dropdown
     return Consumer<BusinessSelectionProvider>(
       builder: (context, provider, child) {

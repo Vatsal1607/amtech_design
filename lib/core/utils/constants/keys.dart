@@ -5,6 +5,8 @@ class RazorPayKeys {
 
 class SharedPrefsKeys {
   static const String userToken = 'user_token';
+  static const String fcmToken = 'fcm_token';
+  static const String deviceId = 'device_id';
   // static const String isLoggedIn = 'is_logged_in';
   // static const String userName = 'user_name';
   static const String accountType = 'accoun_type';

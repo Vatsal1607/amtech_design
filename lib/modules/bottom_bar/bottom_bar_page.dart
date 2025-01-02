@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/billing/billing_page.dart';
 import 'package:amtech_design/modules/menu/menu_page.dart';
 import 'package:amtech_design/modules/menu/widgets/account_selection_widget.dart';
 import 'package:amtech_design/modules/reorder/reorder_page.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +32,8 @@ class BottomBarPage extends StatelessWidget {
     // sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
     //     '';
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    debugPrint(
+        'User Token is: ${sharedPrefsService.getString(SharedPrefsKeys.userToken.toString())}');
     return Scaffold(
       body: Stack(
         children: [

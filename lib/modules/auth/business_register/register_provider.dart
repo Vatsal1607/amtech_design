@@ -25,17 +25,22 @@ class RegisterProvider extends ChangeNotifier {
   TextEditingController personalMobileController = TextEditingController();
   TextEditingController personalEmailController = TextEditingController();
 
+  final FocusNode personalMobileFocusNode = FocusNode();
+  final FocusNode businessMobileFocusNode = FocusNode();
+
   @override
   void dispose() {
     businessNameController.dispose();
     businessOwnerController.dispose();
     businessAddressController.dispose();
     businessMobileController.dispose();
-    //
+    // *
     firstNameController.dispose();
     lastNameController.dispose();
     personalAddressController.dispose();
     personalMobileController.dispose();
+    personalMobileFocusNode.dispose();
+    businessMobileFocusNode.dispose();
     super.dispose();
   }
 
@@ -70,6 +75,7 @@ class RegisterProvider extends ChangeNotifier {
     } else {
       businessMobileErrorText = null;
       notifyListeners();
+      businessMobileFocusNode.unfocus();
     }
   }
 
@@ -80,6 +86,7 @@ class RegisterProvider extends ChangeNotifier {
     } else {
       personalMobileErrorText = null;
       notifyListeners();
+      personalMobileFocusNode.unfocus();
     }
   }
 

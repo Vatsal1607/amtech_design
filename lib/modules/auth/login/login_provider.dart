@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
+import 'package:amtech_design/modules/firebase/firebase_services.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../custom_widgets/snackbar.dart';
 import '../../../models/api_global_model.dart';
@@ -31,20 +33,24 @@ class LoginProvider extends ChangeNotifier {
     return null;
   }
 
-  // @override
-  // void dispose() {
-  //   // phoneController.clear();
-  //   // phoneController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    // phoneController.clear();
+    // phoneController.dispose();
+    mobilenumberFocusNode.dispose();
+    super.dispose();
+  }
 
-  onChangePersonalNumber(value) {
+  final FocusNode mobilenumberFocusNode = FocusNode();
+
+  onChangeMobileNumber(value) {
     if (value.length != 10) {
       mobileErrorText = 'Please enter exactly 10 digits';
       notifyListeners();
     } else {
       mobileErrorText = null;
       notifyListeners();
+      mobilenumberFocusNode.unfocus();
     }
   }
 
@@ -62,14 +68,16 @@ class LoginProvider extends ChangeNotifier {
     try {
       final location = sharedPrefsService.getString(SharedPrefsKeys.location);
       final company = sharedPrefsService.getString(SharedPrefsKeys.company);
+      final fcmToken = sharedPrefsService.getString(SharedPrefsKeys.fcmToken);
+      final deviceId = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
       final Map<String, dynamic> body = {
         'contact': int.parse('91${phoneController.text}'),
         'location': location, // * use sharedprefs //selectedLocation
         if (accountType == 'business')
           'company': company, // business.businessName
         'role': accountType == 'business' ? '0' : '1',
-        'fcmToken': 'xyzwefghhfdsdfffffffffftgfdfcdfds', //Todo add dynamic data
-        'deviceId': 'jrkjfbsdnanhaifkbsfa', //Todo add dynamic data
+        'fcmToken': fcmToken,
+        'deviceId': deviceId,
       };
       debugPrint('--Request body: $body');
       // Make the API call

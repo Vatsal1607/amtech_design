@@ -18,7 +18,8 @@ class BusinessSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<BusinessSelectionProvider>(context);
+    final provider =
+        Provider.of<BusinessSelectionProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: AppColors.primaryColor,

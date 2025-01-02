@@ -1,3 +1,5 @@
+import 'package:amtech_design/modules/firebase/firebase_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,7 +22,9 @@ class LoginPage extends StatelessWidget {
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
     final provider = Provider.of<LoginProvider>(context, listen: false);
-    debugPrint('Account type is: $accountType');
+    // final firebaseProvider =
+    //     Provider.of<FirebaseProvider>(context, listen: false);
+    // debugPrint('FCM token is: ${firebaseProvider.fcmToken}');
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
@@ -62,7 +66,7 @@ class LoginPage extends StatelessWidget {
             Positioned.fill(
               child: Padding(
                 padding: EdgeInsets.only(
-                  top: 150.0,
+                  top: 130.h,
                   left: 34.w,
                   right: 34.w,
                 ),
@@ -132,15 +136,18 @@ class LoginPage extends StatelessWidget {
                         Expanded(
                           child: Consumer<LoginProvider>(
                             builder: (context, provider, child) =>
+                                // * FocusScope.of(context).unfocus();
                                 TextFormField(
                               controller: provider.phoneController,
-                              keyboardType: TextInputType.phone,
+                              focusNode: provider.mobilenumberFocusNode,
+                              keyboardType: TextInputType.number,
+                              textInputAction: TextInputAction.done,
                               inputFormatters: [
                                 FilteringTextInputFormatter.digitsOnly,
                                 LengthLimitingTextInputFormatter(10),
                               ],
                               validator: provider.validateMobileNumber,
-                              onChanged: provider.onChangePersonalNumber,
+                              onChanged: provider.onChangeMobileNumber,
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: AppColors.white,

@@ -1,9 +1,12 @@
 import 'package:amtech_design/routes.dart';
+import 'package:amtech_design/services/local/device_info_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
+import '../firebase/firebase_provider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -19,30 +22,34 @@ class _SplashPageState extends State<SplashPage> {
 
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        // Navigator.pushReplacementNamed(context, Routes.accountSelection);
-        Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        Navigator.pushReplacementNamed(context, Routes.accountSelection);
+        // Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    DeviceInfoService().fetchDeviceId(context);
+    FocusScope.of(context).unfocus();
+
     return Scaffold(
       backgroundColor: AppColors.primaryColor,
       body: Stack(
         children: [
           Image.asset(
-            ImageStrings.cartDoodle,
+            // ImageStrings.cartDoodle,
+            ImageStrings.splashScreenImg,
             height: 1.sh,
             width: 1.sw,
           ),
-          Center(
-            child: Image.asset(
-              width: 250.w,
-              height: 73.h,
-              ImageStrings.appLogo,
-            ),
-          ),
+          // Center(
+          //   child: Image.asset(
+          //     width: 250.w,
+          //     height: 73.h,
+          //     ImageStrings.appLogo,
+          //   ),
+          // ),
         ],
       ),
     );

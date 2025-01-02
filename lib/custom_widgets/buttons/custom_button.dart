@@ -39,8 +39,12 @@ class CustomButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? const CircularProgressIndicator.adaptive(
-                  backgroundColor: AppColors.seaShell,
+              ? SizedBox(
+                  height: 25.h,
+                  width: 25.h,
+                  child: CircularProgressIndicator.adaptive(
+                    valueColor: AlwaysStoppedAnimation<Color>(textColor),
+                  ),
                 )
               : Text(
                   text.toUpperCase(),

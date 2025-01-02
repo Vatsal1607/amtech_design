@@ -17,6 +17,7 @@ class RechargeProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
   final NumberFormat _indianFormat = NumberFormat('#,##,##,###', 'en_IN');
+  FocusNode amountFocusNode = FocusNode();
 
   void formatIndianNumber(String value) {
     if (value.isEmpty) return;

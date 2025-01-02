@@ -112,6 +112,8 @@ class ImageStrings {
       '${BaseImagePath.basePath}health_first_banner.png';
   static const personalPic = '${BaseImagePath.basePath}personal_pic.png';
   static const splashDoodle = '${BaseImagePath.basePath}splash_doodle.png';
+  static const splashScreenImg =
+      '${BaseImagePath.basePath}splash_screen_img.png';
 }
 
 class LottieStrings {

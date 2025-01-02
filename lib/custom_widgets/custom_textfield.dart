@@ -25,6 +25,7 @@ class CustomTextField extends StatelessWidget {
   final String? prefixText;
   final int? maxLines;
   final int? minLines;
+  final FocusNode? focusNode;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -45,6 +46,7 @@ class CustomTextField extends StatelessWidget {
     this.prefixText,
     this.maxLines = 1,
     this.minLines = 1,
+    this.focusNode,
   });
 
   @override
@@ -60,6 +62,7 @@ class CustomTextField extends StatelessWidget {
       ),
       validator: validator,
       onChanged: onChanged,
+      focusNode: focusNode,
       maxLines: maxLines,
       minLines: minLines,
       decoration: InputDecoration(

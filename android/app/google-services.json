@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "768156680566",
+    "project_id": "degrees-1c40e",
+    "storage_bucket": "degrees-1c40e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768156680566:android:4409f29fc0faaccacfba57",
+        "android_client_info": {
+          "package_name": "com.amtechdesign.degrees135"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeJ3r_1CHjAc6IC8EhQeb2PKJjd9InpVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

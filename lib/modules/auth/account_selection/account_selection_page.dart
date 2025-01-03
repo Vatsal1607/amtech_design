@@ -62,7 +62,7 @@ class AccountSelectionPage extends StatelessWidget {
 
                   AccountSelectionButton(
                     onTap: () {
-                      // Update & Save accountType in local storage
+                      // * Update & Save accountType in local storage // Todo
                       context
                           .read<LocationSelectionProvider>()
                           .updateAccountType('personal');
@@ -77,7 +77,7 @@ class AccountSelectionPage extends StatelessWidget {
                   SizedBox(height: 17.h),
                   AccountSelectionButton(
                     onTap: () {
-                      // Update & Save accountType in local storage
+                      // * Update & Save accountType in local storage // Todo
                       context
                           .read<LocationSelectionProvider>()
                           .updateAccountType('business');

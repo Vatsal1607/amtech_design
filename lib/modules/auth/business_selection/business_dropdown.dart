@@ -13,13 +13,17 @@ import '../../../core/utils/constant.dart';
 import '../../../models/business_list_model.dart';
 
 class BusinessDropdown extends StatelessWidget {
-  const BusinessDropdown({super.key});
+  final BusinessSelectionProvider provider;
+  const BusinessDropdown({
+    super.key,
+    required this.provider,
+  });
 
   @override
   Widget build(BuildContext context) {
     // * New2 dropdown
     return Consumer<BusinessSelectionProvider>(
-      builder: (context, provider, child) {
+      builder: (context, _, child) {
         return SearchField<BusinessList>(
           suggestionDirection: SuggestionDirection.down,
           hint: 'Select Your Company',

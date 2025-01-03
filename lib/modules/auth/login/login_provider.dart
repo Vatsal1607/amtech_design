@@ -91,6 +91,9 @@ class LoginProvider extends ChangeNotifier {
           //* Save User Token
           sharedPrefsService.setString(
               SharedPrefsKeys.userToken, response.data!.token!);
+          // * save User id
+          sharedPrefsService.setString(
+              SharedPrefsKeys.userId, response.data!.token!);
         }
         // * send otp API call
         await sendOtp(

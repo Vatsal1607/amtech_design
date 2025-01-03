@@ -76,6 +76,7 @@ class IconStrings {
   static const unratedStar = '${BaseIconPath.basePath}unrated_star.svg';
   static const unselected = '${BaseIconPath.basePath}unselected.svg';
   static const email = '${BaseIconPath.basePath}email.svg';
+  static const edit = '${BaseIconPath.basePath}edit.svg';
 }
 
 class ImageStrings {

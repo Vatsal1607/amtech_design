@@ -8,13 +8,14 @@ import 'package:amtech_design/modules/favorite/favorite_page.dart';
 import 'package:amtech_design/modules/feedback/feedback_page.dart';
 import 'package:amtech_design/modules/notification/notification_page.dart';
 import 'package:amtech_design/modules/order/order_list/order_list_page.dart';
+import 'package:amtech_design/modules/profile/edit_profile/edit_profile_page.dart';
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'modules/auth/business_register/register_page.dart';
 import 'modules/auth/business_selection/business_selection_page.dart';
-import 'modules/auth/otp/widgets/verify_success.dart';
+import 'modules/auth/otp/widgets/verify_success_page.dart';
 import 'modules/authorized_emp/authorized_emp_page.dart';
 import 'modules/order/order_status/order_status_page.dart';
 import 'modules/product_page/product_details_page.dart';
@@ -34,6 +35,7 @@ class Routes {
   static const String register = '/register';
   static const String verifySuccess = '/verifySuccess';
   static const String profile = '/profile';
+  static const String editProfile = '/editProfile';
   static const String cart = '/cart';
   static const String recharge = '/rechargePage';
   static const String orderList = '/orderList';
@@ -56,8 +58,9 @@ class Routes {
     login: (context) => const LoginPage(),
     otp: (context) => const OtpPage(),
     register: (context) => const RegisterPage(),
-    verifySuccess: (context) => const VerifySuccess(),
+    verifySuccess: (context) => const VerifySuccessPage(),
     profile: (context) => const ProfilePage(),
+    editProfile: (context) => const EditProfilePage(),
     cart: (context) => const CartPage(),
     recharge: (context) => const RechargePage(),
     orderList: (context) => const OrderListPage(),

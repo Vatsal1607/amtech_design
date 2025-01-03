@@ -63,4 +63,9 @@ abstract class ApiClient {
   @GET(
       "http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/{gstNumber}")
   Future<GstVerifyModel> gstVerify(@Path("gstNumber") String gstNumber);
+
+  @POST(ApiEndpoints.logout)
+  Future<ApiGlobalModel> logout(
+    @Body() Map<String, dynamic> body,
+  );
 }

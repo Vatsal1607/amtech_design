@@ -5,11 +5,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/buttons/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
-import '../../../routes.dart';
-import '../location_selection/location_selection_provider.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import 'widgets/otp_fields.dart';
 
 class OtpPage extends StatelessWidget {
@@ -18,7 +18,7 @@ class OtpPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String accountType =
-        context.read<LocationSelectionProvider>().accountType ?? '';
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final arguments =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
             {};

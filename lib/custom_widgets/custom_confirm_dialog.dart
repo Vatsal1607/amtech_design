@@ -1,4 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,7 @@ class CustomConfirmDialog extends StatelessWidget {
   final VoidCallback? onTapYes;
   final String accountType;
   final String yesBtnText;
+  final bool isLoading;
 
   const CustomConfirmDialog({
     super.key,
@@ -21,6 +23,7 @@ class CustomConfirmDialog extends StatelessWidget {
     this.onTapYes,
     required this.accountType,
     this.yesBtnText = 'YES, REMOVE',
+    this.isLoading = false,
   });
 
   @override
@@ -79,14 +82,16 @@ class CustomConfirmDialog extends StatelessWidget {
                         borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Center(
-                        child: Text(
-                          yesBtnText,
-                          style: GoogleFonts.publicSans(
-                            fontSize: 14.sp,
-                            color: AppColors.seaShell,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        child: isLoading
+                            ? const CustomLoader(color: AppColors.primaryColor)
+                            : Text(
+                                yesBtnText,
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 14.sp,
+                                  color: AppColors.seaShell,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                       ),
                     ),
                   ),

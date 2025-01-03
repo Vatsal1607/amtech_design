@@ -14,9 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    // baseUrl ??= 'http://192.168.1.2:9000/';
     baseUrl ??= 'http://192.168.1.12:9000/';
-    // 'https://fed7-2409-40c1-d-e1dd-dc03-9285-7212-a1d0.ngrok-free.app/';
   }
 
   final Dio _dio;
@@ -331,6 +329,40 @@ class _ApiClient implements ApiClient {
     late GstVerifyModel _value;
     try {
       _value = GstVerifyModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<ApiGlobalModel> logout(Map<String, dynamic> body) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(body);
+    final _options = _setStreamType<ApiGlobalModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'logout',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiGlobalModel _value;
+    try {
+      _value = ApiGlobalModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

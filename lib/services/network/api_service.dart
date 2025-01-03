@@ -78,4 +78,10 @@ class ApiService {
   }) async {
     return await apiClient.gstVerify(gstNumber);
   }
+
+  Future<ApiGlobalModel> logout({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.logout(body);
+  }
 }

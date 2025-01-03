@@ -5,7 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
+import '../../services/local/shared_preferences_service.dart';
 import '../firebase/firebase_provider.dart';
 
 class SplashPage extends StatefulWidget {
@@ -22,8 +24,13 @@ class _SplashPageState extends State<SplashPage> {
 
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        // Navigator.pushReplacementNamed(context, Routes.accountSelection);
-        Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        final isLoggedIn =
+            sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);
+        if (isLoggedIn != null && isLoggedIn) {
+          Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        } else {
+          Navigator.pushReplacementNamed(context, Routes.accountSelection);
+        }
       }
     });
   }

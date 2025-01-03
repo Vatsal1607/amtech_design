@@ -3,7 +3,6 @@ import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 
-// ! working for logout
 class AuthTokenHelper {
   static String? getUserId() {
     try {

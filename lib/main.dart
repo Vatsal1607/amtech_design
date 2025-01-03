@@ -20,6 +20,7 @@ import 'modules/firebase/firebase_provider.dart';
 import 'modules/firebase/firebase_services.dart';
 import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
+import 'modules/profile/edit_profile/edit_profile_provider.dart';
 import 'modules/profile/profile_provider.dart';
 import 'services/local/device_info_service.dart';
 import 'modules/ratings/ratings_provider.dart';
@@ -61,6 +62,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => FavoriteItemsProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
+        ChangeNotifierProvider(create: (_) => EditProfileProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

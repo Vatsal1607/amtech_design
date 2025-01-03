@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/app_colors.dart';
+import '../loader/custom_loader.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -39,13 +40,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? SizedBox(
-                  height: 25.h,
-                  width: 25.h,
-                  child: CircularProgressIndicator.adaptive(
-                    valueColor: AlwaysStoppedAnimation<Color>(textColor),
-                  ),
-                )
+              ? CustomLoader(color: textColor)
               : Text(
                   text.toUpperCase(),
                   style: GoogleFonts.publicSans(

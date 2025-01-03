@@ -5,21 +5,24 @@ import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/profile/profile_provider.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../routes.dart';
+import '../../services/local/shared_preferences_service.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<ProfileProvider>(context, listen: false);
 
     return Scaffold(
@@ -42,13 +45,19 @@ class ProfilePage extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) {
-              return CustomConfirmDialog(
-                accountType: accountType,
-                onTapCancel: () => Navigator.pop(context),
-                onTapYes: () => Navigator.pop(context),
-                yesBtnText: 'LOGOUT',
-                title: 'ARE YOU SURE?',
-                subTitle: 'You really want to Logout?',
+              return Consumer<ProfileProvider>(
+                builder: (context, _, child) => CustomConfirmDialog(
+                  accountType: accountType,
+                  onTapCancel: () => Navigator.pop(context),
+                  onTapYes: () {
+                    // * LogOut
+                    provider.logout(context: context);
+                  },
+                  yesBtnText: 'LOGOUT',
+                  isLoading: provider.isLoading,
+                  title: 'ARE YOU SURE?',
+                  subTitle: 'You really want to Logout?',
+                ),
               );
             },
           );
@@ -79,7 +88,7 @@ class ProfilePage extends StatelessWidget {
                 'Logout',
                 style: GoogleFonts.publicSans(
                   color: AppColors.seaShell,
-                  fontSize: 12.sp,
+                  fontSize: 13.sp,
                 ),
               ),
             ],
@@ -93,13 +102,12 @@ class ProfilePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 33.w, right: 33.w, top: 30.h),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     height: 80.h,
                     width: 80.w,
                     decoration: BoxDecoration(
-                      // boxShadow: kDropShadow,
                       color: Colors.black,
                       shape: BoxShape.circle,
                       border: Border.all(
@@ -151,16 +159,21 @@ class ProfilePage extends StatelessWidget {
                           fontSize: 15.sp,
                         ),
                       ),
-                      Text(
-                        'EDIT PROFILE',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.w700,
-                          // color: AppColors.disabledColor,
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.disabledColor,
-                            personalColor: AppColors.bayLeaf,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.editProfile);
+                        },
+                        child: Text(
+                          'EDIT PROFILE',
+                          style: GoogleFonts.publicSans(
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w700,
+                            // color: AppColors.disabledColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.disabledColor,
+                              personalColor: AppColors.bayLeaf,
+                            ),
                           ),
                         ),
                       )
@@ -191,6 +204,7 @@ class ProfilePage extends StatelessWidget {
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(0);
+                        Navigator.pop(context);
                       },
                       isSelected: provider.selectedTileIndex == 0,
                       title: 'Home',

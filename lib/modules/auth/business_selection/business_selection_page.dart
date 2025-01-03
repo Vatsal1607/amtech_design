@@ -62,7 +62,9 @@ class BusinessSelectionPage extends StatelessWidget {
                   SizedBox(height: 16.h),
 
                   //* Dropdown button
-                  const BusinessDropdown(),
+                  BusinessDropdown(
+                    provider: provider,
+                  ),
 
                   SizedBox(height: 8.h),
                   GestureDetector(

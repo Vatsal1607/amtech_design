@@ -5,9 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../custom_widgets/snackbar.dart';
 import '../../../models/api_global_model.dart';
 import '../../../routes.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import '../../../services/network/api_service.dart';
 
 class OtpProvider extends ChangeNotifier {
@@ -70,6 +72,8 @@ class OtpProvider extends ChangeNotifier {
       log('send OTP Response: $response');
       if (response.success == true) {
         log('Success: verify otp: ${response.message.toString()}');
+        // * isLogged in user - true
+        sharedPrefsService.setBool(SharedPrefsKeys.isLoggedIn, true);
         Navigator.pushNamed(context, Routes.verifySuccess);
       } else {
         debugPrint('verify otp: ${response.message}');

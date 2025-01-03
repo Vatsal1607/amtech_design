@@ -9,19 +9,26 @@ import '../../../../core/utils/constants/keys.dart';
 import '../../../../routes.dart';
 import '../../../../services/local/shared_preferences_service.dart';
 
-class VerifySuccess extends StatefulWidget {
-  const VerifySuccess({super.key});
+class VerifySuccessPage extends StatefulWidget {
+  const VerifySuccessPage({super.key});
 
   @override
-  State<VerifySuccess> createState() => _VerifySuccessState();
+  State<VerifySuccessPage> createState() => _VerifySuccessPageState();
 }
 
-class _VerifySuccessState extends State<VerifySuccess> {
+class _VerifySuccessPageState extends State<VerifySuccessPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        // * Replace all previous routes & Navigate to Bottombar page
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          Routes.bottomBarPage,
+          (Route<dynamic> route) => false,
+        );
+
+        // Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
       }
     });
     super.initState();

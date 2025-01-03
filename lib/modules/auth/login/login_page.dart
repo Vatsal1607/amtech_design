@@ -1,4 +1,7 @@
+import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/modules/firebase/firebase_provider.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,9 +21,8 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final String accountType = 'business'; // Todo set dynamic accountType
     final String accountType =
-        context.read<LocationSelectionProvider>().accountType ?? '';
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<LoginProvider>(context, listen: false);
     // final firebaseProvider =
     //     Provider.of<FirebaseProvider>(context, listen: false);
@@ -179,40 +181,48 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 8.h),
-                    if (accountType == 'personal')
-                      GestureDetector(
-                        onTap: () {
-                          //* Navigate to Register page
-                          Navigator.pushNamed(
-                            context,
-                            Routes.register,
-                          );
-                        },
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'don\'t have an account? '.toUpperCase(),
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 15.sp,
-                                  color: AppColors.seaMist,
+                    // * if (accountType == 'personal') // condition: visible for only personal accountType
+                    GestureDetector(
+                      onTap: () {
+                        //* Navigate to Register page
+                        Navigator.pushNamed(
+                          context,
+                          Routes.register,
+                        );
+                      },
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'don\'t have an account? '.toUpperCase(),
+                              style: GoogleFonts.publicSans(
+                                fontSize: 14.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
                                 ),
                               ),
-                              Text(
-                                'Register Now'.toUpperCase(),
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 15.sp,
-                                  color: AppColors.seaMist,
-                                  fontWeight: FontWeight.bold,
+                            ),
+                            Text(
+                              'Register Now'.toUpperCase(),
+                              style: GoogleFonts.publicSans(
+                                fontSize: 14.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
                                 ),
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
+                    ),
                   ],
                 ),
               ),

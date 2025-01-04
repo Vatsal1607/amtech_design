@@ -21,8 +21,8 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType = 'business';
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<ProfileProvider>(context, listen: false);
 
     return Scaffold(
@@ -265,7 +265,7 @@ class ProfilePage extends StatelessWidget {
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(4);
-                        debugPrint('pressed');
+                        Navigator.pushNamed(context, Routes.aboutUs);
                       },
                       isSelected: provider.selectedTileIndex == 4,
                       title: 'About Us',

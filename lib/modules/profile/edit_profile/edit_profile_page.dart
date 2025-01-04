@@ -17,6 +17,7 @@ class EditProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // String accountType = 'business';
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<EditProfileProvider>(context, listen: false);

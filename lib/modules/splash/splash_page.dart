@@ -23,15 +23,17 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        final isLoggedIn =
-            sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);
-        if (isLoggedIn != null && isLoggedIn) {
-          Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
-        } else {
-          Navigator.pushReplacementNamed(context, Routes.accountSelection);
-        }
-      }
+      // ! IMP
+      // if (mounted) {
+      //   final isLoggedIn =
+      //       sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);
+      //   if (isLoggedIn != null && isLoggedIn) {
+      //     Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+      //   } else {
+      //     Navigator.pushReplacementNamed(context, Routes.accountSelection);
+      //   }
+      // }
+      Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
     });
   }
 

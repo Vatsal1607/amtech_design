@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/modules/firebase/firebase_services.dart';
+import 'package:amtech_design/services/local/auth_token_helper.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class LoginProvider extends ChangeNotifier {
               SharedPrefsKeys.userToken, response.data!.token!);
           // * save User id
           sharedPrefsService.setString(
-              SharedPrefsKeys.userId, response.data!.token!);
+              SharedPrefsKeys.userId, AuthTokenHelper.getUserId().toString());
         }
         // * send otp API call
         await sendOtp(

@@ -152,14 +152,22 @@ class RatingsPage extends StatelessWidget {
                                               itemPadding: EdgeInsets.symmetric(
                                                 horizontal: 2.w,
                                               ),
-                                              itemBuilder: (context, _) =>
-                                                  SvgIcon(
-                                                icon: index <
-                                                        provider.currentRating
-                                                    ? IconStrings.ratedStar
-                                                    : IconStrings.unratedStar,
-                                                color: AppColors.lightGreen,
-                                              ),
+                                              itemBuilder: (context, _) {
+                                                // Determine if the star should be filled or outlined
+                                                final isFilled = index <
+                                                    provider.currentRating;
+
+                                                return SvgIcon(
+                                                  icon: isFilled
+                                                      ? IconStrings.ratedStar
+                                                      : IconStrings.unratedStar,
+                                                  color: isFilled
+                                                      ? AppColors.lightGreen
+                                                      : AppColors.lightGreen
+                                                          .withOpacity(0.5),
+                                                );
+                                              },
+
                                               onRatingUpdate:
                                                   provider.onRatingUpdate,
                                             ),

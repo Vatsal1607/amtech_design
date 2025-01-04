@@ -1,3 +1,4 @@
+import 'package:amtech_design/modules/about_us/about_us_page.dart';
 import 'package:amtech_design/modules/auth/account_selection/account_selection_page.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_page.dart';
 import 'package:amtech_design/modules/auth/login/login_page.dart';
@@ -46,6 +47,7 @@ class Routes {
   static const String ratings = '/ratings';
   static const String favoriteItems = '/favoriteItems';
   static const String feedback = '/feedback';
+  static const String aboutUs = '/aboutUs';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -71,5 +73,6 @@ class Routes {
     ratings: (context) => const RatingsPage(),
     favoriteItems: (context) => const FavoritePage(),
     feedback: (context) => const FeedbackPage(),
+    aboutUs: (context) => AboutUsPage(),
   };
 }

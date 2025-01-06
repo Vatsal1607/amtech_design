@@ -1,6 +1,8 @@
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
@@ -9,11 +11,13 @@ class SelectPaymentMethodWidget extends StatelessWidget {
   final String logoImage;
   final bool isPerks;
   final VoidCallback? onTap;
+  final bool isSelectedMethod;
   const SelectPaymentMethodWidget({
     super.key,
     required this.logoImage,
     this.isPerks = false,
     this.onTap,
+    this.isSelectedMethod = false,
   });
 
   @override
@@ -95,9 +99,13 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                   ],
                 ),
               ),
-            const SvgIcon(
-              icon: IconStrings.selected,
-              color: AppColors.primaryColor,
+            Consumer<CartProvider>(
+              builder: (context, provider, child) => SvgIcon(
+                icon: isSelectedMethod
+                    ? IconStrings.selected
+                    : IconStrings.unselected,
+                color: AppColors.primaryColor,
+              ),
             ),
           ],
         ),

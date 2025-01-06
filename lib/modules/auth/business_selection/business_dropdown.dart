@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:flutter/material.dart';
@@ -23,94 +22,92 @@ class BusinessDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     // * New2 dropdown
     return Consumer<BusinessSelectionProvider>(
-      builder: (context, _, child) {
-        return SearchField<BusinessList>(
-          suggestionDirection: SuggestionDirection.down,
-          hint: 'Select Your Company',
-          // onTap: () {
-          //   provider.filterBusinesses('');
-          // },
-          searchInputDecoration: SearchInputDecoration(
-            cursorColor: AppColors.seaShell,
-            hintStyle: GoogleFonts.publicSans(
-                color: AppColors.seaShell.withOpacity(.8)),
-            searchStyle: GoogleFonts.publicSans(
-                color: AppColors.seaShell.withOpacity(.8)),
-            border: kDropdownBorderStyle,
-            enabledBorder: kDropdownBorderStyle,
-            focusedBorder: kDropdownBorderStyle,
-            prefixIcon: SvgIcon(icon: IconStrings.selectBusiness),
-            suffixIcon: SvgIcon(icon: IconStrings.dropdown),
-          ),
-          suggestions: [
-            ...provider.suggestionList
-                .map(
-                  (business) => SearchFieldListItem<BusinessList>(
+      builder: (context, _, child) => SearchField<BusinessList>(
+        suggestionDirection: SuggestionDirection.down,
+        hint: 'Select Your Company',
+        // onTap: () {
+        //   provider.filterBusinesses('');
+        // },
+        searchInputDecoration: SearchInputDecoration(
+          cursorColor: AppColors.seaShell,
+          hintStyle:
+              GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
+          searchStyle:
+              GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
+          border: kDropdownBorderStyle,
+          enabledBorder: kDropdownBorderStyle,
+          focusedBorder: kDropdownBorderStyle,
+          prefixIcon: SvgIcon(icon: IconStrings.selectBusiness),
+          suffixIcon: SvgIcon(icon: IconStrings.dropdown),
+        ),
+        suggestions: [
+          ...provider.suggestionList
+              .map(
+                (business) => SearchFieldListItem<BusinessList>(
+                  business.businessName!,
+                  item: business,
+                ),
+              )
+              .toList(),
+        ],
+        onScroll: (scrollOffset, maxScrollExtent) {
+          log('scrollOffset: $maxScrollExtent');
+          if (scrollOffset == maxScrollExtent && !provider.isLoading) {
+            debugPrint('Api called from scrolling');
+            provider.getBusinessList(
+              currentPage: provider.currentPage + 1,
+            );
+          }
+        },
+        suggestionsDecoration: SuggestionDecoration(
+          borderRadius: BorderRadius.circular(25.r),
+          color: AppColors.seaShell,
+        ),
+        onSearchTextChanged: (query) {
+          provider.getBusinessList(searchText: query); // api call
+          provider.filterBusinesses(query);
+          return provider.filteredBusinessList
+              .map((business) => SearchFieldListItem<BusinessList>(
                     business.businessName!,
                     item: business,
-                  ),
-                )
-                .toList(),
-          ],
-          onScroll: (scrollOffset, maxScrollExtent) {
-            log('scrollOffset: $maxScrollExtent');
-            if (scrollOffset == maxScrollExtent && !provider.isLoading) {
-              debugPrint('Api called from scrolling');
-              provider.getBusinessList(
-                currentPage: provider.currentPage + 1,
-              );
-            }
-          },
-          suggestionsDecoration: SuggestionDecoration(
-            borderRadius: BorderRadius.circular(25.r),
-            color: AppColors.seaShell,
-          ),
-          onSearchTextChanged: (query) {
-            provider.getBusinessList(searchText: query); // api call
-            provider.filterBusinesses(query);
-            return provider.filteredBusinessList
-                .map((business) => SearchFieldListItem<BusinessList>(
-                      business.businessName!,
-                      item: business,
-                    ))
-                .toList();
-          },
-          // Ensure the selectedValue is either null or exists in the suggestions list
-          selectedValue: provider.selectedBusiness != null &&
-                  provider.suggestionList.any((business) =>
-                      business.businessName ==
-                      provider.selectedBusiness?.businessName)
-              ? SearchFieldListItem<BusinessList>(
-                  provider.selectedBusiness!.businessName!,
-                  item: provider.selectedBusiness,
-                )
-              : null,
-          // old selected value
-          // selectedValue: provider.selectedBusiness != null
-          //     ? SearchFieldListItem<BusinessList>(
-          //         provider.selectedBusiness!.businessName!,
-          //         item: provider.selectedBusiness,
-          //       )
-          //     : null,
-          suggestionState: Suggestion.expand,
-          onSuggestionTap: (selectedItem) {
-            provider.selectBusiness(selectedItem.item!);
-          },
-          validator: (value) {
-            if (value == null ||
-                !provider.suggestionList
-                    .any((business) => business.businessName == value.trim())) {
-              return 'Enter a valid company name';
-            }
-            return null;
-          },
-          suggestionStyle: GoogleFonts.publicSans(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryColor,
-          ),
-        );
-      },
+                  ))
+              .toList();
+        },
+        // Ensure the selectedValue is either null or exists in the suggestions list
+        selectedValue: provider.selectedBusiness != null &&
+                provider.suggestionList.any((business) =>
+                    business.businessName ==
+                    provider.selectedBusiness?.businessName)
+            ? SearchFieldListItem<BusinessList>(
+                provider.selectedBusiness!.businessName!,
+                item: provider.selectedBusiness,
+              )
+            : null,
+        // old selected value
+        // selectedValue: provider.selectedBusiness != null
+        //     ? SearchFieldListItem<BusinessList>(
+        //         provider.selectedBusiness!.businessName!,
+        //         item: provider.selectedBusiness,
+        //       )
+        //     : null,
+        suggestionState: Suggestion.expand,
+        onSuggestionTap: (selectedItem) {
+          provider.selectBusiness(selectedItem.item!);
+        },
+        validator: (value) {
+          if (value == null ||
+              !provider.suggestionList
+                  .any((business) => business.businessName == value.trim())) {
+            return 'Enter a valid company name';
+          }
+          return null;
+        },
+        suggestionStyle: GoogleFonts.publicSans(
+          fontSize: 14.sp,
+          fontWeight: FontWeight.bold,
+          color: AppColors.primaryColor,
+        ),
+      ),
     );
 
     // * New dropdown (searchable)

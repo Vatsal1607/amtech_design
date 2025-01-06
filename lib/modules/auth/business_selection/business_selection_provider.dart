@@ -65,11 +65,11 @@ class BusinessSelectionProvider extends ChangeNotifier {
         limit: 10,
         search: searchText,
       );
-
+      debugPrint('currentPage : $currentPage');
       if (_businessListModel?.success == true &&
           _businessListModel?.data != null) {
         _businessList = _businessListModel!.data!.businessList ?? [];
-        suggestionList = _businessList; // Update suggestionList
+        suggestionList = _businessList; // * Update suggestionList
         notifyListeners();
       }
     } catch (e) {

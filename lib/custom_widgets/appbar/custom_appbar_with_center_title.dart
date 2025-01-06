@@ -71,7 +71,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                title,
+                title, // * title
                 textAlign: TextAlign.center,
                 style: GoogleFonts.publicSans(
                   fontSize: 24.sp,

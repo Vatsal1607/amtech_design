@@ -1,5 +1,6 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -45,11 +46,15 @@ class _AboutUsPageState extends State<AboutUsPage> {
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
-        businessColor: AppColors.primaryColor,
-        personalColor: AppColors.darkGreenGrey,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
+      appBar: CustomAppbarWithCenterTitle(
+        title: '',
+        accountType: accountType,
       ),
       body: isLoading
-          ? Center(
+          ? const Center(
               child: CircularProgressIndicator.adaptive(
                 valueColor:
                     AlwaysStoppedAnimation<Color>(AppColors.primaryColor),

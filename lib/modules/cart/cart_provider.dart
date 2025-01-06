@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../routes.dart';
+
 class CartProvider extends ChangeNotifier {
   bool isExpanded = false;
   onExpansionChanged(value) {
@@ -13,6 +15,13 @@ class CartProvider extends ChangeNotifier {
   // maxDrag parentWidth - buttonWidth - 10.0;
   final minDrag = 10.w;
   bool isConfirmed = false; // Track if the action is confirmed
+
+  String selectedPaymentMethod = 'perks';
+
+  updateSelectedPaymentMethod(value) {
+    selectedPaymentMethod = value;
+    notifyListeners();
+  }
 
   // * New gesture effect
   // void onHorizontalDragUpdate(DragUpdateDetails details) {
@@ -44,19 +53,18 @@ class CartProvider extends ChangeNotifier {
     notifyListeners(); // Notify listeners of the change
   }
 
-  void onHorizontalDragEnd(details) {
+  void onHorizontalDragEnd(details, context) {
     if (dragPosition >= maxDrag * 0.8) {
       // Action confirmed
       isConfirmed = true;
       dragPosition = maxDrag; // Snap to the end
-
       debugPrint("Order Placed!");
+      Navigator.pushNamed(context, Routes.orderStatus);
     } else {
       // Reset position
       dragPosition = 10.w;
       isConfirmed = false;
     }
-
-    notifyListeners(); // Notify listeners of the change
+    notifyListeners();
   }
 }

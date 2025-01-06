@@ -1,8 +1,10 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
 import '../modules/cart/widgets/custom_slidable_button.dart';
@@ -50,16 +52,30 @@ void showProcessToPayBottomSheeet({
                   ),
                   SizedBox(height: 17.h),
                   // * Pay with perks button
-                  SelectPaymentMethodWidget(
-                    onTap: () {},
-                    logoImage: ImageStrings.perksLogo,
-                    isPerks: true,
+                  Consumer<CartProvider>(
+                    builder: (context, provider, child) =>
+                        SelectPaymentMethodWidget(
+                      onTap: () {
+                        provider.updateSelectedPaymentMethod('perks');
+                      },
+                      isSelectedMethod:
+                          provider.selectedPaymentMethod == 'perks',
+                      logoImage: ImageStrings.perksLogo,
+                      isPerks: true,
+                    ),
                   ),
                   SizedBox(height: 10.h),
                   // * Pay with razor pay button
-                  SelectPaymentMethodWidget(
-                    onTap: () {},
-                    logoImage: ImageStrings.razorpayLogo,
+                  Consumer<CartProvider>(
+                    builder: (context, provider, child) =>
+                        SelectPaymentMethodWidget(
+                      onTap: () {
+                        provider.updateSelectedPaymentMethod('razorpay');
+                      },
+                      isSelectedMethod:
+                          provider.selectedPaymentMethod == 'razorpay',
+                      logoImage: ImageStrings.razorpayLogo,
+                    ),
                   ),
 
                   SizedBox(height: 10.h),

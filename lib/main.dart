@@ -6,6 +6,7 @@ import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'modules/auth/business_register/register_provider.dart';
@@ -30,6 +31,10 @@ import 'routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    // DeviceOrientation.portraitDown,
+  ]);
   await Firebase.initializeApp();
   sharedPrefsService.init();
   await FirebaseServices().initNotifications();

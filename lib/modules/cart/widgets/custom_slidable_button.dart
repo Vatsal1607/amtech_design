@@ -17,7 +17,12 @@ class CustomSlidableButton extends StatelessWidget {
           // * New Slidable button
           GestureDetector(
         onHorizontalDragUpdate: provider.onHorizontalDragUpdate,
-        onHorizontalDragEnd: provider.onHorizontalDragEnd,
+        // onHorizontalDragEnd:
+        //     provider.onHorizontalDragEnd, // * onHorizontalDragEnd
+        onHorizontalDragEnd: (details) {
+          provider.onHorizontalDragEnd(details, context);
+        },
+        // * onHorizontalDragEnd
         child: Stack(
           children: [
             // Background Container

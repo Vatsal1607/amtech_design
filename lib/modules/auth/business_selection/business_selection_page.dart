@@ -19,7 +19,8 @@ class BusinessSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider =
-        Provider.of<BusinessSelectionProvider>(context, listen: false);
+        // Provider.of<BusinessSelectionProvider>(context, listen: false);
+        Provider.of<BusinessSelectionProvider>(context, listen: true);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: AppColors.primaryColor,
@@ -119,11 +120,7 @@ class BusinessSelectionPage extends StatelessWidget {
                   // store data localy
                   sharedPrefsService.setString(
                     SharedPrefsKeys.company,
-                    context
-                            .read<BusinessSelectionProvider>()
-                            .selectedBusiness
-                            ?.businessName ??
-                        '',
+                    provider.selectedBusiness?.businessName ?? '',
                   );
                   if (provider.selectedBusiness?.businessName != null &&
                       provider.selectedBusiness!.businessName!.isNotEmpty) {

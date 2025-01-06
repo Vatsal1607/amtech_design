@@ -264,7 +264,7 @@ class _RechargePageState extends State<RechargePage> {
       'amount': int.parse(cleanValue) * 100,
       'currency': 'INR',
       'order_id': provider.razorpayOrderId,
-      'name': 'AMTech Design',
+      'name': '135 Degrees',
       'description': 'Payment for Order #1234',
       'prefill': {
         'contact': '9876543210',

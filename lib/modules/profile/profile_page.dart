@@ -88,7 +88,8 @@ class ProfilePage extends StatelessWidget {
                 'Logout',
                 style: GoogleFonts.publicSans(
                   color: AppColors.seaShell,
-                  fontSize: 13.sp,
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],

@@ -14,8 +14,6 @@ class YouMayLikeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Container(
       height: 100.h,
       width: 100.w,

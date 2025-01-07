@@ -164,16 +164,19 @@ class ProfilePage extends StatelessWidget {
                         onTap: () {
                           Navigator.pushNamed(context, Routes.editProfile);
                         },
-                        child: Text(
-                          'EDIT PROFILE',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.w700,
-                            // color: AppColors.disabledColor,
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.disabledColor,
-                              personalColor: AppColors.bayLeaf,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 3.w),
+                          child: Text(
+                            'EDIT PROFILE',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 15.sp,
+                              fontWeight: FontWeight.w700,
+                              // color: AppColors.disabledColor,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.disabledColor,
+                                personalColor: AppColors.bayLeaf,
+                              ),
                             ),
                           ),
                         ),

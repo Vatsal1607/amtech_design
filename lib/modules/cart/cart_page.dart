@@ -4,12 +4,14 @@ import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../custom_widgets/svg_icon.dart';
+import '../../routes.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
 
@@ -49,7 +51,7 @@ class CartPage extends StatelessWidget {
                     top: 27.h,
                   ),
                   separatorBuilder: (context, index) => SizedBox(
-                    height: 5.h,
+                    height: 10.h,
                   ),
                   itemBuilder: (context, index) {
                     return CartWidget(
@@ -57,7 +59,53 @@ class CartPage extends StatelessWidget {
                     );
                   },
                 ),
-                SizedBox(height: 14.h),
+                SizedBox(height: 12.h),
+
+                // * Continue shopping Widget
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      Routes.bottomBarPage,
+                      (Route<dynamic> route) => false,
+                    );
+                  },
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 32.w),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 18.w,
+                      vertical: 15.h,
+                    ),
+                    decoration: BoxDecoration(
+                        color: AppColors.disabledColor,
+                        borderRadius: BorderRadius.circular(30.r)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'CONTINUE SHOPPING',
+                          style: GoogleFonts.publicSans(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        Container(
+                          height: 25.h,
+                          width: 25.w,
+                          decoration: const BoxDecoration(
+                            color: AppColors.primaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: const SvgIcon(
+                            icon: IconStrings.iosArrowNext,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 12.h),
                 Container(
                   height: 170.h,
                   width: 1.sw,

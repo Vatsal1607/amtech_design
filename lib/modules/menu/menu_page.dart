@@ -229,6 +229,7 @@ class MenuPage extends StatelessWidget {
                               boxShadow: kDropShadow,
                             ),
                             child: TextFormField(
+                              textCapitalization: TextCapitalization.sentences,
                               textAlignVertical: TextAlignVertical.bottom,
                               style: GoogleFonts.publicSans(
                                 color: getColorAccountType(

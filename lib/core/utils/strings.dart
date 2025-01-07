@@ -81,6 +81,7 @@ class IconStrings {
   static const unselected = '${BaseIconPath.basePath}unselected.svg';
   static const email = '${BaseIconPath.basePath}email.svg';
   static const edit = '${BaseIconPath.basePath}edit.svg';
+  static const iosArrowNext = '${BaseIconPath.basePath}ios_arrow_next.svg';
 }
 
 class ImageStrings {

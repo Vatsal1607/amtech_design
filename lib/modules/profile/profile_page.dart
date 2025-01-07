@@ -273,25 +273,27 @@ class ProfilePage extends StatelessWidget {
                       icon: IconStrings.aboutUs,
                     ),
                   ),
-                  SizedBox(height: 20.h),
-                  // ! TEMP
-                  ProfileTile(
-                    accountType: accountType,
-                    onTap: () {
-                      // * showDialog(
-                      showGeneralDialog(
-                        context: context,
-                        // barrierDismissible: true,
-                        // * builder: (context) => const RatingsPage(),
-                        pageBuilder: (context, animation, secondaryAnimation) {
-                          return const RatingsPage();
-                        },
-                      );
-                    },
-                    title: 'TEMP RATING UI VIEW --> ⭐',
-                    icon: IconStrings.aboutUs,
-                  ),
-                  // !
+                  // SizedBox(height: 20.h),
+
+                  // * Ratings view
+                  // // ! TEMP
+                  // ProfileTile(
+                  //   accountType: accountType,
+                  //   onTap: () {
+                  //     // * showDialog(
+                  //     showGeneralDialog(
+                  //       context: context,
+                  //       // barrierDismissible: true,
+                  //       // * builder: (context) => const RatingsPage(),
+                  //       pageBuilder: (context, animation, secondaryAnimation) {
+                  //         return const RatingsPage();
+                  //       },
+                  //     );
+                  //   },
+                  //   title: 'TEMP RATING UI VIEW --> ⭐',
+                  //   icon: IconStrings.aboutUs,
+                  // ),
+                  // // !
                 ],
               ),
             ),

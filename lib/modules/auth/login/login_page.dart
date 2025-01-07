@@ -181,48 +181,49 @@ class LoginPage extends StatelessWidget {
                       ],
                     ),
                     SizedBox(height: 8.h),
-                    // * if (accountType == 'personal') // condition: visible for only personal accountType
-                    GestureDetector(
-                      onTap: () {
-                        //* Navigate to Register page
-                        Navigator.pushNamed(
-                          context,
-                          Routes.register,
-                        );
-                      },
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'don\'t have an account? '.toUpperCase(),
-                              style: GoogleFonts.publicSans(
-                                fontSize: 14.sp,
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.seaShell,
-                                  personalColor: AppColors.seaMist,
+                    if (accountType ==
+                        'personal') // condition: visible for only personal accountType
+                      GestureDetector(
+                        onTap: () {
+                          //* Navigate to Register page
+                          Navigator.pushNamed(
+                            context,
+                            Routes.register,
+                          );
+                        },
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'don\'t have an account? '.toUpperCase(),
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 14.sp,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.seaShell,
+                                    personalColor: AppColors.seaMist,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              'Register Now'.toUpperCase(),
-                              style: GoogleFonts.publicSans(
-                                fontSize: 14.sp,
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.seaShell,
-                                  personalColor: AppColors.seaMist,
+                              Text(
+                                'Register Now'.toUpperCase(),
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 14.sp,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.seaShell,
+                                    personalColor: AppColors.seaMist,
+                                  ),
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                fontWeight: FontWeight.bold,
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ),

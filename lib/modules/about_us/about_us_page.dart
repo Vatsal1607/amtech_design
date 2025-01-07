@@ -2,6 +2,7 @@ import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
+import 'package:amtech_design/services/network/api/api_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../core/utils/app_colors.dart';
@@ -37,7 +38,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
 
   final webViewController = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadRequest(Uri.parse("https://135degrees.in/about-us/"));
+    ..loadRequest(Uri.parse(WebViewUrl.aboutUs)); // * About Us Url
 
   @override
   Widget build(BuildContext context) {

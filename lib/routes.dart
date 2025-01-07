@@ -73,6 +73,6 @@ class Routes {
     ratings: (context) => const RatingsPage(),
     favoriteItems: (context) => const FavoritePage(),
     feedback: (context) => const FeedbackPage(),
-    aboutUs: (context) => AboutUsPage(),
+    aboutUs: (context) => const AboutUsPage(),
   };
 }

@@ -13,34 +13,39 @@ class BusinessSelectionProvider extends ChangeNotifier {
     getBusinessList(currentPage: currentPage);
   }
 
+  TextEditingController searchController = TextEditingController();
   List<BusinessList> _businessList = [];
-  List<BusinessList> _filteredBusinessList = [];
-  BusinessList? _selectedBusiness;
-
   List<BusinessList> get businessList => _businessList;
-  List<BusinessList> get filteredBusinessList => _filteredBusinessList;
+  List<BusinessList> filteredBusinessList = [];
+  BusinessList? _selectedBusiness;
   BusinessList? get selectedBusiness => _selectedBusiness;
 
-  void setBusinessList(List<BusinessList> businesses) {
-    _businessList = businesses;
-    _filteredBusinessList = businesses;
-    notifyListeners();
-  }
+  // void setBusinessList(List<BusinessList> businesses) {
+  //   _businessList = businesses;
+  //   _filteredBusinessList = businesses;
+  //   notifyListeners();
+  // }
 
   void filterBusinesses(String query) {
     if (query.isEmpty) {
-      _filteredBusinessList = _businessList;
+      filteredBusinessList =
+          List.from(suggestionList); // * Use suggestionList as base
     } else {
-      _filteredBusinessList = _businessList
+      filteredBusinessList = suggestionList
           .where((business) => business.businessName!
               .toLowerCase()
               .contains(query.toLowerCase()))
           .toList();
+      // filteredBusinessList = _businessList
+      //     .where((business) => business.businessName!
+      //         .toLowerCase()
+      //         .contains(query.toLowerCase()))
+      //     .toList();
     }
     notifyListeners();
   }
 
-  void selectBusiness(BusinessList business) {
+  void selectBusiness(BusinessList? business) {
     _selectedBusiness = business;
     notifyListeners();
   }
@@ -51,14 +56,16 @@ class BusinessSelectionProvider extends ChangeNotifier {
   BusinessListModel? _businessListModel;
   BusinessListModel? get personalRegisterModel => _businessListModel;
 
+  int totalRecords = 0;
+
   // *getBusinessList
   Future<void> getBusinessList({
     String searchText = '',
-    int currentPage = 1,
+    int currentPage = 0,
   }) async {
+    debugPrint('$totalRecords');
     _isLoading = true;
     notifyListeners();
-    // _businessList.clear(); // for clear the list
     try {
       _businessListModel = await apiService.getBusinessList(
         page: currentPage,
@@ -68,10 +75,23 @@ class BusinessSelectionProvider extends ChangeNotifier {
       debugPrint('currentPage : $currentPage');
       if (_businessListModel?.success == true &&
           _businessListModel?.data != null) {
+        totalRecords = _businessListModel!.data!.totalRecords ?? 0;
         _businessList = _businessListModel!.data!.businessList ?? [];
-        suggestionList = _businessList; // * Update suggestionList
-        notifyListeners();
+        suggestionList.addAll(_businessList.where((item) =>
+            !suggestionList.any((suggestion) => suggestion.sId == item.sId)));
+        filteredBusinessList =
+            List.from(suggestionList); // Update filtered list
       }
+      // * addAll method of list // OLd
+      // if (_businessListModel?.success == true &&
+      //     _businessListModel?.data != null) {
+      //   totalRecords = _businessListModel!.data!.totalRecords ?? 0;
+      //   _businessList.clear();
+      //   _businessList = _businessListModel!.data!.businessList ?? [];
+      //   // * Append new items to suggestionList
+      //   suggestionList.addAll(_businessList.where((item) => !suggestionList
+      //       .contains(item))); // * Avoid duplicate items if needed
+      // }
     } catch (e) {
       debugPrint("Error fetching business list: ${e.toString()}");
     } finally {

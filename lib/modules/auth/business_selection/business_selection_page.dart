@@ -19,8 +19,7 @@ class BusinessSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider =
-        // Provider.of<BusinessSelectionProvider>(context, listen: false);
-        Provider.of<BusinessSelectionProvider>(context, listen: true);
+        Provider.of<BusinessSelectionProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: AppColors.primaryColor,
@@ -117,18 +116,21 @@ class BusinessSelectionPage extends StatelessWidget {
               child: CustomButton(
                 height: 48.h,
                 onTap: () {
-                  // store data localy
+                  // * store data localy
                   sharedPrefsService.setString(
                     SharedPrefsKeys.company,
                     provider.selectedBusiness?.businessName ?? '',
                   );
                   if (provider.selectedBusiness?.businessName != null &&
-                      provider.selectedBusiness!.businessName!.isNotEmpty) {
+                      provider.selectedBusiness!.businessName!.isNotEmpty &&
+                      provider.suggestionList.any((business) =>
+                          business.businessName ==
+                          provider.searchController.text)) {
                     Navigator.pushNamed(context, Routes.login);
                   } else {
                     customSnackBar(
                       context: context,
-                      message: 'Please Select Your Business',
+                      message: 'Please Select a Valid Business',
                       backgroundColor: AppColors.seaShell,
                       textColor: AppColors.primaryColor,
                     );

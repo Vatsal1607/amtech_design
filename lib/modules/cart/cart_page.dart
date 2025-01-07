@@ -43,15 +43,21 @@ class CartPage extends StatelessWidget {
                   shrinkWrap: true,
                   itemCount: 3,
                   physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.only(left: 31.w, right: 31.w, top: 27.h),
-                  separatorBuilder: (context, index) => SizedBox(height: 18.h),
+                  padding: EdgeInsets.only(
+                    left: 31.w,
+                    right: 31.w,
+                    top: 27.h,
+                  ),
+                  separatorBuilder: (context, index) => SizedBox(
+                    height: 5.h,
+                  ),
                   itemBuilder: (context, index) {
                     return CartWidget(
                       accountType: accountType,
                     );
                   },
                 ),
-                SizedBox(height: 18.h),
+                SizedBox(height: 14.h),
                 Container(
                   height: 170.h,
                   width: 1.sw,

@@ -10,6 +10,10 @@ class BaseLottiePath {
   static const basePath = 'assets/lottie/';
 }
 
+class BasePdfPath {
+  static const basePath = 'assets/pdf/';
+}
+
 class IconStrings {
   static const menu = '${BaseIconPath.basePath}menu.svg';
   static const billing = '${BaseIconPath.basePath}billing.svg';
@@ -137,6 +141,10 @@ class LottieStrings {
       '${BaseLottiePath.basePath}order-out-for-delivery-personal.json';
   static const orderDeliveredPersonal =
       '${BaseLottiePath.basePath}order-delivered-personal.json';
+}
+
+class PdfStrings {
+  static const privacyPolicy = '${BasePdfPath.basePath}privacy_policy.pdf';
 }
 
 class Strings {

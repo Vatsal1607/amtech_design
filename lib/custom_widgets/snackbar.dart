@@ -43,7 +43,7 @@ void customSnackBar({
 }
 
 // * Cart snackbar
-void showSnackbar(BuildContext context, String message) {
+void showCartSnackbar(BuildContext context, String message) {
   final snackBar = SnackBar(
     margin: EdgeInsets.zero,
     content: Column(

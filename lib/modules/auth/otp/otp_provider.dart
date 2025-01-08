@@ -62,7 +62,6 @@ class OtpProvider extends ChangeNotifier {
         'contact': int.parse('91$mobile'),
         'otp': int.parse(otpController.text),
         'role': accountType == 'business' ? '0' : '1',
-        // 'secondaryContact': '', // optional
       };
       debugPrint('--Request body OTP verify: $body');
       // Make the API call

@@ -6,6 +6,7 @@ import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
+import '../../models/get_list_access_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -83,5 +84,19 @@ class ApiService {
     required Map<String, dynamic> body,
   }) async {
     return await apiClient.logout(body);
+  }
+
+  Future<ApiGlobalModel> createAccess({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.createAccess(body);
+  }
+
+  Future<GetListAccessModel> getListAccess() async {
+    return await apiClient.getListAccess();
+  }
+
+  Future<ApiGlobalModel> deleteAccess({userId}) async {
+    return await apiClient.deleteAccess(userId);
   }
 }

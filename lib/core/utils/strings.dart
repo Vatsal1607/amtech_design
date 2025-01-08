@@ -142,6 +142,7 @@ class LottieStrings {
       '${BaseLottiePath.basePath}order-out-for-delivery-personal.json';
   static const orderDeliveredPersonal =
       '${BaseLottiePath.basePath}order-delivered-personal.json';
+  static const splashLottie = '${BaseLottiePath.basePath}splash_lottie.json';
 }
 
 class PdfStrings {

@@ -26,6 +26,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLines;
   final int? minLines;
   final FocusNode? focusNode;
+  final bool? enabled;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -47,13 +48,16 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.minLines = 1,
     this.focusNode,
+    this.enabled = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       cursorColor: cursorColor,
       controller: controller,
+      textCapitalization: TextCapitalization.sentences,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       style: GoogleFonts.publicSans(

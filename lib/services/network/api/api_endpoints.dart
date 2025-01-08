@@ -11,4 +11,7 @@ class ApiEndpoints {
   static const String gstVerify =
       'http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/';
   static const String logout = 'logout';
+  static const String createAccess = 'business/create-access';
+  static const String getListAccess = 'business/access';
+  static const String deleteAccess = 'business/delete-access';
 }

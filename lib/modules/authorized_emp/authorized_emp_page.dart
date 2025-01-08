@@ -1,4 +1,3 @@
-import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/core/utils/validator.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
@@ -13,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import 'authorized_emp_provider.dart';
+import 'widgets/authorized_emp_widget.dart';
 
 class AuthorizedEmpPage extends StatelessWidget {
   AuthorizedEmpPage({super.key});
@@ -20,8 +20,6 @@ class AuthorizedEmpPage extends StatelessWidget {
   final TextEditingController otpController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<AuthorizedEmpProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.seaShell,
@@ -41,53 +39,38 @@ class AuthorizedEmpPage extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: 35.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '1st Employee\'s Details',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 15.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) {
-                                return CustomConfirmDialog(
-                                  accountType: 'business', // ! static
-                                  onTapCancel: () => Navigator.pop(context),
-                                  onTapYes: () => Navigator.pop(context),
-                                  title: "ARE YOU SURE?",
-                                  subTitle:
-                                      "You Really Want To Remove\nThe Authorized Employee?",
+                    Consumer<AuthorizedEmpProvider>(
+                      builder: (context, _, child) => provider.accessList ==
+                              null
+                          ? const SizedBox()
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              // padding: EdgeInsets.only(bottom: 10.h),
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: provider.accessList?.length ?? 0,
+                              itemBuilder: (context, index) {
+                                final accessList = provider.accessList?[index];
+                                return AuthorizedEmpWidget(
+                                  authorizedId:
+                                      accessList?.sId.toString() ?? '',
+                                  name: accessList?.name ?? '',
+                                  position: accessList?.position ?? '',
+                                  contact: accessList?.contact.toString() ?? '',
                                 );
                               },
-                            );
-                          },
-                          child: Container(
-                            width: 60.w,
-                            height: 22.h,
-                            decoration: BoxDecoration(
-                              color: AppColors.red,
-                              borderRadius: BorderRadius.circular(100.r),
                             ),
-                            child: Center(
-                              child: Text(
-                                'REMOVE',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 10.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: AppColors.seaShell,
-                                ),
-                              ),
-                            ),
-                          ),
+                    ),
+                    // SizedBox(height: 10.h),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Add Authorized Employees:'.toUpperCase(),
+                        style: GoogleFonts.publicSans(
+                          fontSize: 15.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor,
                         ),
-                      ],
+                      ),
                     ),
                     SizedBox(height: 13.h),
                     CustomTextField(
@@ -129,22 +112,44 @@ class AuthorizedEmpPage extends StatelessWidget {
                       textColor: AppColors.primaryColor,
                     ),
                     SizedBox(height: 10.h),
-                    CustomButton(
-                      height: 50.h,
-                      onTap: () {
-                        if (provider.formKey.currentState!.validate()) {
-                          otpVerifyBottomSheeet(
-                            context: context,
-                            accountType: 'business', // ! static
-                            controller: otpController,
-                          );
-                        } else {
-                          debugPrint('form is not validate');
-                        }
-                      },
-                      text: 'verify',
-                      textColor: AppColors.seaShell,
-                      bgColor: AppColors.primaryColor,
+                    Consumer<AuthorizedEmpProvider>(
+                      builder: (context, _, child) => CustomButton(
+                        height: 50.h,
+                        isLoading: provider.isLoading,
+                        loaderColor: AppColors.seaShell,
+                        onTap: () {
+                          if (provider.formKey.currentState!.validate()) {
+                            // * API call
+                            provider
+                                .createAccess(context: context)
+                                .then((isSuccess) {
+                              if (isSuccess == true) {
+                                provider
+                                    .sendOtp(
+                                  context: context,
+                                  secondaryMobile:
+                                      provider.mobileController.text,
+                                )
+                                    .then((isSuccess) {
+                                  // * show bottomsheet (verify otp)
+                                  otpVerifyBottomSheeet(
+                                    context: context,
+                                    accountType: 'business', // ! static
+                                    otpController: otpController,
+                                    authorizeMobileController:
+                                        provider.mobileController,
+                                  );
+                                });
+                              }
+                            });
+                          } else {
+                            debugPrint('form is not validate');
+                          }
+                        },
+                        text: 'verify',
+                        textColor: AppColors.seaShell,
+                        bgColor: AppColors.primaryColor,
+                      ),
                     ),
                     SizedBox(height: 10.h),
                     CustomButton(
@@ -204,7 +209,13 @@ class AuthorizedEmpPage extends StatelessWidget {
                   alignment: Alignment.bottomCenter,
                   child: CustomButton(
                     height: 55.h,
-                    onTap: () {},
+                    onTap: () {
+                      if (provider.formKey.currentState!.validate()) {
+                        Navigator.pop(context);
+                      } else {
+                        debugPrint('form is not validate');
+                      }
+                    },
                     text: 'Done',
                     textColor: AppColors.seaShell,
                     bgColor: AppColors.primaryColor,

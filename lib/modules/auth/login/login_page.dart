@@ -1,8 +1,6 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
-import 'package:amtech_design/modules/firebase/firebase_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,7 +11,6 @@ import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/buttons/custom_button.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
-import '../location_selection/location_selection_provider.dart';
 import 'login_provider.dart';
 
 class LoginPage extends StatelessWidget {
@@ -38,7 +35,7 @@ class LoginPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: SvgIcon(
+          child: const SvgIcon(
             icon: IconStrings.arrowBack,
           ),
         ),
@@ -104,7 +101,7 @@ class LoginPage extends StatelessWidget {
                     /// TextField Widget for Mobile number
                     // Textfield(), // Extracted widget
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // Country Code Widget
                         Container(

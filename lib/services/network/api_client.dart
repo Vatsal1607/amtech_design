@@ -1,4 +1,5 @@
 import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
@@ -67,5 +68,18 @@ abstract class ApiClient {
   @POST(ApiEndpoints.logout)
   Future<ApiGlobalModel> logout(
     @Body() Map<String, dynamic> body,
+  );
+
+  @POST(ApiEndpoints.createAccess)
+  Future<ApiGlobalModel> createAccess(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @GET(ApiEndpoints.getListAccess) // Need to call
+  Future<GetListAccessModel> getListAccess();
+
+  @DELETE("${ApiEndpoints.deleteAccess}/{userId}") // Need to call
+  Future<ApiGlobalModel> deleteAccess(
+    @Path("userId") String userId,
   );
 }

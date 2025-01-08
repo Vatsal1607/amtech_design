@@ -2,6 +2,7 @@ import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -64,11 +65,11 @@ class CartPage extends StatelessWidget {
                 // * Continue shopping Widget
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      Routes.bottomBarPage,
-                      (Route<dynamic> route) => false,
-                    );
+                    Navigator.popUntil(context, (route) {
+                      // Keep popping until the condition is met
+                      return route.settings.name == Routes.bottomBarPage;
+                    });
+                    showCartSnackbar(context, 'This is the msg');
                   },
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 32.w),

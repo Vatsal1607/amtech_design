@@ -1,13 +1,10 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
-import 'package:amtech_design/modules/firebase/firebase_services.dart';
 import 'package:amtech_design/services/local/auth_token_helper.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../custom_widgets/snackbar.dart';
 import '../../../models/api_global_model.dart';
@@ -77,6 +74,7 @@ class LoginProvider extends ChangeNotifier {
         if (accountType == 'business')
           'company': company, // business.businessName
         'role': accountType == 'business' ? '0' : '1',
+        // 'role': accountType == 'business' ? '2' : '1', // pass role '2' while isAccess = true in businesslist
         'fcmToken': fcmToken,
         'deviceId': deviceId,
       };
@@ -148,7 +146,8 @@ class LoginProvider extends ChangeNotifier {
       final Map<String, dynamic> body = {
         'contact': int.parse('91$mobile'),
         'role': accountType == 'business' ? '0' : '1',
-        // 'secondaryContact': '', // optional
+        // if (secondaryMobile != null)
+        //   'secondaryContact': int.parse('91$secondaryMobile'),
       };
       debugPrint('--Request body OTP: $body');
       // Make the API call

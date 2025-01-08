@@ -94,7 +94,6 @@ class OrderStatusPage extends StatelessWidget {
                     personalColor: AppColors.darkGreenGrey,
                   ),
                   onTap: () {
-                    // Navigator.pop(context);
                     Navigator.popUntil(
                         context, ModalRoute.withName(Routes.bottomBarPage));
                   },

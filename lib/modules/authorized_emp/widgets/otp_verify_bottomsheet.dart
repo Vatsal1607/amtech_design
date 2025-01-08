@@ -1,8 +1,10 @@
 import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/modules/auth/otp/widgets/otp_fields.dart';
+import 'package:amtech_design/modules/authorized_emp/authorized_emp_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
@@ -11,7 +13,8 @@ import '../../../custom_widgets/svg_icon.dart';
 void otpVerifyBottomSheeet({
   required BuildContext context,
   required String accountType,
-  required TextEditingController controller,
+  required TextEditingController otpController,
+  required TextEditingController authorizeMobileController,
 }) {
   showModalBottomSheet(
     context: context,
@@ -22,6 +25,8 @@ void otpVerifyBottomSheeet({
       personalColor: AppColors.darkGreenGrey,
     ),
     builder: (context) {
+      final authEmpProvider =
+          Provider.of<AuthorizedEmpProvider>(context, listen: false);
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
@@ -60,14 +65,14 @@ void otpVerifyBottomSheeet({
                         Row(
                           children: [
                             Text(
-                              'we\'ve sent the OTP to ',
+                              'We\'ve sent the OTP to ',
                               style: GoogleFonts.publicSans(
                                 fontSize: 15.sp,
                                 color: AppColors.white,
                               ),
                             ),
                             Text(
-                              '+91 12345 67890',
+                              '+91 ${authorizeMobileController.text}',
                               style: GoogleFonts.publicSans(
                                 fontSize: 15.sp,
                                 fontWeight: FontWeight.bold,
@@ -80,7 +85,7 @@ void otpVerifyBottomSheeet({
 
                         // *
                         OtpFields(
-                          controller: controller,
+                          controller: otpController,
                         ),
 
                         RichText(
@@ -105,7 +110,15 @@ void otpVerifyBottomSheeet({
                           isMargin: false,
                           accountType: accountType,
                           onTap: () {
-                            debugPrint('Pressed ');
+                            // * API call
+                            if (otpController.text != null &&
+                                otpController.text.isNotEmpty) {
+                              authEmpProvider.verifyOtp(
+                                context: context,
+                                otpController: otpController,
+                                mobile: authorizeMobileController.text,
+                              );
+                            }
                           },
                           text: 'VERIFY',
                         )

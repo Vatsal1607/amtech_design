@@ -2,6 +2,7 @@ import 'package:amtech_design/routes.dart';
 import 'package:amtech_design/services/local/device_info_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/utils/app_colors.dart';
@@ -21,20 +22,18 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-
-    Future.delayed(const Duration(seconds: 2), () {
+    Future.delayed(const Duration(seconds: 3), () {
       // *
       if (mounted) {
-        // final isLoggedIn =
-        //     sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);
-        // if (isLoggedIn != null && isLoggedIn) {
-        //   Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
-        // } else {
-        //   Navigator.pushReplacementNamed(context, Routes.accountSelection);
-        // }
-        Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        final isLoggedIn =
+            sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);
+        if (isLoggedIn != null && isLoggedIn) {
+          Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        } else {
+          Navigator.pushReplacementNamed(context, Routes.accountSelection);
+        }
+        // Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
       }
-      
     });
   }
 
@@ -48,20 +47,26 @@ class _SplashPageState extends State<SplashPage> {
       body: Stack(
         children: [
           Image.asset(
-            // ImageStrings.cartDoodle,
-            ImageStrings.splashScreenImg,
+            ImageStrings.splashDoodle,
+            // ImageStrings.splashScreenImg,
             height: 1.sh,
             width: 1.sw,
           ),
-          // Center(
+          Positioned.fill(
+            child: Lottie.asset(
+              LottieStrings.splashLottie,
+              repeat: false,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+// Center(
           //   child: Image.asset(
           //     width: 250.w,
           //     height: 73.h,
           //     ImageStrings.appLogo,
           //   ),
           // ),
-        ],
-      ),
-    );
-  }
-}

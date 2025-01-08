@@ -12,6 +12,7 @@ class CustomButton extends StatelessWidget {
   final double? height;
   final double? width;
   final bool isLoading;
+  final Color? loaderColor;
   const CustomButton({
     super.key,
     this.text = 'NEXT',
@@ -21,6 +22,7 @@ class CustomButton extends StatelessWidget {
     this.height,
     this.width,
     this.isLoading = false,
+    this.loaderColor,
   });
 
   @override
@@ -40,7 +42,7 @@ class CustomButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? CustomLoader(color: textColor)
+              ? CustomLoader(color: loaderColor ?? textColor)
               : Text(
                   text.toUpperCase(),
                   style: GoogleFonts.publicSans(

@@ -152,11 +152,6 @@ class OtpPage extends StatelessWidget {
                       height: 48.h,
                       isLoading: provider.isLoading,
                       onTap: () {
-                        // Navigator.pushNamed(
-                        //   context,
-                        //   Routes.verifySuccess,
-                        // );
-                        //Todo Uncomment API call
                         if (provider.otpController.text.isNotEmpty) {
                           provider.verifyOtp(
                             context: context,

@@ -207,9 +207,9 @@ class MenuPage extends StatelessWidget {
                           : SliverPersistentHeader(
                               pinned: true,
                               delegate: PinnedHeaderDelegate(
-                                minExtent: 30.h,
-                                maxExtent: 30.h,
-                                child: SizedBox(height: 30.h),
+                                minExtent: 20.h,
+                                maxExtent: 20.h,
+                                child: SizedBox(height: 20.h),
                               ),
                             ),
                       // Pinned or Sticky Search field in Sliver

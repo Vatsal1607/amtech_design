@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +27,7 @@ class BusinessDropdown extends StatelessWidget {
       builder: (context, _, child) => SearchField<BusinessList>(
         controller: provider.searchController,
         suggestionDirection: SuggestionDirection.down,
-        hint: 'Select Your Company',
+        hint: 'Select Your business',
         // onTap: () {
         //   provider.filterBusinesses('');
         // },
@@ -58,8 +57,11 @@ class BusinessDropdown extends StatelessWidget {
           if (query.isNotEmpty && query.length % 3 == 0) {
             provider.getBusinessList(searchText: query);
           } else if (query.isEmpty) {
-            log('query is empty');
             provider.selectBusiness(null); // Clear selected business
+          }
+          if (provider.filteredBusinessList.isEmpty) {
+            // Handle non-matching input
+            provider.selectBusiness(null);
           }
         },
         // * old
@@ -96,7 +98,8 @@ class BusinessDropdown extends StatelessWidget {
                     business.businessName ==
                     provider.selectedBusiness?.businessName)
             ? SearchFieldListItem<BusinessList>(
-                provider.selectedBusiness!.businessName!,
+                // ! Note: dont use Null check operator here (it can be nullable)
+                provider.selectedBusiness!.businessName ?? '',
                 item: provider.selectedBusiness,
               )
             : null,

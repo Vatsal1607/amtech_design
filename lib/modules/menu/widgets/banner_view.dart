@@ -39,7 +39,7 @@ class BannerView extends StatelessWidget {
                   itemCount: provider.banners.length,
                   options: CarouselOptions(
                     height: 350.h,
-                    // autoPlay: true,
+                    autoPlay: true,
                     viewportFraction: 1, // * Space between pages
                     enableInfiniteScroll: false, // * Disable infinite scrolling
                     onPageChanged: provider.onPageChangedCarousel,

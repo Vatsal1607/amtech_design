@@ -23,7 +23,6 @@ import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
 import 'modules/profile/edit_profile/edit_profile_provider.dart';
 import 'modules/profile/profile_provider.dart';
-import 'services/local/device_info_service.dart';
 import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';

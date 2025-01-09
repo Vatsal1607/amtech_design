@@ -54,14 +54,17 @@ class OtpProvider extends ChangeNotifier {
     required BuildContext context,
     required String accountType,
     required String mobile,
+    String? secondaryContact,
   }) async {
     _isLoading = true;
     notifyListeners();
     try {
       final Map<String, dynamic> body = {
-        'contact': int.parse('91$mobile'),
+        if (secondaryContact == null) 'contact': int.parse('91$mobile'),
         'otp': int.parse(otpController.text),
         'role': accountType == 'business' ? '0' : '1',
+        if (secondaryContact != null)
+          'secondaryContact': int.parse('91$secondaryContact'),
       };
       debugPrint('--Request body OTP verify: $body');
       // Make the API call

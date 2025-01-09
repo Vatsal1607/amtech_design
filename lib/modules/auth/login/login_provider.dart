@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
@@ -12,6 +13,51 @@ import '../../../routes.dart';
 import '../../../services/network/api_service.dart';
 
 class LoginProvider extends ChangeNotifier {
+  LoginProvider() {
+    getBusinessNameAndSecondaryAccess().then((value) {
+      log('getBusinessNameAndSecondaryAccess: $value');
+      businessList = value;
+      log('validateContactInSecondaryAccess: ${validateContactInSecondaryAccess(919725163481)}');
+    });
+  }
+
+  List<Map<String, dynamic>> businessList = [];
+
+  Future<List<Map<String, dynamic>>> getBusinessNameAndSecondaryAccess() async {
+    String? jsonString =
+        sharedPrefsService.getString(SharedPrefsKeys.businessList);
+
+    if (jsonString != null) {
+      // Decode JSON and return as List of Maps
+      return List<Map<String, dynamic>>.from(jsonDecode(jsonString));
+    }
+    return [];
+  }
+
+  // * Valdiate secondary Access (check Is Authorized emp or Not)
+  // Note: pass prefix 91 while validate number to method because response start from 91{mobilenumber}
+  bool validateContactInSecondaryAccess(
+    // List<Map<String, dynamic>> businessList,
+    int enteredContact,
+  ) {
+    if (businessList.isNotEmpty) {
+      // Iterate through the business list
+      for (var business in businessList) {
+        List<dynamic> secondaryAccess = business['secondaryAccess'];
+
+        // Iterate through the secondaryAccess list for each business
+        for (var contact in secondaryAccess) {
+          if (contact['contact'] == enteredContact) {
+            log('validateContactInSecondaryAccess: TRUE');
+            return true; // Contact found
+          }
+        }
+      }
+    }
+    log('validateContactInSecondaryAccess: FALSE');
+    return false; // Contact not found
+  }
+
   String countryCode = '+91'; // Default country code for mobile
   final TextEditingController phoneController = TextEditingController();
 
@@ -70,10 +116,15 @@ class LoginProvider extends ChangeNotifier {
       final deviceId = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
       final Map<String, dynamic> body = {
         'contact': int.parse('91${phoneController.text}'),
-        'location': location, // * use sharedprefs //selectedLocation
+        'location': location,
         if (accountType == 'business')
           'company': company, // business.businessName
-        'role': accountType == 'business' ? '0' : '1',
+        'role': accountType == 'business'
+            ? validateContactInSecondaryAccess(
+                    int.parse('91${phoneController.text}'))
+                ? '2'
+                : '0'
+            : '1',
         // 'role': accountType == 'business' ? '2' : '1', // pass role '2' while isAccess = true in businesslist
         'fcmToken': fcmToken,
         'deviceId': deviceId,
@@ -87,12 +138,15 @@ class LoginProvider extends ChangeNotifier {
       if (response.success == true) {
         log(response.message.toString());
         if (response.data != null) {
-          //* Save User Token
+          // * Save User Token
           sharedPrefsService.setString(
               SharedPrefsKeys.userToken, response.data!.token!);
-          // * save User id
+          // * Save User id
           sharedPrefsService.setString(
               SharedPrefsKeys.userId, AuthTokenHelper.getUserId().toString());
+          // * Save contact
+          sharedPrefsService.setString(SharedPrefsKeys.userContact,
+              AuthTokenHelper.getUserContact().toString());
         }
         // * send otp API call
         await sendOtp(
@@ -144,10 +198,14 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final Map<String, dynamic> body = {
-        'contact': int.parse('91$mobile'),
+        /// If number not exist in secondory access
+        if (!validateContactInSecondaryAccess(int.parse('91$mobile')))
+          'contact': int.parse('91$mobile'),
         'role': accountType == 'business' ? '0' : '1',
-        // if (secondaryMobile != null)
-        //   'secondaryContact': int.parse('91$secondaryMobile'),
+
+        /// If number exist in secondary access
+        if (validateContactInSecondaryAccess(int.parse('91$mobile')))
+          'secondaryContact': int.parse('91$mobile'),
       };
       debugPrint('--Request body OTP: $body');
       // Make the API call

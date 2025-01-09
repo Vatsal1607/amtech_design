@@ -23,6 +23,7 @@ class OtpPage extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
             {};
     final provider = Provider.of<OtpProvider>(context, listen: false);
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
@@ -62,7 +63,7 @@ class OtpPage extends StatelessWidget {
           Positioned.fill(
             child: Padding(
               padding: EdgeInsets.only(
-                top: 150.0,
+                top: 130.0,
                 left: 34.w,
                 right: 34.w,
               ),
@@ -157,6 +158,12 @@ class OtpPage extends StatelessWidget {
                             context: context,
                             accountType: accountType,
                             mobile: arguments['mobile'],
+                            // If number exist in secondary access
+                            secondaryContact:
+                                loginProvider.validateContactInSecondaryAccess(
+                                        int.parse('91${arguments['mobile']}'))
+                                    ? arguments['mobile']
+                                    : null,
                           );
                         }
                       },

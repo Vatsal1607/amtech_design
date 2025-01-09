@@ -1,11 +1,8 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
-import 'package:amtech_design/services/local/auth_token_helper.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/utils/app_colors.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
@@ -13,8 +10,11 @@ import '../../routes.dart';
 import '../../services/network/api_service.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  int selectedTileIndex = 0;
+  ProfileProvider() {
+    //
+  }
 
+  int selectedTileIndex = 0;
   updateTileIndex(int index) {
     selectedTileIndex = index;
     notifyListeners();

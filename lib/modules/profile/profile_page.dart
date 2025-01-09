@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/auth/login/login_provider.dart';
 import 'package:amtech_design/modules/profile/profile_provider.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
@@ -21,9 +24,13 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business';
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String userContact =
+        sharedPrefsService.getString(SharedPrefsKeys.userContact) ?? '';
+    debugPrint('userContact: $userContact');
     final provider = Provider.of<ProfileProvider>(context, listen: false);
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -161,9 +168,17 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, Routes.editProfile);
-                        },
+                        /// validateContactInSecondaryAccess
+                        onTap: userContact.isNotEmpty &&
+                                loginProvider.validateContactInSecondaryAccess(
+                                    int.parse(userContact))
+                            ? () {
+                                log('NOT AUTHORIZED');
+                              }
+                            : () {
+                                Navigator.pushNamed(
+                                    context, Routes.editProfile);
+                              },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 3.w),
                           child: Text(
@@ -230,7 +245,10 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  if (accountType == 'business')
+                  if (accountType == 'business' &&
+                      userContact.isNotEmpty &&
+                      loginProvider.validateContactInSecondaryAccess(
+                          int.parse(userContact)))
                     Consumer<ProfileProvider>(
                       builder: (context, _, child) => ProfileTile(
                         // * Consider tile Index 2
@@ -244,10 +262,11 @@ class ProfilePage extends StatelessWidget {
                         icon: IconStrings.authorizedEmp,
                       ),
                     ),
-                  if (accountType == 'business')
-                    SizedBox(
-                      height: 20.h,
-                    ),
+                  if (accountType == 'business' &&
+                      userContact.isNotEmpty &&
+                      loginProvider.validateContactInSecondaryAccess(
+                          int.parse(userContact)))
+                    SizedBox(height: 20.h),
                   Consumer<ProfileProvider>(
                     builder: (context, _, child) => ProfileTile(
                       // * Consider tile Index 3

@@ -13,12 +13,14 @@ class AuthorizedEmpWidget extends StatefulWidget {
   final String position;
   final String contact;
   final String authorizedId;
+  final int index;
   const AuthorizedEmpWidget({
     super.key,
     required this.name,
     required this.position,
     required this.contact,
     required this.authorizedId,
+    required this.index,
   });
 
   @override

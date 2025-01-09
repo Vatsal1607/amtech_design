@@ -51,6 +51,7 @@ class AuthorizedEmpPage extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 final accessList = provider.accessList?[index];
                                 return AuthorizedEmpWidget(
+                                  index: index,
                                   authorizedId:
                                       accessList?.sId.toString() ?? '',
                                   name: accessList?.name ?? '',

@@ -32,7 +32,7 @@ class _SplashPageState extends State<SplashPage> {
         } else {
           Navigator.pushReplacementNamed(context, Routes.accountSelection);
         }
-        // Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
+        // Navigator.pushReplacementNamed(context, Routes.accountSelection);
       }
     });
   }

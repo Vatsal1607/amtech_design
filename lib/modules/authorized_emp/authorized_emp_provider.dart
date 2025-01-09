@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import '../../core/utils/app_colors.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
@@ -34,12 +32,15 @@ class AuthorizedEmpProvider extends ChangeNotifier {
 
   // * getListAccess
   Future getListAccess() async {
-    _isLoading = true;
-    notifyListeners();
+    // _isLoading = true;
+    // notifyListeners();
     try {
       final GetListAccessModel response = await apiService.getListAccess();
       log('getListAccess Response: $response');
       if (response.success == true) {
+        if (accessList != null) {
+          accessList!.clear();
+        }
         log('Success: getListAccess: ${response.message.toString()}');
         if (response.data != null) {
           accessList = response.data;
@@ -79,7 +80,7 @@ class AuthorizedEmpProvider extends ChangeNotifier {
       }
     } finally {
       // Ensure loading state is reset
-      _isLoading = false;
+      // _isLoading = false;
       notifyListeners();
     }
   }

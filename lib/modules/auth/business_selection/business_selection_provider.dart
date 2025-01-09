@@ -1,10 +1,15 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/business_list_model.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import '../../../services/network/api_service.dart';
 
 class BusinessSelectionProvider extends ChangeNotifier {
   List<BusinessList> suggestionList = [];
-
+  List<SecondaryAccess>? secondaryAccess;
   bool isLoadingPagination = false;
   int currentPage = 1;
 
@@ -19,12 +24,6 @@ class BusinessSelectionProvider extends ChangeNotifier {
   List<BusinessList> filteredBusinessList = [];
   BusinessList? _selectedBusiness;
   BusinessList? get selectedBusiness => _selectedBusiness;
-
-  // void setBusinessList(List<BusinessList> businesses) {
-  //   _businessList = businesses;
-  //   _filteredBusinessList = businesses;
-  //   notifyListeners();
-  // }
 
   void filterBusinesses(String query) {
     if (query.isEmpty) {
@@ -72,6 +71,7 @@ class BusinessSelectionProvider extends ChangeNotifier {
         limit: 10,
         search: searchText,
       );
+      log('Response: ${_businessListModel?.data?.businessList?[3].secondaryAccess}');
       debugPrint('currentPage : $currentPage');
       if (_businessListModel?.success == true &&
           _businessListModel?.data != null) {
@@ -81,22 +81,31 @@ class BusinessSelectionProvider extends ChangeNotifier {
             !suggestionList.any((suggestion) => suggestion.sId == item.sId)));
         filteredBusinessList =
             List.from(suggestionList); // Update filtered list
+        // * storeSecondaryAccessLocally
+        saveBusinessNameAndSecondaryAccess(businessList);
+        // storeSecondaryAccessLocally(jsonEncode(_businessListModel!.data));
       }
-      // * addAll method of list // OLd
-      // if (_businessListModel?.success == true &&
-      //     _businessListModel?.data != null) {
-      //   totalRecords = _businessListModel!.data!.totalRecords ?? 0;
-      //   _businessList.clear();
-      //   _businessList = _businessListModel!.data!.businessList ?? [];
-      //   // * Append new items to suggestionList
-      //   suggestionList.addAll(_businessList.where((item) => !suggestionList
-      //       .contains(item))); // * Avoid duplicate items if needed
-      // }
     } catch (e) {
       debugPrint("Error fetching business list: ${e.toString()}");
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  Future<void> saveBusinessNameAndSecondaryAccess(
+      List<dynamic> businessList) async {
+    // Extract businessName and secondaryAccess
+    List<Map<String, dynamic>> extractedData = businessList.map((business) {
+      return {
+        "businessName": business.businessName, // Use dot notation
+        "secondaryAccess": business.secondaryAccess, // Use dot notation
+      };
+    }).toList();
+
+    // Convert to JSON and save
+    String jsonString = jsonEncode(extractedData);
+    await sharedPrefsService.setString(
+        SharedPrefsKeys.businessList, jsonString);
   }
 }

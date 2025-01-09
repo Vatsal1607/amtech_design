@@ -101,7 +101,7 @@ class LoginPage extends StatelessWidget {
                     /// TextField Widget for Mobile number
                     // Textfield(), // Extracted widget
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Country Code Widget
                         Container(

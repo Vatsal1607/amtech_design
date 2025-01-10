@@ -79,6 +79,14 @@ class BusinessList {
       this.secondaryAccess,
       this.ocupant});
 
+  // Factory constructor to create an empty BusinessList
+  factory BusinessList.empty() {
+    return BusinessList(
+      businessName: '',
+      secondaryAccess: [],
+    );
+  }
+
   BusinessList.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     businessName = json['businessName'];

@@ -21,60 +21,60 @@ class CustomButtonWithArrow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 55.h,
-      margin: isMargin ? EdgeInsets.symmetric(horizontal: 32.w) : null,
-      padding: EdgeInsets.symmetric(horizontal: 22.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40.r),
-        color: AppColors.white,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          text != null
-              ? Text(
-                  text!,
-                  style: GoogleFonts.publicSans(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 55.h,
+        margin: isMargin ? EdgeInsets.symmetric(horizontal: 32.w) : null,
+        padding: EdgeInsets.symmetric(horizontal: 22.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(40.r),
+          color: AppColors.white,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            text != null
+                ? Text(
+                    text!,
+                    style: GoogleFonts.publicSans(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                     ),
+                  )
+                : Row(
+                    children: [
+                      Text(
+                        '1 item '.toUpperCase(),
+                        style: GoogleFonts.publicSans(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                        ),
+                      ),
+                      Text(
+                        'added to cart'.toUpperCase(),
+                        style: GoogleFonts.publicSans(
+                          fontSize: 16.sp,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                )
-              : Row(
-                  children: [
-                    Text(
-                      '1 item '.toUpperCase(),
-                      style: GoogleFonts.publicSans(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'added to cart'.toUpperCase(),
-                      style: GoogleFonts.publicSans(
-                        fontSize: 16.sp,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-          GestureDetector(
-            onTap: onTap,
-            child: Container(
+            Container(
               height: 30.h,
               width: 45.w,
               decoration: BoxDecoration(
@@ -89,8 +89,8 @@ class CustomButtonWithArrow extends StatelessWidget {
                 icon: IconStrings.arrowNext,
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

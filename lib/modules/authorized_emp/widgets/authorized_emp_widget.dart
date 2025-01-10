@@ -59,7 +59,8 @@ class _AuthorizedEmpWidgetState extends State<AuthorizedEmpWidget> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              '1st Employee\'s Details',
+              /// getEmployeeDetailsText
+              provider.getEmployeeDetailsText(widget.index),
               style: GoogleFonts.publicSans(
                 fontSize: 15.sp,
                 fontWeight: FontWeight.bold,
@@ -74,6 +75,7 @@ class _AuthorizedEmpWidgetState extends State<AuthorizedEmpWidget> {
                     return CustomConfirmDialog(
                       accountType: 'business', // ! static
                       onTapCancel: () => Navigator.pop(context),
+                      isLoading: provider.isDeleteLoading,
                       onTapYes: () {
                         provider.deleteAccess(
                           context: context,

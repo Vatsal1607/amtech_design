@@ -29,18 +29,16 @@ class AuthorizedEmpProvider extends ChangeNotifier {
   }
 
   List<AccessList>? accessList;
-
+  bool getAccessListLoading = false;
   // * getListAccess
   Future getListAccess() async {
-    // _isLoading = true;
-    // notifyListeners();
+    getAccessListLoading = true;
+    accessList?.clear();
+    notifyListeners();
     try {
       final GetListAccessModel response = await apiService.getListAccess();
       log('getListAccess Response: $response');
       if (response.success == true) {
-        if (accessList != null) {
-          accessList!.clear();
-        }
         log('Success: getListAccess: ${response.message.toString()}');
         if (response.data != null) {
           accessList = response.data;
@@ -80,17 +78,18 @@ class AuthorizedEmpProvider extends ChangeNotifier {
       }
     } finally {
       // Ensure loading state is reset
-      // _isLoading = false;
+      getAccessListLoading = false;
       notifyListeners();
     }
   }
 
+  bool isDeleteLoading = false;
   // Remove emp API
   Future deleteAccess({
     required BuildContext context,
     required String empId,
   }) async {
-    _isLoading = true;
+    isDeleteLoading = true;
     notifyListeners();
     try {
       final ApiGlobalModel response =
@@ -104,8 +103,8 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: response.message.toString(),
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
         notifyListeners();
         return true; // * Indicat success
@@ -115,8 +114,8 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: response.message.toString(),
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
         return false; // * Indicat failure
       }
@@ -125,24 +124,12 @@ class AuthorizedEmpProvider extends ChangeNotifier {
 
       if (error is DioException) {
         final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
-        // customSnackBar(
-        //   context: context,
-        //   message: apiError.message ?? 'An error occurred',
-        //   backgroundColor: AppColors.seaShell,
-        //   textColor: AppColors.primaryColor,
-        // );
       } else {
         // * Handle unexpected errors
-        // customSnackBar(
-        //   context: context,
-        //   message: 'An unexpected error occurred',
-        //   backgroundColor: AppColors.seaShell,
-        //   textColor: AppColors.primaryColor,
-        // );
       }
     } finally {
       // Ensure loading state is reset
-      _isLoading = false;
+      isDeleteLoading = false;
       notifyListeners();
     }
   }
@@ -172,8 +159,8 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: response.message.toString(),
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
         return true; // * Indicat success
       } else {
@@ -188,16 +175,16 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message ?? 'An error occurred',
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       } else {
         // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       }
     } finally {
@@ -231,8 +218,8 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: response.message.toString(),
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
         return true; // * Indicat success
       } else {
@@ -247,16 +234,16 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message ?? 'An error occurred',
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       } else {
         // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       }
     } finally {
@@ -295,8 +282,8 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: response.message.toString(),
-          textColor: AppColors.primaryColor,
-          backgroundColor: AppColors.white,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       } else {
         debugPrint('verify otp: ${response.message}');
@@ -309,21 +296,45 @@ class AuthorizedEmpProvider extends ChangeNotifier {
         customSnackBar(
           context: context,
           message: apiError.message ?? 'An error occurred',
-          textColor: AppColors.primaryColor,
-          backgroundColor: AppColors.white,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       } else {
         // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
-          textColor: AppColors.primaryColor,
-          backgroundColor: AppColors.white,
+          backgroundColor: AppColors.primaryColor,
+          textColor: AppColors.seaShell,
         );
       }
     } finally {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  String getEmployeeDetailsText(int index) {
+    String suffix;
+    int position = index + 1;
+    // Determine the suffix based on the position
+    if (position % 100 >= 11 && position % 100 <= 13) {
+      suffix = 'th'; // Special case for 11th, 12th, 13th
+    } else {
+      switch (position % 10) {
+        case 1:
+          suffix = 'st';
+          break;
+        case 2:
+          suffix = 'nd';
+          break;
+        case 3:
+          suffix = 'rd';
+          break;
+        default:
+          suffix = 'th';
+      }
+    }
+    return '$position$suffix Employee\'s Details';
   }
 }

@@ -83,7 +83,6 @@ class BusinessSelectionProvider extends ChangeNotifier {
             List.from(suggestionList); // Update filtered list
         // * storeSecondaryAccessLocally
         saveBusinessNameAndSecondaryAccess(businessList);
-        // storeSecondaryAccessLocally(jsonEncode(_businessListModel!.data));
       }
     } catch (e) {
       debugPrint("Error fetching business list: ${e.toString()}");
@@ -92,6 +91,40 @@ class BusinessSelectionProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // * Save SelectedBusinessSecondaryAccess
+  Future<void> saveSelectedBusinessSecondaryAccess(
+      List<BusinessList> businessList, String selectedBusinessName) async {
+    // Find the selected business
+    BusinessList? selectedBusiness = businessList.firstWhere(
+      (business) => business.businessName == selectedBusinessName,
+      orElse: () => BusinessList.empty(), // Provide a fallback empty instance
+    );
+
+    // Check if the found business is valid
+    if (selectedBusiness.businessName != null &&
+        selectedBusiness.businessName!.isNotEmpty) {
+      // Extract secondaryAccess and save
+      String jsonString = jsonEncode(selectedBusiness.secondaryAccess);
+      await sharedPrefsService.setString(
+        SharedPrefsKeys.secondaryAccessList,
+        jsonString,
+      );
+    }
+  }
+
+  // * Get SelectedBusinessSecondaryAccess
+  // Future<List<SecondaryAccess>> getSelectedBusinessSecondaryAccess() async {
+  //   String? jsonString =
+  //       sharedPrefsService.getString(SharedPrefsKeys.secondaryAccessList);
+
+  //   if (jsonString != null) {
+  //     // Decode JSON and return as List of SecondaryAccessModel
+  //     List<dynamic> decodedList = jsonDecode(jsonString);
+  //     return decodedList.map((item) => SecondaryAccess.fromJson(item)).toList();
+  //   }
+  //   return [];
+  // }
 
   Future<void> saveBusinessNameAndSecondaryAccess(
       List<dynamic> businessList) async {
@@ -106,6 +139,20 @@ class BusinessSelectionProvider extends ChangeNotifier {
     // Convert to JSON and save
     String jsonString = jsonEncode(extractedData);
     await sharedPrefsService.setString(
-        SharedPrefsKeys.businessList, jsonString);
+        SharedPrefsKeys.firstSecondaryAccessList, jsonString);
   }
 }
+
+// ! Usage example
+// void onDropdownSelection(String selectedBusinessName) async {
+//   // Assuming you already have a list of BusinessModel objects
+//   List<BusinessModel> businessList = fetchBusinessListFromApi();
+
+//   // Save selected business's secondaryAccess
+//   await saveSelectedBusinessSecondaryAccess(businessList, selectedBusinessName);
+
+//   // Retrieve and print saved secondaryAccess data
+//   List<SecondaryAccessModel> secondaryAccess =
+//       await getSelectedBusinessSecondaryAccess();
+//   print(secondaryAccess);
+// }

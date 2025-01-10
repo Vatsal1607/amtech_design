@@ -2,8 +2,8 @@ import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/core/utils/validator.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
-import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/modules/authorized_emp/widgets/otp_verify_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,11 +17,14 @@ import 'widgets/authorized_emp_widget.dart';
 class AuthorizedEmpPage extends StatelessWidget {
   AuthorizedEmpPage({super.key});
 
-  final TextEditingController otpController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<AuthorizedEmpProvider>(context, listen: false);
     return Scaffold(
+      resizeToAvoidBottomInset:
+          true, // Automatically resizes when the keyboard opens
       backgroundColor: AppColors.seaShell,
       appBar: CustomAppbarWithCenterTitle(
         accountType: 'business', // ! static
@@ -38,129 +41,147 @@ class AuthorizedEmpPage extends StatelessWidget {
                 physics: const ClampingScrollPhysics(),
                 child: Column(
                   children: [
-                    SizedBox(height: 35.h),
+                    SizedBox(height: 20.h),
                     Consumer<AuthorizedEmpProvider>(
-                      builder: (context, _, child) => provider.accessList ==
-                              null
-                          ? const SizedBox()
-                          : ListView.builder(
-                              shrinkWrap: true,
-                              // padding: EdgeInsets.only(bottom: 10.h),
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: provider.accessList?.length ?? 0,
-                              itemBuilder: (context, index) {
-                                final accessList = provider.accessList?[index];
-                                return AuthorizedEmpWidget(
-                                  index: index,
-                                  authorizedId:
-                                      accessList?.sId.toString() ?? '',
-                                  name: accessList?.name ?? '',
-                                  position: accessList?.position ?? '',
-                                  contact: accessList?.contact.toString() ?? '',
-                                );
-                              },
-                            ),
+                      builder: (context, _, child) => provider
+                              .getAccessListLoading
+                          ? const CustomLoader(
+                              color: AppColors.primaryColor,
+                            )
+                          : provider.accessList == null
+                              ? const SizedBox()
+                              : ListView.builder(
+                                  shrinkWrap: true,
+                                  // padding: EdgeInsets.only(top: 15.h), // top padding
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: provider.accessList?.length ?? 0,
+                                  itemBuilder: (context, index) {
+                                    final accessList =
+                                        provider.accessList?[index];
+                                    return AuthorizedEmpWidget(
+                                      index: index,
+                                      authorizedId:
+                                          accessList?.sId.toString() ?? '',
+                                      name: accessList?.name ?? '',
+                                      position: accessList?.position ?? '',
+                                      contact:
+                                          accessList?.contact.toString() ?? '',
+                                    );
+                                  },
+                                ),
                     ),
-                    // SizedBox(height: 10.h),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Add Authorized Employees:'.toUpperCase(),
-                        style: GoogleFonts.publicSans(
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 13.h),
-                    CustomTextField(
-                      cursorColor: AppColors.primaryColor,
-                      hint: 'Full Name',
-                      validator: Validator.validateName,
-                      prefixIcon: IconStrings.fullname,
-                      controller: provider.fullNameController,
-                      borderColor: AppColors.primaryColor,
-                      iconColor: AppColors.primaryColor,
-                      textColor: AppColors.primaryColor,
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      cursorColor: AppColors.primaryColor,
-                      hint: 'Position',
-                      validator: Validator.validateName,
-                      prefixIcon: IconStrings.position,
-                      controller: provider.positionController,
-                      borderColor: AppColors.primaryColor,
-                      iconColor: AppColors.primaryColor,
-                      textColor: AppColors.primaryColor,
-                    ),
-                    SizedBox(height: 10.h),
-                    CustomTextField(
-                      cursorColor: AppColors.primaryColor,
-                      keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      hint: 'Mobile Number',
-                      prefixText: '+91 ',
-                      validator: Validator.validatePhoneNumber,
-                      prefixIcon: IconStrings.phone,
-                      controller: provider.mobileController,
-                      borderColor: AppColors.primaryColor,
-                      iconColor: AppColors.primaryColor,
-                      textColor: AppColors.primaryColor,
-                    ),
-                    SizedBox(height: 10.h),
+                    // ! Add Authorized EMP Column
                     Consumer<AuthorizedEmpProvider>(
-                      builder: (context, _, child) => CustomButton(
-                        height: 50.h,
-                        isLoading: provider.isLoading,
-                        loaderColor: AppColors.seaShell,
-                        onTap: () {
-                          if (provider.formKey.currentState!.validate()) {
-                            // * API call
-                            provider
-                                .createAccess(context: context)
-                                .then((isSuccess) {
-                              if (isSuccess == true) {
-                                provider
-                                    .sendOtp(
-                                  context: context,
-                                  secondaryMobile:
-                                      provider.mobileController.text,
-                                )
-                                    .then((isSuccess) {
-                                  // * show bottomsheet (verify otp)
-                                  otpVerifyBottomSheeet(
-                                    context: context,
-                                    accountType: 'business', // ! static
-                                    otpController: otpController,
-                                    authorizeMobileController:
-                                        provider.mobileController,
-                                  );
-                                });
-                              }
-                            });
-                          } else {
-                            debugPrint('form is not validate');
-                          }
-                        },
-                        text: 'verify',
-                        textColor: AppColors.seaShell,
-                        bgColor: AppColors.primaryColor,
-                      ),
+                      builder: (context, _, child) => provider
+                                  .accessList?.length !=
+                              3
+                          ? Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Add Authorized Employees',
+                                    style: GoogleFonts.publicSans(
+                                      fontSize: 15.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 13.h),
+                                CustomTextField(
+                                  cursorColor: AppColors.primaryColor,
+                                  hint: 'Full Name',
+                                  validator: Validator.validateName,
+                                  prefixIcon: IconStrings.fullname,
+                                  controller: provider.fullNameController,
+                                  borderColor: AppColors.primaryColor,
+                                  iconColor: AppColors.primaryColor,
+                                  textColor: AppColors.primaryColor,
+                                ),
+                                SizedBox(height: 10.h),
+                                CustomTextField(
+                                  cursorColor: AppColors.primaryColor,
+                                  hint: 'Position',
+                                  validator: Validator.validateName,
+                                  prefixIcon: IconStrings.position,
+                                  controller: provider.positionController,
+                                  borderColor: AppColors.primaryColor,
+                                  iconColor: AppColors.primaryColor,
+                                  textColor: AppColors.primaryColor,
+                                ),
+                                SizedBox(height: 10.h),
+                                CustomTextField(
+                                  cursorColor: AppColors.primaryColor,
+                                  keyboardType: TextInputType.number,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(10),
+                                  ],
+                                  hint: 'Mobile Number',
+                                  validator: Validator.validatePhoneNumber,
+                                  prefixIcon: IconStrings.phone,
+                                  controller: provider.mobileController,
+                                  borderColor: AppColors.primaryColor,
+                                  iconColor: AppColors.primaryColor,
+                                  textColor: AppColors.primaryColor,
+                                ),
+                                SizedBox(height: 10.h),
+                                Consumer<AuthorizedEmpProvider>(
+                                  builder: (context, _, child) => CustomButton(
+                                    height: 50.h,
+                                    isLoading: provider.isLoading,
+                                    loaderColor: AppColors.seaShell,
+                                    onTap: () {
+                                      if (provider.formKey.currentState!
+                                          .validate()) {
+                                        // * API call
+                                        provider
+                                            .createAccess(context: context)
+                                            .then((isSuccess) {
+                                          if (isSuccess == true) {
+                                            provider
+                                                .sendOtp(
+                                              context: context,
+                                              secondaryMobile: provider
+                                                  .mobileController.text,
+                                            )
+                                                .then((isSuccess) {
+                                              // * show bottomsheet (verify otp)
+                                              otpVerifyBottomSheeet(
+                                                context: context,
+                                                accountType:
+                                                    'business', // ! static
+                                                otpController: otpController,
+                                                authorizeMobileController:
+                                                    provider.mobileController,
+                                              );
+                                            });
+                                          }
+                                        });
+                                      } else {
+                                        debugPrint('form is not validate');
+                                      }
+                                    },
+                                    text: 'verify',
+                                    textColor: AppColors.seaShell,
+                                    bgColor: AppColors.primaryColor,
+                                  ),
+                                ),
+                                SizedBox(height: 10.h),
+                                // CustomButton(
+                                //   height: 50.h,
+                                //   onTap: () {},
+                                //   text: '+ ADD MORE',
+                                //   bgColor: AppColors.disabledColor,
+                                //   textColor: AppColors.primaryColor,
+                                // ),
+                                // SizedBox(height: 13.h),
+                              ],
+                            )
+                          : const SizedBox(),
                     ),
-                    SizedBox(height: 10.h),
-                    CustomButton(
-                      height: 50.h,
-                      onTap: () {},
-                      text: '+ ADD MORE',
-                      bgColor: AppColors.disabledColor,
-                      textColor: AppColors.primaryColor,
-                    ),
-                    SizedBox(height: 13.h),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(

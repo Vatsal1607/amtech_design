@@ -27,6 +27,7 @@ class CustomTextField extends StatelessWidget {
   final int? minLines;
   final FocusNode? focusNode;
   final bool? enabled;
+  final Widget? prefix;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -49,6 +50,7 @@ class CustomTextField extends StatelessWidget {
     this.minLines = 1,
     this.focusNode,
     this.enabled = true,
+    this.prefix,
   });
 
   @override
@@ -72,6 +74,7 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hint,
         prefixText: prefixText,
+        prefix: prefix,
         errorText: errorText,
         errorMaxLines: errorMaxLines,
         hintStyle: GoogleFonts.publicSans(

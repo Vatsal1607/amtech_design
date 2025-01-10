@@ -59,7 +59,6 @@ dependencies:
   firebase_messaging: ^15.1.6
   device_info_plus: ^11.2.0
   webview_flutter: ^4.10.0
-  # flutter_pdfview: ^1.4.0
 
 dev_dependencies:
   flutter_test:

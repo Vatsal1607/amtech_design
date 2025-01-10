@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,9 @@ import 'package:searchfield/searchfield.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/strings.dart';
 import '../../../core/utils/constant.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../models/business_list_model.dart';
+import '../../../services/local/shared_preferences_service.dart';
 
 class BusinessDropdown extends StatelessWidget {
   final BusinessSelectionProvider provider;
@@ -94,9 +98,20 @@ class BusinessDropdown extends StatelessWidget {
         //       )
         //     : null,
         suggestionState: Suggestion.expand,
-        onSuggestionTap: (selectedItem) {
+        onSuggestionTap: (selectedItem) async {
           provider.selectBusiness(selectedItem.item!);
-          debugPrint('selectedItem is: $selectedItem');
+          debugPrint(
+              'selectedItem is: ${provider.selectedBusiness?.businessName}');
+          if (provider.selectedBusiness != null) {
+            /// Save selected business's secondaryAccess
+            await provider.saveSelectedBusinessSecondaryAccess(
+              provider.filteredBusinessList,
+              provider.selectedBusiness!.businessName!,
+            );
+
+            // Retrieve and print saved secondaryAccess data
+            log('locally stored secondaryAccess: ${sharedPrefsService.getString(SharedPrefsKeys.secondaryAccessList)}');
+          }
         },
         validator: (value) {
           debugPrint('$value from validator');

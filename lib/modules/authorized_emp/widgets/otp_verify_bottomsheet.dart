@@ -16,9 +16,12 @@ void otpVerifyBottomSheeet({
   required TextEditingController otpController,
   required TextEditingController authorizeMobileController,
 }) {
+  // Ensure controller is reinitialized when showing BottomSheet
+  otpController = TextEditingController(); // ! Reinitialize here
   showModalBottomSheet(
     context: context,
-    // barrierColor: Colors.transparent,
+    isDismissible: false,
+    isScrollControlled: true, // Expand fully when keyboard is open
     backgroundColor: getColorAccountType(
       accountType: accountType,
       businessColor: AppColors.primaryColor,
@@ -32,7 +35,13 @@ void otpVerifyBottomSheeet({
         children: [
           Positioned(
             child: Container(
-              padding: EdgeInsets.only(top: 19.h, left: 32.w, right: 32.w),
+              padding: EdgeInsets.only(
+                top: 19.h,
+                left: 32.w,
+                right: 32.w,
+                // Adjust bottomsheet while keyboard open
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
               width: 1.sw,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -111,8 +120,7 @@ void otpVerifyBottomSheeet({
                           accountType: accountType,
                           onTap: () {
                             // * API call
-                            if (otpController.text != null &&
-                                otpController.text.isNotEmpty) {
+                            if (otpController.text.isNotEmpty) {
                               authEmpProvider.verifyOtp(
                                 context: context,
                                 otpController: otpController,

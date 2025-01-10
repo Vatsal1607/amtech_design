@@ -14,5 +14,6 @@ class SharedPrefsKeys {
   static const String accountType = 'accoun_type';
   static const String location = 'location';
   static const String company = 'company';
-  static const String businessList = 'secondaryAccessList';
+  static const String firstSecondaryAccessList = 'firstSecondaryAccessList';
+  static const String secondaryAccessList = 'secondaryAccessList';
 }

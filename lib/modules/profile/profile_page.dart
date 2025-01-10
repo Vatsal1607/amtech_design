@@ -168,16 +168,16 @@ class ProfilePage extends StatelessWidget {
                         ),
                       ),
                       GestureDetector(
-                        /// validateContactInSecondaryAccess
+                        /// * validateContactInSecondaryAccess
                         onTap: userContact.isNotEmpty &&
-                                loginProvider.validateContactInSecondaryAccess(
+                                !loginProvider.validateContactInSecondaryAccess(
                                     int.parse(userContact))
                             ? () {
-                                log('NOT AUTHORIZED');
-                              }
-                            : () {
                                 Navigator.pushNamed(
                                     context, Routes.editProfile);
+                              }
+                            : () {
+                                log('NOT AUTHORIZED');
                               },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 3.w),
@@ -247,7 +247,7 @@ class ProfilePage extends StatelessWidget {
                   SizedBox(height: 20.h),
                   if (accountType == 'business' &&
                       userContact.isNotEmpty &&
-                      loginProvider.validateContactInSecondaryAccess(
+                      !loginProvider.validateContactInSecondaryAccess(
                           int.parse(userContact)))
                     Consumer<ProfileProvider>(
                       builder: (context, _, child) => ProfileTile(
@@ -264,7 +264,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                   if (accountType == 'business' &&
                       userContact.isNotEmpty &&
-                      loginProvider.validateContactInSecondaryAccess(
+                      !loginProvider.validateContactInSecondaryAccess(
                           int.parse(userContact)))
                     SizedBox(height: 20.h),
                   Consumer<ProfileProvider>(

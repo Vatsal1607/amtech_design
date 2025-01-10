@@ -9,23 +9,46 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../custom_widgets/snackbar.dart';
 import '../../../models/api_global_model.dart';
+import '../../../models/business_list_model.dart';
 import '../../../routes.dart';
 import '../../../services/network/api_service.dart';
 
 class LoginProvider extends ChangeNotifier {
   LoginProvider() {
-    getBusinessNameAndSecondaryAccess().then((value) {
-      log('getBusinessNameAndSecondaryAccess: $value');
-      businessList = value;
-      log('validateContactInSecondaryAccess: ${validateContactInSecondaryAccess(919725163481)}');
+    // getBusinessNameAndSecondaryAccess().then((value) {
+    //   log('getBusinessNameAndSecondaryAccess: $value');
+    //   businessList = value;
+    // });
+
+    /// getSelectedBusinessSecondaryAccess
+    getSelectedBusinessSecondaryAccess().then((value) {
+      secondaryAccessList = value;
+      log('secondaryAccessList -- (loginProvider): $secondaryAccessList');
+      // call Validate method
+      // log('validateContactInSecondaryAccess: ${validateContactInSecondaryAccess(919725163481)}');
     });
   }
 
-  List<Map<String, dynamic>> businessList = [];
+  List<SecondaryAccess> secondaryAccessList = [];
+  // * Get SelectedBusinessSecondaryAccess
+  Future<List<SecondaryAccess>> getSelectedBusinessSecondaryAccess() async {
+    String? jsonString =
+        sharedPrefsService.getString(SharedPrefsKeys.secondaryAccessList);
 
+    if (jsonString != null) {
+      // Decode JSON and return as List of SecondaryAccessModel
+      List<dynamic> decodedList = jsonDecode(jsonString);
+      secondaryAccessList =
+          decodedList.map((item) => SecondaryAccess.fromJson(item)).toList();
+      return secondaryAccessList;
+    }
+    return [];
+  }
+
+  List<Map<String, dynamic>> businessList = [];
   Future<List<Map<String, dynamic>>> getBusinessNameAndSecondaryAccess() async {
     String? jsonString =
-        sharedPrefsService.getString(SharedPrefsKeys.businessList);
+        sharedPrefsService.getString(SharedPrefsKeys.firstSecondaryAccessList);
 
     if (jsonString != null) {
       // Decode JSON and return as List of Maps
@@ -35,28 +58,37 @@ class LoginProvider extends ChangeNotifier {
   }
 
   // * Valdiate secondary Access (check Is Authorized emp or Not)
-  // Note: pass prefix 91 while validate number to method because response start from 91{mobilenumber}
-  bool validateContactInSecondaryAccess(
-    // List<Map<String, dynamic>> businessList,
-    int enteredContact,
-  ) {
-    if (businessList.isNotEmpty) {
-      // Iterate through the business list
-      for (var business in businessList) {
-        List<dynamic> secondaryAccess = business['secondaryAccess'];
-
-        // Iterate through the secondaryAccess list for each business
-        for (var contact in secondaryAccess) {
-          if (contact['contact'] == enteredContact) {
-            log('validateContactInSecondaryAccess: TRUE');
-            return true; // Contact found
-          }
-        }
+  /// Note: pass prefix 91 while validate number to method because response start from 91{mobilenumber}
+  bool validateContactInSecondaryAccess(int enteredContact) {
+    // Check if the secondaryAccessList is not empty
+    if (secondaryAccessList.isNotEmpty) {
+      // Use any to find if the contact exists in the secondaryAccessList
+      if (secondaryAccessList
+          .any((contact) => contact.contact == enteredContact)) {
+        log('validateContactInSecondaryAccessList: TRUE');
+        return true; // Contact found
       }
     }
-    log('validateContactInSecondaryAccess: FALSE');
+
+    log('validateContactInSecondaryAccessList: FALSE');
     return false; // Contact not found
   }
+
+  /// * Old validate method
+  // bool validateContactInSecondaryAccess(int enteredContact) {
+  //   if (businessList.isNotEmpty) {
+  //     for (var business in businessList) {
+  //       List<dynamic> secondaryAccess = business['secondaryAccess'];
+  //       if (secondaryAccess
+  //           .any((contact) => contact['contact'] == enteredContact)) {
+  //         log('validateContactInSecondaryAccess: TRUE');
+  //         return true; // Contact found
+  //       }
+  //     }
+  //   }
+  //   log('validateContactInSecondaryAccess: FALSE');
+  //   return false; // Contact not found
+  // }
 
   String countryCode = '+91'; // Default country code for mobile
   final TextEditingController phoneController = TextEditingController();

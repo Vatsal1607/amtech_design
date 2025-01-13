@@ -1,6 +1,7 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/models/home_menu_model.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
@@ -11,8 +12,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
 import '../../routes.dart';
+import '../../services/local/shared_preferences_service.dart';
 import 'widgets/fab_menu_button.dart';
 import 'widgets/slider_details_widget.dart';
 
@@ -21,8 +24,8 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context);
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -71,29 +74,15 @@ class MenuPage extends StatelessWidget {
                                   SizedBox(width: 5.w),
                                   SizedBox(
                                     width: 360.w,
-                                    child: RichText(
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      text: TextSpan(
-                                        text: 'Deliver to, ',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 12.sp,
-                                          color: getColorAccountType(
-                                            accountType: accountType,
-                                            businessColor: AppColors
-                                                .primaryColor
-                                                .withOpacity(0.8),
-                                            personalColor: AppColors
-                                                .darkGreenGrey
-                                                .withOpacity(0.8),
-                                          ),
-                                        ),
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: 'AMTECH DESIGN, TITANIUM CIT',
+                                    child: Consumer<MenuProvider>(
+                                      builder: (context, _, child) {
+                                        return RichText(
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          text: TextSpan(
+                                            text: 'Deliver to, ',
                                             style: GoogleFonts.publicSans(
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12.sp,
                                               color: getColorAccountType(
                                                 accountType: accountType,
                                                 businessColor: AppColors
@@ -104,26 +93,29 @@ class MenuPage extends StatelessWidget {
                                                     .withOpacity(0.8),
                                               ),
                                             ),
-                                          ),
-                                          TextSpan(
-                                            text:
-                                                ' AMTECH DESIGN, TITANIUM CIT',
-                                            style: GoogleFonts.publicSans(
-                                              fontSize: 10.sp,
-                                              fontWeight: FontWeight.bold,
-                                              color: getColorAccountType(
-                                                accountType: accountType,
-                                                businessColor: AppColors
-                                                    .primaryColor
-                                                    .withOpacity(0.8),
-                                                personalColor: AppColors
-                                                    .darkGreenGrey
-                                                    .withOpacity(0.8),
+                                            children: <TextSpan>[
+                                              TextSpan(
+                                                text: provider.homeMenuResponse
+                                                        ?.data?.address ??
+                                                    '',
+                                                style: GoogleFonts.publicSans(
+                                                  fontSize: 10.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor: AppColors
+                                                        .primaryColor
+                                                        .withOpacity(0.8),
+                                                    personalColor: AppColors
+                                                        .darkGreenGrey
+                                                        .withOpacity(0.8),
+                                                  ),
+                                                ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        ],
-                                      ),
+                                        );
+                                      },
                                     ),
                                   ),
                                 ],
@@ -132,14 +124,21 @@ class MenuPage extends StatelessWidget {
                             SizedBox(height: 15.h),
 
                             //* Slider details widget
-                            SliderDetailsWidget(
-                              isShowRecharge: true,
-                              accountType: accountType,
-                              filledValue: '₹ 135',
-                              totalValue: '₹ 2,000',
-                              label: 'perks used',
-                              icon: IconStrings.rupee,
-                            ),
+                            Consumer<MenuProvider>(
+                                builder: (context, _, child) {
+                              final homeMenuData =
+                                  provider.homeMenuResponse?.data;
+                              return SliderDetailsWidget(
+                                isShowRecharge: true,
+                                accountType: accountType,
+                                filledValue:
+                                    '₹ ${homeMenuData?.usedPerks ?? '0'}',
+                                totalValue:
+                                    '₹ ${homeMenuData?.totalPerks ?? '0'}',
+                                label: 'perks used',
+                                icon: IconStrings.rupee,
+                              );
+                            }),
                             SizedBox(height: 13.h),
 
                             // * Linear progress indicator:
@@ -284,141 +283,234 @@ class MenuPage extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 10.0),
 
+                                  // * ListView Categories
+                                  Consumer<MenuProvider>(
+                                    builder: (context, _, child) {
+                                      return ListView.separated(
+                                        shrinkWrap: true,
+                                        padding: EdgeInsets.zero,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount:
+                                            provider.menuCategories?.length ??
+                                                0,
+                                        separatorBuilder: (context, index) =>
+                                            SizedBox(height: 15.h),
+                                        itemBuilder: (context, parentIndex) {
+                                          return Column(
+                                            children: [
+                                              Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20.w),
+                                                child: DividerLabel(
+                                                  // key: provider.bestSellerKey,
+                                                  label: provider
+                                                          .menuCategories?[
+                                                              parentIndex]
+                                                          .categoryTitle ??
+                                                      '',
+                                                  accountType: accountType,
+                                                ),
+                                              ),
+                                              SizedBox(height: 15.h),
+                                              // * Best seller horizontal view
+                                              SizedBox(
+                                                height: 157.h,
+                                                child: ListView.separated(
+                                                  padding: EdgeInsets.symmetric(
+                                                      horizontal: 20.w),
+                                                  shrinkWrap: true,
+                                                  itemCount: provider
+                                                          .menuCategories?[
+                                                              parentIndex]
+                                                          .menuItems
+                                                          ?.length ??
+                                                      0,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  separatorBuilder:
+                                                      (context, index) =>
+                                                          SizedBox(width: 10.w),
+                                                  itemBuilder:
+                                                      (context, childIndex) {
+                                                    final menuItems = provider
+                                                        .menuCategories?[
+                                                            parentIndex]
+                                                        .menuItems?[childIndex];
+                                                    return Consumer<
+                                                        MenuProvider>(
+                                                      builder: (context,
+                                                              provider,
+                                                              child) =>
+                                                          GestureDetector(
+                                                        onTap: () {
+                                                          debugPrint(
+                                                              'Product item pressed $childIndex');
+                                                          Navigator.pushNamed(
+                                                            context,
+                                                            Routes
+                                                                .productDetails,
+                                                          );
+                                                        },
+                                                        child: ProductWidget(
+                                                          image: menuItems
+                                                                  ?.images ??
+                                                              '',
+                                                          name: menuItems
+                                                                  ?.itemName ??
+                                                              '',
+                                                          index: childIndex,
+                                                          accountType:
+                                                              accountType,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                                  // * Best seller Product
                                   // * Best Seller Divider
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: DividerLabel(
-                                      key: provider.bestSellerKey,
-                                      label: 'BEST SELLER',
-                                      accountType: accountType,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15.0),
-
-                                  // * Best seller horizontal view
-                                  SizedBox(
-                                    height: 157.h,
-                                    child: ListView.separated(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
-                                      shrinkWrap: true,
-                                      itemCount: 4,
-                                      scrollDirection: Axis.horizontal,
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(width: 10),
-                                      itemBuilder: (context, index) {
-                                        return Consumer<MenuProvider>(
-                                          builder: (context, provider, child) =>
-                                              GestureDetector(
-                                            onTap: () {
-                                              debugPrint(
-                                                  'Product item pressed $index');
-                                              Navigator.pushNamed(
-                                                context,
-                                                Routes.productDetails,
-                                              );
-                                            },
-                                            child: ProductWidget(
-                                              image:
-                                                  provider.productImage[index],
-                                              name: provider.productName[index],
-                                              index: index,
-                                              accountType: accountType,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                  // Padding(
+                                  //   padding: const EdgeInsets.symmetric(
+                                  //       horizontal: 20.0),
+                                  //   child: DividerLabel(
+                                  //     key: provider.bestSellerKey,
+                                  //     label: 'BEST SELLER',
+                                  //     accountType: accountType,
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 15.0),
+                                  // // * Best seller horizontal view
+                                  // SizedBox(
+                                  //   height: 157.h,
+                                  //   child: ListView.separated(
+                                  //     padding: EdgeInsets.symmetric(
+                                  //         horizontal: 20.w),
+                                  //     shrinkWrap: true,
+                                  //     itemCount: 4,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     separatorBuilder: (context, index) =>
+                                  //         SizedBox(width: 10.w),
+                                  //     itemBuilder: (context, index) {
+                                  //       return Consumer<MenuProvider>(
+                                  //         builder: (context, provider, child) =>
+                                  //             GestureDetector(
+                                  //           onTap: () {
+                                  //             debugPrint(
+                                  //                 'Product item pressed $index');
+                                  //             Navigator.pushNamed(
+                                  //               context,
+                                  //               Routes.productDetails,
+                                  //             );
+                                  //           },
+                                  //           child: ProductWidget(
+                                  //             image:
+                                  //                 provider.productImage[index],
+                                  //             name: provider.productName[index],
+                                  //             index: index,
+                                  //             accountType: accountType,
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     },
+                                  //   ),
+                                  // ),
                                   SizedBox(height: 18.h),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20.w),
-                                    child: DividerLabel(
-                                      key: provider.teaKey,
-                                      label: 'TEA',
-                                      accountType: accountType,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  // * TEA horizontal view
-                                  SizedBox(
-                                    height: 157.h,
-                                    child: ListView.separated(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
-                                      shrinkWrap: true,
-                                      itemCount: 4,
-                                      scrollDirection: Axis.horizontal,
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(width: 10),
-                                      itemBuilder: (context, index) {
-                                        return Consumer<MenuProvider>(
-                                          builder: (context, provider, child) =>
-                                              GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                Routes.productDetails,
-                                              );
-                                            },
-                                            child: ProductWidget(
-                                              image:
-                                                  provider.productImage[index],
-                                              name: provider.productName[index],
-                                              index: index,
-                                              accountType: accountType,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                  // * TEA proudct
+                                  // Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(horizontal: 20.w),
+                                  //   child: DividerLabel(
+                                  //     key: provider.teaKey,
+                                  //     label: 'TEA',
+                                  //     accountType: accountType,
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 15),
+                                  // // * TEA horizontal view
+                                  // SizedBox(
+                                  //   height: 157.h,
+                                  //   child: ListView.separated(
+                                  //     padding: const EdgeInsets.symmetric(
+                                  //         horizontal: 20.0),
+                                  //     shrinkWrap: true,
+                                  //     itemCount: 4,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     separatorBuilder: (context, index) =>
+                                  //         const SizedBox(width: 10),
+                                  //     itemBuilder: (context, index) {
+                                  //       return Consumer<MenuProvider>(
+                                  //         builder: (context, provider, child) =>
+                                  //             GestureDetector(
+                                  //           onTap: () {
+                                  //             Navigator.pushNamed(
+                                  //               context,
+                                  //               Routes.productDetails,
+                                  //             );
+                                  //           },
+                                  //           child: ProductWidget(
+                                  //             image:
+                                  //                 provider.productImage[index],
+                                  //             name: provider.productName[index],
+                                  //             index: index,
+                                  //             accountType: accountType,
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     },
+                                  //   ),
+                                  // ),
                                   const SizedBox(height: 20.0),
-                                  Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20.w),
-                                    child: DividerLabel(
-                                      key: provider.coffeeKey,
-                                      label: 'Coffee',
-                                      accountType: accountType,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 15),
-                                  // * TEA horizontal view
-                                  SizedBox(
-                                    height: 157.h,
-                                    child: ListView.separated(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20.0),
-                                      shrinkWrap: true,
-                                      itemCount: 4,
-                                      scrollDirection: Axis.horizontal,
-                                      separatorBuilder: (context, index) =>
-                                          const SizedBox(width: 10),
-                                      itemBuilder: (context, index) {
-                                        return Consumer<MenuProvider>(
-                                          builder: (context, provider, child) =>
-                                              GestureDetector(
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                context,
-                                                Routes.productDetails,
-                                              );
-                                            },
-                                            child: ProductWidget(
-                                              image:
-                                                  provider.productImage[index],
-                                              name: provider.productName[index],
-                                              index: index,
-                                              accountType: accountType,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
+                                  // * Cofee proudct
+                                  // Padding(
+                                  //   padding:
+                                  //       EdgeInsets.symmetric(horizontal: 20.w),
+                                  //   child: DividerLabel(
+                                  //     key: provider.coffeeKey,
+                                  //     label: 'Coffee',
+                                  //     accountType: accountType,
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 15),
+                                  // // * TEA horizontal view
+                                  // SizedBox(
+                                  //   height: 157.h,
+                                  //   child: ListView.separated(
+                                  //     padding: const EdgeInsets.symmetric(
+                                  //         horizontal: 20.0),
+                                  //     shrinkWrap: true,
+                                  //     itemCount: 4,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     separatorBuilder: (context, index) =>
+                                  //         const SizedBox(width: 10),
+                                  //     itemBuilder: (context, index) {
+                                  //       return Consumer<MenuProvider>(
+                                  //         builder: (context, provider, child) =>
+                                  //             GestureDetector(
+                                  //           onTap: () {
+                                  //             Navigator.pushNamed(
+                                  //               context,
+                                  //               Routes.productDetails,
+                                  //             );
+                                  //           },
+                                  //           child: ProductWidget(
+                                  //             image:
+                                  //                 provider.productImage[index],
+                                  //             name: provider.productName[index],
+                                  //             index: index,
+                                  //             accountType: accountType,
+                                  //           ),
+                                  //         ),
+                                  //       );
+                                  //     },
+                                  //   ),
+                                  // ),
                                   const SizedBox(height: 20.0),
                                   Stack(
                                     children: [

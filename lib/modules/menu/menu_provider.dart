@@ -1,6 +1,15 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'dart:developer';
+
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/models/home_menu_model.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
+import '../../custom_widgets/snackbar.dart';
+import '../../models/api_global_model.dart';
+import '../../services/network/api_service.dart';
 
 class MenuProvider extends ChangeNotifier {
   // @override
@@ -21,7 +30,6 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // final CarouselSliderController pageController = CarouselSliderController();
   int carouselCurrentIndex = 0;
   onPageChangedCarousel(index, reason) {
     carouselCurrentIndex = index;
@@ -32,7 +40,6 @@ class MenuProvider extends ChangeNotifier {
   bool onNotification(ScrollNotification scrollNotification) {
     if (scrollNotification.metrics.axis == Axis.vertical) {
       double scrollOffset = scrollNotification.metrics.pixels;
-      // debugPrint('scrollOffset: $scrollOffset');
       // * Define the specific area range
       if (scrollOffset > 220) {
         if (!isVisibleSearchSpaceTop) {
@@ -134,12 +141,6 @@ class MenuProvider extends ChangeNotifier {
   double panelHeight = 0.0;
   final double panelMaxHeight = 235.0;
 
-  // onVerticalDragDownLeading(details) {
-  //   panelHeight = panelMaxHeight;
-  //   debugPrint('drag end details: ${details.toString()}');
-  //   notifyListeners();
-  // }
-
   onVerticalDragDownLeading() {
     panelHeight = panelMaxHeight;
     notifyListeners();
@@ -148,5 +149,71 @@ class MenuProvider extends ChangeNotifier {
   onTapOutsideAccountUI() {
     panelHeight = 0;
     notifyListeners();
+  }
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  final ApiService apiService = ApiService();
+
+  MenuProvider() {
+    homeMenuApi();
+  }
+
+  HomeMenuModel? homeMenuResponse;
+  List<MenuCategories>? menuCategories;
+  // * HomeMenu API
+  Future homeMenuApi({
+    String? search,
+  }) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      String userId =
+          sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      final accountType =
+          sharedPrefsService.getString(SharedPrefsKeys.accountType);
+
+      final HomeMenuModel response = await apiService.getHomeMenu(
+        userId: userId,
+        userType: accountType == 'business' ? 0 : 1,
+        search: search,
+      );
+      log('homeMenuApi Response: ${response.data?.menuCategories}');
+      if (response.success == true) {
+        homeMenuResponse = response;
+        menuCategories = response.data?.menuCategories;
+        log('Success: homeMenuApi: ${response.message.toString()}');
+        return true; // * Indicat success
+      } else {
+        debugPrint('homeMenuApi Message: ${response.message}');
+        return false; // * Indicat failure
+      }
+    } catch (error) {
+      log("Error during homeMenuApi Response: $error");
+      if (error is DioException) {
+        // Parse API error response
+        final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
+        log(apiError.message ?? 'An error occurred');
+        // customSnackBar(
+        //   context: context,
+        //   message: apiError.message ?? 'An error occurred',
+        //   backgroundColor: AppColors.seaShell,
+        //   textColor: AppColors.primaryColor,
+        // );
+      } else {
+        // Handle unexpected errors
+        log('An unexpected error occurred');
+        // customSnackBar(
+        //   context: context,
+        //   message: 'An unexpected error occurred',
+        //   backgroundColor: AppColors.seaShell,
+        //   textColor: AppColors.primaryColor,
+        // );
+      }
+    } finally {
+      // Ensure loading state is reset
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 }

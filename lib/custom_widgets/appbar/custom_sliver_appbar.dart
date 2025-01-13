@@ -75,15 +75,17 @@ class CustomSliverAppbar extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Text(
-                    'AMTech Design',
-                    style: GoogleFonts.publicSans(
-                      fontSize: 24.sp,
-                      fontWeight: FontWeight.bold,
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.primaryColor,
-                        personalColor: AppColors.darkGreenGrey,
+                  Consumer<MenuProvider>(
+                    builder: (context, menuProvider, child) => Text(
+                      menuProvider.homeMenuResponse?.data?.businessName ?? '',
+                      style: GoogleFonts.publicSans(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                   ),

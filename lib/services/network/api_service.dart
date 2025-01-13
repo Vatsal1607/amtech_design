@@ -7,6 +7,7 @@ import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
 import '../../models/get_list_access_model.dart';
+import '../../models/home_menu_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -98,5 +99,14 @@ class ApiService {
 
   Future<ApiGlobalModel> deleteAccess({userId}) async {
     return await apiClient.deleteAccess(userId);
+  }
+
+  Future<HomeMenuModel> getHomeMenu(
+      {required String userId, String? search, required int userType}) async {
+    return await apiClient.getHomeMenu(
+      userId,
+      search,
+      userType,
+    );
   }
 }

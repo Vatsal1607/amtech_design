@@ -6,6 +6,7 @@ import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../models/business_list_model.dart';
+import '../../models/home_menu_model.dart';
 import '../../models/personal_register_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
@@ -75,11 +76,18 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> body,
   );
 
-  @GET(ApiEndpoints.getListAccess) // Need to call
+  @GET(ApiEndpoints.getListAccess)
   Future<GetListAccessModel> getListAccess();
 
-  @DELETE("${ApiEndpoints.deleteAccess}/{userId}") // Need to call
+  @DELETE("${ApiEndpoints.deleteAccess}/{userId}")
   Future<ApiGlobalModel> deleteAccess(
     @Path("userId") String userId,
+  );
+
+  @GET(ApiEndpoints.home)
+  Future<HomeMenuModel> getHomeMenu(
+    @Query("userId") String userId,
+    @Query("search") String? search,
+    @Query("userType") int userType,
   );
 }

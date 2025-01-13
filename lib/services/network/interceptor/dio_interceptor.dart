@@ -20,7 +20,7 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    debugPrint("Response: ${response.statusCode} ${response.data}");
+    log("Response: ${response.statusCode} ${response.data}");
     handler.next(response);
   }
 

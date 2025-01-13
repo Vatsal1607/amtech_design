@@ -100,6 +100,10 @@ class BusinessDropdown extends StatelessWidget {
         suggestionState: Suggestion.expand,
         onSuggestionTap: (selectedItem) async {
           provider.selectBusiness(selectedItem.item!);
+          if (selectedItem.item!.businessName != null) {
+            provider.searchController.text =
+                selectedItem.item!.businessName.toString();
+          }
           debugPrint(
               'selectedItem is: ${provider.selectedBusiness?.businessName}');
           if (provider.selectedBusiness != null) {

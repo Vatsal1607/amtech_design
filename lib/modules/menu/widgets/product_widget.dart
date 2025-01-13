@@ -31,7 +31,8 @@ class ProductWidget extends StatelessWidget {
           width: 120.w,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(image),
+              // image: AssetImage(image),
+              image: NetworkImage(image),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(30.r),

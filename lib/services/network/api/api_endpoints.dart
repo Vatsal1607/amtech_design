@@ -14,4 +14,5 @@ class ApiEndpoints {
   static const String createAccess = 'business/create-access';
   static const String getListAccess = 'business/access';
   static const String deleteAccess = 'business/delete-access';
+  static const String home = 'menu/users-lists';
 }

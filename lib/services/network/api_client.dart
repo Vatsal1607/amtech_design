@@ -7,6 +7,8 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../models/business_list_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/menu_details_model.dart';
+import '../../models/menu_size_model.dart';
 import '../../models/personal_register_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
@@ -89,5 +91,15 @@ abstract class ApiClient {
     @Query("userId") String userId,
     @Query("search") String? search,
     @Query("userType") int userType,
+  );
+
+  @GET("${ApiEndpoints.menuDetails}/{menuId}")
+  Future<MenuDetailsModel> getMenuDetails(
+    @Path("menuId") String menuId,
+  );
+
+  @GET("${ApiEndpoints.menuSize}/{menuId}")
+  Future<MenuSizeModel> getMenuSize(
+    @Path("menuId") String menuId,
   );
 }

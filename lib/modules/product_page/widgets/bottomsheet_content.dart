@@ -7,12 +7,15 @@ import 'package:readmore/readmore.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
+import '../../../models/menu_details_model.dart';
 
 class BottomsheetContent extends StatelessWidget {
   final String accountType;
+  final MenuDetailsModel? menuDetails;
   const BottomsheetContent({
     super.key,
     required this.accountType,
+    this.menuDetails,
   });
 
   @override
@@ -28,7 +31,8 @@ class BottomsheetContent extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Masala Tea',
+                // 'Masala Tea',
+                '${menuDetails?.data?.itemName}',
                 style: GoogleFonts.publicSans(
                     color: getColorAccountType(
                       accountType: accountType,
@@ -55,7 +59,7 @@ class BottomsheetContent extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      '4.5 ',
+                      '${menuDetails?.data?.ratings ?? ''} ',
                       style: GoogleFonts.publicSans(
                         color: AppColors.seaShell,
                         fontSize: 13.sp,
@@ -113,47 +117,48 @@ class BottomsheetContent extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                children: [
-                  SvgIcon(
-                    icon: IconStrings.ratingsPerson,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.disabledColor,
-                      personalColor: AppColors.bayLeaf,
-                    ),
-                  ),
-                  RichText(
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    text: TextSpan(
-                      text: '1.5K ',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: 'Ratings',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 14.sp,
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+              // * Ratings
+              // Row(
+              //   children: [
+              //     SvgIcon(
+              //       icon: IconStrings.ratingsPerson,
+              //       color: getColorAccountType(
+              //         accountType: accountType,
+              //         businessColor: AppColors.disabledColor,
+              //         personalColor: AppColors.bayLeaf,
+              //       ),
+              //     ),
+              //     RichText(
+              //       maxLines: 1,
+              //       overflow: TextOverflow.clip,
+              //       text: TextSpan(
+              //         text: '1.5K ',
+              //         style: GoogleFonts.publicSans(
+              //           fontSize: 14.sp,
+              //           fontWeight: FontWeight.bold,
+              //           color: getColorAccountType(
+              //             accountType: accountType,
+              //             businessColor: AppColors.primaryColor,
+              //             personalColor: AppColors.darkGreenGrey,
+              //           ),
+              //         ),
+              //         children: <TextSpan>[
+              //           TextSpan(
+              //             text: 'Ratings',
+              //             style: GoogleFonts.publicSans(
+              //               fontSize: 14.sp,
+              //               color: getColorAccountType(
+              //                 accountType: accountType,
+              //                 businessColor: AppColors.primaryColor,
+              //                 personalColor: AppColors.darkGreenGrey,
+              //               ),
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
           SizedBox(height: 17.h),
@@ -177,81 +182,85 @@ class BottomsheetContent extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 5.h),
             child: Stack(
               children: [
-                ReadMoreText(
-                  'Everyday Tea draws from tea\'s rich history, dating back to 2737 BCE in ancient China. Sourced from Assam and Darjeeling, India’s finest tea regions, this blend offers a perfect balance of bold and aromatic flavors. Enjoy a cup steeped in centuries of tradition, bringing',
-                  trimLines: 5, // Number of lines to display before truncating
-                  colorClickableText: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                  trimMode: TrimMode.Line,
-                  trimCollapsedText: 'Read More',
-                  trimExpandedText: 'Read Less',
-                  textAlign: TextAlign.justify,
-                  delimiter: '    ',
-                  // isCollapsed: (collapsed){
-                  // },
-                  style: GoogleFonts.publicSans(
-                    color: getColorAccountType(
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: ReadMoreText(
+                    '${menuDetails?.data?.description}',
+                    textAlign: TextAlign.justify,
+                    trimLines:
+                        5, // Number of lines to display before truncating
+                    colorClickableText: getColorAccountType(
                       accountType: accountType,
                       businessColor: AppColors.primaryColor,
                       personalColor: AppColors.darkGreenGrey,
                     ),
-                    fontSize: 14.sp,
-                  ),
-                  moreStyle: GoogleFonts.publicSans(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+                    trimMode: TrimMode.Line,
+                    trimCollapsedText: 'Read More',
+                    trimExpandedText: 'Read Less',
+                    delimiter: '    ',
+                    // isCollapsed: (collapsed){
+                    // },
+                    style: GoogleFonts.publicSans(
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                      fontSize: 14.sp,
                     ),
-                  ),
-                  lessStyle: GoogleFonts.publicSans(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.bold,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+                    moreStyle: GoogleFonts.publicSans(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                     ),
-                  ),
-                ),
-                // Overlay gradient effect
-                Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 30.h,
-                  child: IgnorePointer(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            // * color 1
-                            getColorAccountType(
-                                accountType: accountType,
-                                businessColor:
-                                    AppColors.seaShell.withOpacity(0.0),
-                                personalColor:
-                                    AppColors.seaMist.withOpacity(0.0)),
-                            // * color 2
-                            getColorAccountType(
-                                accountType: accountType,
-                                businessColor:
-                                    AppColors.seaShell.withOpacity(0.8),
-                                personalColor:
-                                    AppColors.seaMist.withOpacity(0.8)),
-                          ],
-                        ),
+                    lessStyle: GoogleFonts.publicSans(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
                       ),
                     ),
                   ),
                 ),
+                // * Overlay gradient effect
+                // Positioned(
+                //   bottom: 0,
+                //   left: 0,
+                //   right: 0,
+                //   height: 30.h,
+                //   child: IgnorePointer(
+                //     child: Container(
+                //       decoration: BoxDecoration(
+                //         gradient: LinearGradient(
+                //           begin: Alignment.topCenter,
+                //           end: Alignment.bottomCenter,
+                //           colors: [
+                //             // * color 1
+                //             getColorAccountType(
+                //                 accountType: accountType,
+                //                 businessColor:
+                //                     AppColors.seaShell.withOpacity(0.0),
+                //                 personalColor:
+                //                     AppColors.seaMist.withOpacity(0.0)),
+                //             // * color 2
+                //             getColorAccountType(
+                //                 accountType: accountType,
+                //                 businessColor:
+                //                     AppColors.seaShell.withOpacity(0.8),
+                //                 personalColor:
+                //                     AppColors.seaMist.withOpacity(0.8)),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -269,21 +278,31 @@ class BottomsheetContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 10.h),
-
-          ListView.builder(
-            padding: EdgeInsets.zero, // Remove extra space from top in listview
-            shrinkWrap: true,
-            itemCount: 4,
-            physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: (context, index) {
-              return const Padding(
-                padding: EdgeInsets.all(0),
-                child: IngredientText(
-                  text: 'Lorem ipsum dolor sit amet',
-                ),
-              );
-            },
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '${menuDetails?.data?.ingredients}',
+              style: GoogleFonts.publicSans(
+                height: 1.h,
+                fontSize: 14.sp,
+                color: AppColors.primaryColor,
+              ),
+            ),
           ),
+          // ListView.builder(
+          //   padding: EdgeInsets.zero, // Remove extra space from top in listview
+          //   shrinkWrap: true,
+          //   itemCount: 4,
+          //   physics: const NeverScrollableScrollPhysics(),
+          //   itemBuilder: (context, index) {
+          //     return const Padding(
+          //       padding: EdgeInsets.all(0),
+          //       child: IngredientText(
+          //         text: 'Lorem ipsum dolor sit amet',
+          //       ),
+          //     );
+          //   },
+          // ),
           SizedBox(height: 30.h),
           SvgIcon(
             icon: IconStrings.hygiene,

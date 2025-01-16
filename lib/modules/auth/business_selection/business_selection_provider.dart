@@ -60,7 +60,7 @@ class BusinessSelectionProvider extends ChangeNotifier {
   // *getBusinessList
   Future<void> getBusinessList({
     String searchText = '',
-    int currentPage = 0,
+    int currentPage = 1,
   }) async {
     debugPrint('$totalRecords');
     _isLoading = true;
@@ -77,8 +77,12 @@ class BusinessSelectionProvider extends ChangeNotifier {
           _businessListModel?.data != null) {
         totalRecords = _businessListModel!.data!.totalRecords ?? 0;
         _businessList = _businessListModel!.data!.businessList ?? [];
+        // Clear and update the suggestion list
+        suggestionList.clear();
+        // suggestionList.addAll(_businessList);
         suggestionList.addAll(_businessList.where((item) =>
             !suggestionList.any((suggestion) => suggestion.sId == item.sId)));
+
         filteredBusinessList =
             List.from(suggestionList); // Update filtered list
         // * storeSecondaryAccessLocally

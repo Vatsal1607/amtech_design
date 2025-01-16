@@ -1,7 +1,6 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/models/home_menu_model.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
@@ -26,7 +25,8 @@ class MenuPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    final provider = Provider.of<MenuProvider>(context);
+    final provider = Provider.of<MenuProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -132,9 +132,9 @@ class MenuPage extends StatelessWidget {
                                 isShowRecharge: true,
                                 accountType: accountType,
                                 filledValue:
-                                    '₹ ${homeMenuData?.usedPerks ?? '0'}',
+                                    '₹ ${homeMenuData?.usedAmount ?? '0'}',
                                 totalValue:
-                                    '₹ ${homeMenuData?.totalPerks ?? '0'}',
+                                    '₹ ${homeMenuData?.rechargeAmount ?? '0'}',
                                 label: 'perks used',
                                 icon: IconStrings.rupee,
                               );
@@ -303,7 +303,7 @@ class MenuPage extends StatelessWidget {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 20.w),
                                                 child: DividerLabel(
-                                                  // key: provider.bestSellerKey,
+                                                  key: provider.bestSellerKey,
                                                   label: provider
                                                           .menuCategories?[
                                                               parentIndex]
@@ -313,59 +313,73 @@ class MenuPage extends StatelessWidget {
                                                 ),
                                               ),
                                               SizedBox(height: 15.h),
-                                              // * Best seller horizontal view
-                                              SizedBox(
-                                                height: 157.h,
-                                                child: ListView.separated(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: 20.w),
-                                                  shrinkWrap: true,
-                                                  itemCount: provider
-                                                          .menuCategories?[
-                                                              parentIndex]
-                                                          .menuItems
-                                                          ?.length ??
-                                                      0,
-                                                  scrollDirection:
-                                                      Axis.horizontal,
-                                                  separatorBuilder:
-                                                      (context, index) =>
-                                                          SizedBox(width: 10.w),
-                                                  itemBuilder:
-                                                      (context, childIndex) {
-                                                    final menuItems = provider
-                                                        .menuCategories?[
-                                                            parentIndex]
-                                                        .menuItems?[childIndex];
-                                                    return Consumer<
-                                                        MenuProvider>(
-                                                      builder: (context,
-                                                              provider,
-                                                              child) =>
-                                                          GestureDetector(
-                                                        onTap: () {
-                                                          debugPrint(
-                                                              'Product item pressed $childIndex');
-                                                          Navigator.pushNamed(
-                                                            context,
-                                                            Routes
-                                                                .productDetails,
-                                                          );
-                                                        },
-                                                        child: ProductWidget(
-                                                          image: menuItems
-                                                                  ?.images ??
-                                                              '',
-                                                          name: menuItems
-                                                                  ?.itemName ??
-                                                              '',
-                                                          index: childIndex,
-                                                          accountType:
-                                                              accountType,
+                                              // * Categories horizontal view
+                                              Align(
+                                                alignment: Alignment.topLeft,
+                                                child: SizedBox(
+                                                  height: 157.h,
+                                                  child: ListView.separated(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 20.w),
+                                                    shrinkWrap: true,
+                                                    itemCount: provider
+                                                            .menuCategories?[
+                                                                parentIndex]
+                                                            .menuItems
+                                                            ?.length ??
+                                                        0,
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    separatorBuilder: (context,
+                                                            index) =>
+                                                        SizedBox(width: 10.w),
+                                                    itemBuilder:
+                                                        (context, childIndex) {
+                                                      final menuItems = provider
+                                                              .menuCategories?[
+                                                                  parentIndex]
+                                                              .menuItems?[
+                                                          childIndex];
+
+                                                      return Consumer<
+                                                          MenuProvider>(
+                                                        builder: (context,
+                                                                provider,
+                                                                child) =>
+                                                            GestureDetector(
+                                                          onTap: () {
+                                                            debugPrint(
+                                                                'Product item pressed $childIndex');
+                                                            Navigator.pushNamed(
+                                                              context,
+                                                              Routes
+                                                                  .productDetails,
+                                                              arguments: {
+                                                                'menuId':
+                                                                    menuItems
+                                                                        ?.menuId,
+                                                              },
+                                                            );
+                                                          },
+                                                          child: ProductWidget(
+                                                            image: menuItems
+                                                                    ?.images ??
+                                                                '',
+                                                            name: menuItems
+                                                                    ?.itemName ??
+                                                                '',
+                                                            index: childIndex,
+                                                            accountType:
+                                                                accountType,
+                                                            provider: provider,
+                                                            menuItems:
+                                                                menuItems,
+                                                          ),
                                                         ),
-                                                      ),
-                                                    );
-                                                  },
+                                                      );
+                                                    },
+                                                  ),
                                                 ),
                                               ),
                                             ],
@@ -511,80 +525,81 @@ class MenuPage extends StatelessWidget {
                                   //     },
                                   //   ),
                                   // ),
-                                  const SizedBox(height: 20.0),
-                                  Stack(
-                                    children: [
-                                      Container(
-                                        height: 210.h,
-                                        width: double.infinity,
-                                        margin: EdgeInsets.symmetric(
-                                          horizontal: 20.w,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.lightGreen
-                                              .withOpacity(.3),
-                                          borderRadius:
-                                              BorderRadius.circular(30.r),
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 20.w,
-                                                  vertical: 10.h),
-                                              child: DividerLabel(
-                                                isHealthFirst: true,
-                                                label: 'Health first',
-                                                accountType: accountType,
-                                              ),
-                                            ),
-                                            // * Health first horizontal view
-                                            SizedBox(
-                                              height: 157.h,
-                                              child: ListView.separated(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 20.0),
-                                                shrinkWrap: true,
-                                                itemCount: 4,
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                separatorBuilder: (context,
-                                                        index) =>
-                                                    const SizedBox(width: 10),
-                                                itemBuilder: (context, index) {
-                                                  return Consumer<MenuProvider>(
-                                                    builder: (context, provider,
-                                                            child) =>
-                                                        GestureDetector(
-                                                      onTap: () {
-                                                        Navigator.pushNamed(
-                                                          context,
-                                                          Routes.productDetails,
-                                                        );
-                                                      },
-                                                      child: ProductWidget(
-                                                        isHealthFirst: true,
-                                                        image: provider
-                                                                .productImage[
-                                                            index],
-                                                        name: provider
-                                                            .productName[index],
-                                                        index: index,
-                                                        accountType:
-                                                            accountType,
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  // const SizedBox(height: 20.0),
+                                  // * Health First
+                                  // Stack(
+                                  //   children: [
+                                  //     Container(
+                                  //       height: 210.h,
+                                  //       width: double.infinity,
+                                  //       margin: EdgeInsets.symmetric(
+                                  //         horizontal: 20.w,
+                                  //       ),
+                                  //       decoration: BoxDecoration(
+                                  //         color: AppColors.lightGreen
+                                  //             .withOpacity(.3),
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(30.r),
+                                  //       ),
+                                  //       child: Column(
+                                  //         mainAxisSize: MainAxisSize.min,
+                                  //         children: [
+                                  //           Padding(
+                                  //             padding: EdgeInsets.symmetric(
+                                  //                 horizontal: 20.w,
+                                  //                 vertical: 10.h),
+                                  //             child: DividerLabel(
+                                  //               isHealthFirst: true,
+                                  //               label: 'Health first',
+                                  //               accountType: accountType,
+                                  //             ),
+                                  //           ),
+                                  //           // * Health first horizontal view
+                                  //           SizedBox(
+                                  //             height: 157.h,
+                                  //             child: ListView.separated(
+                                  //               padding:
+                                  //                   const EdgeInsets.symmetric(
+                                  //                       horizontal: 20.0),
+                                  //               shrinkWrap: true,
+                                  //               itemCount: 4,
+                                  //               scrollDirection:
+                                  //                   Axis.horizontal,
+                                  //               separatorBuilder: (context,
+                                  //                       index) =>
+                                  //                   const SizedBox(width: 10),
+                                  //               itemBuilder: (context, index) {
+                                  //                 return Consumer<MenuProvider>(
+                                  //                   builder: (context, provider,
+                                  //                           child) =>
+                                  //                       GestureDetector(
+                                  //                     onTap: () {
+                                  //                       Navigator.pushNamed(
+                                  //                         context,
+                                  //                         Routes.productDetails,
+                                  //                       );
+                                  //                     },
+                                  //                     child: ProductWidget(
+                                  //                       isHealthFirst: true,
+                                  //                       image: provider
+                                  //                               .productImage[
+                                  //                           index],
+                                  //                       name: provider
+                                  //                           .productName[index],
+                                  //                       index: index,
+                                  //                       accountType:
+                                  //                           accountType,
+                                  //                     ),
+                                  //                   ),
+                                  //                 );
+                                  //               },
+                                  //             ),
+                                  //           ),
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
 
                                   Stack(
                                     children: [

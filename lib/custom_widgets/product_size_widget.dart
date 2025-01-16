@@ -8,10 +8,14 @@ import '../core/utils/app_colors.dart';
 class ProductSizeWidget extends StatelessWidget {
   final String size;
   final String accountType;
+  final String price;
+  final String volume;
   const ProductSizeWidget({
     super.key,
     required this.size,
     required this.accountType,
+    required this.price,
+    required this.volume,
   });
 
   @override
@@ -21,10 +25,10 @@ class ProductSizeWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40.r),
         color: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.disabledColor,
-                  personalColor: AppColors.bayLeaf,
-                ),
+          accountType: accountType,
+          businessColor: AppColors.disabledColor,
+          personalColor: AppColors.bayLeaf,
+        ),
       ),
       child: ListTile(
         leading: Column(
@@ -47,7 +51,7 @@ class ProductSizeWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  '₹ 10 '.toUpperCase(),
+                  '₹ $price '.toUpperCase(),
                   style: GoogleFonts.publicSans(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
@@ -58,7 +62,7 @@ class ProductSizeWidget extends StatelessWidget {
                       )),
                 ),
                 Text(
-                  '( 65 ml )'.toUpperCase(),
+                  '( $volume )'.toUpperCase(),
                   style: GoogleFonts.publicSans(
                     fontSize: 12.sp,
                     color: getColorAccountType(

@@ -25,7 +25,7 @@ class FabMenuButton extends StatelessWidget {
         popUpAnimationStyle: AnimationStyle(
           duration: const Duration(seconds: 0),
         ),
-        offset: provider.menuItemsName.length == 1
+        offset: provider.menuCategories?.length == 1
             ? const Offset(-10, -70)
             : const Offset(-10, -180),
         onSelected: provider.onSelectedMenuItem,
@@ -74,16 +74,16 @@ class FabMenuButton extends StatelessWidget {
           personalColor: AppColors.darkGreenGrey,
         ),
         itemBuilder: (context) {
-          return provider.menuItemsName.map<PopupMenuEntry<String>>(
+          return provider.menuCategories!.map<PopupMenuEntry<String>>(
             (item) {
               return PopupMenuItem(
-                value: item,
+                value: item.categoryTitle,
                 child: Container(
                   width: double.infinity,
                   padding:
                       EdgeInsets.symmetric(vertical: 15.h, horizontal: 23.w),
                   decoration: BoxDecoration(
-                    color: provider.selectedValue == item
+                    color: provider.selectedValue == item.categoryTitle
                         ? getColorAccountType(
                             accountType: accountType,
                             businessColor: AppColors.disabledColor,
@@ -93,9 +93,9 @@ class FabMenuButton extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.r),
                   ),
                   child: Text(
-                    item.toUpperCase(),
+                    item.categoryTitle!.toUpperCase(),
                     textAlign: TextAlign.center,
-                    style: provider.selectedValue == item
+                    style: provider.selectedValue == item.categoryTitle
                         ? GoogleFonts.publicSans(
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold,

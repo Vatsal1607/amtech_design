@@ -2,10 +2,13 @@ import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
+import '../../../models/home_menu_model.dart';
+import '../menu_provider.dart';
 
 class ProductWidget extends StatelessWidget {
   final String image;
@@ -13,6 +16,8 @@ class ProductWidget extends StatelessWidget {
   final int index;
   final String accountType;
   final bool isHealthFirst;
+  final dynamic provider;
+  final MenuItems? menuItems;
   const ProductWidget({
     super.key,
     required this.image,
@@ -20,6 +25,8 @@ class ProductWidget extends StatelessWidget {
     required this.index,
     required this.accountType,
     this.isHealthFirst = false,
+    this.provider,
+    this.menuItems,
   });
 
   @override
@@ -31,7 +38,6 @@ class ProductWidget extends StatelessWidget {
           width: 120.w,
           decoration: BoxDecoration(
             image: DecorationImage(
-              // image: AssetImage(image),
               image: NetworkImage(image),
               fit: BoxFit.cover,
             ),
@@ -123,48 +129,55 @@ class ProductWidget extends StatelessWidget {
           child: Align(
             alignment: Alignment.bottomCenter,
             // Add button of Product widget
-            child: GestureDetector(
-              onTap: () {
-                debugPrint('Add button pressed at index $index');
-                //* Custom Size bottomsheet
-                showSizeModalBottomSheet(
-                  context: context,
-                  accountType: accountType,
-                );
-                // showSnackbar(context, '{count} ITEMS ADDED');
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 3.h,
-                  horizontal: 8.w,
-                ),
-                decoration: BoxDecoration(
-                  color: isHealthFirst
-                      ? AppColors.deepGreen
-                      : getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
+            child:
+                Consumer<MenuProvider>(builder: (context, menuProvider, child) {
+              return GestureDetector(
+                onTap: () {
+                  debugPrint('Add button pressed at index $index');
+                  //* Custom Size bottomsheet
+                  showSizeModalBottomSheet(
+                    context: context,
+                    accountType: accountType,
+                    menuSizeResponse: provider.menuSizeResponse,
+                    provider: provider,
+                    menuItems: menuItems,
+                  );
+
+                  /// showSnackbar(context, '{count} ITEMS ADDED');
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(
+                    vertical: 3.h,
+                    horizontal: 8.w,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isHealthFirst
+                        ? AppColors.deepGreen
+                        : getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'ADD',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.white,
                         ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'ADD',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
                       ),
-                    ),
-                    SizedBox(width: 4.w),
-                    SvgIcon(icon: IconStrings.add),
-                  ],
+                      SizedBox(width: 4.w),
+                      SvgIcon(icon: IconStrings.add),
+                    ],
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
           ),
         ),
       ],

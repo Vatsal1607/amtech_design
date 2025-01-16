@@ -1,10 +1,15 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/models/menu_size_model.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
+import 'package:amtech_design/modules/product_page/product_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
+import '../models/home_menu_model.dart';
 import '../routes.dart';
 import 'buttons/custom_button_with_arrow.dart';
 import 'product_size_widget.dart';
@@ -12,6 +17,9 @@ import 'product_size_widget.dart';
 void showSizeModalBottomSheet({
   required BuildContext context,
   required String accountType,
+  final MenuSizeModel? menuSizeResponse,
+  final MenuProvider? provider,
+  MenuItems? menuItems,
 }) {
   showModalBottomSheet(
     context: context,
@@ -22,6 +30,11 @@ void showSizeModalBottomSheet({
     ),
     // isScrollControlled: true,
     builder: (context) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        provider?.getMenuSize(
+          menuId: menuItems?.menuId.toString() ?? '',
+        ); // API call
+      });
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
@@ -46,20 +59,40 @@ void showSizeModalBottomSheet({
                     ),
                   ),
                   SizedBox(height: 17.h),
-                  ProductSizeWidget(
-                    accountType: accountType,
-                    size: 'regular',
+                  Consumer<ProductDetailsProvider>(
+                    builder: (context, _, child) => ListView.separated(
+                      shrinkWrap: true,
+                      itemCount:
+                          menuSizeResponse?.data?.sizeDetails?.length ?? 0,
+                      padding: EdgeInsets.zero,
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 10.h),
+                      itemBuilder: (context, index) {
+                        final sizeDetails =
+                            menuSizeResponse?.data?.sizeDetails?[index];
+                        return ProductSizeWidget(
+                          accountType: accountType,
+                          size: '${sizeDetails?.sizeName}',
+                          price: sizeDetails?.price.toString() ?? '',
+                          volume: sizeDetails?.volume ?? '',
+                        );
+                      },
+                    ),
                   ),
-                  SizedBox(height: 9.h),
-                  ProductSizeWidget(
-                    accountType: accountType,
-                    size: 'medium',
-                  ),
-                  SizedBox(height: 9.h),
-                  ProductSizeWidget(
-                    accountType: accountType,
-                    size: 'large',
-                  ),
+                  // ProductSizeWidget(
+                  //   accountType: accountType,
+                  //   size: 'regular',
+                  // ),
+                  // SizedBox(height: 9.h),
+                  // ProductSizeWidget(
+                  //   accountType: accountType,
+                  //   size: 'medium',
+                  // ),
+                  // SizedBox(height: 9.h),
+                  // ProductSizeWidget(
+                  //   accountType: accountType,
+                  //   size: 'large',
+                  // ),
                   SizedBox(height: 9.h),
 
                   // * Added to cart button

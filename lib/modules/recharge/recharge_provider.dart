@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -107,7 +109,7 @@ class RechargeProvider extends ChangeNotifier {
       final cleanValue = amountController.text.replaceAll(',', '');
       final Map<String, dynamic> body = {
         "razorpayOrderId": razorpayOrderId,
-        "userId": "6750773be63d357449cb4903",
+        "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
         "rechargeAmount": int.parse(cleanValue),
         "razorpayPaymentId": paymentId,
       };
@@ -120,12 +122,10 @@ class RechargeProvider extends ChangeNotifier {
       if (response.success == true) {
         log('verifyRecharge Response: ${response.message.toString()}');
         verifyRechargeMsg = response.message;
-        notifyListeners();
         return true; // Indicating success
       } else {
         debugPrint('verifyRecharge Response: ${response.message}');
         verifyRechargeMsg = response.message;
-        notifyListeners();
         return false; // Indicating failure
       }
     } catch (error) {

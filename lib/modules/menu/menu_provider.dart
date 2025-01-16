@@ -9,6 +9,7 @@ import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
+import '../../models/menu_size_model.dart';
 import '../../services/network/api_service.dart';
 
 class MenuProvider extends ChangeNotifier {
@@ -182,6 +183,7 @@ class MenuProvider extends ChangeNotifier {
       if (response.success == true) {
         homeMenuResponse = response;
         menuCategories = response.data?.menuCategories;
+        // menuItemsName =
         log('Success: homeMenuApi: ${response.message.toString()}');
         return true; // * Indicat success
       } else {
@@ -213,6 +215,33 @@ class MenuProvider extends ChangeNotifier {
     } finally {
       // Ensure loading state is reset
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  MenuSizeModel? menuSizeResponse;
+  bool isLoadingSize = false;
+  String menuId = '';
+  // * getMenuSize API
+  Future<void> getMenuSize({
+    required String menuId,
+  }) async {
+    isLoadingSize = true;
+    notifyListeners();
+    try {
+      final res = await apiService.getMenuSize(
+        menuId: menuId,
+      );
+      log('getMenuSize: $res');
+      if (res.success == true && res.data != null) {
+        menuSizeResponse = res;
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error fetching menuSizeResponse: ${e.toString()}");
+    } finally {
+      isLoadingSize = false;
       notifyListeners();
     }
   }

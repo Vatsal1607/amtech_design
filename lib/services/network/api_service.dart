@@ -8,6 +8,8 @@ import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
 import '../../models/get_list_access_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/menu_details_model.dart';
+import '../../models/menu_size_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -108,5 +110,13 @@ class ApiService {
       search,
       userType,
     );
+  }
+
+  Future<MenuDetailsModel> getMenuDetails({menuId}) async {
+    return await apiClient.getMenuDetails(menuId);
+  }
+
+  Future<MenuSizeModel> getMenuSize({menuId}) async {
+    return await apiClient.getMenuSize(menuId);
   }
 }

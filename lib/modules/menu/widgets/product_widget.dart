@@ -138,9 +138,9 @@ class ProductWidget extends StatelessWidget {
                   showSizeModalBottomSheet(
                     context: context,
                     accountType: accountType,
-                    menuSizeResponse: provider.menuSizeResponse,
-                    provider: provider,
+                    provider: menuProvider,
                     menuItems: menuItems,
+                    menuId: '',
                   );
 
                   /// showSnackbar(context, '{count} ITEMS ADDED');

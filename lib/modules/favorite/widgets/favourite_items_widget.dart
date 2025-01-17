@@ -1,7 +1,9 @@
 import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
@@ -28,6 +30,7 @@ class FavoriteItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -146,6 +149,8 @@ class FavoriteItemsWidget extends StatelessWidget {
                 showSizeModalBottomSheet(
                   context: context,
                   accountType: accountType,
+                  provider: menuProvider,
+                  menuId: '',
                 );
                 // showSnackbar(context, '{count} ITEMS ADDED');
               },

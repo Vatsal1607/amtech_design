@@ -3,31 +3,42 @@ import 'package:amtech_design/custom_widgets/item_quantity_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
+import '../modules/menu/menu_provider.dart';
 
 class ProductSizeWidget extends StatelessWidget {
   final String size;
   final String accountType;
   final String price;
   final String volume;
+  final bool isDisabled;
+  final int quantity;
   const ProductSizeWidget({
     super.key,
     required this.size,
     required this.accountType,
     required this.price,
     required this.volume,
+    this.isDisabled = false,
+    required this.quantity,
   });
 
   @override
   Widget build(BuildContext context) {
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 32.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(40.r),
         color: getColorAccountType(
           accountType: accountType,
-          businessColor: AppColors.disabledColor,
-          personalColor: AppColors.bayLeaf,
+          businessColor: isDisabled
+              ? AppColors.disabledColor.withOpacity(.5)
+              : AppColors.disabledColor,
+          personalColor: isDisabled
+              ? AppColors.bayLeaf.withOpacity(.5)
+              : AppColors.bayLeaf,
         ),
       ),
       child: ListTile(
@@ -78,9 +89,17 @@ class ProductSizeWidget extends StatelessWidget {
         ),
         trailing: ItemQuantityWidget(
           accountType: accountType,
-          quantity: 1,
-          onIncrease: () {},
-          onDecrease: () {},
+          quantity: isDisabled ? 0 : quantity,
+          onDecrease: isDisabled
+              ? null
+              : () {
+                  menuProvider.decrementQuantity(size);
+                },
+          onIncrease: isDisabled
+              ? null
+              : () {
+                  menuProvider.incrementQuantity(size);
+                },
         ),
       ),
     );

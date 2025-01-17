@@ -29,7 +29,6 @@ class ProductDetailsPage extends StatelessWidget {
         Provider.of<ProductDetailsProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       provider.getMenuDetails(menuId: menuId); // API call
-      // provider.getMenuSize(menuId: menuId); // API call
     });
     return Scaffold(
       extendBodyBehindAppBar: true, // Ensures content goes behind the AppBar
@@ -183,8 +182,8 @@ class ProductDetailsPage extends StatelessWidget {
                                       showSizeModalBottomSheet(
                                         context: context,
                                         accountType: accountType,
-                                        menuSizeResponse:
-                                            menuProvider.menuSizeResponse,
+                                        provider: menuProvider,
+                                        menuId: menuId,
                                       );
                                     },
                                     text: 'ADD TO CART',

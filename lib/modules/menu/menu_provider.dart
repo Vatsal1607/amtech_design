@@ -1,23 +1,15 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/home_menu_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import '../../core/utils/app_colors.dart';
 import '../../core/utils/strings.dart';
-import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../services/network/api_service.dart';
 
 class MenuProvider extends ChangeNotifier {
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  // }
-
   double sliderCreditValue = 135;
   final double sliderTotalCreditValue = 2000;
   onChangeCreditSlider(double value) {
@@ -156,8 +148,10 @@ class MenuProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   final ApiService apiService = ApiService();
 
+  final requiredSizes = ['MEDIUM', 'LARGE', 'REGULAR'];
   MenuProvider() {
     homeMenuApi();
+    quantities = {for (var size in requiredSizes) size: 0};
   }
 
   HomeMenuModel? homeMenuResponse;
@@ -221,7 +215,21 @@ class MenuProvider extends ChangeNotifier {
 
   MenuSizeModel? menuSizeResponse;
   bool isLoadingSize = false;
-  String menuId = '';
+
+  Map<String, int> quantities = {};
+
+  void incrementQuantity(String sizeName) {
+    quantities[sizeName] = (quantities[sizeName] ?? 0) + 1;
+    log('incrementQuantity quantity: ${quantities[sizeName]}');
+    notifyListeners();
+  }
+
+  void decrementQuantity(String sizeName) {
+    quantities[sizeName] = (quantities[sizeName] ?? 0) - 1;
+    log('decrementQuantity quantity: ${quantities[sizeName]}');
+    notifyListeners();
+  }
+
   // * getMenuSize API
   Future<void> getMenuSize({
     required String menuId,

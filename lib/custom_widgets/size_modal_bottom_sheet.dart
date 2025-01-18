@@ -78,16 +78,13 @@ void showSizeModalBottomSheet({
                           : ListView.separated(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              // itemCount: provider.menuSizeResponse?.data
-                              //         ?.sizeDetails?.length ??
-                              //     0,
                               itemCount: requiredSizes.length,
                               padding: EdgeInsets.zero,
                               separatorBuilder: (context, index) =>
                                   SizedBox(height: 10.h),
                               itemBuilder: (context, index) {
-                                // final sizeDetails = provider
-                                //     .menuSizeResponse?.data?.sizeDetails?[index];
+                                // final sizeDetails = provider.menuSizeResponse
+                                //     ?.data?.sizeDetails?[index];
                                 final sizeDetailsList = provider
                                         .menuSizeResponse?.data?.sizeDetails ??
                                     [];
@@ -104,24 +101,15 @@ void showSizeModalBottomSheet({
                                 // If not found, create a disabled widget for the missing size
                                 final isDisabled = matchingSize.sizeName !=
                                     requiredSizes[index];
-                                // Display price and volume if the size exists, else show placeholders
                                 final price = isDisabled
                                     ? '0'
                                     : matchingSize.price.toString();
                                 final volume =
                                     isDisabled ? '0' : matchingSize.volume;
-                                // Ensure the map has the required size
-                                // provider.quantities = {
-                                //   for (var size in requiredSizes) size: 0
-                                // };
-                                // Access the current quantity of the size
-                                // final quantity =
-                                //     provider.quantities[requiredSizes[index]] ??
-                                //         0;
-                                // log('bottomsheet quantity:- $quantity');
                                 return ProductSizeWidget(
                                   accountType: accountType,
-                                  // size: '${sizeDetails?.sizeName}',
+                                  menuId: menuId,
+                                  sizeId: matchingSize.sizeId ?? '',
                                   size: requiredSizes[index],
                                   isDisabled: isDisabled,
                                   price: price.toString(),

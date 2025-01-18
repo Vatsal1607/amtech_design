@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/models/add_to_cart_model.dart';
+import 'package:amtech_design/models/add_to_cart_request_model.dart';
 import 'package:amtech_design/models/home_menu_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../core/utils/strings.dart';
 import '../../models/api_global_model.dart';
 import '../../models/menu_size_model.dart';
+import '../../models/update_cart_request_model.dart';
 import '../../services/network/api_service.dart';
 
 class MenuProvider extends ChangeNotifier {
@@ -218,15 +221,33 @@ class MenuProvider extends ChangeNotifier {
 
   Map<String, int> quantities = {};
 
-  void incrementQuantity(String sizeName) {
-    quantities[sizeName] = (quantities[sizeName] ?? 0) + 1;
-    log('incrementQuantity quantity: ${quantities[sizeName]}');
-    notifyListeners();
+  void decrementQuantity({
+    required String sizeName,
+    required String menuId,
+    required String sizeId,
+  }) {
+    if ((quantities[sizeName] ?? 0) > 0) {
+      quantities[sizeName] = (quantities[sizeName] ?? 0) - 1;
+      log('decrementQuantity quantity: ${quantities[sizeName]}');
+      updateCart(
+        menuId: menuId,
+        sizeId: sizeId,
+      );
+      notifyListeners();
+    }
   }
 
-  void decrementQuantity(String sizeName) {
-    quantities[sizeName] = (quantities[sizeName] ?? 0) - 1;
-    log('decrementQuantity quantity: ${quantities[sizeName]}');
+  void incrementQuantity({
+    required String sizeName,
+    required String menuId,
+    required String sizeId,
+  }) {
+    quantities[sizeName] = (quantities[sizeName] ?? 0) + 1;
+    log('incrementQuantity quantity: ${quantities[sizeName]}');
+    addToCart(
+      menuId: menuId,
+      sizeId: sizeId,
+    ); // API call
     notifyListeners();
   }
 
@@ -250,6 +271,84 @@ class MenuProvider extends ChangeNotifier {
       debugPrint("Error fetching menuSizeResponse: ${e.toString()}");
     } finally {
       isLoadingSize = false;
+      notifyListeners();
+    }
+  }
+
+  bool isLoadingAddToCart = false;
+  // * addToCart API
+  Future<void> addToCart({
+    required String menuId,
+    required String sizeId,
+  }) async {
+    isLoadingAddToCart = true;
+    notifyListeners();
+    try {
+      final requestBody = AddToCartRequestModel(
+        userId: sharedPrefsService.getString(SharedPrefsKeys.userId),
+        items: [
+          RequestItems(
+            menuId: menuId,
+            quantity: 1,
+            size: [
+              RequestSize(
+                sizeId: sizeId,
+              ),
+            ],
+          ),
+        ],
+      );
+      final res = await apiService.addToCart(
+        addToCartRequestBody: requestBody,
+      );
+      log('addToCart: ${res.data}');
+      if (res.success == true && res.data != null) {
+        AddToCartModel addToCartResponse = res;
+        // log(addToCartResponse.data.toString());
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error addToCart: ${e.toString()}");
+    } finally {
+      isLoadingAddToCart = false;
+      notifyListeners();
+    }
+  }
+
+  bool isLoadingUpdateCart = false;
+  // * UpdateCart API
+  Future<void> updateCart({
+    required String menuId,
+    required String sizeId,
+  }) async {
+    isLoadingUpdateCart = true;
+    notifyListeners();
+    try {
+      final requestBody = UpdateCartRequestModel(
+        userId: sharedPrefsService.getString(SharedPrefsKeys.userId),
+        menuId: menuId,
+        quantity: 1,
+        sizes: [
+          RequestSizes(
+            sizeId: sizeId,
+          ),
+        ],
+      );
+      final res = await apiService.updateCart(
+        updateCartRequestBody: requestBody,
+      );
+      log('updateCart: ${res.data}');
+      if (res.success == true && res.data != null) {
+        AddToCartModel updateCartResponse = res;
+        // log(updateCartResponse.data.toString());
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error UpdateCart: ${e.toString()}");
+    } finally {
+      isLoadingUpdateCart = false;
       notifyListeners();
     }
   }

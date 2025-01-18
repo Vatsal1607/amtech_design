@@ -14,6 +14,8 @@ class ProductSizeWidget extends StatelessWidget {
   final String volume;
   final bool isDisabled;
   final int quantity;
+  final String menuId;
+  final String sizeId;
   const ProductSizeWidget({
     super.key,
     required this.size,
@@ -22,6 +24,8 @@ class ProductSizeWidget extends StatelessWidget {
     required this.volume,
     this.isDisabled = false,
     required this.quantity,
+    required this.menuId,
+    required this.sizeId,
   });
 
   @override
@@ -93,12 +97,20 @@ class ProductSizeWidget extends StatelessWidget {
           onDecrease: isDisabled
               ? null
               : () {
-                  menuProvider.decrementQuantity(size);
+                  menuProvider.decrementQuantity(
+                    sizeName: size,
+                    menuId: menuId,
+                    sizeId: sizeId,
+                  );
                 },
           onIncrease: isDisabled
               ? null
               : () {
-                  menuProvider.incrementQuantity(size);
+                  menuProvider.incrementQuantity(
+                    sizeName: size,
+                    menuId: menuId,
+                    sizeId: sizeId,
+                  );
                 },
         ),
       ),

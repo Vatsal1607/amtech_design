@@ -1,7 +1,11 @@
+import 'dart:developer';
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/models/list_cart_model.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../routes.dart';
+import '../../services/network/api_service.dart';
 
 class CartProvider extends ChangeNotifier {
   bool isExpanded = false;
@@ -22,22 +26,6 @@ class CartProvider extends ChangeNotifier {
     selectedPaymentMethod = value;
     notifyListeners();
   }
-
-  // * New gesture effect
-  // void onHorizontalDragUpdate(DragUpdateDetails details) {
-  //   dragPosition += details.delta.dx; // Update drag position
-  //   if (dragPosition < 10.w) dragPosition = 10.w; // Keep within bounds
-  //   if (dragPosition > maxDrag) dragPosition = maxDrag; // Keep within bounds
-  //   notifyListeners();
-  // }
-
-  // void onHorizontalDragEnd(DragEndDetails details) {
-  //   if (dragPosition >= maxDrag * 0.8) {
-  //     debugPrint('Order Confirmed');
-  //   }
-  //   dragPosition = 10.w; // Reset position after release
-  //   notifyListeners();
-  // }
 
   // * old gesture effect
   void onHorizontalDragUpdate(DragUpdateDetails details) {
@@ -66,5 +54,40 @@ class CartProvider extends ChangeNotifier {
       isConfirmed = false;
     }
     notifyListeners();
+  }
+
+  CartProvider() {
+    getListCart();
+  }
+
+  bool isLoading = false;
+  final ApiService apiService = ApiService();
+  List<CartItems>? cartItemList;
+
+  // * UpdateCart API
+  Future<void> getListCart() async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      final userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      final accountType =
+          sharedPrefsService.getString(SharedPrefsKeys.accountType);
+      final res = await apiService.getListCart(
+        userId: userId,
+        userType: accountType == 'business' ? 0 : 1,
+      );
+      log('getListCart: ${res.data}');
+      if (res.success == true && res.data != null) {
+        ListCartModel listCartResponse = res;
+        cartItemList = res.data?.carts?[0].items;
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error getListCart: ${e.toString()}");
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }

@@ -140,7 +140,7 @@ class ProductWidget extends StatelessWidget {
                     accountType: accountType,
                     provider: menuProvider,
                     menuItems: menuItems,
-                    menuId: '',
+                    menuId: menuItems?.menuId ?? '',
                   );
 
                   /// showSnackbar(context, '{count} ITEMS ADDED');

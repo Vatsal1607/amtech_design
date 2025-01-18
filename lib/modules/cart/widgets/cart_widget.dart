@@ -1,18 +1,23 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/models/list_cart_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/item_quantity_widget.dart';
 import '../../../services/local/shared_preferences_service.dart';
+import '../../menu/menu_provider.dart';
 
 class CartWidget extends StatelessWidget {
   final String accountType;
+  final CartItems? cartItems;
   const CartWidget({
     super.key,
     required this.accountType,
+    this.cartItems,
   });
 
   @override
@@ -58,7 +63,7 @@ class CartWidget extends StatelessWidget {
                 ),
               ),
               title: Text(
-                'Green Tea',
+                cartItems?.itemName ?? '',
                 style: GoogleFonts.publicSans(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -83,9 +88,9 @@ class CartWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '₹ 11 ',
+                    '₹ ${cartItems?.price ?? ''} ',
                     style: GoogleFonts.publicSans(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: getColorAccountType(
                         accountType: accountType,
@@ -106,9 +111,9 @@ class CartWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    'L',
+                    '${cartItems?.size?[0].volume}',
                     style: GoogleFonts.publicSans(
-                      fontSize: 14.sp,
+                      fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
                       color: getColorAccountType(
                         accountType: accountType,
@@ -129,16 +134,30 @@ class CartWidget extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(100.r),
                 ),
-                child: ItemQuantityWidget(
-                  accountType: accountType,
-                  quantity: 1,
-                  color: getColorAccountType(
+                child: Consumer<MenuProvider>(
+                  builder: (context, menuProvider, child) => ItemQuantityWidget(
                     accountType: accountType,
-                    businessColor: AppColors.disabledColor,
-                    personalColor: AppColors.bayLeaf,
+                    quantity: cartItems?.quantity ?? 0,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
+                    onIncrease: () {
+                      menuProvider.incrementQuantity(
+                        sizeName: cartItems?.size?[0].volume ?? '',
+                        menuId: cartItems?.menuId?.sId ?? '',
+                        sizeId: cartItems?.size?[0].sizeId ?? '',
+                      );
+                    },
+                    onDecrease: () {
+                      menuProvider.decrementQuantity(
+                        sizeName: cartItems?.size?[0].volume ?? '',
+                        menuId: cartItems?.menuId?.sId ?? '',
+                        sizeId: cartItems?.size?[0].sizeId ?? '',
+                      );
+                    },
                   ),
-                  onIncrease: () {},
-                  onDecrease: () {},
                 ),
               ),
             ),

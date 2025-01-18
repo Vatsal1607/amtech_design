@@ -6,10 +6,14 @@ import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
+import '../../models/add_to_cart_model.dart';
+import '../../models/add_to_cart_request_model.dart';
 import '../../models/get_list_access_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
+import '../../models/update_cart_request_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -118,5 +122,27 @@ class ApiService {
 
   Future<MenuSizeModel> getMenuSize({menuId}) async {
     return await apiClient.getMenuSize(menuId);
+  }
+
+  Future<AddToCartModel> addToCart({
+    required AddToCartRequestModel addToCartRequestBody,
+  }) async {
+    return await apiClient.addToCart(addToCartRequestBody);
+  }
+
+  Future<AddToCartModel> updateCart({
+    required UpdateCartRequestModel updateCartRequestBody,
+  }) async {
+    return await apiClient.updateCart(updateCartRequestBody);
+  }
+
+  Future<ListCartModel> getListCart({
+    required String userId,
+    required int userType,
+  }) async {
+    return await apiClient.getListCart(
+      userId,
+      userType,
+    );
   }
 }

@@ -1,7 +1,7 @@
 class BaseUrl {
-  static const String apiBaseUrl = 'http://192.168.1.12:9000/';
-  // static const String apiBaseUrl =
-  //     'https://f844-2409-40c1-12-fd17-ac7b-23e5-33c3-c530.ngrok-free.app/';
+  // static const String apiBaseUrl = 'http://192.168.1.12:9000/';
+  static const String apiBaseUrl =
+      'https://7997-2409-40c1-43-9e0c-30dc-6c3e-7869-2d23.ngrok-free.app/';
 }
 
 class WebViewUrl {

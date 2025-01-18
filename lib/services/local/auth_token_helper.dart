@@ -17,7 +17,7 @@ class AuthTokenHelper {
           return payloadMap['userId'];
         }
       }
-      return null; // * If the structure is invalid\
+      return null; // * If the structure is invalid
     } catch (e) {
       debugPrint('Error extracting userId: $e');
       return null;

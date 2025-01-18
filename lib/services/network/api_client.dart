@@ -5,11 +5,15 @@ import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import '../../models/add_to_cart_model.dart';
+import '../../models/add_to_cart_request_model.dart';
 import '../../models/business_list_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../models/personal_register_model.dart';
+import '../../models/update_cart_request_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
 import 'api/api_constants.dart';
@@ -64,8 +68,7 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> body,
   );
 
-  @GET(
-      "http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/{gstNumber}")
+  @GET("${ApiEndpoints.gstVerify}/{gstNumber}")
   Future<GstVerifyModel> gstVerify(@Path("gstNumber") String gstNumber);
 
   @POST(ApiEndpoints.logout)
@@ -101,5 +104,21 @@ abstract class ApiClient {
   @GET("${ApiEndpoints.menuSize}/{menuId}")
   Future<MenuSizeModel> getMenuSize(
     @Path("menuId") String menuId,
+  );
+
+  @POST(ApiEndpoints.addToCart)
+  Future<AddToCartModel> addToCart(
+    @Body() AddToCartRequestModel addToCartRequestBody,
+  );
+
+  @PATCH(ApiEndpoints.updateCart)
+  Future<AddToCartModel> updateCart(
+    @Body() UpdateCartRequestModel updateCartRequestBody,
+  );
+
+  @GET(ApiEndpoints.listCart)
+  Future<ListCartModel> getListCart(
+    @Query("userId") String userId,
+    @Query("userType") int userType,
   );
 }

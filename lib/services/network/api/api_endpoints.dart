@@ -7,9 +7,8 @@ class ApiEndpoints {
   static const String verifyOtp = 'verify-otp';
   static const String userRecharge = 'user/recharge';
   static const String verifyRecharge = 'recharge/verify';
-  // Todo Reformat
   static const String gstVerify =
-      'http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392/';
+      'http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392';
   static const String logout = 'logout';
   static const String createAccess = 'business/create-access';
   static const String getListAccess = 'business/access';
@@ -17,4 +16,7 @@ class ApiEndpoints {
   static const String home = 'menu/users-lists';
   static const String menuDetails = 'menu/user-details';
   static const String menuSize = 'menu/size';
+  static const String addToCart = 'user/add-cart';
+  static const String updateCart = 'user/update-cart';
+  static const String listCart = 'user/list-cart';
 }

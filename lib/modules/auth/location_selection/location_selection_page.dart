@@ -22,6 +22,7 @@ class LocationSelectionPage extends StatelessWidget {
         context.read<LocationSelectionProvider>().accountType ?? '';
     final provider = Provider.of<LocationSelectionProvider>(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
           ? AppColors.primaryColor
           : accountType != '' && accountType == 'personal'
@@ -98,10 +99,9 @@ class LocationSelectionPage extends StatelessWidget {
                   Consumer<LocationSelectionProvider>(
                     builder: (context, _, child) => DropdownLocation(
                       accountType: accountType,
+                      provider: provider,
                     ),
                   ),
-
-                  // New dropdown search
                 ],
               ),
             ),

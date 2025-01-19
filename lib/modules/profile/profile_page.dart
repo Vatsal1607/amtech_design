@@ -57,8 +57,7 @@ class ProfilePage extends StatelessWidget {
                   accountType: accountType,
                   onTapCancel: () => Navigator.pop(context),
                   onTapYes: () {
-                    // * LogOut
-                    provider.logout(context: context);
+                    provider.logout(context: context); // * LogOut
                   },
                   yesBtnText: 'LOGOUT',
                   isLoading: provider.isLoading,

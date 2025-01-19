@@ -33,6 +33,12 @@ class LocationSelectionProvider extends ChangeNotifier {
     '323 Corporate Park',
   ];
 
+  TextEditingController locationSearchController = TextEditingController();
+  void selectLocation(String? location) {
+    selectedLocation = location;
+    notifyListeners();
+  }
+
   onChangeDropdown(String? newValue) {
     selectedLocation = newValue!;
     debugPrint(selectedLocation.toString());

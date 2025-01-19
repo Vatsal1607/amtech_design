@@ -23,7 +23,6 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3), () {
-      // *
       if (mounted) {
         final isLoggedIn =
             sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);

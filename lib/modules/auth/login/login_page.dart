@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
     //     Provider.of<FirebaseProvider>(context, listen: false);
     // debugPrint('FCM token is: ${firebaseProvider.fcmToken}');
     return Scaffold(
-      resizeToAvoidBottomInset: false, //image did't by the keyboard
+      resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
           ? AppColors.primaryColor
           : accountType != '' && accountType == 'personal'

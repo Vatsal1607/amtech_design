@@ -35,7 +35,7 @@ void main() async {
     // DeviceOrientation.portraitDown,
   ]);
   await Firebase.initializeApp();
-  sharedPrefsService.init();
+  await sharedPrefsService.init();
   await FirebaseServices().initNotifications();
   runApp(const MyApp());
 }

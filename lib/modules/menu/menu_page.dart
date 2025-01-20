@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -23,6 +25,7 @@ class MenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);

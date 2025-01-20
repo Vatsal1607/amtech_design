@@ -154,6 +154,7 @@ class MenuProvider extends ChangeNotifier {
   final requiredSizes = ['MEDIUM', 'LARGE', 'REGULAR'];
   MenuProvider() {
     homeMenuApi();
+    log('homeMenuApi called');
     quantities = {for (var size in requiredSizes) size: 0};
   }
 

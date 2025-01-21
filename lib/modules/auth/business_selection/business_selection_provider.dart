@@ -76,15 +76,21 @@ class BusinessSelectionProvider extends ChangeNotifier {
       if (_businessListModel?.success == true &&
           _businessListModel?.data != null) {
         totalRecords = _businessListModel!.data!.totalRecords ?? 0;
-        _businessList = _businessListModel!.data!.businessList ?? [];
+        // Add new data to the existing list for pagination
+        if (currentPage == 1) {
+          // For the first page, replace the list
+          _businessList = _businessListModel?.data?.businessList ?? [];
+        } else {
+          // For subsequent pages, append new data
+          _businessList.addAll(_businessListModel?.data?.businessList ?? []);
+        }
         // Clear and update the suggestion list
         suggestionList.clear();
         // suggestionList.addAll(_businessList);
         suggestionList.addAll(_businessList.where((item) =>
             !suggestionList.any((suggestion) => suggestion.sId == item.sId)));
-
-        filteredBusinessList =
-            List.from(suggestionList); // Update filtered list
+        // Update filtered list
+        filteredBusinessList = List.from(suggestionList);
         // * storeSecondaryAccessLocally
         saveBusinessNameAndSecondaryAccess(businessList);
       }

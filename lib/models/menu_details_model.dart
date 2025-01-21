@@ -32,7 +32,7 @@ class Data {
   String? images;
   String? ingredients;
   String? description;
-  double? ratings;
+  num? ratings;
   List<Size>? size;
   bool? isActive;
   bool? isDelete;
@@ -64,7 +64,7 @@ class Data {
     images = json['images'];
     ingredients = json['ingredients'];
     description = json['description'];
-    ratings = json['ratings'];
+    ratings = (json['ratings'] as num?)?.toDouble(); // Converts int to double
     if (json['size'] != null) {
       size = <Size>[];
       json['size'].forEach((v) {
@@ -111,7 +111,7 @@ class Data {
 class Size {
   String? sizeId;
   String? volume;
-  double? sizePrice;
+  num? sizePrice;
   String? sId;
 
   Size({this.sizeId, this.volume, this.sizePrice, this.sId});
@@ -119,7 +119,8 @@ class Size {
   Size.fromJson(Map<String, dynamic> json) {
     sizeId = json['sizeId'];
     volume = json['volume'];
-    sizePrice = json['sizePrice'];
+    sizePrice = (json['sizePrice'] as num?)
+        ?.toDouble(); // Converts int to double ! working
     sId = json['_id'];
   }
 

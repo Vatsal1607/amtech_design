@@ -111,7 +111,8 @@ class CartWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${cartItems?.size?[0].volume}',
+                    // '${cartItems?.size?[0].volume}',
+                    'M',
                     style: GoogleFonts.publicSans(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,

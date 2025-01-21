@@ -31,10 +31,10 @@ class Data {
   String? ownerName;
   String? address;
   List<MenuCategories>? menuCategories;
-  int? rechargeAmount;
-  int? usedAmount;
-  int? totalPerks;
-  int? usedPerks;
+  num? rechargeAmount;
+  num? usedAmount;
+  num? totalPerks;
+  num? usedPerks;
 
   Data(
       {this.sId,
@@ -116,7 +116,7 @@ class MenuItems {
   String? images;
   String? ingredients;
   String? description;
-  double? ratings;
+  num? ratings;
   List<Size>? size;
   List<Size>? personalSize;
   String? createdAt;
@@ -140,7 +140,13 @@ class MenuItems {
     images = json['images'];
     ingredients = json['ingredients'];
     description = json['description'];
-    ratings = json['ratings'];
+    // ratings = json['ratings']; //
+    // Handle ratings as num, allowing both int and double
+    if (json['ratings'] != null) {
+      ratings = json['ratings'] is int
+          ? json['ratings']
+          : (json['ratings'] as double);
+    }
     if (json['size'] != null) {
       size = <Size>[];
       json['size'].forEach((v) {
@@ -180,7 +186,7 @@ class MenuItems {
 class Size {
   String? sizeId;
   String? volume;
-  double? sizePrice;
+  num? sizePrice; // num allows both int and double
   String? sId;
 
   Size({this.sizeId, this.volume, this.sizePrice, this.sId});
@@ -188,7 +194,10 @@ class Size {
   Size.fromJson(Map<String, dynamic> json) {
     sizeId = json['sizeId'];
     volume = json['volume'];
-    sizePrice = json['sizePrice'];
+    sizePrice = json['sizePrice'] is int
+        ? json['sizePrice']
+        : (json['sizePrice'] as double)
+            .toInt(); // Cast double to int if necessary
     sId = json['_id'];
   }
 
@@ -201,3 +210,29 @@ class Size {
     return data;
   }
 }
+
+// OLD size
+// class Size {
+//   String? sizeId;
+//   String? volume;
+//   num? sizePrice;
+//   String? sId;
+
+//   Size({this.sizeId, this.volume, this.sizePrice, this.sId});
+
+//   Size.fromJson(Map<String, dynamic> json) {
+//     sizeId = json['sizeId'];
+//     volume = json['volume'];
+//     sizePrice = json['sizePrice']; // Converts int to double ! working
+//     sId = json['_id'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['sizeId'] = sizeId;
+//     data['volume'] = volume;
+//     data['sizePrice'] = sizePrice;
+//     data['_id'] = sId;
+//     return data;
+//   }
+// }

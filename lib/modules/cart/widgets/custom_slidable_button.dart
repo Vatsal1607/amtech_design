@@ -6,8 +6,10 @@ import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 
 class CustomSlidableButton extends StatelessWidget {
+  final void Function(DragEndDetails)? onHorizontalDragEnd;
   const CustomSlidableButton({
     super.key,
+    this.onHorizontalDragEnd,
   });
 
   @override
@@ -17,12 +19,8 @@ class CustomSlidableButton extends StatelessWidget {
           // * New Slidable button
           GestureDetector(
         onHorizontalDragUpdate: provider.onHorizontalDragUpdate,
-        // onHorizontalDragEnd:
-        //     provider.onHorizontalDragEnd, // * onHorizontalDragEnd
-        onHorizontalDragEnd: (details) {
-          provider.onHorizontalDragEnd(details, context);
-        },
         // * onHorizontalDragEnd
+        onHorizontalDragEnd: onHorizontalDragEnd,
         child: Stack(
           children: [
             // Background Container

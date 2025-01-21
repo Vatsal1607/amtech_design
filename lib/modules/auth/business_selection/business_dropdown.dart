@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +51,7 @@ class BusinessDropdown extends StatelessWidget {
           provider.filterBusinesses(query);
           // * Fetch from API if the query meets the criteria
           if (query.isNotEmpty && query.length % 3 == 0) {
-            provider.getBusinessList(searchText: query);
+            provider.getBusinessList(searchText: query, currentPage: 1);
           } else if (query.isEmpty) {
             provider.selectBusiness(null); // Clear selected business
           }

@@ -6,6 +6,7 @@ import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
+import 'package:amtech_design/models/order_create_request_model.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -289,6 +290,32 @@ class CartPage extends StatelessWidget {
                       showProcessToPayBottomSheeet(
                         context: context,
                         accountType: accountType,
+                        //! Working... (verify passed value)
+                        orderCreateData: OrderCreateRequestModel(
+                          userId: sharedPrefsService
+                                  .getString(SharedPrefsKeys.userId) ??
+                              '',
+                          userType: accountType == 'business'
+                              ? 'BusinessUser'
+                              : 'PersonalUser',
+                          items: [
+                            OrderCreateRequestItem(
+                              menuId: 'menuId',
+                              quantity: 1,
+                              size: [
+                                OrderCreateSizeOption(
+                                  sizeId: 'sizeId',
+                                  sizeName: 'sizeName',
+                                ),
+                              ],
+                            ),
+                          ],
+                          totalAmount: double.parse(
+                            provider.totalAmount.toString(),
+                          ),
+                          paymentMethod: 'paymentMethod',
+                          deliveryAddress: 'deliveryAddress',
+                        ),
                       );
                     },
                     height: 55.h,

@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 import '../network/api/api_constants.dart';
 
-//* Note: User connected socket instance from OrderProvider
 class SocketService {
   late IO.Socket _socket;
 
@@ -32,7 +31,6 @@ class SocketService {
   }
 
   void emitEvent(String event, dynamic data) {
-    // _socket.emit(event, data);
     if (_socket.connected) {
       _socket.emit(event, data);
     } else {

@@ -17,3 +17,8 @@ class SharedPrefsKeys {
   static const String firstSecondaryAccessList = 'firstSecondaryAccessList';
   static const String secondaryAccessList = 'secondaryAccessList';
 }
+
+class SocketEvents {
+  static const String orderCreate = 'order-create';
+  static const String orderReceived = 'order-received';
+}

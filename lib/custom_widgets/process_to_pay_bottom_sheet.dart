@@ -1,4 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
+import '../models/order_create_request_model.dart';
 import '../modules/cart/widgets/custom_slidable_button.dart';
 import '../modules/cart/widgets/select_payment_method_widget.dart';
+import '../modules/provider/socket_provider.dart';
 
 double dragPosition = 0.0; // Track the drag position
 const double maxDrag = 250.0; // Maximum drag length
@@ -17,6 +20,7 @@ bool isConfirmed = false; // Track if the action is confirmed
 void showProcessToPayBottomSheeet({
   required BuildContext context,
   required String accountType,
+  required OrderCreateRequestModel orderCreateData,
 }) {
   showModalBottomSheet(
     context: context,
@@ -27,6 +31,10 @@ void showProcessToPayBottomSheeet({
     ),
     // isScrollControlled: true,
     builder: (context) {
+      final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      final socketProvider =
+          Provider.of<SocketProvider>(context, listen: false);
+
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
@@ -79,8 +87,17 @@ void showProcessToPayBottomSheeet({
                   ),
 
                   SizedBox(height: 10.h),
-                  // * Extract widget slidable button
-                  const CustomSlidableButton(),
+
+                  CustomSlidableButton(
+                    onHorizontalDragEnd: (details) {
+                      cartProvider.onHorizontalDragEnd(details, context);
+                      //* Emit socket event
+                      socketProvider.emitEvent(
+                        SocketEvents.orderCreate,
+                        orderCreateData,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),

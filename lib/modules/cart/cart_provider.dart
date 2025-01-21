@@ -50,7 +50,6 @@ class CartProvider extends ChangeNotifier {
       debugPrint("Order Placed!");
       rechargeDeduct(); // ! rechargeDeduct API call
       // Todo emit socket - order-create
-
       // socketService.emitEvent(SocketEvents.orderList, {});
       Navigator.pushNamed(context, Routes.orderStatus);
     } else {

@@ -19,4 +19,5 @@ class ApiEndpoints {
   static const String addToCart = 'user/add-cart';
   static const String updateCart = 'user/update-cart';
   static const String listCart = 'user/list-cart';
+  static const String rechargeDeduct = 'recharge/deduct';
 }

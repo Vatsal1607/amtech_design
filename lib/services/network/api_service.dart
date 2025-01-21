@@ -1,5 +1,6 @@
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
+import 'package:amtech_design/models/deduct_recharge_amount_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
@@ -143,6 +144,14 @@ class ApiService {
     return await apiClient.getListCart(
       userId,
       userType,
+    );
+  }
+
+  Future<DeductRechargeAmountModel> rechargeDeduct({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.rechargeDeduct(
+      body,
     );
   }
 }

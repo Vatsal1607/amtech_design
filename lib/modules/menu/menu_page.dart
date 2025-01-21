@@ -306,7 +306,7 @@ class MenuPage extends StatelessWidget {
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 20.w),
                                                 child: DividerLabel(
-                                                  key: provider.bestSellerKey,
+                                                  // key: provider.bestSellerKey,
                                                   label: provider
                                                           .menuCategories?[
                                                               parentIndex]

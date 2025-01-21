@@ -8,6 +8,7 @@ import 'package:retrofit/retrofit.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
 import '../../models/business_list_model.dart';
+import '../../models/deduct_recharge_amount_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
@@ -120,5 +121,10 @@ abstract class ApiClient {
   Future<ListCartModel> getListCart(
     @Query("userId") String userId,
     @Query("userType") int userType,
+  );
+
+  @POST(ApiEndpoints.rechargeDeduct)
+  Future<DeductRechargeAmountModel> rechargeDeduct(
+    @Body() Map<String, dynamic> body,
   );
 }

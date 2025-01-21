@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
@@ -15,6 +17,7 @@ import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
+import '../provider/socket_provider.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
 
@@ -26,6 +29,8 @@ class CartPage extends StatelessWidget {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
+    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
+
     return Scaffold(
       // extendBodyBehindAppBar: true, // show content of body behind appbar
       backgroundColor: getColorAccountType(
@@ -47,6 +52,7 @@ class CartPage extends StatelessWidget {
                 children: [
                   Consumer<CartProvider>(
                     builder: (context, _, child) {
+                      log('provider.cartItemList length: ${provider.cartItemList?.length}');
                       return provider.cartItemList == null
                           ? Center(
                               child: CustomLoader(
@@ -273,22 +279,28 @@ class CartPage extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
-                child: CustomButton(
-                  onTap: () {
-                    showProcessToPayBottomSheeet(
-                      context: context,
+                child: Consumer<CartProvider>(builder: (context, _, child) {
+                  provider.totalAmount = provider
+                          .listCartResponse?.data!.carts!.first.totalAmount
+                          .toString() ??
+                      '';
+                  return CustomButton(
+                    onTap: () {
+                      showProcessToPayBottomSheeet(
+                        context: context,
+                        accountType: accountType,
+                      );
+                    },
+                    height: 55.h,
+                    width: double.infinity,
+                    bgColor: getColorAccountType(
                       accountType: accountType,
-                    );
-                  },
-                  height: 55.h,
-                  width: double.infinity,
-                  bgColor: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                  text: 'proceed to pay ₹ 11',
-                ),
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    text: 'proceed to pay ₹ ${provider.totalAmount ?? ''}',
+                  );
+                }),
               ),
             ),
           ),

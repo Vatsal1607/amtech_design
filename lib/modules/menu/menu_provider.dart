@@ -191,24 +191,10 @@ class MenuProvider extends ChangeNotifier {
     } catch (error) {
       log("Error during homeMenuApi Response: $error");
       if (error is DioException) {
-        // Parse API error response
         final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
         log(apiError.message ?? 'An error occurred');
-        // customSnackBar(
-        //   context: context,
-        //   message: apiError.message ?? 'An error occurred',
-        //   backgroundColor: AppColors.seaShell,
-        //   textColor: AppColors.primaryColor,
-        // );
       } else {
-        // Handle unexpected errors
         log('An unexpected error occurred');
-        // customSnackBar(
-        //   context: context,
-        //   message: 'An unexpected error occurred',
-        //   backgroundColor: AppColors.seaShell,
-        //   textColor: AppColors.primaryColor,
-        // );
       }
     } finally {
       // Ensure loading state is reset

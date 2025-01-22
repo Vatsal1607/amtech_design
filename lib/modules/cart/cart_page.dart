@@ -1,13 +1,12 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
-import 'package:amtech_design/models/order_create_request_model.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +30,7 @@ class CartPage extends StatelessWidget {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
     return Scaffold(
       // extendBodyBehindAppBar: true, // show content of body behind appbar
@@ -78,6 +78,7 @@ class CartPage extends StatelessWidget {
                               ),
                               itemBuilder: (context, index) {
                                 final cartItems = provider.cartItemList?[index];
+
                                 return CartWidget(
                                   accountType: accountType,
                                   cartItems: cartItems,
@@ -287,35 +288,31 @@ class CartPage extends StatelessWidget {
                       '';
                   return CustomButton(
                     onTap: () {
+                      final limitedCartItems = provider.cartItemList
+                          ?.map((item) => item.toLimitedJson())
+                          .toList();
+                      // Prepare the data
+                      final Map<String, dynamic> orderCreateData = {
+                        "userId": sharedPrefsService
+                                .getString(SharedPrefsKeys.userId) ??
+                            '',
+                        "userType":
+                            accountType == 'business' ? 'BusinessUser' : 'User',
+                        "items": limitedCartItems,
+                        "totalAmount": double.parse(
+                          provider.totalAmount.toString(),
+                        ),
+                        "paymentMethod":
+                            provider.selectedPaymentMethod, // 'UPI', 'Perks'
+                        "deliveryAddress":
+                            menuProvider.homeMenuResponse?.data?.address,
+                      };
+                      log('OrderCreateData: $orderCreateData');
                       showProcessToPayBottomSheeet(
                         context: context,
                         accountType: accountType,
-                        //! Working... (verify passed value)
-                        orderCreateData: OrderCreateRequestModel(
-                          userId: sharedPrefsService
-                                  .getString(SharedPrefsKeys.userId) ??
-                              '',
-                          userType: accountType == 'business'
-                              ? 'BusinessUser'
-                              : 'PersonalUser',
-                          items: [
-                            OrderCreateRequestItem(
-                              menuId: 'menuId',
-                              quantity: 1,
-                              size: [
-                                OrderCreateSizeOption(
-                                  sizeId: 'sizeId',
-                                  sizeName: 'sizeName',
-                                ),
-                              ],
-                            ),
-                          ],
-                          totalAmount: double.parse(
-                            provider.totalAmount.toString(),
-                          ),
-                          paymentMethod: 'paymentMethod',
-                          deliveryAddress: 'deliveryAddress',
-                        ),
+                        //! Emit order-create
+                        orderCreateData: orderCreateData,
                       );
                     },
                     height: 55.h,

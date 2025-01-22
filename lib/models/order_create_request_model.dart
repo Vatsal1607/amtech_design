@@ -2,7 +2,7 @@
 class OrderCreateRequestModel {
   final String userId;
   final String userType;
-  final List<OrderCreateRequestItem> items;
+  final List<CartItems> items;
   final double totalAmount;
   final String paymentMethod;
   final String deliveryAddress;
@@ -30,12 +30,12 @@ class OrderCreateRequestModel {
 }
 
 // Model for each item in the list
-class OrderCreateRequestItem {
+class CartItems {
   final String menuId;
   final int quantity;
-  final List<OrderCreateSizeOption> size;
+  final List<Size> size;
 
-  OrderCreateRequestItem({
+  CartItems({
     required this.menuId,
     required this.quantity,
     required this.size,
@@ -51,11 +51,11 @@ class OrderCreateRequestItem {
 }
 
 // Model for size options
-class OrderCreateSizeOption {
+class Size {
   final String sizeId;
   final String sizeName;
 
-  OrderCreateSizeOption({
+  Size({
     required this.sizeId,
     required this.sizeName,
   });

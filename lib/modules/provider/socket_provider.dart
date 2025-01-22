@@ -27,7 +27,7 @@ class SocketProvider with ChangeNotifier {
     );
 
     _socket.onConnect((_) {
-      log('Connected to the server');
+      log('Connected to the Socket server');
       _isConnected = true;
       notifyListeners(); // Notify listeners about connection status
     });

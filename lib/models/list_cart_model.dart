@@ -148,6 +148,15 @@ class CartItems {
     data['_id'] = sId;
     return data;
   }
+
+  // Method to generate a JSON object with limited fields
+  Map<String, dynamic> toLimitedJson() {
+    return {
+      'menuId': menuId?.sId, // Assuming MenuId class has an sId field
+      'quantity': quantity,
+      'size': size?.map((s) => {'sizeId': s.sizeId}).toList(),
+    };
+  }
 }
 
 class MenuId {

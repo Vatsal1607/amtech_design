@@ -8,7 +8,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/strings.dart';
-import '../models/order_create_request_model.dart';
 import '../modules/cart/widgets/custom_slidable_button.dart';
 import '../modules/cart/widgets/select_payment_method_widget.dart';
 import '../modules/provider/socket_provider.dart';
@@ -20,7 +19,7 @@ bool isConfirmed = false; // Track if the action is confirmed
 void showProcessToPayBottomSheeet({
   required BuildContext context,
   required String accountType,
-  required OrderCreateRequestModel orderCreateData,
+  required Map<String, dynamic> orderCreateData,
 }) {
   showModalBottomSheet(
     context: context,
@@ -64,10 +63,10 @@ void showProcessToPayBottomSheeet({
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
                       onTap: () {
-                        provider.updateSelectedPaymentMethod('perks');
+                        provider.updateSelectedPaymentMethod('Perks');
                       },
                       isSelectedMethod:
-                          provider.selectedPaymentMethod == 'perks',
+                          provider.selectedPaymentMethod == 'Perks',
                       logoImage: ImageStrings.perksLogo,
                       isPerks: true,
                     ),
@@ -78,10 +77,9 @@ void showProcessToPayBottomSheeet({
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
                       onTap: () {
-                        provider.updateSelectedPaymentMethod('razorpay');
+                        provider.updateSelectedPaymentMethod('UPI');
                       },
-                      isSelectedMethod:
-                          provider.selectedPaymentMethod == 'razorpay',
+                      isSelectedMethod: provider.selectedPaymentMethod == 'UPI',
                       logoImage: ImageStrings.razorpayLogo,
                     ),
                   ),

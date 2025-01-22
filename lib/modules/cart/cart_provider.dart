@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/list_cart_model.dart';
-import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,10 +20,11 @@ class CartProvider extends ChangeNotifier {
   final minDrag = 10.w;
   bool isConfirmed = false; // Track if the action is confirmed
 
-  String selectedPaymentMethod = 'perks';
+  String selectedPaymentMethod = 'Perks';
 
   updateSelectedPaymentMethod(value) {
     selectedPaymentMethod = value;
+    debugPrint('selectedPaymentMethod: $selectedPaymentMethod');
     notifyListeners();
   }
 
@@ -49,8 +49,6 @@ class CartProvider extends ChangeNotifier {
       dragPosition = maxDrag; // Snap to the end
       debugPrint("Order Placed!");
       rechargeDeduct(); // ! rechargeDeduct API call
-      // Todo emit socket - order-create
-      // socketService.emitEvent(SocketEvents.orderList, {});
       Navigator.pushNamed(context, Routes.orderStatus);
     } else {
       // Reset position

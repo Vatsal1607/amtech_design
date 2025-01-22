@@ -1,49 +1,49 @@
-import 'dart:developer';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
-import '../network/api/api_constants.dart';
+// import 'dart:developer';
+// import 'package:socket_io_client/socket_io_client.dart' as IO;
+// import '../network/api/api_constants.dart';
 
-class SocketService {
-  late IO.Socket _socket;
+// class SocketService {
+//   late IO.Socket _socket;
 
-  IO.Socket get socket => _socket;
+//   IO.Socket get socket => _socket;
 
-  void connectToSocket() {
-    _socket = IO.io(
-      BaseUrl.socketBaseUrl,
-      IO.OptionBuilder()
-          .setTransports(['websocket']) // Enable WebSocket transport
-          .enableAutoConnect() // Auto connect
-          .setReconnectionAttempts(5) // Retry 5 times
-          .build(),
-    );
+//   void connectToSocket() {
+//     _socket = IO.io(
+//       BaseUrl.socketBaseUrl,
+//       IO.OptionBuilder()
+//           .setTransports(['websocket']) // Enable WebSocket transport
+//           .enableAutoConnect() // Auto connect
+//           .setReconnectionAttempts(5) // Retry 5 times
+//           .build(),
+//     );
 
-    _socket.onConnect((_) {
-      log('Connected to the server');
-    });
+//     _socket.onConnect((_) {
+//       log('Connected to the server');
+//     });
 
-    _socket.onDisconnect((_) {
-      log('Disconnected from the server');
-    });
+//     _socket.onDisconnect((_) {
+//       log('Disconnected from the server');
+//     });
 
-    _socket.onError((data) {
-      log('Socket error: $data');
-    });
-  }
+//     _socket.onError((data) {
+//       log('Socket error: $data');
+//     });
+//   }
 
-  void emitEvent(String event, dynamic data) {
-    if (_socket.connected) {
-      _socket.emit(event, data);
-    } else {
-      throw Exception("Socket is not connected!");
-    }
-  }
+//   void emitEvent(String event, dynamic data) {
+//     if (_socket.connected) {
+//       _socket.emit(event, data);
+//     } else {
+//       throw Exception("Socket is not connected!");
+//     }
+//   }
 
-  void listenToEvent(String event, Function(dynamic) callback) {
-    _socket.on(event, callback);
-  }
+//   void listenToEvent(String event, Function(dynamic) callback) {
+//     _socket.on(event, callback);
+//   }
 
-  void disconnect() {
-    _socket.dispose();
-    log('Socket disconnected');
-  }
-}
+//   void disconnect() {
+//     _socket.dispose();
+//     log('Socket disconnected');
+//   }
+// }

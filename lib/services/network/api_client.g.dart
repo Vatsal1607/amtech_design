@@ -14,7 +14,8 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://6f1a-122-176-227-99.ngrok-free.app/';
+    baseUrl ??=
+        'https://1ecf-2409-40c1-51-e609-747e-e78e-de62-66b2.ngrok-free.app/';
   }
 
   final Dio _dio;

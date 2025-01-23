@@ -38,31 +38,4 @@ class ProductDetailsProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // MenuSizeModel? menuSizeResponse;
-  // bool isLoadingSize = false;
-
-  // // * getMenuSize API
-  // Future<void> getMenuSize({
-  //   required String menuId,
-  // }) async {
-  //   isLoadingSize = true;
-  //   notifyListeners();
-  //   try {
-  //     final res = await apiService.getMenuSize(
-  //       menuId: menuId,
-  //     );
-  //     log('getMenuSize: $getMenuSize');
-  //     if (res.success == true && res.data != null) {
-  //       menuSizeResponse = res;
-  //     } else {
-  //       log('${res.message}');
-  //     }
-  //   } catch (e) {
-  //     debugPrint("Error fetching menuSizeResponse: ${e.toString()}");
-  //   } finally {
-  //     isLoadingSize = false;
-  //     notifyListeners();
-  //   }
-  // }
 }

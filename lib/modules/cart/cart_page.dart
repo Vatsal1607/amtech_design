@@ -29,7 +29,7 @@ class CartPage extends StatelessWidget {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
-    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
+    // final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
     return Scaffold(
@@ -66,7 +66,10 @@ class CartPage extends StatelessWidget {
                             )
                           : ListView.separated(
                               shrinkWrap: true,
-                              itemCount: provider.cartItemList?.length ?? 0,
+                              // itemCount: provider.cartItemList?.length ?? 0,
+                              itemCount: provider
+                                      .listCartResponse?.data?.carts?.length ??
+                                  0,
                               physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.only(
                                 left: 31.w,
@@ -283,9 +286,13 @@ class CartPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Consumer<CartProvider>(builder: (context, _, child) {
                   provider.totalAmount = provider
-                          .listCartResponse?.data!.carts!.first.totalAmount
-                          .toString() ??
+                          .listCartResponse?.data?.carts?.first.totalAmount
+                          ?.toString() ??
                       '';
+                  // provider.totalAmount = provider
+                  //         .listCartResponse?.data!.carts!.first.totalAmount
+                  //         .toString() ??
+                  //     '';
                   return CustomButton(
                     onTap: () {
                       final limitedCartItems = provider.cartItemList

@@ -49,9 +49,9 @@ class Data {
 class RechargeRecord {
   String? sId;
   String? userId;
-  int? rechargeAmount;
-  int? usedAmount;
-  int? remainingAmount;
+  num? rechargeAmount;
+  num? usedAmount;
+  num? remainingAmount;
   String? createdAt;
   String? updatedAt;
   int? iV;

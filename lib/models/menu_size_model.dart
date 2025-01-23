@@ -58,7 +58,7 @@ class SizeDetails {
   String? sizeId;
   String? sizeName;
   String? volume;
-  double? price;
+  num? price; // Changed from double? to num?
 
   SizeDetails({this.sizeId, this.sizeName, this.volume, this.price});
 
@@ -66,7 +66,8 @@ class SizeDetails {
     sizeId = json['sizeId'];
     sizeName = json['sizeName'];
     volume = json['volume'];
-    price = json['price'];
+    price =
+        json['price']; // No change needed as num accepts both int and double
   }
 
   Map<String, dynamic> toJson() {
@@ -74,7 +75,34 @@ class SizeDetails {
     data['sizeId'] = sizeId;
     data['sizeName'] = sizeName;
     data['volume'] = volume;
-    data['price'] = price;
+    data['price'] = price; // No change needed here either
     return data;
   }
 }
+
+
+// OLD
+// class SizeDetails {
+//   String? sizeId;
+//   String? sizeName;
+//   String? volume;
+//   double? price;
+
+//   SizeDetails({this.sizeId, this.sizeName, this.volume, this.price});
+
+//   SizeDetails.fromJson(Map<String, dynamic> json) {
+//     sizeId = json['sizeId'];
+//     sizeName = json['sizeName'];
+//     volume = json['volume'];
+//     price = json['price'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['sizeId'] = sizeId;
+//     data['sizeName'] = sizeName;
+//     data['volume'] = volume;
+//     data['price'] = price;
+//     return data;
+//   }
+// }

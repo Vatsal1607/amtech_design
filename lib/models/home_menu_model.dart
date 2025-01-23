@@ -194,10 +194,15 @@ class Size {
   Size.fromJson(Map<String, dynamic> json) {
     sizeId = json['sizeId'];
     volume = json['volume'];
-    sizePrice = json['sizePrice'] is int
-        ? json['sizePrice']
-        : (json['sizePrice'] as double)
-            .toInt(); // Cast double to int if necessary
+    sizePrice = json['sizePrice'] == null
+        ? null
+        : (json['sizePrice'] is int
+            ? json['sizePrice']
+            : (json['sizePrice'] as double).toInt());
+    // sizePrice = json['sizePrice'] is int
+    //     ? json['sizePrice']
+    //     : (json['sizePrice'] as double)
+    //         .toInt(); // Cast double to int if necessary
     sId = json['_id'];
   }
 

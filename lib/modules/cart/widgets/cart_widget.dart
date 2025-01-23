@@ -145,6 +145,10 @@ class CartWidget extends StatelessWidget {
                       personalColor: AppColors.bayLeaf,
                     ),
                     onIncrease: () {
+                      debugPrint('cartpage Incre');
+                      if (cartItems != null && cartItems?.quantity != null) {
+                        // cartItems!.quantity! ++;
+                      }
                       menuProvider.incrementQuantity(
                         sizeName: cartItems?.size?[0].volume ?? '',
                         menuId: cartItems?.menuId?.sId ?? '',
@@ -152,6 +156,7 @@ class CartWidget extends StatelessWidget {
                       );
                     },
                     onDecrease: () {
+                      debugPrint('cartpage Decr');
                       menuProvider.decrementQuantity(
                         sizeName: cartItems?.size?[0].volume ?? '',
                         menuId: cartItems?.menuId?.sId ?? '',

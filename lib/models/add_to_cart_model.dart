@@ -46,7 +46,7 @@ class Data {
 class Cart {
   String? userId;
   List<Items>? items;
-  double? totalAmount;
+  num? totalAmount;
   bool? isActive;
   String? sId;
   String? createdAt;
@@ -100,8 +100,8 @@ class Items {
   String? itemName;
   List<Size>? size;
   int? quantity;
-  double? price;
-  double? totalPrice;
+  num? price;
+  num? totalPrice;
   String? sId;
 
   Items(
@@ -146,7 +146,7 @@ class Items {
 class Size {
   String? sizeId;
   String? volume;
-  double? sizePrice;
+  num? sizePrice;
   String? sId;
 
   Size({this.sizeId, this.volume, this.sizePrice, this.sId});

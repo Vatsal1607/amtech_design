@@ -52,7 +52,7 @@ class Carts {
   String? sId;
   String? userId;
   List<CartItems>? items;
-  double? totalAmount;
+  num? totalAmount;
   bool? isActive;
   String? createdAt;
   String? updatedAt;
@@ -105,8 +105,8 @@ class CartItems {
   String? itemName;
   List<Size>? size;
   int? quantity;
-  double? price;
-  double? totalPrice;
+  num? price;
+  num? totalPrice;
   String? sId;
 
   CartItems(
@@ -184,7 +184,7 @@ class MenuId {
 class Size {
   String? sizeId;
   String? volume;
-  double? sizePrice;
+  num? sizePrice;
   String? sId;
 
   Size({this.sizeId, this.volume, this.sizePrice, this.sId});

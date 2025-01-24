@@ -32,22 +32,26 @@ class UpdateCartRequestModel {
 
 class RequestSizes {
   String? sizeId;
-  String? volume;
-  double? sizePrice;
+  // String? volume;
+  // double? sizePrice;
 
-  RequestSizes({this.sizeId, this.volume, this.sizePrice});
+  RequestSizes({
+    this.sizeId,
+    // this.volume,
+    // this.sizePrice,
+  });
 
   RequestSizes.fromJson(Map<String, dynamic> json) {
     sizeId = json['sizeId'];
-    volume = json['volume'];
-    sizePrice = json['sizePrice'];
+    // volume = json['volume'];
+    // sizePrice = json['sizePrice'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['sizeId'] = sizeId;
-    data['volume'] = volume;
-    data['sizePrice'] = sizePrice;
+    // data['volume'] = volume;
+    // data['sizePrice'] = sizePrice;
     return data;
   }
 }

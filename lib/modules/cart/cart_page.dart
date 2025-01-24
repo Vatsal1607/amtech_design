@@ -66,10 +66,10 @@ class CartPage extends StatelessWidget {
                             )
                           : ListView.separated(
                               shrinkWrap: true,
-                              // itemCount: provider.cartItemList?.length ?? 0,
-                              itemCount: provider
-                                      .listCartResponse?.data?.carts?.length ??
-                                  0,
+                              itemCount: provider.cartItemList?.length ?? 0,
+                              // itemCount: provider
+                              //         .listCartResponse?.data?.carts?.length ??
+                              //     0,
                               physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.only(
                                 left: 31.w,

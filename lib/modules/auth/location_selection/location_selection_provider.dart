@@ -33,6 +33,13 @@ class LocationSelectionProvider extends ChangeNotifier {
     '323 Corporate Park',
   ];
 
+  // final List<String> locations = [
+  //   'Titanium City Center',
+  //   'Arista Business Hub',
+  //   'Silp Corporate Park',
+  //   '323 Corporate Park',
+  // ];
+
   TextEditingController locationSearchController = TextEditingController();
   void selectLocation(String? location) {
     selectedLocation = location;

@@ -121,10 +121,6 @@ class LocationSelectionPage extends StatelessWidget {
                   sharedPrefsService.setString(
                     SharedPrefsKeys.location,
                     provider.selectedLocation ?? '',
-                    // context
-                    //         .read<LocationSelectionProvider>()
-                    //         .selectedLocation ??
-                    //     '',
                   );
                   if (provider.selectedLocation != null &&
                       provider.selectedLocation!.isNotEmpty) {

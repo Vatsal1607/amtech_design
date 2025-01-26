@@ -21,11 +21,15 @@ class DropdownLocation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// NEW dropdown
+    /// NEW dropdown (Working on dynamic)
     // return SearchField<String>(
     //   controller: provider.locationSearchController,
-    //   suggestionDirection: SuggestionDirection.down,
-    //   hint: 'Select Location',
+    //   suggestions: provider.locations
+    //       .map((location) => SearchFieldListItem<String>(location))
+    //       .toList(),
+    //   suggestionState: Suggestion.expand,
+    //   textInputAction: TextInputAction.done,
+    //   hint: 'Search location',
     //   searchInputDecoration: SearchInputDecoration(
     //     cursorColor: AppColors.seaShell,
     //     hintStyle:
@@ -38,61 +42,13 @@ class DropdownLocation extends StatelessWidget {
     //     prefixIcon: const SvgIcon(icon: IconStrings.selectBusiness),
     //     suffixIcon: const SvgIcon(icon: IconStrings.dropdown),
     //   ),
-    //   suggestions: [
-    //     'Titanium City Center',
-    //     'Arista Business Hub',
-    //     'Silp Corporate Park',
-    //     '323 Corporate Park',
-    //   ].map((location) => SearchFieldListItem<String>(location)).toList(),
-    //   // onSearchTextChanged: (query) {
-    //   //   provider.filterLocations(query); // Filter logic in provider
-    //   //   if (query.isEmpty) {
-    //   //     provider.selectLocation(null); // Clear selected location
-    //   //   }
-    //   // },
-    //   selectedValue: provider.selectedLocation != null
-    //       ? SearchFieldListItem<String>(provider.selectedLocation!)
-    //       : null,
-    //   // selectedValue: provider.selectedLocation != null &&
-    //   //         [
-    //   //           'Titanium City Center',
-    //   //           'Arista Business Hub',
-    //   //           'Silp Corporate Park',
-    //   //           '323 Corporate Park'
-    //   //         ].contains(provider.selectedLocation)
-    //   //     ? SearchFieldListItem<String>(provider.selectedLocation!)
-    //   //     : null,
-    //   onSuggestionTap: (selectedItem) {
-    //     debugPrint(selectedItem.item);
-    //     if (selectedItem.item != null) {
-    //       provider.selectLocation(selectedItem.item!);
-    //       provider.locationSearchController.text = selectedItem.item!;
-    //     }
-    //     debugPrint('Selected Location: ${provider.selectedLocation}');
+    //   maxSuggestionsInViewPort: 4,
+    //   itemHeight: 50,
+    //   onSuggestionTap: (SearchFieldListItem<String> item) {
+    //     // Update the controller's text to reflect the selected value
+    //     provider.locationSearchController.text = item.searchKey;
+    //     debugPrint('Selected: ${item.searchKey}');
     //   },
-    //   // validator: (value) {
-    //   //   debugPrint('$value from validator');
-    //   //   if (value == null ||
-    //   //       ![
-    //   //         'Titanium City Center',
-    //   //         'Arista Business Hub',
-    //   //         'Silp Corporate Park',
-    //   //         '323 Corporate Park'
-    //   //       ].contains(value.trim())) {
-    //   //     return 'Enter a valid location';
-    //   //   }
-    //   //   return null;
-    //   // },
-    //   suggestionStyle: GoogleFonts.publicSans(
-    //     fontSize: 14.sp,
-    //     fontWeight: FontWeight.bold,
-    //     color: AppColors.primaryColor,
-    //   ),
-    //   suggestionsDecoration: SuggestionDecoration(
-    //     borderRadius: BorderRadius.circular(25.r),
-    //     color: AppColors.seaShell,
-    //   ),
-    //   suggestionState: Suggestion.expand,
     // );
 
     /// OLD dropdown

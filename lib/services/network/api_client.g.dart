@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://d6d8-2409-40c1-18-9cad-2175-6b12-ffca-c007.ngrok-free.app/';
+    baseUrl ??= 'http://192.168.1.12:9000/';
   }
 
   final Dio _dio;
@@ -615,7 +615,7 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<AddToCartModel> updateCart(
-      UpdateCartRequestModel updateCartRequestBody) async {
+      AddToCartRequestModel updateCartRequestBody) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};

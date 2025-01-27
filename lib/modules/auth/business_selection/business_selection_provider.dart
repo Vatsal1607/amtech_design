@@ -13,10 +13,10 @@ class BusinessSelectionProvider extends ChangeNotifier {
   bool isLoadingPagination = false;
   int currentPage = 1;
 
-  BusinessSelectionProvider() {
-    //* Api call get business list
-    getBusinessList(currentPage: currentPage);
-  }
+  // BusinessSelectionProvider() {
+  //   //* Api call
+  //   getBusinessList(currentPage: currentPage);
+  // }
 
   TextEditingController searchController = TextEditingController();
   List<BusinessList> _businessList = [];
@@ -71,7 +71,6 @@ class BusinessSelectionProvider extends ChangeNotifier {
         limit: 10,
         search: searchText,
       );
-      log('Response: ${_businessListModel?.data?.businessList?[3].secondaryAccess}');
       debugPrint('currentPage : $currentPage');
       if (_businessListModel?.success == true &&
           _businessListModel?.data != null) {

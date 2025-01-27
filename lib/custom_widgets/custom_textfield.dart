@@ -28,6 +28,7 @@ class CustomTextField extends StatelessWidget {
   final FocusNode? focusNode;
   final bool? enabled;
   final Widget? prefix;
+  final TextCapitalization textCapitalization;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -51,6 +52,7 @@ class CustomTextField extends StatelessWidget {
     this.focusNode,
     this.enabled = true,
     this.prefix,
+    this.textCapitalization = TextCapitalization.sentences,
   });
 
   @override
@@ -59,7 +61,7 @@ class CustomTextField extends StatelessWidget {
       enabled: enabled,
       cursorColor: cursorColor,
       controller: controller,
-      textCapitalization: TextCapitalization.sentences,
+      textCapitalization: textCapitalization,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       style: GoogleFonts.publicSans(

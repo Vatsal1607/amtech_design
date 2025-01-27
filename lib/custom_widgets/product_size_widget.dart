@@ -31,6 +31,7 @@ class ProductSizeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    debugPrint('Size is: $size');
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 32.w),
       decoration: BoxDecoration(
@@ -51,7 +52,8 @@ class ProductSizeWidget extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              size.toUpperCase(),
+              size,
+              // .toUpperCase(),
               style: GoogleFonts.publicSans(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.bold,
@@ -94,23 +96,50 @@ class ProductSizeWidget extends StatelessWidget {
         trailing: ItemQuantityWidget(
           accountType: accountType,
           quantity: isDisabled ? 0 : quantity,
+          isLoading: menuProvider.getIsLoadingStates(size),
+          // isLoading: menuProvider.isLoadingAddToCart ||
+          //     menuProvider.isLoadingUpdateCart,
           onDecrease: isDisabled
               ? null
               : () {
-                  menuProvider.decrementQuantity(
-                    sizeName: size,
+                  menuProvider.updateCart(
+                    size: size,
                     menuId: menuId,
                     sizeId: sizeId,
+                    callback: (isSuccess) {
+                      if (isSuccess) {
+                        debugPrint('Item added to cart successfully');
+                        menuProvider.decrementQuantity(
+                          sizeName: size,
+                          menuId: menuId,
+                          sizeId: sizeId,
+                        );
+                      } else {
+                        debugPrint('Error: Failed to update item to cart');
+                      }
+                    },
                   );
                 },
           onIncrease: isDisabled
               ? null
               : () {
-                  menuProvider.incrementQuantity(
-                    sizeName: size,
+                  menuProvider.addToCart(
+                    size: size,
                     menuId: menuId,
                     sizeId: sizeId,
-                  );
+                    callback: (isSuccess) {
+                      if (isSuccess) {
+                        debugPrint('Item added to cart successfully');
+                        menuProvider.incrementQuantity(
+                          sizeName: size,
+                          menuId: menuId,
+                          sizeId: sizeId,
+                        );
+                      } else {
+                        debugPrint('Error: Failed to add item to cart');
+                      }
+                    },
+                  ); // API call
                 },
         ),
       ),

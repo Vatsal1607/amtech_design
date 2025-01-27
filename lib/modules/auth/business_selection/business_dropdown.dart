@@ -27,6 +27,9 @@ class BusinessDropdown extends StatelessWidget {
         controller: provider.searchController,
         suggestionDirection: SuggestionDirection.down,
         hint: 'Select Your business',
+        onTap: () {
+          provider.getBusinessList(currentPage: 1);
+        },
         searchInputDecoration: SearchInputDecoration(
           cursorColor: AppColors.seaShell,
           hintStyle:
@@ -56,7 +59,6 @@ class BusinessDropdown extends StatelessWidget {
             provider.selectBusiness(null); // Clear selected business
           }
           if (provider.filteredBusinessList.isEmpty) {
-            // Handle non-matching input
             provider.selectBusiness(null);
           }
         },
@@ -82,7 +84,7 @@ class BusinessDropdown extends StatelessWidget {
                     provider.selectedBusiness?.businessName)
             ? SearchFieldListItem<BusinessList>(
                 // ! Note: dont use Null check operator here (it can be nullable)
-                provider.selectedBusiness!.businessName ?? '',
+                provider.selectedBusiness?.businessName ?? '',
                 item: provider.selectedBusiness,
               )
             : null,
@@ -99,19 +101,19 @@ class BusinessDropdown extends StatelessWidget {
         suggestionState: Suggestion.expand,
         onSuggestionTap: (selectedItem) async {
           provider.selectBusiness(selectedItem.item!);
-          if (selectedItem.item!.businessName != null) {
+          if (selectedItem.item?.businessName != null) {
             provider.searchController.text =
                 selectedItem.item!.businessName.toString();
           }
           debugPrint(
               'selectedItem is: ${provider.selectedBusiness?.businessName}');
-          if (provider.selectedBusiness != null) {
+          if (provider.selectedBusiness != null &&
+              provider.selectedBusiness?.businessName != null) {
             /// Save selected business's secondaryAccess
             await provider.saveSelectedBusinessSecondaryAccess(
               provider.filteredBusinessList,
               provider.selectedBusiness!.businessName!,
             );
-
             // Retrieve and print saved secondaryAccess data
             log('locally stored secondaryAccess: ${sharedPrefsService.getString(SharedPrefsKeys.secondaryAccessList)}');
           }

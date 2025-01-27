@@ -67,7 +67,7 @@ class CartProvider extends ChangeNotifier {
   List<CartItems>? cartItemList;
   ListCartModel? listCartResponse;
 
-  // * UpdateCart API
+  // * getListCart API
   Future<void> getListCart() async {
     isLoading = true;
     notifyListeners();

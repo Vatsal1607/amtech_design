@@ -216,10 +216,6 @@ class MenuProvider extends ChangeNotifier {
     if ((quantities[sizeName] ?? 0) > 0) {
       quantities[sizeName] = (quantities[sizeName] ?? 0) - 1;
       log('decrementQuantity quantity: ${quantities[sizeName]}');
-      updateCart(
-        menuId: menuId,
-        sizeId: sizeId,
-      );
       notifyListeners();
     }
   }
@@ -231,10 +227,6 @@ class MenuProvider extends ChangeNotifier {
   }) {
     quantities[sizeName] = (quantities[sizeName] ?? 0) + 1;
     log('incrementQuantity quantity: ${quantities[sizeName]}');
-    addToCart(
-      menuId: menuId,
-      sizeId: sizeId,
-    ); // API call
     notifyListeners();
   }
 
@@ -263,12 +255,26 @@ class MenuProvider extends ChangeNotifier {
   }
 
   bool isLoadingAddToCart = false;
+  Map<String, bool> loadingStates = {
+    "MEDIUM": false,
+    "LARGE": false,
+    "REGULAR": false,
+  };
+  bool getIsLoadingStates(String size) => loadingStates[size] ?? false;
+  void setLoading(String size, bool isLoading) {
+    loadingStates[size] = isLoading;
+    notifyListeners();
+  }
+
   // * addToCart API
   Future<void> addToCart({
     required String menuId,
     required String sizeId,
+    required Function(bool) callback, // Callback parameter
+    required String size,
   }) async {
     isLoadingAddToCart = true;
+    setLoading(size, true);
     notifyListeners();
     try {
       final requestBody = AddToCartRequestModel(
@@ -289,16 +295,20 @@ class MenuProvider extends ChangeNotifier {
         addToCartRequestBody: requestBody,
       );
       log('addToCart: ${res.data}');
-      if (res.success == true && res.data != null) {
+      if (res.success == true) {
+        // incrementQuantity(sizeName: sizeName, menuId: menuId, sizeId: sizeId);
+        callback(true); // Notify success
         AddToCartModel addToCartResponse = res;
-        // log(addToCartResponse.data.toString());
       } else {
         log('${res.message}');
+        callback(false); // Notify failure
       }
     } catch (e) {
+      callback(false); // Notify failure on exception
       debugPrint("Error addToCart: ${e.toString()}");
     } finally {
       isLoadingAddToCart = false;
+      setLoading(size, false);
       notifyListeners();
     }
   }
@@ -308,34 +318,46 @@ class MenuProvider extends ChangeNotifier {
   Future<void> updateCart({
     required String menuId,
     required String sizeId,
+    required Function(bool) callback, // Callback parameter
+    required String size,
   }) async {
     isLoadingUpdateCart = true;
+    setLoading(size, true);
     notifyListeners();
     try {
-      final requestBody = UpdateCartRequestModel(
+      final requestBody = AddToCartRequestModel(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId),
-        menuId: menuId,
-        quantity: 1,
-        sizes: [
-          RequestSizes(
-            sizeId: sizeId,
+        items: [
+          RequestItems(
+            menuId: menuId,
+            quantity: 1,
+            size: [
+              RequestSize(
+                sizeId: sizeId,
+              ),
+            ],
           ),
         ],
       );
+
       final res = await apiService.updateCart(
         updateCartRequestBody: requestBody,
       );
       log('updateCart: ${res.data}');
-      if (res.success == true && res.data != null) {
+      if (res.success == true) {
+        callback(true);
         AddToCartModel updateCartResponse = res;
         // log(updateCartResponse.data.toString());
       } else {
+        callback(false);
         log('${res.message}');
       }
     } catch (e) {
+      callback(false);
       debugPrint("Error UpdateCart: ${e.toString()}");
     } finally {
       isLoadingUpdateCart = false;
+      setLoading(size, false);
       notifyListeners();
     }
   }

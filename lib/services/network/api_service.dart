@@ -132,7 +132,7 @@ class ApiService {
   }
 
   Future<AddToCartModel> updateCart({
-    required UpdateCartRequestModel updateCartRequestBody,
+    required AddToCartRequestModel updateCartRequestBody,
   }) async {
     return await apiClient.updateCart(updateCartRequestBody);
   }

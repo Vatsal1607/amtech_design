@@ -17,7 +17,6 @@ import 'buttons/custom_button_with_arrow.dart';
 import 'product_size_widget.dart';
 
 final requiredSizes = ['MEDIUM', 'LARGE', 'REGULAR'];
-// bool _hasFetchedMenuSize = false;
 
 void showSizeModalBottomSheet({
   required BuildContext context,

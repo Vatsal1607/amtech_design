@@ -103,10 +103,10 @@ class LoginPage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Country Code Widget
+                        // * Country Code Widget
                         Container(
-                          height: 52.h,
-                          width: 52.w,
+                          height: 48.h,
+                          width: 48.w,
                           decoration: const BoxDecoration(
                             color: AppColors.white,
                             shape: BoxShape.circle,

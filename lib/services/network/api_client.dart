@@ -114,7 +114,7 @@ abstract class ApiClient {
 
   @PATCH(ApiEndpoints.updateCart)
   Future<AddToCartModel> updateCart(
-    @Body() UpdateCartRequestModel updateCartRequestBody,
+    @Body() AddToCartRequestModel updateCartRequestBody,
   );
 
   @GET(ApiEndpoints.listCart)

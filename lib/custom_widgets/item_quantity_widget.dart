@@ -1,3 +1,4 @@
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +14,7 @@ class ItemQuantityWidget extends StatelessWidget {
   final Color color;
   final String accountType;
   final bool isDisabled;
+  final bool isLoading;
   const ItemQuantityWidget({
     super.key,
     required this.quantity,
@@ -21,6 +23,7 @@ class ItemQuantityWidget extends StatelessWidget {
     this.color = AppColors.primaryColor,
     required this.accountType,
     this.isDisabled = false,
+    this.isLoading = false,
   });
 
   @override
@@ -29,41 +32,52 @@ class ItemQuantityWidget extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         // * Minus button
-        GestureDetector(
-          onTap: onDecrease,
-          child: Container(
-            height: 30.h,
-            width: 30.w,
-            decoration: BoxDecoration(
-              color: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
+        if (quantity != 0)
+          GestureDetector(
+            onTap: onDecrease,
+            child: Container(
+              height: 30.h,
+              width: 30.w,
+              decoration: BoxDecoration(
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+                shape: BoxShape.circle,
               ),
-              shape: BoxShape.circle,
-            ),
-            child: SvgIcon(
-              icon: IconStrings.minus,
-              color: isDisabled
-                  ? AppColors.white.withOpacity(.5)
-                  : AppColors.white,
-            ),
-          ),
-        ),
-        SizedBox(width: 10.w),
-        Text(
-          '$quantity',
-          style: GoogleFonts.publicSans(
-            fontSize: 16.sp,
-            fontWeight: FontWeight.bold,
-            color: getColorAccountType(
-              accountType: accountType,
-              businessColor: AppColors.primaryColor,
-              personalColor: AppColors.darkGreenGrey,
+              child: SvgIcon(
+                icon: IconStrings.minus,
+                color: isDisabled
+                    ? AppColors.white.withOpacity(.5)
+                    : AppColors.white,
+              ),
             ),
           ),
-        ),
-        SizedBox(width: 10.w),
+        isLoading
+            ? SizedBox(
+                width: 30.w,
+                child: CustomLoader(
+                  color: color,
+                ),
+              )
+            : SizedBox(
+                width: 30.w,
+                child: Center(
+                  child: Text(
+                    '$quantity',
+                    style: GoogleFonts.publicSans(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
         // * Plus button
         GestureDetector(
           onTap: onIncrease,

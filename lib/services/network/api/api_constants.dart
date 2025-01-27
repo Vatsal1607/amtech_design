@@ -1,10 +1,10 @@
 class BaseUrl {
-  // static const String apiBaseUrl = 'http://192.168.1.12:9000/';
-  static const String apiBaseUrl =
-      'https://d6d8-2409-40c1-18-9cad-2175-6b12-ffca-c007.ngrok-free.app/';
-  // static const String socketBaseUrl = 'http://192.168.1.12:3000/';
-  static const String socketBaseUrl =
-      'https://d024-2409-40c1-18-9cad-2175-6b12-ffca-c007.ngrok-free.app/';
+  static const String apiBaseUrl = 'http://192.168.1.12:9000/';
+  // static const String apiBaseUrl =
+  //     'https://node-517461825507.asia-south1.run.app/';
+  static const String socketBaseUrl = 'http://192.168.1.12:3000/';
+  // static const String socketBaseUrl =
+  //     'https://websocket-517461825507.asia-south1.run.app/';
 }
 
 class WebViewUrl {

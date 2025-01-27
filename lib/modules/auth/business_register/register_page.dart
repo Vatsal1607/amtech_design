@@ -2,6 +2,7 @@ import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/validator.dart';
 import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,10 +23,16 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    // String accountType = 'business'; // Todo set dynamic accountType
+    final businessSelectionProvider =
+        Provider.of<BusinessSelectionProvider>(context, listen: false);
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    debugPrint(accountType);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      //* Api call
+      businessSelectionProvider.getBusinessList(
+          currentPage: businessSelectionProvider.currentPage);
+    });
+    debugPrint('build called');
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: getColorAccountType(
@@ -121,6 +128,7 @@ class RegisterPage extends StatelessWidget {
                                 prefixIcon: IconStrings.email,
                                 iconColor: AppColors.seaMist,
                                 keyboardType: TextInputType.emailAddress,
+                                textCapitalization: TextCapitalization.none,
                                 validator: Validator.validateEmail,
                               ),
                               // Upoad Adhar (doc)
@@ -248,6 +256,7 @@ class RegisterPage extends StatelessWidget {
                                   hint: 'Enter Email Address',
                                   prefixIcon: IconStrings.email,
                                   keyboardType: TextInputType.emailAddress,
+                                  textCapitalization: TextCapitalization.none,
                                   validator: Validator.validateEmail,
                                 ),
                                 SizedBox(height: 20.h),
@@ -588,8 +597,8 @@ class RegisterPage extends StatelessWidget {
                 builder: (context, rProvider, child) => CustomButton(
                   height: 48.h,
                   isLoading: rProvider.isLoading,
+                  text: 'REGISTER',
                   onTap: () {
-                    debugPrint('Business register called');
                     if (accountType == 'personal') {
                       if (provider.personalFormKey.currentState!.validate()) {
                         // If the form is valid (personal)

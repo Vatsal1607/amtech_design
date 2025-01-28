@@ -11,12 +11,14 @@ class CustomButtonWithArrow extends StatelessWidget {
   final VoidCallback onTap;
   final bool isMargin;
   final String? text;
+  final String? totalQty;
   const CustomButtonWithArrow({
     super.key,
     required this.accountType,
     required this.onTap,
     this.isMargin = true,
     this.text,
+    this.totalQty,
   });
 
   @override
@@ -50,7 +52,9 @@ class CustomButtonWithArrow extends StatelessWidget {
                 : Row(
                     children: [
                       Text(
-                        '1 item '.toUpperCase(),
+                        totalQty == '1'
+                            ? '$totalQty item'.toUpperCase()
+                            : '$totalQty items'.toUpperCase(),
                         style: GoogleFonts.publicSans(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.bold,

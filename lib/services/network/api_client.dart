@@ -1,4 +1,5 @@
 import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
@@ -9,6 +10,7 @@ import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
 import '../../models/business_list_model.dart';
 import '../../models/deduct_recharge_amount_model.dart';
+import '../../models/favorite_add_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
@@ -126,5 +128,22 @@ abstract class ApiClient {
   @POST(ApiEndpoints.rechargeDeduct)
   Future<DeductRechargeAmountModel> rechargeDeduct(
     @Body() Map<String, dynamic> body,
+  );
+
+  // Favorite
+  @POST(ApiEndpoints.favoritesAdd)
+  Future<FavoriteAddModel> favoritesAdd(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @DELETE("${ApiEndpoints.removeFavorite}/{menuId}")
+  Future<ApiGlobalModel> removeFavorite(
+    @Path("menuId") String menuId,
+    @Field("userId") String userId,
+  );
+
+  @GET('${ApiEndpoints.getFavorite}/{userId}')
+  Future<FavoritesModel> getFavorite(
+    @Path("userId") String userId,
   );
 }

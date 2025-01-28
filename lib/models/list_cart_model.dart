@@ -183,25 +183,25 @@ class MenuId {
 
 class Size {
   String? sizeId;
+  String? name;
   String? volume;
   num? sizePrice;
-  String? sId;
 
-  Size({this.sizeId, this.volume, this.sizePrice, this.sId});
+  Size({this.sizeId, this.name, this.volume, this.sizePrice});
 
   Size.fromJson(Map<String, dynamic> json) {
     sizeId = json['sizeId'];
+    name = json['name'];
     volume = json['volume'];
     sizePrice = json['sizePrice'];
-    sId = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['sizeId'] = sizeId;
+    data['name'] = name;
     data['volume'] = volume;
     data['sizePrice'] = sizePrice;
-    data['_id'] = sId;
     return data;
   }
 }

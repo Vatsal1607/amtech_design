@@ -1,6 +1,8 @@
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/models/deduct_recharge_amount_model.dart';
+import 'package:amtech_design/models/favorite_add_model.dart';
+import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
@@ -152,6 +154,31 @@ class ApiService {
   }) async {
     return await apiClient.rechargeDeduct(
       body,
+    );
+  }
+
+  // favoritesAdd
+  Future<FavoriteAddModel> favoritesAdd({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.favoritesAdd(body);
+  }
+
+  Future<ApiGlobalModel> removeFavorite({
+    required String menuId,
+    required String userId,
+  }) async {
+    return await apiClient.removeFavorite(
+      menuId,
+      userId,
+    );
+  }
+
+  Future<FavoritesModel> getFavorite({
+    required String userId,
+  }) async {
+    return await apiClient.getFavorite(
+      userId,
     );
   }
 }

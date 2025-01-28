@@ -1,5 +1,6 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/models/list_cart_model.dart';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,6 +25,7 @@ class CartWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
     return Container(
       height: 95.h,
       decoration: BoxDecoration(
@@ -64,6 +66,7 @@ class CartWidget extends StatelessWidget {
               ),
               title: Text(
                 cartItems?.itemName ?? '',
+                overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.publicSans(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.bold,
@@ -111,8 +114,7 @@ class CartWidget extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    // '${cartItems?.size?[0].volume}',
-                    'M',
+                    '${cartItems?.size?[0].name?.substring(0, 1)}',
                     style: GoogleFonts.publicSans(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.bold,
@@ -144,23 +146,50 @@ class CartWidget extends StatelessWidget {
                       businessColor: AppColors.disabledColor,
                       personalColor: AppColors.bayLeaf,
                     ),
-                    onIncrease: () {
-                      debugPrint('cartpage Incre');
-                      if (cartItems != null && cartItems?.quantity != null) {
-                        // cartItems!.quantity! ++;
-                      }
-                      menuProvider.incrementQuantity(
-                        sizeName: cartItems?.size?[0].volume ?? '',
+                    onDecrease: () {
+                      //* API call
+                      menuProvider.updateCart(
+                        size: cartItems?.size?[0].name ?? '',
                         menuId: cartItems?.menuId?.sId ?? '',
                         sizeId: cartItems?.size?[0].sizeId ?? '',
+                        callback: (isSuccess) {
+                          if (isSuccess) {
+                            debugPrint('Item added to cart successfully');
+                            cartItems?.quantity =
+                                (cartItems?.quantity ?? 0) - 1;
+                            cartProvider.getListCart();
+                            // menuProvider.decrementQuantity(
+                            //   sizeName: cartItems?.size?[0].name ?? '',
+                            //   menuId: cartItems?.menuId?.sId ?? '',
+                            //   sizeId: cartItems?.size?[0].sizeId ?? '',
+                            // );
+                          } else {
+                            debugPrint('Error: Failed to update item to cart');
+                          }
+                        },
                       );
                     },
-                    onDecrease: () {
-                      debugPrint('cartpage Decr');
-                      menuProvider.decrementQuantity(
-                        sizeName: cartItems?.size?[0].volume ?? '',
+                    onIncrease: () {
+                      //* API call
+                      menuProvider.addToCart(
+                        size: cartItems?.size?[0].name ?? '',
                         menuId: cartItems?.menuId?.sId ?? '',
                         sizeId: cartItems?.size?[0].sizeId ?? '',
+                        callback: (isSuccess) {
+                          if (isSuccess) {
+                            debugPrint('Item added to cart successfully');
+                            cartItems?.quantity =
+                                (cartItems?.quantity ?? 0) + 1;
+                            cartProvider.getListCart();
+                            // menuProvider.incrementQuantity(
+                            //   sizeName: cartItems?.size?[0].name ?? '',
+                            //   menuId: cartItems?.menuId?.sId ?? '',
+                            //   sizeId: cartItems?.size?[0].sizeId ?? '',
+                            // );
+                          } else {
+                            debugPrint('Error: Failed to add item to cart');
+                          }
+                        },
                       );
                     },
                   ),

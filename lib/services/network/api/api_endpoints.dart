@@ -20,4 +20,7 @@ class ApiEndpoints {
   static const String updateCart = 'user/update-cart';
   static const String listCart = 'user/list-cart';
   static const String rechargeDeduct = 'recharge/deduct';
+  static const String favoritesAdd = 'favorites/add';
+  static const String removeFavorite = 'favorites';
+  static const String getFavorite = 'favorites';
 }

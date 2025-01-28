@@ -31,9 +31,14 @@ import 'routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Make status bar transparent
+      statusBarIconBrightness: Brightness.dark, // Set icons to dark
+    ),
+  );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
-    // DeviceOrientation.portraitDown,
   ]);
   await Firebase.initializeApp();
   await sharedPrefsService.init();

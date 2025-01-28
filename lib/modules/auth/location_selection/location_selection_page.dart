@@ -20,7 +20,8 @@ class LocationSelectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final String accountType =
         context.read<LocationSelectionProvider>().accountType ?? '';
-    final provider = Provider.of<LocationSelectionProvider>(context);
+    final provider =
+        Provider.of<LocationSelectionProvider>(context, listen: false);
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'
@@ -33,7 +34,7 @@ class LocationSelectionPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: SvgIcon(
+          child: const SvgIcon(
             icon: IconStrings.arrowBack,
           ),
         ),
@@ -94,8 +95,7 @@ class LocationSelectionPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16.h),
-
-                  /// Dropdown button
+                  //* Dropdown button
                   Consumer<LocationSelectionProvider>(
                     builder: (context, _, child) => DropdownLocation(
                       accountType: accountType,
@@ -117,13 +117,15 @@ class LocationSelectionPage extends StatelessWidget {
               child: CustomButton(
                 height: 48.h,
                 onTap: () {
-                  /// store locaton localy
+                  //* store locaton localy
                   sharedPrefsService.setString(
                     SharedPrefsKeys.location,
-                    provider.selectedLocation ?? '',
+                    provider.locationSearchController.text,
+                    // provider.selectedLocation ?? '',
                   );
-                  if (provider.selectedLocation != null &&
-                      provider.selectedLocation!.isNotEmpty) {
+                  if (provider.locationSearchController.text.isNotEmpty &&
+                      provider.locations.any((location) =>
+                          location == provider.locationSearchController.text)) {
                     if (accountType != '' && accountType == 'business') {
                       Navigator.pushNamed(context, Routes.companySelection);
                       provider.clearSelectedLocation();
@@ -139,6 +141,23 @@ class LocationSelectionPage extends StatelessWidget {
                       textColor: AppColors.primaryColor,
                     );
                   }
+                  // if (provider.selectedLocation != null &&
+                  //     provider.selectedLocation!.isNotEmpty) {
+                  //   if (accountType != '' && accountType == 'business') {
+                  //     Navigator.pushNamed(context, Routes.companySelection);
+                  //     provider.clearSelectedLocation();
+                  //   } else if (accountType != '' && accountType == 'personal') {
+                  //     Navigator.pushNamed(context, Routes.login);
+                  //     provider.clearSelectedLocation();
+                  //   }
+                  // } else {
+                  //   customSnackBar(
+                  //     context: context,
+                  //     message: 'Please Select Location',
+                  //     backgroundColor: AppColors.seaShell,
+                  //     textColor: AppColors.primaryColor,
+                  //   );
+                  // }
                 },
                 bgColor: accountType != '' && accountType == 'business'
                     ? AppColors.disabledColor

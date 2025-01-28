@@ -1,14 +1,12 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/profile/profile_provider.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
-import 'package:amtech_design/modules/ratings/ratings_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,9 +26,9 @@ class ProfilePage extends StatelessWidget {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     String userContact =
         sharedPrefsService.getString(SharedPrefsKeys.userContact) ?? '';
-    debugPrint('userContact: $userContact');
     final provider = Provider.of<ProfileProvider>(context, listen: false);
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -135,17 +133,24 @@ class ProfilePage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Text(
-                            'AMTech Design',
-                            style: GoogleFonts.publicSans(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w700,
-                              color: getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.primaryColor,
-                                personalColor: AppColors.darkGreenGrey,
-                              ),
-                            ),
+                          Consumer<MenuProvider>(
+                            builder: (context, menuProvider, child) {
+                              final businessName = menuProvider
+                                      .homeMenuResponse?.data?.businessName ??
+                                  '';
+                              return Text(
+                                businessName,
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                           SizedBox(width: 10.w),
                           const SvgIcon(
@@ -155,7 +160,9 @@ class ProfilePage extends StatelessWidget {
                         ],
                       ),
                       Text(
-                        'Business Account',
+                        accountType == 'business'
+                            ? 'Business Account'
+                            : 'Personal Account',
                         style: GoogleFonts.publicSans(
                           color: getColorAccountType(
                             accountType: accountType,

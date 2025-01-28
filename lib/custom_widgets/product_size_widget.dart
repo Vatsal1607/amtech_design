@@ -96,12 +96,11 @@ class ProductSizeWidget extends StatelessWidget {
         trailing: ItemQuantityWidget(
           accountType: accountType,
           quantity: isDisabled ? 0 : quantity,
-          isLoading: menuProvider.getIsLoadingStates(size),
-          // isLoading: menuProvider.isLoadingAddToCart ||
-          //     menuProvider.isLoadingUpdateCart,
+          // isLoading: menuProvider.getIsLoadingStates(size),
           onDecrease: isDisabled
               ? null
               : () {
+                  //* API call
                   menuProvider.updateCart(
                     size: size,
                     menuId: menuId,
@@ -123,6 +122,7 @@ class ProductSizeWidget extends StatelessWidget {
           onIncrease: isDisabled
               ? null
               : () {
+                  //* API call
                   menuProvider.addToCart(
                     size: size,
                     menuId: menuId,
@@ -139,7 +139,7 @@ class ProductSizeWidget extends StatelessWidget {
                         debugPrint('Error: Failed to add item to cart');
                       }
                     },
-                  ); // API call
+                  );
                 },
         ),
       ),

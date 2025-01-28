@@ -83,6 +83,7 @@ class CartProvider extends ChangeNotifier {
       if (res.success == true && res.data != null) {
         listCartResponse = res;
         cartItemList = res.data?.carts?[0].items;
+        totalAmount = res.data?.carts?.first.totalAmount?.toString() ?? '';
       } else {
         log('${res.message}');
       }

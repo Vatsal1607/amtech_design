@@ -1,5 +1,6 @@
 import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
+import 'package:amtech_design/modules/product_page/product_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,10 +9,11 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
+import '../../../models/favorites_model.dart';
+import '../favorite_provider.dart';
 
 class FavoriteItemsWidget extends StatelessWidget {
-  final String image;
-  final String name;
+  final MenuDetails? menuDetails;
   final int index;
   final String accountType;
   final bool isHealthFirst;
@@ -19,8 +21,7 @@ class FavoriteItemsWidget extends StatelessWidget {
   final double? width;
   const FavoriteItemsWidget({
     super.key,
-    required this.image,
-    required this.name,
+    this.menuDetails,
     required this.index,
     required this.accountType,
     this.isHealthFirst = false,
@@ -31,6 +32,10 @@ class FavoriteItemsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    final detailsProvider =
+        Provider.of<ProductDetailsProvider>(context, listen: false);
+    final favoriteProvider =
+        Provider.of<FavoritesProvider>(context, listen: false);
     return Stack(
       clipBehavior: Clip.none,
       children: [
@@ -39,7 +44,7 @@ class FavoriteItemsWidget extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(image),
+              image: NetworkImage(menuDetails?.images ?? ''),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(30.r),
@@ -100,7 +105,7 @@ class FavoriteItemsWidget extends StatelessWidget {
                   ),
                   // * Foreground Content
                   Text(
-                    capitalizeEachWord(name),
+                    capitalizeEachWord(menuDetails?.itemName ?? ''),
                     maxLines: 1,
                     overflow: TextOverflow.visible,
                     textAlign: TextAlign.center,
@@ -127,7 +132,14 @@ class FavoriteItemsWidget extends StatelessWidget {
           right: 25.w,
           child: GestureDetector(
             onTap: () {
-              debugPrint('pressed');
+              detailsProvider
+                  .removeFavorite(
+                      context: context, menuId: menuDetails?.sId ?? '')
+                  .then((isSuccess) {
+                if (isSuccess) {
+                  favoriteProvider.getFavorite(); //* API call
+                }
+              });
             },
             child: const Icon(
               Icons.favorite,
@@ -144,13 +156,12 @@ class FavoriteItemsWidget extends StatelessWidget {
             // * Add button
             child: GestureDetector(
               onTap: () {
-                debugPrint('Add button pressed at index $index');
                 //* Custom Size bottomsheet
                 showSizeModalBottomSheet(
                   context: context,
                   accountType: accountType,
                   provider: menuProvider,
-                  menuId: '',
+                  menuId: menuDetails?.sId ?? '',
                 );
                 // showSnackbar(context, '{count} ITEMS ADDED');
               },

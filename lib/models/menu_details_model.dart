@@ -40,22 +40,25 @@ class Data {
   String? updatedAt;
   int? iV;
   List<Size>? personalSize;
+  bool? isFavorite; // New field added
 
-  Data(
-      {this.sId,
-      this.categoryId,
-      this.itemName,
-      this.images,
-      this.ingredients,
-      this.description,
-      this.ratings,
-      this.size,
-      this.isActive,
-      this.isDelete,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.personalSize});
+  Data({
+    this.sId,
+    this.categoryId,
+    this.itemName,
+    this.images,
+    this.ingredients,
+    this.description,
+    this.ratings,
+    this.size,
+    this.isActive,
+    this.isDelete,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.personalSize,
+    this.isFavorite,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -82,6 +85,7 @@ class Data {
         personalSize!.add(Size.fromJson(v));
       });
     }
+    isFavorite = json['isFavorite']; // Parse new field
   }
 
   Map<String, dynamic> toJson() {
@@ -104,6 +108,7 @@ class Data {
     if (personalSize != null) {
       data['personalSize'] = personalSize!.map((v) => v.toJson()).toList();
     }
+    data['isFavorite'] = isFavorite; // Add new field to JSON
     return data;
   }
 }

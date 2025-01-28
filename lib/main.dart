@@ -1,6 +1,6 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
-import 'package:amtech_design/modules/favorite/favorite_items_provider.dart';
+import 'package:amtech_design/modules/favorite/favorite_provider.dart';
 import 'package:amtech_design/modules/product_page/product_details_provider.dart';
 import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => OrderStatusProvider()),
         ChangeNotifierProvider(create: (_) => AuthorizedEmpProvider()),
         ChangeNotifierProvider(create: (_) => RatingsProvider()),
-        ChangeNotifierProvider(create: (_) => FavoriteItemsProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()),
         ChangeNotifierProvider(create: (_) => FeedbackProvider()),
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => EditProfileProvider()),

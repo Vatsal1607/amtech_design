@@ -17,7 +17,6 @@ import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
-import '../provider/socket_provider.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
 
@@ -67,15 +66,9 @@ class CartPage extends StatelessWidget {
                           : ListView.separated(
                               shrinkWrap: true,
                               itemCount: provider.cartItemList?.length ?? 0,
-                              // itemCount: provider
-                              //         .listCartResponse?.data?.carts?.length ??
-                              //     0,
                               physics: const NeverScrollableScrollPhysics(),
                               padding: EdgeInsets.only(
-                                left: 31.w,
-                                right: 31.w,
-                                top: 27.h,
-                              ),
+                                  left: 31.w, right: 31.w, top: 27.h),
                               separatorBuilder: (context, index) => SizedBox(
                                 height: 10.h,
                               ),
@@ -207,7 +200,7 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 18.h),
-                  // * Expansion tile
+                  // * Expansion tile ! Working...
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 31.w),
                     decoration: BoxDecoration(
@@ -218,56 +211,66 @@ class CartPage extends StatelessWidget {
                       ),
                       borderRadius: BorderRadius.circular(30.r),
                     ),
-                    child: ExpansionTile(
-                      onExpansionChanged: provider.onExpansionChanged,
-                      leading: SvgIcon(
-                        icon: IconStrings.totalBill,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.seaShell,
-                          personalColor: AppColors.seaMist,
+                    child: Consumer<CartProvider>(
+                      builder: (context, _, child) => ExpansionTile(
+                        onExpansionChanged: provider.onExpansionChanged,
+                        leading: SvgIcon(
+                          icon: IconStrings.totalBill,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                         ),
-                      ),
-                      trailing: Icon(
-                        provider.isExpanded
-                            ? Icons.expand_less
-                            : Icons.expand_more,
-                        color: AppColors.seaShell,
-                      ),
-                      title: Row(
+                        trailing: Icon(
+                          provider.isExpanded
+                              ? Icons.expand_less
+                              : Icons.expand_more,
+                          color: AppColors.seaShell,
+                        ),
+                        title: Row(
+                          children: [
+                            Text(
+                              'Total Bill ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              '₹11 ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'Incl. taxes & charges',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 10.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.seaShell,
+                                  personalColor: AppColors.seaMist,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         children: [
                           Text(
-                            'Total Bill ',
+                            'data',
                             style: GoogleFonts.publicSans(
-                              fontSize: 12.sp,
-                              color: getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.seaShell,
-                                personalColor: AppColors.seaMist,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '₹11 ',
-                            style: GoogleFonts.publicSans(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.bold,
-                              color: getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.seaShell,
-                                personalColor: AppColors.seaMist,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            'Incl. taxes & charges',
-                            style: GoogleFonts.publicSans(
-                              fontSize: 10.sp,
-                              color: getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.seaShell,
-                                personalColor: AppColors.seaMist,
-                              ),
+                              color: AppColors.seaShell,
                             ),
                           ),
                         ],
@@ -285,13 +288,10 @@ class CartPage extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Consumer<CartProvider>(builder: (context, _, child) {
-                  provider.totalAmount = provider
-                          .listCartResponse?.data?.carts?.first.totalAmount
-                          ?.toString() ??
-                      '';
+                  //* Total amount, unComment if not update
                   // provider.totalAmount = provider
-                  //         .listCartResponse?.data!.carts!.first.totalAmount
-                  //         .toString() ??
+                  //         .listCartResponse?.data?.carts?.first.totalAmount
+                  //         ?.toString() ??
                   //     '';
                   return CustomButton(
                     onTap: () {

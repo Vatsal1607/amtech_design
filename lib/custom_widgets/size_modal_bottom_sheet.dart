@@ -21,7 +21,6 @@ final requiredSizes = ['MEDIUM', 'LARGE', 'REGULAR'];
 void showSizeModalBottomSheet({
   required BuildContext context,
   required String accountType,
-  // final MenuSizeModel? menuSizeResponse,
   required MenuProvider provider,
   MenuItems? menuItems,
   required String menuId,
@@ -123,11 +122,23 @@ void showSizeModalBottomSheet({
                     SizedBox(height: 9.h),
 
                     // * Added to cart button
-                    CustomButtonWithArrow(
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.cart);
+                    Consumer<MenuProvider>(
+                      builder: (context, _, child) {
+                        final requiredSizes = provider.requiredSizes;
+                        final quantities = provider.quantities;
+                        int totalQty = requiredSizes
+                            .map((size) => quantities[size] ?? 0)
+                            .fold(0, (sum, qty) => sum + qty);
+
+                        return CustomButtonWithArrow(
+                          totalQty: '$totalQty',
+                          onTap: () {
+                            Navigator.pop(context);
+                            Navigator.pushNamed(context, Routes.cart);
+                          },
+                          accountType: accountType,
+                        );
                       },
-                      accountType: accountType,
                     ),
                   ],
                 ),

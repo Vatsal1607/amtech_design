@@ -20,15 +20,25 @@ import '../../services/local/shared_preferences_service.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  @override
+  void initState() {
+    context.read<CartProvider>().getListCart();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
-    // final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
     return Scaffold(
@@ -200,7 +210,7 @@ class CartPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 18.h),
-                  // * Expansion tile ! Working...
+                  //* Expansion tile
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 31.w),
                     decoration: BoxDecoration(
@@ -242,7 +252,7 @@ class CartPage extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '₹11 ',
+                              '₹${provider.totalAmount} ',
                               style: GoogleFonts.publicSans(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.bold,
@@ -267,10 +277,84 @@ class CartPage extends StatelessWidget {
                           ],
                         ),
                         children: [
-                          Text(
-                            'data',
-                            style: GoogleFonts.publicSans(
-                              color: AppColors.seaShell,
+                          Padding(
+                            padding: EdgeInsets.only(
+                                left: 20.w, right: 20.w, bottom: 15.h),
+                            child: Column(
+                              children: [
+                                //* Base amount
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Base Amount',
+                                      style: GoogleFonts.publicSans(
+                                        color: AppColors.seaShell,
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                    Builder(builder: (context) {
+                                      double totalAmount = double.tryParse(
+                                              provider.totalAmount ?? '0') ??
+                                          0.0;
+                                      double gstAmount =
+                                          provider.calculateGST(totalAmount);
+                                      return Text(
+                                        '₹ ${totalAmount - gstAmount}',
+                                        style: GoogleFonts.publicSans(
+                                          fontSize: 12.sp,
+                                          color: AppColors.seaShell,
+                                        ),
+                                      );
+                                    }),
+                                  ],
+                                ),
+                                SizedBox(height: 5.h),
+                                //* GST
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'GST Charges',
+                                      style: GoogleFonts.publicSans(
+                                        color: AppColors.seaShell,
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                    Text(
+                                      '₹ ${provider.calculateGST(double.tryParse(provider.totalAmount ?? '0') ?? 0)} (5%)',
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 12.sp,
+                                        color: AppColors.seaShell,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 5.h),
+                                //* Delivery
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Delivery Charges',
+                                      style: GoogleFonts.publicSans(
+                                        color: AppColors.seaShell,
+                                        fontSize: 12.sp,
+                                      ),
+                                    ),
+                                    Text(
+                                      'FREE',
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 12.sp,
+                                        color: AppColors.seaShell,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -294,34 +378,39 @@ class CartPage extends StatelessWidget {
                   //         ?.toString() ??
                   //     '';
                   return CustomButton(
-                    onTap: () {
-                      final limitedCartItems = provider.cartItemList
-                          ?.map((item) => item.toLimitedJson())
-                          .toList();
-                      // Prepare the data
-                      final Map<String, dynamic> orderCreateData = {
-                        "userId": sharedPrefsService
-                                .getString(SharedPrefsKeys.userId) ??
-                            '',
-                        "userType":
-                            accountType == 'business' ? 'BusinessUser' : 'User',
-                        "items": limitedCartItems,
-                        "totalAmount": double.parse(
-                          provider.totalAmount.toString(),
-                        ),
-                        "paymentMethod":
-                            provider.selectedPaymentMethod, // 'UPI', 'Perks'
-                        "deliveryAddress":
-                            menuProvider.homeMenuResponse?.data?.address,
-                      };
-                      log('OrderCreateData: $orderCreateData');
-                      showProcessToPayBottomSheeet(
-                        context: context,
-                        accountType: accountType,
-                        //! Emit order-create
-                        orderCreateData: orderCreateData,
-                      );
-                    },
+                    onTap: provider.cartItemList == null
+                        ? () {
+                            debugPrint('CART is Empty');
+                          }
+                        : () {
+                            final limitedCartItems = provider.cartItemList
+                                ?.map((item) => item.toLimitedJson())
+                                .toList();
+                            // Prepare the data
+                            final Map<String, dynamic> orderCreateData = {
+                              "userId": sharedPrefsService
+                                      .getString(SharedPrefsKeys.userId) ??
+                                  '',
+                              "userType": accountType == 'business'
+                                  ? 'BusinessUser'
+                                  : 'User',
+                              "items": limitedCartItems,
+                              "totalAmount": double.parse(
+                                provider.totalAmount.toString(),
+                              ),
+                              "paymentMethod": provider
+                                  .selectedPaymentMethod, // 'UPI', 'Perks'
+                              "deliveryAddress":
+                                  menuProvider.homeMenuResponse?.data?.address,
+                            };
+                            log('OrderCreateData: $orderCreateData');
+                            showProcessToPayBottomSheeet(
+                              context: context,
+                              accountType: accountType,
+                              //! Emit order-create
+                              orderCreateData: orderCreateData,
+                            );
+                          },
                     height: 55.h,
                     width: double.infinity,
                     bgColor: getColorAccountType(
@@ -329,7 +418,7 @@ class CartPage extends StatelessWidget {
                       businessColor: AppColors.primaryColor,
                       personalColor: AppColors.darkGreenGrey,
                     ),
-                    text: 'proceed to pay ₹ ${provider.totalAmount ?? ''}',
+                    text: 'proceed to pay ₹ ${provider.totalAmount ?? '0'}',
                   );
                 }),
               ),

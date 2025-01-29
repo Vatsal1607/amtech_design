@@ -120,7 +120,6 @@ void showSizeModalBottomSheet({
                             ),
                     ),
                     SizedBox(height: 9.h),
-
                     // * Added to cart button
                     Consumer<MenuProvider>(
                       builder: (context, _, child) {
@@ -134,6 +133,7 @@ void showSizeModalBottomSheet({
                           totalQty: '$totalQty',
                           onTap: () {
                             Navigator.pop(context);
+                            provider.quantities = {}; // Reset quantity
                             Navigator.pushNamed(context, Routes.cart);
                           },
                           accountType: accountType,

@@ -58,10 +58,6 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  CartProvider() {
-    getListCart();
-  }
-
   bool isLoading = false;
   final ApiService apiService = ApiService();
   List<CartItems>? cartItemList;
@@ -111,8 +107,7 @@ class CartProvider extends ChangeNotifier {
       );
       log('rechargeDeduct: ${res.data}');
       if (res.success == true && res.data != null) {
-        // listCartResponse = res;
-        // cartItemList = res.data?.carts?[0].items;
+        //
       } else {
         log('${res.message}');
       }
@@ -122,5 +117,10 @@ class CartProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  double calculateGST(double totalAmount) {
+    // return (5 / 100) * totalAmount;
+    return double.parse(((5 / 100) * totalAmount).toStringAsFixed(2));
   }
 }

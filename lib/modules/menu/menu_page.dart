@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -230,7 +229,9 @@ class MenuPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(100.r),
                               boxShadow: kDropShadow,
                             ),
+                            //* SearchField
                             child: TextFormField(
+                              controller: provider.searchController,
                               textCapitalization: TextCapitalization.sentences,
                               textAlignVertical: TextAlignVertical.bottom,
                               style: GoogleFonts.publicSans(
@@ -243,7 +244,6 @@ class MenuPage extends StatelessWidget {
                               ),
                               decoration: InputDecoration(
                                 hintText: 'Search for Tea, Coffee or Snacks',
-
                                 hintStyle: GoogleFonts.publicSans(
                                   color: getColorAccountType(
                                     accountType: accountType,
@@ -294,9 +294,11 @@ class MenuPage extends StatelessWidget {
                                         padding: EdgeInsets.zero,
                                         physics:
                                             const NeverScrollableScrollPhysics(),
+                                        // itemCount:
+                                        //     provider.menuCategories?.length ??
+                                        //         0,
                                         itemCount:
-                                            provider.menuCategories?.length ??
-                                                0,
+                                            provider.filteredCategories.length,
                                         separatorBuilder: (context, index) =>
                                             SizedBox(height: 15.h),
                                         itemBuilder: (context, parentIndex) {
@@ -308,10 +310,15 @@ class MenuPage extends StatelessWidget {
                                                 child: DividerLabel(
                                                   // key: provider.bestSellerKey,
                                                   label: provider
-                                                          .menuCategories?[
+                                                          .filteredCategories[
                                                               parentIndex]
                                                           .categoryTitle ??
                                                       '',
+                                                  // label: provider
+                                                  //         .menuCategories?[
+                                                  //             parentIndex]
+                                                  //         .categoryTitle ??
+                                                  //     '',
                                                   accountType: accountType,
                                                 ),
                                               ),
@@ -321,13 +328,20 @@ class MenuPage extends StatelessWidget {
                                                 alignment: Alignment.topLeft,
                                                 child: SizedBox(
                                                   height: 157.h,
+                                                  //* ListView Items
                                                   child: ListView.separated(
                                                     padding:
                                                         EdgeInsets.symmetric(
                                                             horizontal: 20.w),
                                                     shrinkWrap: true,
+                                                    // itemCount: provider
+                                                    //         .menuCategories?[
+                                                    //             parentIndex]
+                                                    //         .menuItems
+                                                    //         ?.length ??
+                                                    //     0,
                                                     itemCount: provider
-                                                            .menuCategories?[
+                                                            .filteredCategories[
                                                                 parentIndex]
                                                             .menuItems
                                                             ?.length ??
@@ -339,11 +353,15 @@ class MenuPage extends StatelessWidget {
                                                         SizedBox(width: 10.w),
                                                     itemBuilder:
                                                         (context, childIndex) {
+                                                      // final menuItems = provider
+                                                      //         .menuCategories?[
+                                                      //             parentIndex]
+                                                      //         .menuItems?[
+                                                      //     childIndex];
                                                       final menuItems = provider
-                                                              .menuCategories?[
-                                                                  parentIndex]
-                                                              .menuItems?[
-                                                          childIndex];
+                                                          .filteredCategories[
+                                                              parentIndex]
+                                                          .menuItems?[childIndex];
 
                                                       return Consumer<
                                                           MenuProvider>(

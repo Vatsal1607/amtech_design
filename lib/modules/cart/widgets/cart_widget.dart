@@ -155,9 +155,12 @@ class CartWidget extends StatelessWidget {
                         callback: (isSuccess) {
                           if (isSuccess) {
                             debugPrint('Item added to cart successfully');
-                            cartItems?.quantity =
-                                (cartItems?.quantity ?? 0) - 1;
                             cartProvider.getListCart();
+                            debugPrint('QTY: decr: ${cartItems?.quantity}');
+                            //* QTY- locally
+                            // cartItems?.quantity =
+                            //     (cartItems?.quantity ?? 0) - 1;
+                            debugPrint('QTY: decr (2): ${cartItems?.quantity}');
                             // menuProvider.decrementQuantity(
                             //   sizeName: cartItems?.size?[0].name ?? '',
                             //   menuId: cartItems?.menuId?.sId ?? '',
@@ -178,9 +181,11 @@ class CartWidget extends StatelessWidget {
                         callback: (isSuccess) {
                           if (isSuccess) {
                             debugPrint('Item added to cart successfully');
-                            cartItems?.quantity =
-                                (cartItems?.quantity ?? 0) + 1;
                             cartProvider.getListCart();
+                            debugPrint('QTY: Incr: ${cartItems?.quantity}');
+                            //* QTY+ locally
+                            // cartItems?.quantity =
+                            //     (cartItems?.quantity ?? 0) + 1;
                             // menuProvider.incrementQuantity(
                             //   sizeName: cartItems?.size?[0].name ?? '',
                             //   menuId: cartItems?.menuId?.sId ?? '',

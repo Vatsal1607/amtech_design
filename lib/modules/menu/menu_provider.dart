@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import '../../core/utils/strings.dart';
 import '../../models/api_global_model.dart';
 import '../../models/menu_size_model.dart';
-import '../../models/update_cart_request_model.dart';
 import '../../services/network/api_service.dart';
 
 class MenuProvider extends ChangeNotifier {
@@ -31,6 +30,8 @@ class MenuProvider extends ChangeNotifier {
     carouselCurrentIndex = index;
     notifyListeners();
   }
+
+  TextEditingController searchController = TextEditingController();
 
   bool isVisibleSearchSpaceTop = false;
   bool onNotification(ScrollNotification scrollNotification) {
@@ -156,8 +157,38 @@ class MenuProvider extends ChangeNotifier {
     homeMenuApi();
     log('homeMenuApi called');
     quantities = {for (var size in requiredSizes) size: 0};
+
+    // Initially set the filtered categories to the original categories
+    filteredCategories = menuCategories ?? [];
+    // Add listener for search functionality
+    searchController.addListener(_filterSearchResults);
   }
 
+  void _filterSearchResults() {
+    String query = searchController.text.toLowerCase();
+    // Filter categories based on the search query
+    filteredCategories = (menuCategories ?? []).where((category) {
+      // Filter categories by title
+      bool categoryMatches =
+          category.categoryTitle?.toLowerCase().contains(query) ?? false;
+      // Filter products within the category
+      bool productMatches = category.menuItems?.any((item) {
+            return item.itemName?.toLowerCase().contains(query) ?? false;
+          }) ??
+          false;
+
+      return categoryMatches || productMatches;
+    }).toList();
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  List<MenuCategories> filteredCategories = []; // List for filtered categories
   HomeMenuModel? homeMenuResponse;
   List<MenuCategories>? menuCategories;
   // * HomeMenu API
@@ -181,7 +212,7 @@ class MenuProvider extends ChangeNotifier {
       if (response.success == true) {
         homeMenuResponse = response;
         menuCategories = response.data?.menuCategories;
-        // menuItemsName =
+        filteredCategories = menuCategories ?? [];
         log('Success: homeMenuApi: ${response.message.toString()}');
         return true; // * Indicat success
       } else {

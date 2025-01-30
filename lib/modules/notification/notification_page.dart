@@ -4,6 +4,8 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/constants/keys.dart';
+import '../../services/local/shared_preferences_service.dart';
 import 'widgets/notification_tile.dart';
 
 class NotificationPage extends StatelessWidget {
@@ -11,8 +13,8 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,

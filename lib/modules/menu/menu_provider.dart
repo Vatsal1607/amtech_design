@@ -154,7 +154,7 @@ class MenuProvider extends ChangeNotifier {
 
   final requiredSizes = ['MEDIUM', 'LARGE', 'REGULAR'];
   MenuProvider() {
-    homeMenuApi();
+    // homeMenuApi();
     log('homeMenuApi called');
     quantities = {for (var size in requiredSizes) size: 0};
 
@@ -303,6 +303,7 @@ class MenuProvider extends ChangeNotifier {
     required String sizeId,
     required Function(bool) callback, // Callback parameter
     required String size,
+    List<RequestItems>? items,
   }) async {
     isLoadingAddToCart = true;
     setLoading(size, true);
@@ -310,26 +311,26 @@ class MenuProvider extends ChangeNotifier {
     try {
       final requestBody = AddToCartRequestModel(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId),
-        items: [
-          RequestItems(
-            menuId: menuId,
-            quantity: 1,
-            size: [
-              RequestSize(
-                sizeId: sizeId,
+        items: items ??
+            [
+              RequestItems(
+                menuId: menuId,
+                quantity: 1,
+                size: [
+                  RequestSize(
+                    sizeId: sizeId,
+                  ),
+                ],
               ),
             ],
-          ),
-        ],
       );
       final res = await apiService.addToCart(
         addToCartRequestBody: requestBody,
       );
       log('addToCart: ${res.data}');
       if (res.success == true) {
-        // incrementQuantity(sizeName: sizeName, menuId: menuId, sizeId: sizeId);
-        callback(true); // Notify success
         AddToCartModel addToCartResponse = res;
+        callback(true); // Notify success
       } else {
         log('${res.message}');
         callback(false); // Notify failure

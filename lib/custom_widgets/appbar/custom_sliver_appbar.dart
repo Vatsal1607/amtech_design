@@ -77,7 +77,11 @@ class CustomSliverAppbar extends StatelessWidget {
                 children: [
                   Consumer<MenuProvider>(
                     builder: (context, menuProvider, child) => Text(
-                      menuProvider.homeMenuResponse?.data?.businessName ?? '',
+                      accountType == 'business'
+                          ? menuProvider.homeMenuResponse?.data?.businessName ??
+                              ''
+                          : '${menuProvider.homeMenuResponse?.data?.firstName ?? ''}'
+                              ' ${menuProvider.homeMenuResponse?.data?.lastName ?? ''}',
                       style: GoogleFonts.publicSans(
                         fontSize: 24.sp,
                         fontWeight: FontWeight.bold,

@@ -19,8 +19,19 @@ import '../../services/local/shared_preferences_service.dart';
 import 'widgets/fab_menu_button.dart';
 import 'widgets/slider_details_widget.dart';
 
-class MenuPage extends StatelessWidget {
+class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
+
+  @override
+  State<MenuPage> createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  @override
+  void initState() {
+    context.read<MenuProvider>().homeMenuApi();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

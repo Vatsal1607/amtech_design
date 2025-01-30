@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
@@ -28,9 +26,8 @@ class BottomBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; //Todo replace with bottom data
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
-    //     '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     debugPrint(
         'User Token is: ${sharedPrefsService.getString(SharedPrefsKeys.userToken.toString())}');

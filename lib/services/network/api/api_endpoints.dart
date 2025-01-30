@@ -23,4 +23,5 @@ class ApiEndpoints {
   static const String favoritesAdd = 'favorites/add';
   static const String removeFavorite = 'favorites';
   static const String getFavorite = 'favorites';
+  static const String reorderList = 'order/reorder-list';
 }

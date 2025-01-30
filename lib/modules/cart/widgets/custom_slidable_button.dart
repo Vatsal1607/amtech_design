@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +8,11 @@ import '../../../core/utils/app_colors.dart';
 
 class CustomSlidableButton extends StatelessWidget {
   final void Function(DragEndDetails)? onHorizontalDragEnd;
+  final String accountType;
   const CustomSlidableButton({
     super.key,
     this.onHorizontalDragEnd,
+    required this.accountType,
   });
 
   @override
@@ -29,7 +32,11 @@ class CustomSlidableButton extends StatelessWidget {
               width: double.infinity,
               margin: EdgeInsets.symmetric(horizontal: 32.w),
               decoration: BoxDecoration(
-                color: AppColors.disabledColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.disabledColor,
+                  personalColor: AppColors.bayLeaf,
+                ),
                 borderRadius: BorderRadius.circular(100.r),
               ),
             ),
@@ -45,7 +52,11 @@ class CustomSlidableButton extends StatelessWidget {
                 child: Text(
                   'Slide to Place Order'.toUpperCase(),
                   style: GoogleFonts.publicSans(
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp,
                   ),
@@ -64,7 +75,11 @@ class CustomSlidableButton extends StatelessWidget {
                 child: Text(
                   'Release to Confirm'.toUpperCase(),
                   style: GoogleFonts.publicSans(
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                     fontWeight: FontWeight.bold,
                     fontSize: 15.sp,
                   ),
@@ -80,7 +95,11 @@ class CustomSlidableButton extends StatelessWidget {
                 width: 61.h,
                 height: 61.h,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   borderRadius: BorderRadius.circular(30.r),
                   boxShadow: [
                     BoxShadow(
@@ -89,7 +108,7 @@ class CustomSlidableButton extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: Center(
+                child: const Center(
                   child: Icon(
                     Icons.arrow_forward_ios,
                     color: AppColors.seaShell,

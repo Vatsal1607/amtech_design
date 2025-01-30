@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../routes.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import 'widgets/order_status_with_progress.dart';
 
 class OrderStatusPage extends StatelessWidget {
@@ -15,8 +17,8 @@ class OrderStatusPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,

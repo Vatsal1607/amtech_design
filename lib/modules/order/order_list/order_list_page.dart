@@ -4,15 +4,17 @@ import 'package:amtech_design/modules/order/order_list/widgets/order_list_status
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
+import '../../../services/local/shared_preferences_service.dart';
 
 class OrderListPage extends StatelessWidget {
   const OrderListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,

@@ -111,7 +111,10 @@ class _CartPageState extends State<CartPage> {
                         vertical: 15.h,
                       ),
                       decoration: BoxDecoration(
-                          color: AppColors.disabledColor,
+                          color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.disabledColor,
+                              personalColor: AppColors.bayLeaf),
                           borderRadius: BorderRadius.circular(30.r)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -121,14 +124,22 @@ class _CartPageState extends State<CartPage> {
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.primaryColor,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                             ),
                           ),
                           Container(
                             height: 25.h,
                             width: 25.w,
-                            decoration: const BoxDecoration(
-                              color: AppColors.primaryColor,
+                            decoration: BoxDecoration(
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
                               shape: BoxShape.circle,
                             ),
                             child: const SvgIcon(

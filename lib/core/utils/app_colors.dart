@@ -9,7 +9,7 @@ class AppColors {
   static const red = Color(0XFFFF0000);
   static const seaShell = Color(0XFFEEF4ED);
   static const seaMist = Color(0XFFC7DCCD);
-  static const bayLeaf = Color(0XFF87AC91); // opp. disabledColor / disabledBg
+  static const bayLeaf = Color(0XFF87AC91); //* opp. disabledColor / disabledBg
   static const lightGreen = Color(0XFF40C057);
   static const lemonChiffon = Color(0XFFFEF8C8);
   static const deepGreen = Color(0XFF006B1A);

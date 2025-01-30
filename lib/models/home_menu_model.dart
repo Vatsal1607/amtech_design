@@ -29,6 +29,8 @@ class Data {
   String? sId;
   String? businessName;
   String? ownerName;
+  String? firstName;
+  String? lastName; //* fName & lName added for personal
   String? address;
   List<MenuCategories>? menuCategories;
   num? rechargeAmount;
@@ -40,6 +42,8 @@ class Data {
       {this.sId,
       this.businessName,
       this.ownerName,
+      this.firstName,
+      this.lastName,
       this.address,
       this.menuCategories,
       this.rechargeAmount,
@@ -51,6 +55,8 @@ class Data {
     sId = json['_id'];
     businessName = json['businessName'];
     ownerName = json['ownerName'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
     address = json['address'];
     if (json['menuCategories'] != null) {
       menuCategories = <MenuCategories>[];
@@ -69,6 +75,8 @@ class Data {
     data['_id'] = sId;
     data['businessName'] = businessName;
     data['ownerName'] = ownerName;
+    data['firstName'] = firstName;
+    data['lastName'] = lastName;
     data['address'] = address;
     if (menuCategories != null) {
       data['menuCategories'] = menuCategories!.map((v) => v.toJson()).toList();

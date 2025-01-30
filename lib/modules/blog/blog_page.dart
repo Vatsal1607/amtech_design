@@ -4,15 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
+import '../../services/local/shared_preferences_service.dart';
 
 class BlogPage extends StatelessWidget {
   const BlogPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
       backgroundColor: getColorAccountType(
           accountType: accountType,

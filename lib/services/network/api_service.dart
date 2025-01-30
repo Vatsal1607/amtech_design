@@ -5,6 +5,7 @@ import 'package:amtech_design/models/favorite_add_model.dart';
 import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
+import 'package:amtech_design/models/reorder_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
@@ -179,6 +180,22 @@ class ApiService {
   }) async {
     return await apiClient.getFavorite(
       userId,
+    );
+  }
+
+  Future<ReorderModel> getReorderList({
+    required int page,
+    required int limit,
+    required String userId,
+    String? startDate,
+    String? endDate,
+  }) async {
+    return await apiClient.reorderList(
+      page,
+      limit,
+      userId,
+      startDate,
+      endDate,
     );
   }
 }

@@ -16,6 +16,7 @@ import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../models/personal_register_model.dart';
+import '../../models/reorder_model.dart';
 import '../../models/update_cart_request_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
@@ -145,5 +146,15 @@ abstract class ApiClient {
   @GET('${ApiEndpoints.getFavorite}/{userId}')
   Future<FavoritesModel> getFavorite(
     @Path("userId") String userId,
+  );
+
+  @GET(ApiEndpoints.reorderList)
+  Future<ReorderModel> reorderList(
+    @Query("page") int page,
+    @Query("limit") int limit,
+    @Query("userId") String userId,
+    // @Query("search") String? search,
+    @Query("startDate") String? startDate,
+    @Query("endDate") String? endDate,
   );
 }

@@ -87,6 +87,7 @@ void showProcessToPayBottomSheeet({
                   SizedBox(height: 10.h),
 
                   CustomSlidableButton(
+                    accountType: accountType,
                     onHorizontalDragEnd: (details) {
                       cartProvider.onHorizontalDragEnd(details, context);
                       //* Emit socket event

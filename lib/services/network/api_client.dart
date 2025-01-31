@@ -153,8 +153,12 @@ abstract class ApiClient {
     @Query("page") int page,
     @Query("limit") int limit,
     @Query("userId") String userId,
-    // @Query("search") String? search,
     @Query("startDate") String? startDate,
     @Query("endDate") String? endDate,
+  );
+
+  @DELETE("${ApiEndpoints.clearCart}/{cartId}")
+  Future<ApiGlobalModel> clearCart(
+    @Path("cartId") String cartId,
   );
 }

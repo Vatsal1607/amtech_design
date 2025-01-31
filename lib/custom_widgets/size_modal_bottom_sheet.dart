@@ -42,6 +42,8 @@ void showSizeModalBottomSheet({
             provider.getMenuSize(
               menuId: menuItems?.menuId?.toString() ?? (menuId ?? ''),
             );
+          } else if (value == false) {
+            provider.quantities = {}; //* Reset quantity
           }
         },
         child: Stack(
@@ -139,7 +141,7 @@ void showSizeModalBottomSheet({
                           totalQty: '$totalQty',
                           onTap: () {
                             Navigator.pop(context);
-                            provider.quantities = {}; // Reset quantity
+                            // provider.quantities = {}; //* Reset quantity
                             Navigator.pushNamed(context, Routes.cart);
                           },
                           accountType: accountType,

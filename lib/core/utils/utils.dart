@@ -24,4 +24,15 @@ class Utils {
       return "Invalid date"; // Handle errors
     }
   }
+
+  // DateFormat: dd/MM/yyyy
+  static String formatDate(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  static String formatDateForApi(DateTime? date) {
+    if (date == null) return '';
+    return DateFormat('dd-MM-yyyy').format(date);
+  }
 }

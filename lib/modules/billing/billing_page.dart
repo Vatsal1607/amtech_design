@@ -36,6 +36,7 @@ class BillingPage extends StatelessWidget {
                     children: [
                       SelectOrderDateWidget(
                         accountType: accountType,
+                        selectedDate: 'selectedDate',
                       ),
                       SizedBox(height: 20.h),
 

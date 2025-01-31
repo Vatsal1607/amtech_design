@@ -95,6 +95,8 @@ void showProcessToPayBottomSheeet({
                         SocketEvents.orderCreate,
                         orderCreateData,
                       );
+                      //* clear cart API
+                      cartProvider.clearCart();
                     },
                   ),
                 ],

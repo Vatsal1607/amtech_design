@@ -29,7 +29,10 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   @override
   void initState() {
-    context.read<MenuProvider>().homeMenuApi();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<MenuProvider>().homeMenuApi();
+    });
+
     super.initState();
   }
 

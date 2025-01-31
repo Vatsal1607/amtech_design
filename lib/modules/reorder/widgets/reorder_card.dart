@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/models/add_to_cart_request_model.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
@@ -86,6 +87,7 @@ class ReorderCardWidget extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: EdgeInsets.zero, // imp
                       shrinkWrap: true,
                       itemCount: min(reorder.items?.length ?? 0, 2),
@@ -142,7 +144,7 @@ class ReorderCardWidget extends StatelessWidget {
                       ))
                   .toList();
               //* API call
-            context.read<MenuProvider>().addToCart(
+              context.read<MenuProvider>().addToCart(
                     menuId: '',
                     sizeId: '',
                     size: '',
@@ -164,31 +166,38 @@ class ReorderCardWidget extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(30.r),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgIcon(
-                    icon: IconStrings.reorderBtn,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                  ),
-                  SizedBox(width: 4.w),
-                  Text(
-                    'REORDER',
-                    style: GoogleFonts.publicSans(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.primaryColor,
-                        personalColor: AppColors.darkGreenGrey,
-                      ),
-                    ),
-                  ),
-                ],
+              child: Consumer<MenuProvider>(
+                builder: (context, menuProvider, child) =>
+                    menuProvider.isLoadingAddToCart
+                        ? const CustomLoader(
+                            backgroundColor: AppColors.primaryColor,
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SvgIcon(
+                                icon: IconStrings.reorderBtn,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                              ),
+                              SizedBox(width: 4.w),
+                              Text(
+                                'REORDER',
+                                style: GoogleFonts.publicSans(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.sp,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
               ),
             ),
           ),

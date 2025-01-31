@@ -198,4 +198,10 @@ class ApiService {
       endDate,
     );
   }
+
+  Future<ApiGlobalModel> clearCart({
+    required String cartId,
+  }) async {
+    return await apiClient.clearCart(cartId);
+  }
 }

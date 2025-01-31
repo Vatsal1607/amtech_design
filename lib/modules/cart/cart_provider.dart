@@ -120,7 +120,27 @@ class CartProvider extends ChangeNotifier {
   }
 
   double calculateGST(double totalAmount) {
-    // return (5 / 100) * totalAmount;
     return double.parse(((5 / 100) * totalAmount).toStringAsFixed(2));
+  }
+
+  //* clearCart
+  Future<void> clearCart() async {
+    // isLoading = true;
+    notifyListeners();
+    try {
+      final res = await apiService.clearCart(
+        cartId: listCartResponse?.data?.carts?[0].sId ?? '',
+      );
+      if (res.success == true) {
+        log('${res.message}');
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error clearCart: ${e.toString()}");
+    } finally {
+      // isLoading = false;
+      // notifyListeners();
+    }
   }
 }

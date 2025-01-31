@@ -23,7 +23,9 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   @override
   void initState() {
-    context.read<FavoritesProvider>().getFavorite();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FavoritesProvider>().getFavorite(); //* API
+    });
     super.initState();
   }
 

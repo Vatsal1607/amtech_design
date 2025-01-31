@@ -24,4 +24,5 @@ class ApiEndpoints {
   static const String removeFavorite = 'favorites';
   static const String getFavorite = 'favorites';
   static const String reorderList = 'order/reorder-list';
+  static const String clearCart = 'user/clear-cart';
 }

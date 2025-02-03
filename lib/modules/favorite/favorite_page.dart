@@ -21,6 +21,7 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
+  
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {

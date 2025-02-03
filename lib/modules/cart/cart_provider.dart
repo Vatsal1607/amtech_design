@@ -50,8 +50,11 @@ class CartProvider extends ChangeNotifier {
       debugPrint("Order Placed!");
       rechargeDeduct(); // ! rechargeDeduct API call
       Navigator.pushNamed(context, Routes.orderStatus);
+      Future.delayed(const Duration(seconds: 2), () {
+        dragPosition = 10.w;
+      });
     } else {
-      // Reset position
+      //* Reset position
       dragPosition = 10.w;
       isConfirmed = false;
     }

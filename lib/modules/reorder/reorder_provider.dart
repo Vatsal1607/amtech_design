@@ -11,7 +11,7 @@ class ReorderProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   int currentPage = 1;
-  final int limit = 1;
+  final int limit = 10;
   bool hasMore = true;
   List<ReOrders> reorderList = [];
 

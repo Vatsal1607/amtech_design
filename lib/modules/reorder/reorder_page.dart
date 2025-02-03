@@ -149,7 +149,7 @@ class _ReorderPageState extends State<ReorderPage> {
                                   // physics: const ClampingScrollPhysics(),
                                   itemCount: provider.reorderList.length,
                                   separatorBuilder: (context, index) =>
-                                      SizedBox(height: 20.h),
+                                      SizedBox(height: 15.h),
                                   itemBuilder: (context, index) {
                                     final reorder = provider.reorderList[index];
                                     return ReorderCardWidget(

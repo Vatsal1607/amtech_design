@@ -21,4 +21,6 @@ class SharedPrefsKeys {
 class SocketEvents {
   static const String orderCreate = 'order-create';
   static const String orderReceived = 'order-received';
+  static const String getOrderStatus = 'get-order-status';
+  static const String orderStatusResponse = 'order-status-response';
 }

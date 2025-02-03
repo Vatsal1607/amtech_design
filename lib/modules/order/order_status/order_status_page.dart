@@ -2,14 +2,17 @@ import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
+import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../routes.dart';
 import '../../../services/local/shared_preferences_service.dart';
+import 'order_status_provider.dart';
 import 'widgets/order_status_with_progress.dart';
 
 class OrderStatusPage extends StatelessWidget {
@@ -19,6 +22,8 @@ class OrderStatusPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    // final provider = Provider.of<OrderStatusProvider>(context, listen: false);
+    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,

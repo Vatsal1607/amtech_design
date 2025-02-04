@@ -14,6 +14,7 @@ import 'modules/auth/business_selection/business_selection_provider.dart';
 import 'modules/auth/location_selection/location_selection_provider.dart';
 import 'modules/auth/otp/otp_provider.dart';
 import 'modules/authorized_emp/authorized_emp_provider.dart';
+import 'modules/billing/billing_provider.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';
@@ -74,6 +75,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ProfileProvider()),
         ChangeNotifierProvider(create: (_) => EditProfileProvider()),
         ChangeNotifierProvider(create: (_) => SocketProvider()),
+        ChangeNotifierProvider(create: (_) => BillingProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

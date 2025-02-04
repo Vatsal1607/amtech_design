@@ -1,8 +1,11 @@
 import 'package:amtech_design/models/api_global_model.dart';
+import 'package:amtech_design/models/billing_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/models/deduct_recharge_amount_model.dart';
+import 'package:amtech_design/models/edit_profile_model.dart';
 import 'package:amtech_design/models/favorite_add_model.dart';
 import 'package:amtech_design/models/favorites_model.dart';
+import 'package:amtech_design/models/get_business_details_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/reorder_model.dart';
@@ -203,5 +206,24 @@ class ApiService {
     required String cartId,
   }) async {
     return await apiClient.clearCart(cartId);
+  }
+
+  Future<BillingModel> getBillingList({
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.billingList(body);
+  }
+
+  Future<GetBusinessDetailsModel> getBusinessDetails({
+    required String userId,
+  }) async {
+    return await apiClient.getBusinessDetails(userId);
+  }
+
+  Future<EditProfileModel> editProfile({
+    required String userId,
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.editProfile(userId, body);
   }
 }

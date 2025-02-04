@@ -25,4 +25,7 @@ class ApiEndpoints {
   static const String getFavorite = 'favorites';
   static const String reorderList = 'order/reorder-list';
   static const String clearCart = 'user/clear-cart';
+  static const String billingList = 'order/invoice-list';
+  static const String businessDetails = 'business-details';
+  static const String editProfile = 'business/update';
 }

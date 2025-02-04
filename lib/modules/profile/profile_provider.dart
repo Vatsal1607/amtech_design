@@ -10,10 +10,6 @@ import '../../routes.dart';
 import '../../services/network/api_service.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  ProfileProvider() {
-    //
-  }
-
   int selectedTileIndex = 0;
   updateTileIndex(int index) {
     selectedTileIndex = index;

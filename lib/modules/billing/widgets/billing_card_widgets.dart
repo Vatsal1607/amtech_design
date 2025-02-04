@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/utils.dart';
+import '../../../models/billing_model.dart';
 
 class BillingCardWidget extends StatelessWidget {
   final String accountType;
+  final List<Invoices> billingList;
   const BillingCardWidget({
     super.key,
     required this.accountType,
+    required this.billingList,
   });
 
   @override
@@ -57,7 +61,7 @@ class BillingCardWidget extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 15.h),
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 6,
+            itemCount: billingList.length,
             itemBuilder: (context, index) {
               return Container(
                 height: 40.h,
@@ -79,7 +83,9 @@ class BillingCardWidget extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.only(left: 16.w),
                       child: Text(
-                        '9/12/2024 05:55PM',
+                        // '9/12/2024 05:55PM',
+                        Utils().convertIsoToFormattedDate(
+                            billingList[index].generatedAt.toString()),
                         style: GoogleFonts.publicSans(
                           color: getColorAccountType(
                             accountType: accountType,
@@ -106,7 +112,7 @@ class BillingCardWidget extends StatelessWidget {
                           ),
                           children: [
                             TextSpan(
-                              text: '1234567',
+                              text: billingList[index].invoiceNumber,
                               style: GoogleFonts.publicSans(
                                 color: getColorAccountType(
                                   accountType: accountType,

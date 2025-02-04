@@ -8,9 +8,12 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
+import '../../models/billing_model.dart';
 import '../../models/business_list_model.dart';
 import '../../models/deduct_recharge_amount_model.dart';
+import '../../models/edit_profile_model.dart';
 import '../../models/favorite_add_model.dart';
+import '../../models/get_business_details_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
@@ -160,5 +163,21 @@ abstract class ApiClient {
   @DELETE("${ApiEndpoints.clearCart}/{cartId}")
   Future<ApiGlobalModel> clearCart(
     @Path("cartId") String cartId,
+  );
+
+  @GET(ApiEndpoints.billingList)
+  Future<BillingModel> billingList(
+    @Body() Map<String, dynamic> body,
+  );
+
+  @GET('${ApiEndpoints.businessDetails}/{userId}')
+  Future<GetBusinessDetailsModel> getBusinessDetails(
+    @Path('userId') String userId,
+  );
+
+  @PUT('${ApiEndpoints.editProfile}/{userId}')
+  Future<EditProfileModel> editProfile(
+    @Path('userId') String userId,
+    @Body() Map<String, dynamic> body,
   );
 }

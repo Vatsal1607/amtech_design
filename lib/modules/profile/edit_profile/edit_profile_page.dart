@@ -24,6 +24,11 @@ class EditProfilePage extends StatelessWidget {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<EditProfileProvider>(context, listen: false);
+    if (accountType == 'business') {
+      provider.getBusinessDetails(); //* API
+    } else {
+      provider.getPersonalDetails(); //* API
+    }
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -86,7 +91,10 @@ class EditProfilePage extends StatelessWidget {
                                 ],
                               ),
                               SizedBox(height: 20.h),
+                              //! Fields start
                               CustomTextField(
+                                controller:
+                                    provider.personalFirstNameController,
                                 hint: '',
                                 prefixIcon: IconStrings.business,
                                 iconColor: getColorAccountType(
@@ -94,7 +102,6 @@ class EditProfilePage extends StatelessWidget {
                                   businessColor: AppColors.primaryColor,
                                   personalColor: AppColors.darkGreenGrey,
                                 ),
-                                controller: provider.businessNameController,
                                 borderColor: getColorAccountType(
                                   accountType: accountType,
                                   businessColor: AppColors.primaryColor,
@@ -114,14 +121,14 @@ class EditProfilePage extends StatelessWidget {
                               ),
                               SizedBox(height: 20.h),
                               CustomTextField(
+                                controller: provider.personalLastNameController,
                                 hint: '',
-                                prefixIcon: IconStrings.owner,
+                                prefixIcon: IconStrings.business,
                                 iconColor: getColorAccountType(
                                   accountType: accountType,
                                   businessColor: AppColors.primaryColor,
                                   personalColor: AppColors.darkGreenGrey,
                                 ),
-                                controller: provider.businessOwnerController,
                                 borderColor: getColorAccountType(
                                   accountType: accountType,
                                   businessColor: AppColors.primaryColor,
@@ -139,8 +146,66 @@ class EditProfilePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
+                              // SizedBox(height: 20.h),
+                              if (accountType == 'business')
+                                CustomTextField(
+                                  controller: provider.businessNameController,
+                                  hint: '',
+                                  prefixIcon: IconStrings.business,
+                                  iconColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  borderColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  textColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  suffixWidget: Padding(
+                                    padding: EdgeInsets.all(9.w),
+                                    child: EditIconWidget(
+                                      accountType: accountType,
+                                    ),
+                                  ),
+                                ),
+                              if (accountType == 'business')
+                                SizedBox(height: 20.h),
+                              if (accountType == 'business')
+                                CustomTextField(
+                                  controller: provider.businessOwnerController,
+                                  hint: '',
+                                  prefixIcon: IconStrings.owner,
+                                  iconColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  borderColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  textColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  suffixWidget: Padding(
+                                    padding: EdgeInsets.all(9.w),
+                                    child: EditIconWidget(
+                                      accountType: accountType,
+                                    ),
+                                  ),
+                                ),
                               SizedBox(height: 20.h),
                               CustomTextField(
+                                controller: provider.addressController,
                                 hint: '',
                                 prefixIcon: IconStrings.locationWhite,
                                 iconColor: getColorAccountType(
@@ -148,7 +213,6 @@ class EditProfilePage extends StatelessWidget {
                                   businessColor: AppColors.primaryColor,
                                   personalColor: AppColors.darkGreenGrey,
                                 ),
-                                controller: provider.businessAddressController,
                                 borderColor: getColorAccountType(
                                   accountType: accountType,
                                   businessColor: AppColors.primaryColor,
@@ -168,6 +232,7 @@ class EditProfilePage extends StatelessWidget {
                               ),
                               SizedBox(height: 20.h),
                               CustomTextField(
+                                controller: provider.mobileController,
                                 hint: '',
                                 prefixIcon: IconStrings.phone,
                                 iconColor: getColorAccountType(
@@ -175,7 +240,6 @@ class EditProfilePage extends StatelessWidget {
                                   businessColor: AppColors.primaryColor,
                                   personalColor: AppColors.darkGreenGrey,
                                 ),
-                                controller: provider.businessMobileController,
                                 borderColor: getColorAccountType(
                                   accountType: accountType,
                                   businessColor: AppColors.primaryColor,
@@ -193,33 +257,36 @@ class EditProfilePage extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 20.h),
-                              CustomTextField(
-                                hint: '',
-                                prefixIcon: IconStrings.email,
-                                iconColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                controller: provider.businessEmailController,
-                                borderColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                textColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                suffixWidget: Padding(
-                                  padding: EdgeInsets.all(9.w),
-                                  child: EditIconWidget(
+                              if (accountType == 'business')
+                                SizedBox(height: 20.h),
+                              if (accountType == 'business')
+                                CustomTextField(
+                                  controller: provider.businessEmailController,
+                                  hint: '',
+                                  prefixIcon: IconStrings.email,
+                                  iconColor: getColorAccountType(
                                     accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  borderColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  textColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  suffixWidget: Padding(
+                                    padding: EdgeInsets.all(9.w),
+                                    child: EditIconWidget(
+                                      accountType: accountType,
+                                    ),
                                   ),
                                 ),
-                              ),
+                              //! Fields end
                               //* business type textfield
                               // SizedBox(height: 20.h),
                               // CustomTextField(
@@ -361,19 +428,24 @@ class EditProfilePage extends StatelessWidget {
             right: 32.w,
             child: Align(
               alignment: Alignment.bottomCenter,
-              child: CustomButton(
-                height: 55.h,
-                onTap: () {},
-                text: 'done',
-                textColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.seaShell,
-                  personalColor: AppColors.seaMist,
-                ),
-                bgColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.primaryColor,
-                  personalColor: AppColors.darkGreenGrey,
+              child: Consumer<EditProfileProvider>(
+                builder: (context, _, child) => CustomButton(
+                  height: 55.h,
+                  onTap: () {
+                    provider.editProfile(context);
+                  },
+                  isLoading: provider.isEditProfileLoading,
+                  text: 'done',
+                  textColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
             ),

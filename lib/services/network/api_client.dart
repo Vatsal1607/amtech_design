@@ -14,6 +14,7 @@ import '../../models/deduct_recharge_amount_model.dart';
 import '../../models/edit_profile_model.dart';
 import '../../models/favorite_add_model.dart';
 import '../../models/get_business_details_model.dart';
+import '../../models/get_personal_details_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
@@ -177,6 +178,17 @@ abstract class ApiClient {
 
   @PUT('${ApiEndpoints.editProfile}/{userId}')
   Future<EditProfileModel> editProfile(
+    @Path('userId') String userId,
+    @Body() Map<String, dynamic> body,
+  );
+
+  @GET('${ApiEndpoints.getPersonalDetails}/{userId}')
+  Future<GetPersonalDetailsModel> getPersonalDetails(
+    @Path('userId') String userId,
+  );
+
+  @PUT('${ApiEndpoints.editPersonalProfile}/{userId}')
+  Future<EditProfileModel> editPersonalProfile(
     @Path('userId') String userId,
     @Body() Map<String, dynamic> body,
   );

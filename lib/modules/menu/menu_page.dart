@@ -7,10 +7,12 @@ import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
@@ -18,6 +20,7 @@ import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'widgets/fab_menu_button.dart';
 import 'widgets/slider_details_widget.dart';
+import 'widgets/subscription_widget.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -299,6 +302,14 @@ class _MenuPageState extends State<MenuPage> {
                                     accountType: accountType,
                                   ),
                                   const SizedBox(height: 10.0),
+                                  DividerLabel(
+                                    label: 'subscriptions',
+                                    accountType: accountType,
+                                  ),
+                                  const SizedBox(height: 10.0),
+
+                                  //* Subscriptions
+                                  SubscriptionWidget(provider: provider),
 
                                   // * ListView Categories
                                   Consumer<MenuProvider>(

@@ -28,4 +28,6 @@ class ApiEndpoints {
   static const String billingList = 'order/invoice-list';
   static const String businessDetails = 'business-details';
   static const String editProfile = 'business/update';
+  static const String getPersonalDetails = 'user/view';
+  static const String editPersonalProfile = 'user/update';
 }

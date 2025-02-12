@@ -31,6 +31,17 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int subscriptionCurrentIndex = 0;
+  onPageChangedsubscription(index, reason) {
+    subscriptionCurrentIndex = index;
+    notifyListeners();
+  }
+
+  final List<String> subscriptionImages = [
+    ImageStrings.masalaTea2,
+    ImageStrings.masalaTea2,
+  ];
+
   TextEditingController searchController = TextEditingController();
 
   bool isVisibleSearchSpaceTop = false;

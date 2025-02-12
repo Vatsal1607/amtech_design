@@ -79,7 +79,7 @@ class BannerView extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          // Dots indicator
+          //* Dots indicator
           Consumer<MenuProvider>(
             builder: (context, provider, child) => AnimatedSmoothIndicator(
               activeIndex: provider.carouselCurrentIndex,

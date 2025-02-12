@@ -70,22 +70,9 @@ class ProductWidget extends StatelessWidget {
                                   AppColors.teaGreen,
                                 ]
                               : [
-                                  getColorAccountType(
-                                      accountType: accountType,
-                                      businessColor:
-                                          AppColors.seaShell.withOpacity(0.0),
-                                      personalColor:
-                                          AppColors.seaMist.withOpacity(0.0)),
-                                  getColorAccountType(
-                                      accountType: accountType,
-                                      businessColor:
-                                          AppColors.seaShell.withOpacity(0.8),
-                                      personalColor:
-                                          AppColors.seaMist.withOpacity(0.8)),
-                                  getColorAccountType(
-                                      accountType: accountType,
-                                      businessColor: AppColors.seaShell,
-                                      personalColor: AppColors.seaMist),
+                                  AppColors.seaShell.withOpacity(0.0),
+                                  AppColors.seaShell.withOpacity(0.8),
+                                  AppColors.seaShell,
                                 ],
                           begin: Alignment.topCenter,
                           end: Alignment.bottomCenter,
@@ -172,7 +159,7 @@ class ProductWidget extends StatelessWidget {
                         ),
                       ),
                       SizedBox(width: 4.w),
-                      SvgIcon(icon: IconStrings.add),
+                      const SvgIcon(icon: IconStrings.add),
                     ],
                   ),
                 ),

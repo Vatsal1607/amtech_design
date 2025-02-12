@@ -138,8 +138,16 @@ class ProfilePage extends StatelessWidget {
                               final businessName = menuProvider
                                       .homeMenuResponse?.data?.businessName ??
                                   '';
+                              final firstName = menuProvider
+                                      .homeMenuResponse?.data?.firstName ??
+                                  '';
+                              final lastName = menuProvider
+                                      .homeMenuResponse?.data?.lastName ??
+                                  '';
                               return Text(
-                                businessName,
+                                accountType == 'business'
+                                    ? businessName
+                                    : '$firstName $lastName',
                                 style: GoogleFonts.publicSans(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,

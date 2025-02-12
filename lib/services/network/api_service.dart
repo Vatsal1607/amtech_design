@@ -16,6 +16,7 @@ import 'package:dio/dio.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
 import '../../models/get_list_access_model.dart';
+import '../../models/get_personal_details_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
@@ -225,5 +226,18 @@ class ApiService {
     required Map<String, dynamic> body,
   }) async {
     return await apiClient.editProfile(userId, body);
+  }
+
+  Future<GetPersonalDetailsModel> getPersonalDetails({
+    required String userId,
+  }) async {
+    return await apiClient.getPersonalDetails(userId);
+  }
+
+  Future<EditProfileModel> editPersonalProfile({
+    required String userId,
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.editPersonalProfile(userId, body);
   }
 }

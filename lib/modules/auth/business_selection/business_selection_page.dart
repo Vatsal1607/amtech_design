@@ -125,7 +125,7 @@ class BusinessSelectionPage extends StatelessWidget {
                       provider.selectedBusiness!.businessName!.isNotEmpty &&
                       provider.suggestionList.any((business) =>
                           business.businessName ==
-                          provider.searchController.text)) {
+                          provider.businessSearchController.text)) {
                     Navigator.pushNamed(context, Routes.login);
                   } else {
                     customSnackBar(

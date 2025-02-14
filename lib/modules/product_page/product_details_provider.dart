@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
-import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/menu_details_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';

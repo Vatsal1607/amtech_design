@@ -24,7 +24,8 @@ class ProductDetailsPage extends StatelessWidget {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     // * Retrieve the arguments
     final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+            {};
     final menuId = args['menuId'];
     final provider =
         Provider.of<ProductDetailsProvider>(context, listen: false);

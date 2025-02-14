@@ -3,6 +3,7 @@ import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/custom_widgets/perks_chart_bottom_sheet.dart';
 import 'package:amtech_design/modules/recharge/recharge_provider.dart';
+import 'package:amtech_design/modules/recharge/widgets/balance_card.dart';
 import 'package:amtech_design/modules/recharge/widgets/recharge_history_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +16,8 @@ import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../core/utils/validator.dart';
 import '../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
+import '../../services/local/shared_preferences_service.dart';
+import 'widgets/center_title_with_divider.dart';
 
 class RechargePage extends StatefulWidget {
   const RechargePage({super.key});
@@ -56,9 +59,9 @@ class _RechargePageState extends State<RechargePage> {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    // final provider = Provider.of<RechargeProvider>(context, listen: false);
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final provider = Provider.of<RechargeProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -71,7 +74,7 @@ class _RechargePageState extends State<RechargePage> {
           provider.amountController.clear();
           Navigator.pop(context);
         },
-        title: 'Recharge',
+        title: '',
         isAction: true,
         actionIconColor: getColorAccountType(
           accountType: accountType,
@@ -95,6 +98,17 @@ class _RechargePageState extends State<RechargePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
+                //* balance card
+                BalanceCard(
+                  accountType: accountType,
+                ),
+
+                SizedBox(height: 20.h),
+                CenterTitleWithDivider(
+                  accountType: accountType,
+                  title: 'Recharge',
+                ),
+                SizedBox(height: 20.h),
                 Consumer<RechargeProvider>(
                   builder: (context, _, child) => CustomTextField(
                     hint: 'Enter Amount',

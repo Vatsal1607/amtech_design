@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/utils/app_colors.dart';
@@ -35,18 +36,110 @@ class SubscriptionWidget extends StatelessWidget {
               onPageChanged: provider.onPageChangedsubscription,
             ),
             itemBuilder: (context, index, realIndex) {
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [
-                    //! working
-                  ]),
-                  borderRadius: BorderRadius.circular(20.r),
-                  image: DecorationImage(
-                    image: AssetImage(provider.subscriptionImages[index]),
-                    fit: BoxFit.fitWidth,
+              return Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.r),
+                      image: DecorationImage(
+                        image: AssetImage(provider.subscriptionImages[index]),
+                        fit: BoxFit.fitWidth,
+                        colorFilter: ColorFilter.mode(
+                          AppColors.primaryColor.withOpacity(0.5),
+                          BlendMode
+                              .srcATop, // Adjust blend mode based on your needs
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                  //* Gradient on image
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30.r),
+                      gradient: LinearGradient(
+                        colors: [
+                          AppColors.primaryColor,
+                          AppColors.primaryColor.withOpacity(0),
+                        ],
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                      ),
+                    ),
+                  ),
+                  //* Subscription image details
+                  Positioned(
+                    left: 19.w,
+                    bottom: 17.h,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: SizedBox(
+                        width: 270.w,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'SUBSCRIPTION OF',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            Text(
+                              'Masala Tea Jar',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 25.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
+                              ),
+                            ),
+                            SizedBox(height: 5.h),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: 4.h,
+                                    horizontal: 8.w,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.disabledColor,
+                                    borderRadius: BorderRadius.circular(30.r),
+                                  ),
+                                  child: Text(
+                                    'REGULAR',
+                                    style: GoogleFonts.publicSans(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.white,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(width: 5.w),
+                                Text(
+                                  '350 ML',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.h),
+                            Text(
+                              'AVAILABLE ON A WEEKLY / MONTHLY BASIS',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                color: AppColors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               );
             },
           ),

@@ -120,12 +120,11 @@ class LocationSelectionPage extends StatelessWidget {
                   //* store locaton localy
                   sharedPrefsService.setString(
                     SharedPrefsKeys.location,
-                    provider.locationSearchController.text,
-                    // provider.selectedLocation ?? '',
+                    provider.searchController.text,
                   );
-                  if (provider.locationSearchController.text.isNotEmpty &&
+                  if (provider.searchController.text.isNotEmpty &&
                       provider.locations.any((location) =>
-                          location == provider.locationSearchController.text)) {
+                          location == provider.searchController.text)) {
                     if (accountType != '' && accountType == 'business') {
                       Navigator.pushNamed(context, Routes.companySelection);
                       provider.clearSelectedLocation();

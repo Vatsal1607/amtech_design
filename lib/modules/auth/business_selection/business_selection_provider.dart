@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -35,17 +33,24 @@ class BusinessSelectionProvider extends ChangeNotifier {
               .toLowerCase()
               .contains(query.toLowerCase()))
           .toList();
-      // filteredBusinessList = _businessList
-      //     .where((business) => business.businessName!
-      //         .toLowerCase()
-      //         .contains(query.toLowerCase()))
-      //     .toList();
     }
     notifyListeners();
   }
 
   void selectBusiness(BusinessList? business) {
     _selectedBusiness = business;
+    notifyListeners();
+  }
+
+  bool isSearchOpen = false;
+  SearchController businessSearchController = SearchController();
+  onTapSearch() {
+    isSearchOpen = true;
+    notifyListeners();
+  }
+
+  onItemTap() {
+    isSearchOpen = false;
     notifyListeners();
   }
 

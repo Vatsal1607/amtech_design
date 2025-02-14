@@ -77,32 +77,39 @@ class SliderDetailsWidget extends StatelessWidget {
               },
               child: Container(
                 height: 35.h,
-                width: 100.w,
-                padding: EdgeInsets.all(3.w),
+                width: 85.w,
+                padding: EdgeInsets.all(9.w),
                 decoration: BoxDecoration(
                   color: AppColors.black,
                   borderRadius: BorderRadius.circular(100.r),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgIcon(
-                      icon: IconStrings.rupeeGreen,
-                      color: AppColors.lightGreen,
-                    ),
-                    SizedBox(
-                      width: 5.w,
-                    ),
-                    Text(
-                      'recharge'.toUpperCase(),
-                      style: GoogleFonts.publicSans(
-                        fontSize: 10.sp,
-                        fontWeight: FontWeight.w700,
-                        color: AppColors.seaShell,
-                      ),
-                    ),
-                  ],
+                child: Image.asset(
+                  height: 12.h,
+                  width: 50.w,
+                  ImageStrings.perksLogoWhite,
+                  fit: BoxFit.scaleDown,
                 ),
+                //* Old Recharge text & icon
+                // child: Row(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   children: [
+                //     const SvgIcon(
+                //       icon: IconStrings.rupeeGreen,
+                //       color: AppColors.lightGreen,
+                //     ),
+                //     SizedBox(
+                //       width: 5.w,
+                //     ),
+                //     Text(
+                //       'recharge'.toUpperCase(),
+                //       style: GoogleFonts.publicSans(
+                //         fontSize: 10.sp,
+                //         fontWeight: FontWeight.w700,
+                //         color: AppColors.seaShell,
+                //       ),
+                //     ),
+                //   ],
+                // ),
               ),
             ),
           if (!isShowRecharge)

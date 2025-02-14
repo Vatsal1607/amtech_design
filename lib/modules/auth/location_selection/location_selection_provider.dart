@@ -17,6 +17,17 @@ class LocationSelectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool isSearchOpen = false;
+  onTapSearch() {
+    isSearchOpen = true;
+    notifyListeners();
+  }
+
+  onItemTap() {
+    isSearchOpen = false;
+    notifyListeners();
+  }
+
   // final List<String> dropdownItems = [
   //   'Titanium City Center',
   //   'Arista Business Hub',
@@ -31,7 +42,8 @@ class LocationSelectionProvider extends ChangeNotifier {
     '323 Corporate Park',
   ];
 
-  TextEditingController locationSearchController = TextEditingController();
+  // TextEditingController locationSearchController = TextEditingController();
+  SearchController searchController = SearchController();
   void selectLocation(String? location) {
     selectedLocation = location;
     notifyListeners();

@@ -1,18 +1,14 @@
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:searchfield/searchfield.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constant.dart';
-import '../../../../core/utils/constants/keys.dart';
 import '../../../../core/utils/strings.dart';
-import '../../../../services/local/shared_preferences_service.dart';
 
-class DropdownLocation extends StatelessWidget {
+class DropdownLocation extends StatefulWidget {
   final String accountType;
   final LocationSelectionProvider provider;
   const DropdownLocation({
@@ -22,132 +18,159 @@ class DropdownLocation extends StatelessWidget {
   });
 
   @override
+  State<DropdownLocation> createState() => _DropdownLocationState();
+}
+
+class _DropdownLocationState extends State<DropdownLocation> {
+  @override
   Widget build(BuildContext context) {
-    /// NEW dropdown (Working on dynamic)
-    return SearchField<String>(
-      controller: provider.locationSearchController,
-      suggestions: provider.locations
-          .map((location) => SearchFieldListItem<String>(location))
-          .toList(),
-      suggestionState: Suggestion.expand,
-      textInputAction: TextInputAction.done,
-      hint: 'Search location',
-      searchInputDecoration: SearchInputDecoration(
-        cursorColor: AppColors.seaShell,
-        hintStyle:
-            GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
-        searchStyle:
-            GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
-        border: kDropdownBorderStyle,
-        enabledBorder: kDropdownBorderStyle,
-        focusedBorder: kDropdownBorderStyle,
-        prefixIcon: const SvgIcon(icon: IconStrings.selectBusiness),
-        suffixIcon: const SvgIcon(icon: IconStrings.dropdown),
-      ),
-      maxSuggestionsInViewPort: 4,
-      itemHeight: 50,
-      onSuggestionTap: (SearchFieldListItem<String> item) {
-        // Update the controller's text to reflect the selected value
-        provider.locationSearchController.text = item.searchKey;
-        debugPrint('Selected: ${item.searchKey}');
+    //* NEW dropdown
+    return Consumer<LocationSelectionProvider>(
+      builder: (context, provider, child) {
+        return Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100.r),
+            border: Border.all(
+              color: AppColors.seaShell,
+              width: 2.w,
+            ),
+          ),
+          child: SearchAnchor.bar(
+            onTap: provider.onTapSearch,
+            searchController: provider.searchController,
+            barHintText: 'Select Your Complex',
+            barHintStyle: WidgetStateProperty.all(
+              GoogleFonts.publicSans(
+                color: provider.isSearchOpen
+                    ? getColorAccountType(
+                        accountType: widget.accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      )
+                    : AppColors.seaShell.withOpacity(0.8),
+              ),
+            ),
+            barTextStyle: WidgetStateProperty.all(
+              GoogleFonts.publicSans(
+                color: provider.isSearchOpen
+                    ? getColorAccountType(
+                        accountType: widget.accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      )
+                    : AppColors.seaShell.withOpacity(0.8),
+              ),
+            ),
+            isFullScreen: false,
+            viewConstraints: const BoxConstraints(
+              minHeight: kToolbarHeight,
+              maxHeight: kToolbarHeight * 5,
+            ),
+            dividerColor: Colors.transparent,
+            barElevation: WidgetStateProperty.all(0.0),
+            //* bgColor
+            barBackgroundColor: WidgetStateProperty.all(
+              provider.isSearchOpen ? Colors.white : Colors.transparent,
+            ),
+            viewTrailing: [
+              Padding(
+                padding: EdgeInsets.only(right: 13.w),
+                child: SvgIcon(
+                  icon: IconStrings.arrowUp,
+                  color: getColorAccountType(
+                    accountType: widget.accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
+                ),
+              ),
+            ],
+            viewLeading: Padding(
+              padding: EdgeInsets.only(left: 8.w, right: 8.w),
+              child: SvgIcon(
+                icon: IconStrings.selectBusiness,
+                color: getColorAccountType(
+                  accountType: widget.accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+              ),
+            ),
+            barLeading: SvgIcon(
+              icon: IconStrings.selectBusiness,
+              color: !provider.isSearchOpen
+                  ? AppColors.seaShell
+                  : getColorAccountType(
+                      accountType: widget.accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+            ),
+            barTrailing: [
+              SvgIcon(
+                icon: IconStrings.arrowDropdown,
+                color: getColorAccountType(
+                  accountType: widget.accountType,
+                  businessColor: AppColors.seaShell,
+                  personalColor: AppColors.seaMist,
+                ),
+              ),
+            ],
+
+            suggestionsBuilder: (context, controller) {
+              final query = controller.text.toLowerCase();
+              final filteredLocations = provider.locations
+                  .where((location) => location.toLowerCase().contains(query))
+                  .toList();
+              return filteredLocations.map((location) {
+                return ListTile(
+                  title: Text(location),
+                  onTap: () {
+                    provider.onItemTap();
+                    controller.closeView(location);
+                    // provider.setLocation(location);
+                    debugPrint('Selected: $location');
+                  },
+                );
+              }).toList();
+            },
+            viewShape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(25.r)),
+          ),
+        );
       },
     );
-
-    /// OLD dropdown
-    // return Center(
-    //   child: Container(
-    //     padding: EdgeInsets.symmetric(horizontal: 17.w),
-    //     decoration: BoxDecoration(
-    //       color: Colors.transparent, // Background color for the dropdown
-    //       borderRadius: BorderRadius.circular(100), // Circular border
-    //       border: Border.all(
-    //         color: AppColors.seaShell, // Border color
-    //         width: 2, // Border width
-    //       ),
-    //     ),
-    //     child: Row(
-    //       children: [
-    //         const SvgIcon(icon: IconStrings.location), // Prefix icon
-    //         const SizedBox(width: 8), // Spacing between icon and dropdown
-    //         Expanded(
-    //           child: Consumer<LocationSelectionProvider>(
-    //             builder: (context, provider, child) =>
-    //                 DropdownButtonHideUnderline(
-    //               child: DropdownButton2<String>(
-    //                 dropdownStyleData: DropdownStyleData(
-    //                   decoration: BoxDecoration(
-    //                     color: AppColors.seaShell,
-    //                     borderRadius:
-    //                         BorderRadius.circular(10), // Rounded corners
-    //                     border: Border.all(
-    //                       color: Colors.grey, // Border color
-    //                       width: 1, // Border width
-    //                     ),
-    //                   ),
-    //                 ),
-    //                 value: provider.selectedLocation,
-    //                 isExpanded: true,
-    //                 style: const TextStyle(
-    //                   fontSize: 15,
-    //                   fontWeight: FontWeight.bold,
-    //                   color: Colors.white,
-    //                 ),
-    //                 hint: RichText(
-    //                   text: const TextSpan(
-    //                     text: 'Select Your ',
-    //                     style: TextStyle(
-    //                       fontSize: 14,
-    //                       color: Colors.white,
-    //                     ),
-    //                     children: <TextSpan>[
-    //                       TextSpan(
-    //                         text: 'Complex',
-    //                         style: TextStyle(
-    //                           fontSize: 14,
-    //                           fontWeight: FontWeight.bold,
-    //                           color: Colors.white,
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //                 items: provider.dropdownItems
-    //                     .map<DropdownMenuItem<String>>((String value) {
-    //                   return DropdownMenuItem<String>(
-    //                     value: value,
-    //                     child: Text(
-    //                       value,
-    //                       style: GoogleFonts.publicSans(
-    //                         fontSize: 14.sp,
-    //                         fontWeight: FontWeight.bold,
-    //                         color: AppColors.primaryColor,
-    //                       ),
-    //                     ),
-    //                   );
-    //                 }).toList(),
-    //                 underline: const SizedBox.shrink(),
-    //                 onChanged: provider.onChangeDropdown,
-    //                 selectedItemBuilder: (BuildContext context) {
-    //                   return provider.dropdownItems.map<Widget>((String value) {
-    //                     return Align(
-    //                       alignment: Alignment.centerLeft,
-    //                       child: Text(
-    //                         value,
-    //                         style: const TextStyle(
-    //                           fontSize: 14,
-    //                           color:
-    //                               Colors.white, // Style for the selected item
-    //                         ),
-    //                       ),
-    //                     );
-    //                   }).toList();
-    //                 },
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
+    //* OLD dropdown
+    // return SearchField<String>(
+    //   controller: provider.locationSearchController,
+    //   suggestions: provider.locations
+    //       .map((location) => SearchFieldListItem<String>(location))
+    //       .toList(),
+    //   suggestionState: Suggestion.expand,
+    //   textInputAction: TextInputAction.done,
+    //   hint: 'Search location',
+    //   searchInputDecoration: SearchInputDecoration(
+    //     cursorColor: AppColors.seaShell,
+    //     hintStyle:
+    //         GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
+    //     searchStyle:
+    //         GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
+    //     border: kDropdownBorderStyle,
+    //     enabledBorder: kDropdownBorderStyle,
+    //     focusedBorder: kDropdownBorderStyle,
+    //     prefixIcon: const SvgIcon(icon: IconStrings.selectBusiness),
+    //     suffixIcon: const SvgIcon(icon: IconStrings.dropdown),
+    //   ),
+    //   maxSuggestionsInViewPort: 4,
+    //   itemHeight: 50,
+    //   onSuggestionTap: (SearchFieldListItem<String> item) {
+    //     // Update the controller's text to reflect the selected value
+    //     provider.locationSearchController.text = item.searchKey;
+    //     debugPrint('Selected: ${item.searchKey}');
+    //   },
+    //   suggestionsDecoration: SuggestionDecoration(
+    //     borderRadius: BorderRadius.circular(25.r),
+    //     color: AppColors.seaShell,
     //   ),
     // );
   }

@@ -70,19 +70,24 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
             left: leftPadTitle,
             child: Align(
               alignment: Alignment.center,
-              child: Text(
-                title, // * title
-                textAlign: TextAlign.center,
-                style: GoogleFonts.publicSans(
-                  fontSize: 24.sp,
-                  fontWeight: FontWeight.w700,
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                ),
-              ),
+              child: title != ''
+                  ? Text(
+                      title, // * title
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.publicSans(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.w700,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
+                      ),
+                    )
+                  : Image.asset(
+                      width: 80.w,
+                      ImageStrings.perksLogo,
+                    ),
             ),
           ),
           if (isAction)

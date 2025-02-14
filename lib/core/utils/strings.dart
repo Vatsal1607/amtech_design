@@ -33,6 +33,7 @@ class IconStrings {
   static const businessAccount = '${BaseIconPath.basePath}business_account.svg';
   static const personalAccount = '${BaseIconPath.basePath}personal_account.svg';
   static const arrowDropdown = '${BaseIconPath.basePath}arrow_dropdown.svg';
+  static const arrowUp = '${BaseIconPath.basePath}arrow_up.svg';
   static const location = '${BaseIconPath.basePath}location.svg';
   static const notification = '${BaseIconPath.basePath}notification.svg';
   static const rupee = '${BaseIconPath.basePath}rupee.svg';
@@ -112,6 +113,7 @@ class ImageStrings {
   static const masalaTea3 = '${BaseImagePath.basePath}masala_tea3.png';
   static const cartDoodle = '${BaseImagePath.basePath}cart_doodle.png';
   static const perksLogo = '${BaseImagePath.basePath}perks_logo.png';
+  static const perksLogoWhite = '${BaseImagePath.basePath}perks_logo_white.png';
   static const razorpayLogo = '${BaseImagePath.basePath}razorpay_logo.png';
   static const blogPng = '${BaseImagePath.basePath}blog_png.png';
   static const healthFirstBanner =

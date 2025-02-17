@@ -1,10 +1,7 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
-import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/favorite/favorite_provider.dart';
-import 'package:amtech_design/modules/product_page/product_details_page.dart';
 import 'package:amtech_design/modules/product_page/product_details_provider.dart';
-import 'package:amtech_design/modules/recharge/recharge_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -83,23 +80,26 @@ class MyApp extends StatelessWidget {
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)
         minTextAdapt: true,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: '135 Degrees',
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-            useMaterial3: true,
-            scaffoldBackgroundColor: AppColors.seaShell,
-            snackBarTheme: const SnackBarThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.zero, // Removes border radius
+        child: Consumer<MenuProvider>(
+          builder: (context, menuProvider, child) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: '135 Degrees',
+            scaffoldMessengerKey: menuProvider.scaffoldMessengerKey,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+              useMaterial3: true,
+              scaffoldBackgroundColor: AppColors.seaShell,
+              snackBarTheme: const SnackBarThemeData(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.zero, // Removes border radius
+                ),
               ),
             ),
+            // home: ProductDetailsPage(),
+            initialRoute: Routes.initial,
+            routes: Routes.routes,
+            // onGenerateRoute: (settings) {},
           ),
-          home: ProductDetailsPage(),
-          // initialRoute: Routes.initial,
-          // routes: Routes.routes,
-          // onGenerateRoute: (settings) {},
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
@@ -44,6 +45,21 @@ void showSizeModalBottomSheet({
             );
           } else if (value == false) {
             provider.quantities = {}; //* Reset quantity
+            //* Cart Snackbar
+            if (provider.cartSnackbarTotalItems != 0) {
+              provider.scaffoldMessengerKey.currentState?.showSnackBar(
+                cartSnackbarWidget(
+                  message: '${provider.cartSnackbarTotalItems} Items added',
+                  items: provider.cartSnackbarItemText,
+                  context: context,
+                ),
+              );
+              // showCartSnackbar(
+              //   context: context,
+              //   message: '${provider.cartSnackbarTotalItems} Items added',
+              //   items: provider.cartSnackbarItemText,
+              // );
+            }
           }
         },
         child: Stack(

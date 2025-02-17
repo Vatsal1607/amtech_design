@@ -105,7 +105,11 @@ class _CartPageState extends State<CartPage> {
                           // Keep popping until the condition is met
                           return route.settings.name == Routes.bottomBarPage;
                         });
-                        showCartSnackbar(context, 'This is the msg');
+                        showCartSnackbar(
+                          context: context,
+                          message: 'This is the msg',
+                          items: 'items',
+                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 32.w),

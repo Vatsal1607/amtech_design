@@ -36,6 +36,7 @@ class IconStrings {
   static const arrowUp = '${BaseIconPath.basePath}arrow_up.svg';
   static const location = '${BaseIconPath.basePath}location.svg';
   static const notification = '${BaseIconPath.basePath}notification.svg';
+  static const notification2 = '${BaseIconPath.basePath}notification_2.svg';
   static const rupee = '${BaseIconPath.basePath}rupee.svg';
   static const minus = '${BaseIconPath.basePath}minus.svg';
   static const plus = '${BaseIconPath.basePath}plus.svg';
@@ -63,7 +64,7 @@ class IconStrings {
   static const youMayLike = '${BaseIconPath.basePath}you_may_like.svg';
   static const totalBill = '${BaseIconPath.basePath}total_bill.svg';
   static const cart = '${BaseIconPath.basePath}cart.svg';
-  static const rupeeGreen = '${BaseIconPath.basePath}rupee_green.svg';
+  static const rupeeFilled = '${BaseIconPath.basePath}rupee_green.svg';
   static const selected = '${BaseIconPath.basePath}selected.svg';
   static const reorderBtn = '${BaseIconPath.basePath}reorder_btn.svg';
   static const info = '${BaseIconPath.basePath}info.svg';
@@ -83,6 +84,8 @@ class IconStrings {
   static const email = '${BaseIconPath.basePath}email.svg';
   static const edit = '${BaseIconPath.basePath}edit.svg';
   static const iosArrowNext = '${BaseIconPath.basePath}ios_arrow_next.svg';
+  static const classic = '${BaseIconPath.basePath}classic.svg';
+  static const subscriptions = '${BaseIconPath.basePath}subscriptions.svg';
 }
 
 class ImageStrings {

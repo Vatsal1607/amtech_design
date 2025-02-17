@@ -145,6 +145,7 @@ class ReorderCardWidget extends StatelessWidget {
                   .toList();
               //* API call
               context.read<MenuProvider>().addToCart(
+                    context: context,
                     menuId: '',
                     sizeId: '',
                     size: '',

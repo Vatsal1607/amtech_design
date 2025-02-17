@@ -122,16 +122,27 @@ class CustomSliverAppbar extends StatelessWidget {
               ),
               child: Stack(
                 children: [
-                  const Positioned.fill(
-                    // child: SvgIcon(
-                    //   icon: IconStrings.notification,
+                  Positioned.fill(
+                    child: Center(
+                      child: Text(
+                        'data',
+                        style: TextStyle(
+                          color: AppColors.white,
+                          fontSize: 10.sp,
+                        ),
+                      ),
+                    ),
+                    // child: Center(
+                    //   child: SvgIcon(
+                    //     icon: IconStrings.notification,
+                    //     color: AppColors.white,
+                    //   ),
+                    // ),
+
+                    // child: Icon(
+                    //   Icons.notifications_outlined,
                     //   color: AppColors.white,
                     // ),
-                    // Todo: Replace with svg icon (above commented) // ReLaunch
-                    child: Icon(
-                      Icons.notifications_outlined,
-                      color: AppColors.white,
-                    ),
                   ),
                   Positioned(
                     top: 0,

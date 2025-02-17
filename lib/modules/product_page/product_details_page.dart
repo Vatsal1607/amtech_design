@@ -1,4 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/core/utils/enums/details_enum.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
@@ -27,10 +28,11 @@ class ProductDetailsPage extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
             {};
     final menuId = args['menuId'];
+    final detailsType = args['detailsType'];
     final provider =
         Provider.of<ProductDetailsProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      provider.getMenuDetails(menuId: menuId); // API call
+      provider.getMenuDetails(menuId: menuId); //* API call
     });
     return Scaffold(
       extendBodyBehindAppBar: true, // Ensures content goes behind the AppBar
@@ -206,16 +208,29 @@ class ProductDetailsPage extends StatelessWidget {
                                                 CustomButton(
                                           height: 55.h,
                                           onTap: () {
-                                            debugPrint(
-                                                'Add to cart button called');
-                                            showSizeModalBottomSheet(
-                                              context: context,
-                                              accountType: accountType,
-                                              provider: menuProvider,
-                                              menuId: menuId,
-                                            );
+                                            if (detailsType ==
+                                                DetailsType.details.name) {
+                                              showSizeModalBottomSheet(
+                                                context: context,
+                                                accountType: accountType,
+                                                provider: menuProvider,
+                                                menuId: menuId,
+                                              );
+                                            } else if (detailsType ==
+                                                DetailsType.subscription.name) {
+                                              // Todo add process of get subs
+                                              debugPrint(
+                                                  "Subscription type onTap method");
+                                            }
                                           },
-                                          text: 'ADD TO CART',
+                                          text: detailsType ==
+                                                  DetailsType.details.name
+                                              ? 'ADD TO CART'
+                                              : detailsType ==
+                                                      DetailsType
+                                                          .subscription.name
+                                                  ? 'GET SUBSCRIPTION'
+                                                  : '',
                                           textColor: getColorAccountType(
                                             accountType: accountType,
                                             businessColor: AppColors.seaShell,

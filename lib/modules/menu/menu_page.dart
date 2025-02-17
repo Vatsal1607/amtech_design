@@ -1,6 +1,8 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
+import 'package:amtech_design/core/utils/enums/details_enum.dart';
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
@@ -44,6 +46,14 @@ class _MenuPageState extends State<MenuPage> {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
 
+    //* Show cart snackbar
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // showCartSnackbar(
+      //   context: context,
+      //   message: '3 ITEMS ADDED',
+      //   items: 'items',
+      // );
+    });
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -90,7 +100,8 @@ class _MenuPageState extends State<MenuPage> {
                                   ),
                                   SizedBox(width: 5.w),
                                   SizedBox(
-                                    width: 360.w,
+                                    // width: 360.w,
+                                    width: 310.w,
                                     child: Consumer<MenuProvider>(
                                       builder: (context, _, child) {
                                         return RichText(
@@ -133,6 +144,22 @@ class _MenuPageState extends State<MenuPage> {
                                           ),
                                         );
                                       },
+                                    ),
+                                  ),
+                                  //* Change Address
+                                  Container(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 5.h, horizontal: 8.w),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.black,
+                                      borderRadius: BorderRadius.circular(20.r),
+                                    ),
+                                    child: Text(
+                                      'Change',
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 11.sp,
+                                        color: AppColors.white,
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -307,7 +334,22 @@ class _MenuPageState extends State<MenuPage> {
                                   const SizedBox(height: 10.0),
 
                                   //* Subscriptions
-                                  SubscriptionWidget(provider: provider),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.productDetails,
+                                        arguments: {
+                                          'menuId': '', // Todo set menuId
+                                          'detailsType':
+                                              DetailsType.subscription.name,
+                                        },
+                                      );
+                                    },
+                                    child: SubscriptionWidget(
+                                      provider: provider,
+                                    ),
+                                  ),
 
                                   // * ListView Categories
                                   Consumer<MenuProvider>(
@@ -403,6 +445,10 @@ class _MenuPageState extends State<MenuPage> {
                                                                 'menuId':
                                                                     menuItems
                                                                         ?.menuId,
+                                                                'detailsType':
+                                                                    DetailsType
+                                                                        .details
+                                                                        .name,
                                                               },
                                                             );
                                                           },

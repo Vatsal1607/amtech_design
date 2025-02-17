@@ -175,6 +175,7 @@ class CartWidget extends StatelessWidget {
                     onIncrease: () {
                       //* API call
                       menuProvider.addToCart(
+                        context: context,
                         size: cartItems?.size?[0].name ?? '',
                         menuId: cartItems?.menuId?.sId ?? '',
                         sizeId: cartItems?.size?[0].sizeId ?? '',

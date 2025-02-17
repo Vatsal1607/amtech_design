@@ -1,5 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/modules/product_page/widgets/ingredient_text.dart';
+import 'package:amtech_design/core/utils/enums/details_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +20,10 @@ class BottomsheetContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+            {};
+    final detailsType = args['detailsType'];
     return Container(
       width: double.infinity,
       padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 20.h),
@@ -76,47 +80,130 @@ class BottomsheetContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  SvgIcon(
-                    icon: IconStrings.time,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.disabledColor,
-                      personalColor: AppColors.bayLeaf,
+              //* Conditional Row: details || subscription
+              if (detailsType == DetailsType.details.name)
+                Row(
+                  children: [
+                    SvgIcon(
+                      icon: IconStrings.time,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.disabledColor,
+                        personalColor: AppColors.bayLeaf,
+                      ),
                     ),
-                  ),
-                  RichText(
-                    maxLines: 1,
-                    overflow: TextOverflow.clip,
-                    text: TextSpan(
-                      text: 'Avg. ',
+                    RichText(
+                      maxLines: 1,
+                      overflow: TextOverflow.clip,
+                      text: TextSpan(
+                        text: 'Avg. ',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 14.sp,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: '15 Minutes',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.bold,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              if (detailsType == DetailsType.subscription.name)
+                Row(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 4.h,
+                        horizontal: 7.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.lightGreen,
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                      child: Text(
+                        'CLASSIC',
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11.sp,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5.w),
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 4.h,
+                        horizontal: 7.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.disabledColor,
+                        borderRadius: BorderRadius.circular(30.r),
+                      ),
+                      child: Text(
+                        'REGULAR',
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 11.sp,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 5.w),
+                    Text(
+                      '350 ML',
                       style: GoogleFonts.publicSans(
-                        fontSize: 14.sp,
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.bold,
                         color: getColorAccountType(
                           accountType: accountType,
                           businessColor: AppColors.primaryColor,
                           personalColor: AppColors.darkGreenGrey,
                         ),
                       ),
-                      children: <TextSpan>[
-                        TextSpan(
-                          text: '15 Minutes',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
-                ],
-              ),
+                    SizedBox(width: 5.w),
+                    const SvgIcon(
+                      icon: IconStrings.rupeeFilled,
+                      color: AppColors.disabledColor,
+                    ),
+                    SizedBox(width: 3.w),
+                    Text(
+                      '2,199',
+                      style: GoogleFonts.publicSans(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
+                      ),
+                    ),
+                  ],
+                )
               // * Ratings
               // Row(
               //   children: [

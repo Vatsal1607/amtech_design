@@ -7,6 +7,7 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/strings.dart';
+import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../services/network/api_service.dart';
@@ -308,6 +309,11 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  int cartSnackbarTotalItems = 0;
+  String cartSnackbarItemText = '';
+  final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
+
   // * addToCart API
   Future<void> addToCart({
     required String menuId,
@@ -315,6 +321,7 @@ class MenuProvider extends ChangeNotifier {
     required Function(bool) callback, // Callback parameter
     required String size,
     List<RequestItems>? items,
+    BuildContext? context,
   }) async {
     isLoadingAddToCart = true;
     setLoading(size, true);
@@ -340,8 +347,40 @@ class MenuProvider extends ChangeNotifier {
       );
       log('addToCart: ${res.data}');
       if (res.success == true) {
+        callback(true); //* Notify success
         AddToCartModel addToCartResponse = res;
-        callback(true); // Notify success
+        List<Items> items = addToCartResponse.data!.cart!.items ?? [];
+        //* Calculate total item count
+        cartSnackbarTotalItems =
+            items.fold(0, (sum, item) => sum + (item.quantity ?? 0));
+        //* Extract unique item names
+        List<String> itemNames =
+            items.map((item) => item.itemName ?? '').toSet().toList();
+        //* Format item names for display
+        cartSnackbarItemText = itemNames.length > 2
+            ? "${itemNames[0]}, ${itemNames[1]} & more"
+            : itemNames.join(", ");
+        log('cartSnackbarItemText: $cartSnackbarTotalItems');
+        log('cartSnackbarItemText: $cartSnackbarItemText');
+
+        //* Show Snackbar here using the GlobalKey
+        if (context != null) {
+          // scaffoldMessengerKey.currentState?.showSnackBar(
+          //   cartSnackbarWidget(
+          //     message: '$cartSnackbarTotalItems Items added',
+          //     items: cartSnackbarItemText,
+          //     context: context,
+          //   ),
+          // );
+        } else {
+          debugPrint('context is null');
+        }
+        // showCartSnackbar(
+        //   context: context,
+        //   message: '$totalItems Items added',
+        //   items: itemText,
+        // );
+        debugPrint('callback called');
       } else {
         log('${res.message}');
         callback(false); // Notify failure

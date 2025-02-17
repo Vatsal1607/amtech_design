@@ -124,6 +124,7 @@ class ProductSizeWidget extends StatelessWidget {
               : () {
                   //* API call
                   menuProvider.addToCart(
+                    context: context,
                     size: size,
                     menuId: menuId,
                     sizeId: sizeId,

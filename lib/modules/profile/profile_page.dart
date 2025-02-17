@@ -295,16 +295,29 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-
                   Consumer<ProfileProvider>(
                     builder: (context, _, child) => ProfileTile(
                       // * Consider tile Index 4
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(4);
-                        Navigator.pushNamed(context, Routes.aboutUs);
+                        //
                       },
                       isSelected: provider.selectedTileIndex == 4,
+                      title: 'Subscriptions',
+                      icon: IconStrings.subscriptions,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Consumer<ProfileProvider>(
+                    builder: (context, _, child) => ProfileTile(
+                      // * Consider tile Index 5
+                      accountType: accountType,
+                      onTap: () {
+                        provider.updateTileIndex(5);
+                        Navigator.pushNamed(context, Routes.aboutUs);
+                      },
+                      isSelected: provider.selectedTileIndex == 5,
                       title: 'About Us',
                       icon: IconStrings.aboutUs,
                     ),

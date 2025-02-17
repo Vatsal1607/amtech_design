@@ -45,11 +45,11 @@ class SubscriptionWidget extends StatelessWidget {
                       image: DecorationImage(
                         image: AssetImage(provider.subscriptionImages[index]),
                         fit: BoxFit.fitWidth,
-                        colorFilter: ColorFilter.mode(
-                          AppColors.primaryColor.withOpacity(0.5),
-                          BlendMode
-                              .srcATop, // Adjust blend mode based on your needs
-                        ),
+                        // colorFilter: ColorFilter.mode(
+                        //   AppColors.primaryColor.withOpacity(0.5),
+                        //   BlendMode
+                        //       .srcATop, // Adjust blend mode based on your needs
+                        // ),
                       ),
                     ),
                   ),
@@ -61,7 +61,13 @@ class SubscriptionWidget extends StatelessWidget {
                       gradient: LinearGradient(
                         colors: [
                           AppColors.primaryColor,
-                          AppColors.primaryColor.withOpacity(0),
+                          AppColors.primaryColor.withOpacity(.2),
+                          // AppColors.primaryColor,
+                          // AppColors.primaryColor.withOpacity(.8),
+                          // AppColors.primaryColor.withOpacity(.4),
+                          // AppColors.primaryColor.withOpacity(0),
+                          // AppColors.primaryColor.withOpacity(0),
+                          // AppColors.primaryColor.withOpacity(0),
                         ],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,

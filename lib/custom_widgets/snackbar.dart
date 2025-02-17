@@ -43,78 +43,115 @@ void customSnackBar({
 }
 
 // * Cart snackbar
-void showCartSnackbar(BuildContext context, String message) {
-  final snackBar = SnackBar(
-    margin: EdgeInsets.zero,
-    content: Column(
+void showCartSnackbar({
+  required BuildContext context,
+  required String message,
+  required String items,
+}) {
+  final snackBar =
+      cartSnackbarWidget(message: message, items: items, context: context);
+
+  ScaffoldMessenger.of(context)
+    ..clearSnackBars() // Clear any previous Snackbar to avoid stacking
+    ..showSnackBar(snackBar);
+}
+
+SnackBar cartSnackbarWidget({
+  required String message,
+  required String items,
+  required BuildContext context,
+}) {
+  return SnackBar(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(35.r),
+    ),
+    margin: EdgeInsets.only(
+      bottom: 8.h,
+      left: 22.h,
+      right: 22.h,
+    ),
+    content: Stack(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              message,
-              style: GoogleFonts.publicSans(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.white,
+        Padding(
+          padding: EdgeInsets.only(left: 10.w),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    message,
+                    style: GoogleFonts.publicSans(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.white,
+                    ),
+                  ),
+                  SizedBox(width: 11.h),
+                  GestureDetector(
+                    onTap: () {
+                      debugPrint('Navigate to cart page');
+                    },
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 6.h, horizontal: 15.w),
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(100.r),
+                      ),
+                      child: const SvgIcon(
+                        icon: IconStrings.arrowNext,
+                        color: AppColors.primaryColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(width: 11.h),
-            GestureDetector(
-              onTap: () {
-                debugPrint('Navigate to cart page');
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 15.w),
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  borderRadius: BorderRadius.circular(100.r),
-                ),
-                child: const SvgIcon(
-                  icon: IconStrings.arrowNext,
-                  color: AppColors.primaryColor,
-                ),
+              SizedBox(height: 10.h),
+              RichText(
+                text: TextSpan(
+                    text: '$items '.toUpperCase(),
+                    style: GoogleFonts.publicSans(
+                      fontSize: 10.sp,
+                      color: AppColors.disabledColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: '& more',
+                        style: GoogleFonts.publicSans(),
+                      ),
+                    ]),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-        SizedBox(height: 10.h),
-        RichText(
-          text: TextSpan(
-              text: '{Item name} '.toUpperCase(),
-              style: GoogleFonts.publicSans(
-                fontSize: 10.sp,
-                color: AppColors.disabledColor,
-                fontWeight: FontWeight.bold,
+        Positioned(
+          top: 0,
+          right: 0,
+          bottom: 0,
+          child: GestureDetector(
+            onTap: () {
+              ScaffoldMessenger.of(context).clearSnackBars();
+            },
+            child: Container(
+              height: 20.h,
+              width: 20.w,
+              decoration: const BoxDecoration(
+                color: AppColors.red,
+                shape: BoxShape.circle,
               ),
-              children: [
-                TextSpan(
-                  text: '& more',
-                  style: GoogleFonts.publicSans(),
-                ),
-              ]),
+              child: const SvgIcon(
+                icon: IconStrings.close,
+              ),
+            ),
+          ),
         ),
       ],
     ),
     backgroundColor: AppColors.primaryColor,
     behavior: SnackBarBehavior.floating,
     duration: const Duration(days: 1),
-    // margin: const EdgeInsets.all(16), // remove margin in fixed behaviour
-    // shape: RoundedRectangleBorder(
-    //   borderRadius: BorderRadius.circular(8),
-    // ),
-    // action: SnackBarAction(
-    //   label: 'UNDO',
-    //   textColor: Colors.blueAccent,
-    //   onPressed: () {
-    //     // Action when "UNDO" is pressed
-    //     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    //   },
-    // ),
   );
-
-  ScaffoldMessenger.of(context)
-    ..clearSnackBars() // Clear any previous Snackbar to avoid stacking
-    ..showSnackBar(snackBar);
 }

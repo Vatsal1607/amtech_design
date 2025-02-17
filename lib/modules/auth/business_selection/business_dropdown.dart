@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
@@ -6,13 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:searchfield/searchfield.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/strings.dart';
-import '../../../core/utils/constant.dart';
-import '../../../core/utils/constants/keys.dart';
-import '../../../models/business_list_model.dart';
-import '../../../services/local/shared_preferences_service.dart';
 
 class BusinessDropdown extends StatelessWidget {
   final BusinessSelectionProvider provider;
@@ -35,11 +29,16 @@ class BusinessDropdown extends StatelessWidget {
             ),
           ),
           child: SearchAnchor.bar(
-            onTap: () {
+            onTap: () async {
               provider.onTapSearch();
               //* API call
-              provider.getBusinessList(
-                  currentPage: 1); // You can add other parameters here
+              await provider.getBusinessList(
+                currentPage: 1,
+              ); // You can add other parameters here
+              // ✅ Force refresh of the search suggestions
+              // WidgetsBinding.instance.addPostFrameCallback((_) {
+              //   provider.businessSearchController.notifyListeners();
+              // });
             },
             searchController: provider.businessSearchController,
             barHintText: 'Select Your Business',

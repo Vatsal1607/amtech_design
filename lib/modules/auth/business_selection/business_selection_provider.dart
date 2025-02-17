@@ -62,7 +62,7 @@ class BusinessSelectionProvider extends ChangeNotifier {
 
   int totalRecords = 0;
 
-  // *getBusinessList
+  //* getBusinessList
   Future<void> getBusinessList({
     String searchText = '',
     int currentPage = 1,

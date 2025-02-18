@@ -1,62 +1,64 @@
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
+import '../../core/utils/app_colors.dart';
 import 'google_map_provider.dart';
-
-// class GoogleMapPage extends StatelessWidget {
-//   const GoogleMapPage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<GoogleMapProvider>(context, listen: false);
-//     return Scaffold(
-//       appBar: AppBar(title: const Text('Google Map')),
-//       body: GoogleMap(
-//         onMapCreated: (controller) {
-//           provider.mapController = controller;
-//         },
-//         initialCameraPosition: const CameraPosition(
-//           target: LatLng(37.7749, -122.4194), // San Francisco as an example
-//           zoom: 10,
-//         ),
-//         markers: provider.markers,
-//       ),
-//     );
-//   }
-// }
 
 class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({super.key});
 
   @override
-  _GoogleMapPageState createState() => _GoogleMapPageState();
+  State<GoogleMapPage> createState() => _GoogleMapPageState();
 }
 
 class _GoogleMapPageState extends State<GoogleMapPage> {
-  late GoogleMapController mapController;
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      Provider.of<GoogleMapProvider>(context, listen: false)
+          .getCurrentLocation(context);
+    });
+  }
 
-  final LatLng _center =
-      const LatLng(37.7749, -122.4194); // Example coordinates (San Francisco)
-
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      context.read<GoogleMapProvider>().checkLocationOnResume(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<GoogleMapProvider>(context);
+    const String accountType = 'business';
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Google Maps Example'),
+      appBar: const CustomAppbarWithCenterTitle(
+        backgroundColor: Colors.red,
+        title: 'Google Map',
+        accountType: accountType,
       ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0,
-        ),
-        myLocationEnabled: true,
-        myLocationButtonEnabled: true,
-      ),
+      body: provider.currentLocation == null
+          ? const Center(
+              child: CustomLoader(
+              color: AppColors.primaryColor,
+            ))
+          : GoogleMap(
+              onMapCreated: (controller) {
+                provider.mapController = controller;
+                provider.getCurrentLocation(context); // Ensure location updates
+              },
+              initialCameraPosition: CameraPosition(
+                target: provider.currentLocation!,
+                zoom: 14,
+              ),
+              markers: provider.markers,
+              myLocationEnabled: true, // Show blue dot for current location
+              myLocationButtonEnabled: true, // Enable location button
+            ),
     );
   }
 }

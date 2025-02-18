@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../custom_widgets/svg_icon.dart';
 
-// Todo Put Valid color according personal accountType
 class OrderStatusIconWidget extends StatelessWidget {
   final String icon;
   final bool isActive;
@@ -32,7 +31,7 @@ class OrderStatusIconWidget extends StatelessWidget {
             : getColorAccountType(
                 accountType: accountType,
                 businessColor: AppColors.disabledBg,
-                personalColor: AppColors.bayLeaf,
+                personalColor: AppColors.darkGreenGrey.withOpacity(.5),
               ),
       ),
       child: SvgIcon(

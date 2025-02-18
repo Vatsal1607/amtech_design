@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
@@ -24,11 +26,14 @@ class EditProfilePage extends StatelessWidget {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<EditProfileProvider>(context, listen: false);
-    if (accountType == 'business') {
-      provider.getBusinessDetails(); //* API
-    } else {
-      provider.getPersonalDetails(); //* API
-    }
+    log('first name: ${provider.personalFirstNameController.text.toString()}');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (accountType == 'business') {
+        provider.getBusinessDetails(); //* API
+      } else {
+        provider.getPersonalDetails(); //* API
+      }
+    });
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -92,61 +97,66 @@ class EditProfilePage extends StatelessWidget {
                               ),
                               SizedBox(height: 20.h),
                               //! Fields start
-                              CustomTextField(
-                                controller:
-                                    provider.personalFirstNameController,
-                                hint: '',
-                                prefixIcon: IconStrings.business,
-                                iconColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                borderColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                textColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                suffixWidget: Padding(
-                                  padding: EdgeInsets.all(9.w),
-                                  child: EditIconWidget(
+                              if (accountType == 'personal')
+                                CustomTextField(
+                                  controller:
+                                      provider.personalFirstNameController,
+                                  hint: '',
+                                  prefixIcon: IconStrings.business,
+                                  iconColor: getColorAccountType(
                                     accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  borderColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  textColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  suffixWidget: Padding(
+                                    padding: EdgeInsets.all(9.w),
+                                    child: EditIconWidget(
+                                      accountType: accountType,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(height: 20.h),
-                              CustomTextField(
-                                controller: provider.personalLastNameController,
-                                hint: '',
-                                prefixIcon: IconStrings.business,
-                                iconColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                borderColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                textColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                                suffixWidget: Padding(
-                                  padding: EdgeInsets.all(9.w),
-                                  child: EditIconWidget(
+                              if (accountType == 'personal')
+                                SizedBox(height: 20.h),
+                              if (accountType == 'personal')
+                                CustomTextField(
+                                  controller:
+                                      provider.personalLastNameController,
+                                  hint: '',
+                                  prefixIcon: IconStrings.business,
+                                  iconColor: getColorAccountType(
                                     accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  borderColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  textColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                  suffixWidget: Padding(
+                                    padding: EdgeInsets.all(9.w),
+                                    child: EditIconWidget(
+                                      accountType: accountType,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              // SizedBox(height: 20.h),
+                              if (accountType == 'personal')
+                                SizedBox(height: 20.h),
                               if (accountType == 'business')
                                 CustomTextField(
                                   controller: provider.businessNameController,
@@ -203,7 +213,8 @@ class EditProfilePage extends StatelessWidget {
                                     ),
                                   ),
                                 ),
-                              SizedBox(height: 20.h),
+                              if (accountType == 'business')
+                                SizedBox(height: 20.h),
                               CustomTextField(
                                 controller: provider.addressController,
                                 hint: '',
@@ -317,103 +328,108 @@ class EditProfilePage extends StatelessWidget {
                               // ),
                               SizedBox(height: 20.h),
                               //* Dropdown business type
-                              Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.black,
-                                    width: 2.w,
-                                  ),
-                                  borderRadius: BorderRadius.circular(100.r),
-                                ),
-                                child: Row(
-                                  children: [
-                                    // Leading Icon (Outside the Dropdown)
-                                    const Padding(
-                                      padding: EdgeInsets.only(left: 15.0),
-                                      child: SvgIcon(
-                                        icon: IconStrings.property,
-                                        color: AppColors.black,
-                                      ),
+                              if (accountType == 'business')
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: AppColors.black,
+                                      width: 2.w,
                                     ),
-                                    Expanded(
-                                      child: Consumer<EditProfileProvider>(
-                                        builder: (context, _, child) =>
-                                            DropdownButton2<String>(
-                                          dropdownStyleData: DropdownStyleData(
-                                            decoration: BoxDecoration(
-                                              color: AppColors.seaShell,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10), // Rounded corners
-                                              border: Border.all(
-                                                color:
-                                                    Colors.grey, // Border color
-                                                width: 1, // Border width
+                                    borderRadius: BorderRadius.circular(100.r),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      // Leading Icon (Outside the Dropdown)
+                                      const Padding(
+                                        padding: EdgeInsets.only(left: 15.0),
+                                        child: SvgIcon(
+                                          icon: IconStrings.property,
+                                          color: AppColors.black,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Consumer<EditProfileProvider>(
+                                          builder: (context, _, child) =>
+                                              DropdownButton2<String>(
+                                            dropdownStyleData:
+                                                DropdownStyleData(
+                                              decoration: BoxDecoration(
+                                                color: AppColors.seaShell,
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10), // Rounded corners
+                                                border: Border.all(
+                                                  color: Colors
+                                                      .grey, // Border color
+                                                  width: 1, // Border width
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                          value: provider.selectedBusinessType,
-                                          isExpanded: true,
-                                          style: GoogleFonts.publicSans(
-                                            fontSize: 14.sp,
-                                            color: AppColors.black,
-                                          ),
-                                          hint: Text(
-                                            'Business Type',
+                                            value:
+                                                provider.selectedBusinessType,
+                                            isExpanded: true,
                                             style: GoogleFonts.publicSans(
                                               fontSize: 14.sp,
                                               color: AppColors.black,
                                             ),
-                                          ),
-                                          items: provider.businessTypeItems
-                                              .map<DropdownMenuItem<String>>(
-                                                  (String value) {
-                                            return DropdownMenuItem<String>(
-                                              value: value,
-                                              child: Text(
-                                                value,
-                                                style: GoogleFonts.publicSans(
-                                                  fontSize: 14.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: AppColors.primaryColor,
-                                                ),
-                                              ),
-                                            );
-                                          }).toList(),
-                                          underline: const SizedBox.shrink(),
-                                          onChanged:
-                                              provider.onChangeBusinessType,
-                                          iconStyleData: IconStyleData(
-                                            icon: Padding(
-                                              padding: EdgeInsets.all(9.w),
-                                              child: EditIconWidget(
-                                                accountType: accountType,
+                                            hint: Text(
+                                              'Business Type',
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 14.sp,
+                                                color: AppColors.black,
                                               ),
                                             ),
-                                          ),
-                                          selectedItemBuilder:
-                                              (BuildContext context) {
-                                            return provider.businessTypeItems
-                                                .map<Widget>((String value) {
-                                              return Align(
-                                                alignment: Alignment.centerLeft,
+                                            items: provider.businessTypeItems
+                                                .map<DropdownMenuItem<String>>(
+                                                    (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
                                                 child: Text(
                                                   value,
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors
-                                                        .black, // Style for the selected item
+                                                  style: GoogleFonts.publicSans(
+                                                    fontSize: 14.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color:
+                                                        AppColors.primaryColor,
                                                   ),
                                                 ),
                                               );
-                                            }).toList();
-                                          },
+                                            }).toList(),
+                                            underline: const SizedBox.shrink(),
+                                            onChanged:
+                                                provider.onChangeBusinessType,
+                                            iconStyleData: IconStyleData(
+                                              icon: Padding(
+                                                padding: EdgeInsets.all(9.w),
+                                                child: EditIconWidget(
+                                                  accountType: accountType,
+                                                ),
+                                              ),
+                                            ),
+                                            selectedItemBuilder:
+                                                (BuildContext context) {
+                                              return provider.businessTypeItems
+                                                  .map<Widget>((String value) {
+                                                return Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    value,
+                                                    style: const TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors
+                                                          .black, // Style for the selected item
+                                                    ),
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
                               SizedBox(height: 20.h),
                             ],
                           ),
@@ -432,7 +448,11 @@ class EditProfilePage extends StatelessWidget {
                 builder: (context, _, child) => CustomButton(
                   height: 55.h,
                   onTap: () {
-                    provider.editProfile(context);
+                    if (accountType == 'business') {
+                      provider.editProfile(context);
+                    } else if (accountType == 'personal') {
+                      provider.editPersonalProfile(context);
+                    }
                   },
                   isLoading: provider.isEditProfileLoading,
                   text: 'done',

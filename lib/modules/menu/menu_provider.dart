@@ -365,13 +365,13 @@ class MenuProvider extends ChangeNotifier {
 
         //* Show Snackbar here using the GlobalKey
         if (context != null) {
-          // scaffoldMessengerKey.currentState?.showSnackBar(
-          //   cartSnackbarWidget(
-          //     message: '$cartSnackbarTotalItems Items added',
-          //     items: cartSnackbarItemText,
-          //     context: context,
-          //   ),
-          // );
+          scaffoldMessengerKey.currentState?.showSnackBar(
+            cartSnackbarWidget(
+              message: '$cartSnackbarTotalItems Items added',
+              items: cartSnackbarItemText,
+              context: context,
+            ),
+          );
         } else {
           debugPrint('context is null');
         }

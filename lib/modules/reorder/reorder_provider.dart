@@ -16,7 +16,10 @@ class ReorderProvider extends ChangeNotifier {
   List<ReOrders> reorderList = [];
 
   // Get Order with Pagination
-  Future<void> getReorder({bool isRefresh = false}) async {
+  Future<void> getReorder({
+    bool isRefresh = false,
+    bool isFromDateRange = false,
+  }) async {
     if (_isLoading || (!hasMore && !isRefresh)) return;
     _isLoading = true;
     notifyListeners();
@@ -30,8 +33,8 @@ class ReorderProvider extends ChangeNotifier {
         page: currentPage,
         limit: limit,
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
-        startDate: formattedStartDateForApi,
-        endDate: formattedEndDateForApi,
+        startDate: isFromDateRange ? formattedStartDateForApi : null,
+        endDate: isFromDateRange ? formattedEndDateForApi : null,
       );
 
       if (res.success == true && res.data?.reOrders != null) {
@@ -61,13 +64,15 @@ class ReorderProvider extends ChangeNotifier {
   String formattedEndDateForApi = '';
 
   //* reset Dates
-  resetSelectedDates() {
+  resetSelectedDates() async {
     selectedStartDate = null;
     selectedEndDate = null;
     formattedStartDate = '';
     formattedEndDate = '';
     debugPrint('reset Dates called');
-    getReorder();
+    await getReorder(
+      isRefresh: true,
+    ); //! API call
     notifyListeners();
   }
 
@@ -85,7 +90,10 @@ class ReorderProvider extends ChangeNotifier {
       formattedStartDateForApi = Utils.formatDateForApi(pickedDate);
       //* call Reorder API while both data selected
       if (formattedStartDate.isNotEmpty && formattedEndDate.isNotEmpty) {
-        await getReorder(isRefresh: true);
+        await getReorder(
+          isRefresh: true,
+          isFromDateRange: true,
+        ); //! API call
       }
       notifyListeners();
     }
@@ -105,7 +113,10 @@ class ReorderProvider extends ChangeNotifier {
       formattedEndDateForApi = Utils.formatDateForApi(pickedDate);
       //* call Reorder API while both data selected
       if (formattedStartDate.isNotEmpty && formattedEndDate.isNotEmpty) {
-        await getReorder(isRefresh: true);
+        await getReorder(
+          isRefresh: true,
+          isFromDateRange: true,
+        ); //! API call
       }
       notifyListeners();
     }

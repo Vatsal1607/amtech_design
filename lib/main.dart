@@ -20,6 +20,7 @@ import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';
 import 'modules/firebase/firebase_provider.dart';
 import 'modules/firebase/firebase_services.dart';
+import 'modules/map/google_map_provider.dart';
 import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
 import 'modules/profile/edit_profile/edit_profile_provider.dart';
@@ -28,6 +29,7 @@ import 'modules/provider/socket_provider.dart';
 import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
+import 'modules/subscriptions/subscription_provider.dart';
 import 'routes.dart';
 
 void main() async {
@@ -76,6 +78,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => EditProfileProvider()),
         ChangeNotifierProvider(create: (_) => SocketProvider()),
         ChangeNotifierProvider(create: (_) => BillingProvider()),
+        ChangeNotifierProvider(create: (_) => GoogleMapProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

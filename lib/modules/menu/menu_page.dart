@@ -4,6 +4,7 @@ import 'package:amtech_design/core/utils/enums/details_enum.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/map/google_map_page.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
@@ -103,7 +104,7 @@ class _MenuPageState extends State<MenuPage> {
                                   SizedBox(width: 5.w),
                                   SizedBox(
                                     // width: 360.w,
-                                    width: 310.w,
+                                    width: 300.w,
                                     child: Consumer<MenuProvider>(
                                       builder: (context, _, child) {
                                         return RichText(
@@ -151,12 +152,20 @@ class _MenuPageState extends State<MenuPage> {
                                   //* Change Address
                                   GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(
-                                          context, Routes.googleMapPage);
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => GoogleMapPage(),
+                                        ),
+                                      );
+                                      // Navigator.pushNamed(
+                                      //   context,
+                                      //   Routes.googleMapPage,
+                                      // );
                                     },
                                     child: Container(
                                       padding: EdgeInsets.symmetric(
-                                          vertical: 5.h, horizontal: 8.w),
+                                          vertical: 8.h, horizontal: 12.w),
                                       decoration: BoxDecoration(
                                         color: AppColors.black,
                                         borderRadius:

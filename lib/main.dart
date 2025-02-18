@@ -21,6 +21,7 @@ import 'modules/feedback/feedback_provider.dart';
 import 'modules/firebase/firebase_provider.dart';
 import 'modules/firebase/firebase_services.dart';
 import 'modules/map/google_map_provider.dart';
+import 'modules/menu/menu_page.dart';
 import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
 import 'modules/profile/edit_profile/edit_profile_provider.dart';
@@ -98,9 +99,9 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            // home: ProductDetailsPage(),
-            initialRoute: Routes.initial,
-            routes: Routes.routes,
+            home: MenuPage(),
+            // initialRoute: Routes.initial,
+            // routes: Routes.routes,
             // onGenerateRoute: (settings) {},
           ),
         ),

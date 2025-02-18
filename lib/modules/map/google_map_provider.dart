@@ -1,55 +1,100 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:geolocator/geolocator.dart';
 
 class GoogleMapProvider extends ChangeNotifier {
-  GoogleMapProvider() {
-    requestLocationPermission();
+  GoogleMapController? mapController;
+  LatLng? currentLocation;
+  Set<Marker> markers = {};
+
+  Future<void> getCurrentLocation(BuildContext? context) async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      if (context != null) {
+        _showLocationServiceDialog(context);
+      }
+      return;
+    }
+
+    // Request location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error("Location permission denied.");
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error("Location permission permanently denied.");
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    currentLocation = LatLng(position.latitude, position.longitude);
+
+    // Update marker
+    markers.clear();
+    markers.add(
+      Marker(
+        markerId: const MarkerId("currentLocation"),
+        position: currentLocation!,
+        infoWindow: const InfoWindow(title: "Your Location"),
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+      ),
+    );
+
+    // Move the camera to the current location
+    mapController?.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(target: currentLocation!, zoom: 14),
+      ),
+    );
+
+    notifyListeners();
   }
 
-  GoogleMapController? mapController;
-  final Set<Marker> markers = {};
+  //* Show dialog if location services are disabled
+  void _showLocationServiceDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Location Required"),
+          content: const Text(
+              "Location services are disabled. Please enable them in settings."),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context);
+                await Geolocator
+                    .openLocationSettings(); //* Open location settings
+              },
+              child: const Text("Open Settings"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text("Cancel"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-  Future<void> requestLocationPermission() async {
-    PermissionStatus status = await Permission.location.request();
-
-    if (status.isGranted) {
-      debugPrint("Location permission granted");
-    } else if (status.isDenied) {
-      debugPrint("Location permission denied");
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings(); // To open app settings to manually enable permission
+  // Check if location is enabled when app resumes
+  Future<void> checkLocationOnResume(BuildContext context) async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (serviceEnabled) {
+      getCurrentLocation(context);
     }
   }
-
-  // Future<void> getCurrentLocation() async {
-  //   bool serviceEnabled;
-  //   LocationPermission permission;
-
-  //   // Check if location services are enabled
-  //   serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  //   if (!serviceEnabled) {
-  //     // Handle the case when location services are not enabled
-  //     return Future.error('Location services are disabled.');
-  //   }
-
-  //   // Check for location permissions
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //     if (permission == LocationPermission.denied) {
-  //       return Future.error('Location permissions are denied');
-  //     }
-  //   }
-
-  //   if (permission == LocationPermission.deniedForever) {
-  //     return Future.error('Location permissions are permanently denied');
-  //   }
-
-  //   // Get the current position
-  //   Position position = await Geolocator.getCurrentPosition(
-  //       desiredAccuracy: LocationAccuracy.high);
-  //   print(
-  //       'Current Location: Latitude: ${position.latitude}, Longitude: ${position.longitude}');
-  // }
 }

@@ -18,6 +18,7 @@ import 'modules/auth/business_register/register_page.dart';
 import 'modules/auth/business_selection/business_selection_page.dart';
 import 'modules/auth/otp/widgets/verify_success_page.dart';
 import 'modules/authorized_emp/authorized_emp_page.dart';
+import 'modules/map/google_map_page.dart';
 import 'modules/order/order_status/order_status_page.dart';
 import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
@@ -41,13 +42,13 @@ class Routes {
   static const String recharge = '/rechargePage';
   static const String orderList = '/orderList';
   static const String orderStatus = '/orderStatus';
-  // static const String razorPay = '/razorPay';
   static const String authorizedEmp = '/authorizedEmp';
   static const String notification = '/notification';
   static const String ratings = '/ratings';
   static const String favoriteItems = '/favoriteItems';
   static const String feedback = '/feedback';
   static const String aboutUs = '/aboutUs';
+  static const String googleMapPage = '/googleMapPage';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -67,12 +68,12 @@ class Routes {
     recharge: (context) => const RechargePage(),
     orderList: (context) => const OrderListPage(),
     orderStatus: (context) => const OrderStatusPage(),
-    // razorPayPage: (context) => const RazorPayPage(),
     authorizedEmp: (context) => AuthorizedEmpPage(),
     notification: (context) => const NotificationPage(),
     ratings: (context) => const RatingsPage(),
     favoriteItems: (context) => const FavoritePage(),
     feedback: (context) => const FeedbackPage(),
     aboutUs: (context) => const AboutUsPage(),
+    googleMapPage: (context) => const GoogleMapPage(),
   };
 }

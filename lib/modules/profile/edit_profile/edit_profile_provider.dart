@@ -72,7 +72,6 @@ class EditProfileProvider extends ChangeNotifier {
   }
 
   //* getPersonalDetails API
-  // Todo working...
   Future<void> getPersonalDetails() async {
     isDetailsLoading = true;
     notifyListeners();
@@ -82,13 +81,15 @@ class EditProfileProvider extends ChangeNotifier {
       );
       log('personalDetailsResponse: ${res.data}');
       if (res.success == true) {
+        personalDetailsResponse = res;
         personalFirstNameController.text =
-            personalDetailsResponse?.data?.firstName ?? '';
+            personalDetailsResponse?.data?.firstName ?? 'null';
         personalLastNameController.text =
-            personalDetailsResponse?.data?.lastName ?? '';
+            personalDetailsResponse?.data?.lastName ?? 'null';
+        addressController.text =
+            personalDetailsResponse?.data?.address ?? 'null';
         mobileController.text =
-            personalDetailsResponse?.data?.contact.toString() ?? '';
-        addressController.text = personalDetailsResponse?.data?.address ?? '';
+            personalDetailsResponse?.data?.contact.toString() ?? 'null';
         log('personalDetailsResponse: ${personalDetailsResponse?.data?.firstName}');
       } else {
         log('${res.message}');
@@ -146,12 +147,11 @@ class EditProfileProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final body = {
-        'firstName':
-            businessOwnerController.text, // Todo change personal values
-        'lastName': mobileController.text,
-        'contact': addressController.text,
-        'address': businessNameController.text,
-        'profileImage': businessEmailController.text,
+        'firstName': personalFirstNameController.text,
+        'lastName': personalLastNameController.text,
+        'contact': mobileController.text,
+        'address': addressController.text,
+        // 'profileImage': '',
       };
       final res = await apiService.editPersonalProfile(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',

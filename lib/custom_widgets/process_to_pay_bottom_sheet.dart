@@ -88,15 +88,20 @@ void showProcessToPayBottomSheeet({
 
                   CustomSlidableButton(
                     accountType: accountType,
-                    onHorizontalDragEnd: (details) {
-                      cartProvider.onHorizontalDragEnd(details, context);
-                      //* Emit socket event
-                      socketProvider.emitEvent(
-                        SocketEvents.orderCreate,
-                        orderCreateData,
+                    //! On Horizontal Drag End
+                    onHorizontalDragEnd: (details) async {
+                      debugPrint('Horizontal Drag End');
+                      cartProvider.onHorizontalDragEnd(
+                        details: details,
+                        context: context,
+                        socketProvider: socketProvider,
+                        orderCreateData: orderCreateData,
                       );
-                      //* clear cart API
-                      cartProvider.clearCart();
+                      // //* Emit socket event
+                      // socketProvider.emitEvent(
+                      //   SocketEvents.orderCreate,
+                      //   orderCreateData,
+                      // );
                     },
                   ),
                 ],

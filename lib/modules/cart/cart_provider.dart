@@ -42,17 +42,30 @@ class CartProvider extends ChangeNotifier {
     notifyListeners(); // Notify listeners of the change
   }
 
-  void onHorizontalDragEnd(details, context) {
+  Future<void> onHorizontalDragEnd({
+    required DragEndDetails details,
+    required BuildContext context,
+    required socketProvider,
+    required orderCreateData,
+  }) async {
     if (dragPosition >= maxDrag * 0.8) {
-      // Action confirmed
-      isConfirmed = true;
       dragPosition = maxDrag; // Snap to the end
-      debugPrint("Order Placed!");
-      rechargeDeduct(); // ! rechargeDeduct API call
-      Navigator.pushNamed(context, Routes.orderStatus);
-      Future.delayed(const Duration(seconds: 2), () {
-        dragPosition = 10.w;
-      });
+      //! API call
+      await rechargeDeduct(context).then(
+        (isSuccess) {
+          if (isSuccess == true) {
+            //* Emit socket event
+            socketProvider.emitEvent(
+              SocketEvents.orderCreate,
+              orderCreateData,
+            );
+          } else if (isSuccess == false) {
+            //* Reset position
+            dragPosition = 10.w;
+            isConfirmed = false;
+          }
+        },
+      );
     } else {
       //* Reset position
       dragPosition = 10.w;
@@ -96,7 +109,7 @@ class CartProvider extends ChangeNotifier {
 
   String? totalAmount;
   // * rechargeDeduct API
-  Future<void> rechargeDeduct() async {
+  Future rechargeDeduct(BuildContext context) async {
     isLoading = true;
     notifyListeners();
     try {
@@ -110,12 +123,28 @@ class CartProvider extends ChangeNotifier {
       );
       log('rechargeDeduct: ${res.data}');
       if (res.success == true && res.data != null) {
-        //
+        Future.delayed(
+          const Duration(milliseconds: 500),
+          () async {
+            debugPrint("Order Placed!");
+            //* Action confirmed
+            isConfirmed = true;
+            //* clear cart API
+            Navigator.pushNamed(context, Routes.orderStatus);
+            await clearCart();
+            Future.delayed(const Duration(seconds: 1), () {
+              dragPosition = 10.w;
+            });
+          },
+        );
+        return true; //* success
       } else {
         log('${res.message}');
+        return false; //* failure
       }
     } catch (e) {
       debugPrint("Error rechargeDeduct: ${e.toString()}");
+      return false; //* failure
     } finally {
       isLoading = false;
       notifyListeners();

@@ -56,6 +56,7 @@ void showCartSnackbar({
     ..showSnackBar(snackBar);
 }
 
+//* extracted method of snackbar
 SnackBar cartSnackbarWidget({
   required String message,
   required String items,
@@ -66,7 +67,7 @@ SnackBar cartSnackbarWidget({
       borderRadius: BorderRadius.circular(35.r),
     ),
     margin: EdgeInsets.only(
-      bottom: 8.h,
+      bottom: 5.h,
       left: 22.h,
       right: 22.h,
     ),
@@ -152,6 +153,6 @@ SnackBar cartSnackbarWidget({
     ),
     backgroundColor: AppColors.primaryColor,
     behavior: SnackBarBehavior.floating,
-    duration: const Duration(days: 1),
+    duration: Duration.zero,
   );
 }

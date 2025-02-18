@@ -38,7 +38,7 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
               ),
 
               // * Progress line 1
-              ProgressLineWidget(
+              const ProgressLineWidget(
                 value: 0.5,
               ),
 
@@ -49,7 +49,7 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
               ),
 
               // * Progress line 2
-              ProgressLineWidget(
+              const ProgressLineWidget(
                 value: 0.0,
               ),
 
@@ -60,7 +60,7 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
               ),
 
               // * Progress line 3
-              ProgressLineWidget(
+              const ProgressLineWidget(
                 value: 0.0,
               ),
 

@@ -3,11 +3,17 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <application
         android:label="135 Degrees"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:usesCleartextTraffic="true">// allow clear-text traffic for your API's domain.
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="AIzaSyAB3k8_wpskZUUB3sxRBrIZW07tQ8lSgZI" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

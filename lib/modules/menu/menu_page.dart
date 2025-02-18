@@ -47,13 +47,15 @@ class _MenuPageState extends State<MenuPage> {
     final provider = Provider.of<MenuProvider>(context, listen: false);
 
     //* Show cart snackbar
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // showCartSnackbar(
-      //   context: context,
-      //   message: '3 ITEMS ADDED',
-      //   items: 'items',
-      // );
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   provider.scaffoldMessengerKey.currentState?.showSnackBar(
+    //     cartSnackbarWidget(
+    //       message: '${provider.cartSnackbarTotalItems} Items added',
+    //       items: provider.cartSnackbarItemText,
+    //       context: context,
+    //     ),
+    //   );
+    // });
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -147,18 +149,25 @@ class _MenuPageState extends State<MenuPage> {
                                     ),
                                   ),
                                   //* Change Address
-                                  Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 5.h, horizontal: 8.w),
-                                    decoration: BoxDecoration(
-                                      color: AppColors.black,
-                                      borderRadius: BorderRadius.circular(20.r),
-                                    ),
-                                    child: Text(
-                                      'Change',
-                                      style: GoogleFonts.publicSans(
-                                        fontSize: 11.sp,
-                                        color: AppColors.white,
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, Routes.googleMapPage);
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 5.h, horizontal: 8.w),
+                                      decoration: BoxDecoration(
+                                        color: AppColors.black,
+                                        borderRadius:
+                                            BorderRadius.circular(20.r),
+                                      ),
+                                      child: Text(
+                                        'Change',
+                                        style: GoogleFonts.publicSans(
+                                          fontSize: 11.sp,
+                                          color: AppColors.white,
+                                        ),
                                       ),
                                     ),
                                   ),

@@ -11,10 +11,10 @@ class BusinessSelectionProvider extends ChangeNotifier {
   bool isLoadingPagination = false;
   int currentPage = 1;
 
-  // BusinessSelectionProvider() {
-  //   //* Api call
-  //   getBusinessList(currentPage: currentPage);
-  // }
+  BusinessSelectionProvider() {
+    //* Api call
+    getBusinessList(currentPage: currentPage);
+  }
 
   TextEditingController searchController = TextEditingController();
   List<BusinessList> _businessList = [];

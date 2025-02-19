@@ -1,4 +1,5 @@
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -61,13 +62,14 @@ SnackBar cartSnackbarWidget({
   required String message,
   required String items,
   required BuildContext context,
+  String accountType = 'business',
 }) {
   return SnackBar(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35.r),
     ),
     margin: EdgeInsets.only(
-      bottom: 5.h,
+      bottom: 8.h,
       left: 22.h,
       right: 22.h,
     ),
@@ -76,6 +78,7 @@ SnackBar cartSnackbarWidget({
         Padding(
           padding: EdgeInsets.only(left: 10.w),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -89,27 +92,10 @@ SnackBar cartSnackbarWidget({
                       color: AppColors.white,
                     ),
                   ),
-                  SizedBox(width: 11.h),
-                  GestureDetector(
-                    onTap: () {
-                      debugPrint('Navigate to cart page');
-                    },
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 6.h, horizontal: 15.w),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        borderRadius: BorderRadius.circular(100.r),
-                      ),
-                      child: const SvgIcon(
-                        icon: IconStrings.arrowNext,
-                        color: AppColors.primaryColor,
-                      ),
-                    ),
-                  ),
+                  // SizedBox(width: 11.h),
                 ],
               ),
-              SizedBox(height: 10.h),
+              Container(color: Colors.amber, child: SizedBox(height: 6.h)),
               RichText(
                 text: TextSpan(
                     text: '$items '.toUpperCase(),
@@ -120,7 +106,7 @@ SnackBar cartSnackbarWidget({
                     ),
                     children: [
                       TextSpan(
-                        text: '& more',
+                        text: '& MORE',
                         style: GoogleFonts.publicSans(),
                       ),
                     ]),
@@ -132,27 +118,64 @@ SnackBar cartSnackbarWidget({
           top: 0,
           right: 0,
           bottom: 0,
-          child: GestureDetector(
-            onTap: () {
-              ScaffoldMessenger.of(context).clearSnackBars();
-            },
-            child: Container(
-              height: 20.h,
-              width: 20.w,
-              decoration: const BoxDecoration(
-                color: AppColors.red,
-                shape: BoxShape.circle,
+          child: Row(
+            children: [
+              //* Arrow icon
+              GestureDetector(
+                onTap: () {
+                  debugPrint('Navigate to cart page');
+                },
+                child: Container(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 9.h, horizontal: 15.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(100.r),
+                  ),
+                  child: const SvgIcon(
+                    icon: IconStrings.arrowNext,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
               ),
-              child: const SvgIcon(
-                icon: IconStrings.close,
+              SizedBox(width: 12.w),
+              GestureDetector(
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CustomConfirmDialog(
+                      title: 'Confirmation',
+                      subTitle: 'Are You Sure Want To Empty Cart?',
+                      accountType: accountType,
+                      onTapYes: () {
+                        Navigator.pop(context);
+                        ScaffoldMessenger.of(context).clearSnackBars();
+                      },
+                      onTapCancel: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                },
+                child: Container(
+                  height: 30.h,
+                  width: 30.w,
+                  decoration: const BoxDecoration(
+                    color: AppColors.red,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const SvgIcon(
+                    icon: IconStrings.close,
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ],
     ),
     backgroundColor: AppColors.primaryColor,
     behavior: SnackBarBehavior.floating,
-    duration: Duration.zero,
+    duration: const Duration(days: 1),
   );
 }

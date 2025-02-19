@@ -30,7 +30,6 @@ class SubscriptionWidget extends StatelessWidget {
           child: CarouselSlider.builder(
             itemCount: provider.banners.length,
             options: CarouselOptions(
-              autoPlay: true,
               viewportFraction: 1, // * Space between pages
               enableInfiniteScroll: false, // * Disable infinite scrolling
               onPageChanged: provider.onPageChangedsubscription,
@@ -93,7 +92,7 @@ class SubscriptionWidget extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              'Masala Tea Jar',
+                              'Weekly Salads',
                               style: GoogleFonts.publicSans(
                                 fontSize: 25.sp,
                                 fontWeight: FontWeight.bold,

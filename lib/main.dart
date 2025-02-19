@@ -1,5 +1,6 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
+import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/favorite/favorite_provider.dart';
 import 'package:amtech_design/modules/product_page/product_details_provider.dart';
 import 'package:amtech_design/modules/welcome/welcome_provider.dart';
@@ -21,7 +22,6 @@ import 'modules/feedback/feedback_provider.dart';
 import 'modules/firebase/firebase_provider.dart';
 import 'modules/firebase/firebase_services.dart';
 import 'modules/map/google_map_provider.dart';
-import 'modules/menu/menu_page.dart';
 import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
 import 'modules/profile/edit_profile/edit_profile_provider.dart';
@@ -30,7 +30,6 @@ import 'modules/provider/socket_provider.dart';
 import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
-import 'modules/subscriptions/subscription_provider.dart';
 import 'routes.dart';
 
 void main() async {
@@ -99,7 +98,7 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: MenuPage(),
+            home: BottomBarPage(),
             // initialRoute: Routes.initial,
             // routes: Routes.routes,
             // onGenerateRoute: (settings) {},

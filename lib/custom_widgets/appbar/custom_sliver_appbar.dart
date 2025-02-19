@@ -33,7 +33,6 @@ class CustomSliverAppbar extends StatelessWidget {
           //! leading icon
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, Routes.profile),
-            // onVerticalDragEnd: provider.onVerticalDragDownLeading
             onLongPress: provider.onVerticalDragDownLeading,
             child: Container(
               height: 48.h,
@@ -124,20 +123,20 @@ class CustomSliverAppbar extends StatelessWidget {
                 children: [
                   Positioned.fill(
                     child: Center(
-                      child: Text(
-                        'data',
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 10.sp,
-                        ),
+                      child: SvgIcon(
+                        icon: IconStrings.notification2,
+                        color: AppColors.white,
+                        height: 20.h,
+                        width: 20.w,
                       ),
+                      // child: Text(
+                      //   'data',
+                      //   style: TextStyle(
+                      //     color: AppColors.white,
+                      //     fontSize: 10.sp,
+                      //   ),
+                      // ),
                     ),
-                    // child: Center(
-                    //   child: SvgIcon(
-                    //     icon: IconStrings.notification,
-                    //     color: AppColors.white,
-                    //   ),
-                    // ),
 
                     // child: Icon(
                     //   Icons.notifications_outlined,

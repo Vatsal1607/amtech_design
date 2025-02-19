@@ -301,7 +301,6 @@ class ProfilePage extends StatelessWidget {
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(4);
-                        //
                       },
                       isSelected: provider.selectedTileIndex == 4,
                       title: 'Subscriptions',

@@ -23,8 +23,6 @@ class AccountSelectionWidget extends StatelessWidget {
     final bottomBarProvider =
         Provider.of<BottomBarProvider>(context, listen: false);
     debugPrint(bottomBarProvider.selectedAccountType);
-    // debugPrint(
-    //     'Usertoken: ${sharedPrefsService.getString(SharedPrefsKeys.userToken)}');
     return Consumer<MenuProvider>(
       builder: (context, _, child) => AnimatedContainer(
         height: menuProvider.panelHeight.h,
@@ -56,7 +54,9 @@ class AccountSelectionWidget extends StatelessWidget {
               },
               title: 'AMTech Design',
               subTitle: 'Business Account',
-              // isCurrentAccount: bottomBarProvider.selectedAccountType == ,
+              isCurrentAccount:
+                  sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
+                      'business',
               profilePic: ImageStrings.logo,
             ),
             AccountTile(
@@ -69,7 +69,9 @@ class AccountSelectionWidget extends StatelessWidget {
               },
               title: 'Anup Parekh',
               subTitle: 'Personal Account',
-              isCurrentAccount: false,
+              isCurrentAccount:
+                  sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
+                      'personal',
               profilePic: ImageStrings.personalPic,
             ),
           ],

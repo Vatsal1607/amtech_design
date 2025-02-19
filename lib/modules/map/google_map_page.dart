@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -46,18 +48,35 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
               child: CustomLoader(
               color: AppColors.primaryColor,
             ))
-          : GoogleMap(
-              onMapCreated: (controller) {
-                provider.mapController = controller;
-                provider.getCurrentLocation(context); // Ensure location updates
-              },
-              initialCameraPosition: CameraPosition(
-                target: provider.currentLocation!,
-                zoom: 14,
+          : Consumer<GoogleMapProvider>(
+              builder: (context, _, child) => Stack(
+                children: [
+                  GoogleMap(
+                    onMapCreated: (controller) {
+                      provider.mapController = controller;
+                      provider.getCurrentLocation(
+                          context); // Ensure location updates
+                    },
+                    initialCameraPosition: CameraPosition(
+                      target: provider.currentLocation!,
+                      zoom: 14,
+                    ),
+                    onCameraMove: provider.onCameraMove,
+                    onCameraIdle: () {
+                      //* Camera stops moving, use the new center position
+                      log("Updated Location: ${provider.selectedLocation?.latitude}, ${provider.selectedLocation?.longitude},");
+                    },
+                    // markers: provider.markers,
+                    myLocationEnabled:
+                        true, // Show blue dot for current location
+                    myLocationButtonEnabled: true, // Enable location button
+                  ),
+                  const Center(
+                    child: Icon(Icons.location_pin,
+                        color: AppColors.red, size: 40),
+                  ),
+                ],
               ),
-              markers: provider.markers,
-              myLocationEnabled: true, // Show blue dot for current location
-              myLocationButtonEnabled: true, // Enable location button
             ),
     );
   }

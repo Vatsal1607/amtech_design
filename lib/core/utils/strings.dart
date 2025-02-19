@@ -125,6 +125,7 @@ class ImageStrings {
   static const splashDoodle = '${BaseImagePath.basePath}splash_doodle.png';
   static const splashScreenImg =
       '${BaseImagePath.basePath}splash_screen_img.png';
+  static const salad = '${BaseImagePath.basePath}salad.png';
 }
 
 class LottieStrings {

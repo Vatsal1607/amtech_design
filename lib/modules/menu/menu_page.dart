@@ -10,9 +10,11 @@ import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
+import 'package:amtech_design/modules/product_page/product_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
@@ -48,15 +50,23 @@ class _MenuPageState extends State<MenuPage> {
     final provider = Provider.of<MenuProvider>(context, listen: false);
 
     //* Show cart snackbar
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   provider.scaffoldMessengerKey.currentState?.showSnackBar(
-    //     cartSnackbarWidget(
-    //       message: '${provider.cartSnackbarTotalItems} Items added',
-    //       items: provider.cartSnackbarItemText,
-    //       context: context,
-    //     ),
-    //   );
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider.updateSnackBarVisibility(true);
+      provider.scaffoldMessengerKey.currentState
+          ?.showSnackBar(
+            cartSnackbarWidget(
+              accountType: accountType,
+              message: '${provider.cartSnackbarTotalItems} Items added',
+              items: provider.cartSnackbarItemText,
+              context: context,
+            ),
+          )
+          .closed
+          .then((_) {
+        provider.updateSnackBarVisibility(false);
+        log('Snackbar is closed');
+      });
+    });
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -64,9 +74,16 @@ class _MenuPageState extends State<MenuPage> {
         personalColor: AppColors.seaMist,
       ),
       // * FAB
-      floatingActionButton: FabMenuButton(
-        provider: provider,
-        accountType: accountType,
+      floatingActionButton: Consumer<MenuProvider>(
+        builder: (context, _, child) => Padding(
+          padding: provider.isSnackBarVisible
+              ? EdgeInsets.only(bottom: 62.h)
+              : EdgeInsets.zero,
+          child: FabMenuButton(
+            provider: provider,
+            accountType: accountType,
+          ),
+        ),
       ),
       body: Stack(
         children: [
@@ -91,94 +108,149 @@ class _MenuPageState extends State<MenuPage> {
                             SizedBox(height: 10.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: Row(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  SvgIcon(
-                                    icon: IconStrings.address,
-                                    color: getColorAccountType(
-                                      accountType: accountType,
-                                      businessColor: AppColors.primaryColor,
-                                      personalColor: AppColors.darkGreenGrey,
-                                    ),
+                                  Row(
+                                    children: [
+                                      SvgIcon(
+                                        icon: IconStrings.address,
+                                        color: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor: AppColors.primaryColor,
+                                          personalColor:
+                                              AppColors.darkGreenGrey,
+                                        ),
+                                      ),
+                                      SizedBox(width: 5.w),
+                                      Text(
+                                        'DELIVER TO,',
+                                        style: GoogleFonts.publicSans(
+                                          fontSize: 12.sp,
+                                          color: getColorAccountType(
+                                            accountType: accountType,
+                                            businessColor: AppColors
+                                                .primaryColor
+                                                .withOpacity(0.8),
+                                            personalColor: AppColors
+                                                .darkGreenGrey
+                                                .withOpacity(0.8),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(width: 5.w),
-                                  SizedBox(
-                                    // width: 360.w,
-                                    width: 300.w,
-                                    child: Consumer<MenuProvider>(
-                                      builder: (context, _, child) {
-                                        return RichText(
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                          text: TextSpan(
-                                            text: 'Deliver to, ',
-                                            style: GoogleFonts.publicSans(
-                                              fontSize: 12.sp,
-                                              color: getColorAccountType(
-                                                accountType: accountType,
-                                                businessColor: AppColors
-                                                    .primaryColor
-                                                    .withOpacity(0.8),
-                                                personalColor: AppColors
-                                                    .darkGreenGrey
-                                                    .withOpacity(0.8),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      SizedBox(
+                                        width: 330.w,
+                                        height: 20.h,
+                                        child: Consumer<MenuProvider>(
+                                            builder: (context, _, child) {
+                                          final address = provider
+                                              .homeMenuResponse?.data?.address;
+                                          if (address == null ||
+                                              address.isEmpty) {
+                                            return const SizedBox();
+                                          }
+
+                                          // Measure text width
+                                          TextPainter textPainter = TextPainter(
+                                            text: TextSpan(
+                                              text: address,
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 15.sp,
+                                                fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            children: <TextSpan>[
-                                              TextSpan(
-                                                text: provider.homeMenuResponse
-                                                        ?.data?.address ??
-                                                    '',
-                                                style: GoogleFonts.publicSans(
-                                                  fontSize: 10.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor: AppColors
-                                                        .primaryColor
-                                                        .withOpacity(0.8),
-                                                    personalColor: AppColors
-                                                        .darkGreenGrey
-                                                        .withOpacity(0.8),
+                                            maxLines: 1,
+                                            textDirection: TextDirection.ltr,
+                                          )..layout(
+                                              maxWidth: 330
+                                                  .w); //* Change according parent Width
+
+                                          // If text overflows, use Marquee, otherwise use normal Text
+                                          bool isOverflowing =
+                                              textPainter.didExceedMaxLines;
+                                          return isOverflowing
+                                              ? Marquee(
+                                                  velocity: 20,
+                                                  scrollAxis: Axis.horizontal,
+                                                  blankSpace: 15,
+                                                  pauseAfterRound:
+                                                      const Duration(
+                                                          seconds: 3),
+                                                  text: '$address.',
+                                                  style: GoogleFonts.publicSans(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: getColorAccountType(
+                                                      accountType: accountType,
+                                                      businessColor: AppColors
+                                                          .primaryColor,
+                                                      personalColor: AppColors
+                                                          .darkGreenGrey,
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            ],
+                                                )
+                                              : Text(
+                                                  address,
+                                                  style: GoogleFonts.publicSans(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: getColorAccountType(
+                                                      accountType: accountType,
+                                                      businessColor: AppColors
+                                                          .primaryColor,
+                                                      personalColor: AppColors
+                                                          .darkGreenGrey,
+                                                    ),
+                                                  ),
+                                                );
+                                        }),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const GoogleMapPage(),
+                                            ),
+                                          );
+                                          // Navigator.pushNamed(
+                                          //   context,
+                                          //   Routes.googleMapPage,
+                                          // );
+                                        },
+                                        child: Container(
+                                          height: 20.h,
+                                          width: 50.w,
+                                          decoration: BoxDecoration(
+                                            color: getColorAccountType(
+                                              accountType: accountType,
+                                              businessColor:
+                                                  AppColors.primaryColor,
+                                              personalColor:
+                                                  AppColors.darkGreenGrey,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20.r),
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  //* Change Address
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => GoogleMapPage(),
-                                        ),
-                                      );
-                                      // Navigator.pushNamed(
-                                      //   context,
-                                      //   Routes.googleMapPage,
-                                      // );
-                                    },
-                                    child: Container(
-                                      padding: EdgeInsets.symmetric(
-                                          vertical: 8.h, horizontal: 12.w),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.black,
-                                        borderRadius:
-                                            BorderRadius.circular(20.r),
-                                      ),
-                                      child: Text(
-                                        'Change',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 11.sp,
-                                          color: AppColors.white,
+                                          child: Center(
+                                            child: Text(
+                                              'EDIT',
+                                              style: GoogleFonts.publicSans(
+                                                fontSize: 11.sp,
+                                                color: AppColors.white,
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -974,39 +1046,43 @@ class _MenuPageState extends State<MenuPage> {
               ),
             ],
           ),
-          Positioned(
-            left: 32.w,
-            bottom: 28.h,
-            child: Align(
-              alignment: Alignment.bottomLeft,
-              child: GestureDetector(
-                onTap: () {
-                  // Navigator.pushNamed(context, Routes.orderStatus);
-                  Navigator.pushNamed(context, Routes.orderList);
-                },
-                child: Container(
-                  height: 50.h,
-                  width: 142.w,
-                  decoration: BoxDecoration(
-                      color: AppColors.lightGreen,
-                      boxShadow: kDropShadow,
-                      borderRadius: BorderRadius.circular(30.r)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SvgIcon(
-                        icon: IconStrings.viewOrder,
-                      ),
-                      SizedBox(width: 8.w),
-                      Text(
-                        'VIEW ORDER',
-                        style: GoogleFonts.publicSans(
-                          color: AppColors.seaShell,
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.bold,
+          Consumer<MenuProvider>(
+            builder: (context, _, child) => Positioned(
+              left: 32.w,
+              // bottom: 28.h,
+              bottom: provider.isSnackBarVisible
+                  ? provider.viewOrderBottomPadding + 60
+                  : provider.viewOrderBottomPadding,
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, Routes.orderList);
+                  },
+                  child: Container(
+                    height: 50.h,
+                    width: 142.w,
+                    decoration: BoxDecoration(
+                        color: AppColors.lightGreen,
+                        boxShadow: kDropShadow,
+                        borderRadius: BorderRadius.circular(30.r)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SvgIcon(
+                          icon: IconStrings.viewOrder,
                         ),
-                      ),
-                    ],
+                        SizedBox(width: 8.w),
+                        Text(
+                          'VIEW ORDER',
+                          style: GoogleFonts.publicSans(
+                            color: AppColors.seaShell,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

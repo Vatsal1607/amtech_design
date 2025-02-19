@@ -39,8 +39,8 @@ class MenuProvider extends ChangeNotifier {
   }
 
   final List<String> subscriptionImages = [
-    ImageStrings.masalaTea2,
-    ImageStrings.masalaTea2,
+    ImageStrings.salad,
+    ImageStrings.salad,
   ];
 
   TextEditingController searchController = TextEditingController();
@@ -157,6 +157,13 @@ class MenuProvider extends ChangeNotifier {
 
   onTapOutsideAccountUI() {
     panelHeight = 0;
+    notifyListeners();
+  }
+
+  double viewOrderBottomPadding = 28;
+  bool isSnackBarVisible = false;
+  updateSnackBarVisibility(value) {
+    isSnackBarVisible = value;
     notifyListeners();
   }
 

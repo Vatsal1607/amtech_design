@@ -424,6 +424,7 @@ class _CartPageState extends State<CartPage> {
                                   menuProvider.homeMenuResponse?.data?.address,
                             };
                             log('OrderCreateData: $orderCreateData');
+                            provider.isConfirmed = false;
                             showProcessToPayBottomSheeet(
                               context: context,
                               accountType: accountType,

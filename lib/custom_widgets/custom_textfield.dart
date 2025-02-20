@@ -8,7 +8,7 @@ import 'svg_icon.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hint;
-  final String prefixIcon;
+  final String? prefixIcon;
   final TextEditingController controller;
   final Color iconColor;
   final FormFieldValidator<String>? validator;
@@ -32,7 +32,7 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.hint,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.controller,
     this.iconColor = AppColors.white,
     this.validator,
@@ -83,10 +83,12 @@ class CustomTextField extends StatelessWidget {
           fontSize: 15.sp,
           color: textColor,
         ),
-        prefixIcon: SvgIcon(
-          icon: prefixIcon,
-          color: iconColor,
-        ),
+        prefixIcon: prefixIcon != null
+            ? SvgIcon(
+                icon: prefixIcon!,
+                color: iconColor,
+              )
+            : null,
         suffixIcon: suffixWidget,
         contentPadding: contentPadding,
         border: kTextfieldBorderStyle?.copyWith(

@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'package:amtech_design/models/location_model.dart';
+import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+
+import '../../core/utils/constants/keys.dart';
+import '../../services/local/shared_preferences_service.dart';
 
 class GoogleMapProvider extends ChangeNotifier {
   GoogleMapController? mapController;
@@ -14,7 +20,10 @@ class GoogleMapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getCurrentLocation(BuildContext? context) async {
+  Future<void> getCurrentLocation({
+    BuildContext? context,
+    SocketProvider? socketProvider,
+  }) async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       if (context != null) {
@@ -40,6 +49,10 @@ class GoogleMapProvider extends ChangeNotifier {
     );
 
     currentLocation = LatLng(position.latitude, position.longitude);
+    if (socketProvider != null) {
+      emitAndListenGetLocation(socketProvider);
+      notifyListeners();
+    }
     _updateMarker(currentLocation!);
     _moveCamera(currentLocation!);
     notifyListeners();
@@ -100,7 +113,42 @@ class GoogleMapProvider extends ChangeNotifier {
 
   Future<void> checkLocationOnResume(BuildContext context) async {
     if (await Geolocator.isLocationServiceEnabled()) {
-      getCurrentLocation(context);
+      getCurrentLocation(context: context);
     }
+  }
+
+  String? address;
+
+  //* Emit location
+  void emitAndListenGetLocation(SocketProvider socketProvider) async {
+    final accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType);
+
+    socketProvider.emitEvent(SocketEvents.userLocation, {
+      'userId': sharedPrefsService.getString(SharedPrefsKeys.userId),
+      "socketId": socketProvider.socket.id,
+      "role": accountType == 'business' ? '0' : '1',
+      'deviceId': sharedPrefsService.getString(SharedPrefsKeys.deviceId),
+      "latitude": selectedLocation?.latitude,
+      "longitude": selectedLocation?.longitude,
+    });
+
+    socketProvider.listenToEvent(SocketEvents.realTimeLocationUpdate, (data) {
+      try {
+        log('Raw socket realTimeLocationUpdate data: $data');
+        // Ensure 'data' is a Map<String, dynamic>
+        if (data is Map<String, dynamic>) {
+          LocationModel location = LocationModel.fromJson(data);
+          address = location.data?.address;
+          log('Address: $address');
+          // Notify listeners if this is inside a provider
+          notifyListeners();
+        } else {
+          log('Received unexpected data format');
+        }
+      } catch (e) {
+        log('Error parsing socket data: $e');
+      }
+    });
   }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/details_enum.dart';
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/map/google_map_page.dart';
@@ -10,7 +11,6 @@ import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
-import 'package:amtech_design/modules/product_page/product_details_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,6 +21,7 @@ import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
+import '../provider/socket_provider.dart';
 import 'widgets/fab_menu_button.dart';
 import 'widgets/slider_details_widget.dart';
 import 'widgets/subscription_widget.dart';
@@ -48,25 +49,26 @@ class _MenuPageState extends State<MenuPage> {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
-
+    //* Note: variable is not used but by initialize this socket connect
+    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     //* Show cart snackbar
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      provider.updateSnackBarVisibility(true);
-      provider.scaffoldMessengerKey.currentState
-          ?.showSnackBar(
-            cartSnackbarWidget(
-              accountType: accountType,
-              message: '${provider.cartSnackbarTotalItems} Items added',
-              items: provider.cartSnackbarItemText,
-              context: context,
-            ),
-          )
-          .closed
-          .then((_) {
-        provider.updateSnackBarVisibility(false);
-        log('Snackbar is closed');
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   provider.updateSnackBarVisibility(true);
+    //   provider.scaffoldMessengerKey.currentState
+    //       ?.showSnackBar(
+    //         cartSnackbarWidget(
+    //           accountType: accountType,
+    //           message: '${provider.cartSnackbarTotalItems} Items added',
+    //           items: provider.cartSnackbarItemText,
+    //           context: context,
+    //         ),
+    //       )
+    //       .closed
+    //       .then((_) {
+    //     provider.updateSnackBarVisibility(false);
+    //     log('Snackbar is closed');
+    //   });
+    // });
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -211,7 +213,8 @@ class _MenuPageState extends State<MenuPage> {
                                                 );
                                         }),
                                       ),
-                                      GestureDetector(
+                                      //* Small Edit Button
+                                      SmallEditButton(
                                         onTap: () {
                                           Navigator.push(
                                             context,
@@ -225,30 +228,7 @@ class _MenuPageState extends State<MenuPage> {
                                           //   Routes.googleMapPage,
                                           // );
                                         },
-                                        child: Container(
-                                          height: 20.h,
-                                          width: 50.w,
-                                          decoration: BoxDecoration(
-                                            color: getColorAccountType(
-                                              accountType: accountType,
-                                              businessColor:
-                                                  AppColors.primaryColor,
-                                              personalColor:
-                                                  AppColors.darkGreenGrey,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(20.r),
-                                          ),
-                                          child: Center(
-                                            child: Text(
-                                              'EDIT',
-                                              style: GoogleFonts.publicSans(
-                                                fontSize: 11.sp,
-                                                color: AppColors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                        accountType: accountType,
                                       ),
                                     ],
                                   ),

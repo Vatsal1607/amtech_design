@@ -2,6 +2,8 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
+import '../../core/utils/constants/keys.dart';
+import '../../services/local/shared_preferences_service.dart';
 import '../../services/network/api/api_constants.dart';
 
 class SocketProvider with ChangeNotifier {
@@ -29,6 +31,18 @@ class SocketProvider with ChangeNotifier {
     _socket.onConnect((_) {
       log('Connected to the Socket server');
       _isConnected = true;
+      //* user connect by database
+      final userConnectData = {
+        "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
+        "deviceId": sharedPrefsService.getString(SharedPrefsKeys.deviceId),
+        "role": sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
+                'business'
+            ? '0'
+            : '1',
+        "socketId": socket.id,
+      };
+      emitEvent(SocketEvents.userConnected, userConnectData);
+      log('Log of uerConnect: $userConnectData');
       notifyListeners(); // Notify listeners about connection status
     });
 

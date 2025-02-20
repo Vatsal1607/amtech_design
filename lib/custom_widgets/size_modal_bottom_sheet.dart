@@ -46,20 +46,15 @@ void showSizeModalBottomSheet({
           } else if (value == false) {
             provider.quantities = {}; //* Reset quantity
             //* Cart Snackbar
-            if (provider.cartSnackbarTotalItems != 0) {
-              provider.scaffoldMessengerKey.currentState?.showSnackBar(
-                cartSnackbarWidget(
-                  message: '${provider.cartSnackbarTotalItems} Items added',
-                  items: provider.cartSnackbarItemText,
-                  context: context,
-                ),
-              );
-              // showCartSnackbar(
-              //   context: context,
-              //   message: '${provider.cartSnackbarTotalItems} Items added',
-              //   items: provider.cartSnackbarItemText,
-              // );
-            }
+            // if (provider.cartSnackbarTotalItems != 0) {
+            // provider.scaffoldMessengerKey.currentState?.showSnackBar(
+            //   cartSnackbarWidget(
+            //     message: '${provider.cartSnackbarTotalItems} Items added',
+            //     items: provider.cartSnackbarItemText,
+            //     context: context,
+            //   ),
+            // );
+            // }
           }
         },
         child: Stack(

@@ -14,7 +14,7 @@ import '../modules/provider/socket_provider.dart';
 
 double dragPosition = 0.0; // Track the drag position
 const double maxDrag = 250.0; // Maximum drag length
-bool isConfirmed = false; // Track if the action is confirmed
+// bool isConfirmed = false; // Track if the action is confirmed
 
 void showProcessToPayBottomSheeet({
   required BuildContext context,

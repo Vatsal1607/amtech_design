@@ -371,22 +371,18 @@ class MenuProvider extends ChangeNotifier {
         log('cartSnackbarItemText: $cartSnackbarItemText');
 
         //* Show Snackbar here using the GlobalKey
-        if (context != null) {
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            cartSnackbarWidget(
-              message: '$cartSnackbarTotalItems Items added',
-              items: cartSnackbarItemText,
-              context: context,
-            ),
-          );
-        } else {
-          debugPrint('context is null');
-        }
-        // showCartSnackbar(
-        //   context: context,
-        //   message: '$totalItems Items added',
-        //   items: itemText,
-        // );
+        // if (context != null) {
+        //   scaffoldMessengerKey.currentState?.showSnackBar(
+        //     cartSnackbarWidget(
+        //       message: '$cartSnackbarTotalItems Items added',
+        //       items: cartSnackbarItemText,
+        //       context: context,
+        //     ),
+        //   );
+        // } else {
+        //   debugPrint('context is null');
+        // }
+
         debugPrint('callback called');
       } else {
         log('${res.message}');

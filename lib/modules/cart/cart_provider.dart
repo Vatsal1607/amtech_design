@@ -124,11 +124,12 @@ class CartProvider extends ChangeNotifier {
       log('rechargeDeduct: ${res.data}');
       if (res.success == true && res.data != null) {
         Future.delayed(
-          const Duration(milliseconds: 500),
+          const Duration(seconds: 1),
           () async {
             debugPrint("Order Placed!");
             //* Action confirmed
             isConfirmed = true;
+            notifyListeners();
             //* clear cart API
             Navigator.pushNamed(context, Routes.orderStatus);
             await clearCart();

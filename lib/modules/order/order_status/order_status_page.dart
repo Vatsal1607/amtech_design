@@ -23,7 +23,7 @@ class OrderStatusPage extends StatelessWidget {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     // final provider = Provider.of<OrderStatusProvider>(context, listen: false);
-    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
+    // final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,

@@ -122,7 +122,7 @@ class CustomSlidableButton extends StatelessWidget {
               ),
             //* "DONE!" UI (Comes from bottom after completion)
             AnimatedPositioned(
-              duration: const Duration(milliseconds: 200),
+              duration: const Duration(milliseconds: 100),
               curve: Curves.easeOut,
               left: 160.w,
               top: 0,

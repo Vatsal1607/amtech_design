@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
-import 'package:amtech_design/core/utils/enums/details_enum.dart';
+import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';

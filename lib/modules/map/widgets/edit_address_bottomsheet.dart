@@ -1,48 +1,68 @@
 import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
+import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
 
-Widget _buildCheckbox(String title) {
-  return Row(
-    children: [
-      Checkbox(
-        value: true,
-        onChanged: (value) {},
-        checkColor: Colors.black,
-        activeColor: Colors.white,
-      ),
-      Text(
-        title,
-        style: GoogleFonts.publicSans(
-          fontSize: 16.sp,
-          fontWeight: FontWeight.bold,
-          color: AppColors.seaShell,
-        ),
-      ),
-    ],
-  );
-}
+// OLD
+// Widget _buildCheckbox({
+//   required String title,
+//   required bool value,
+//   void Function(bool?)? onChanged,
+// }) {
+//   return Row(
+//     children: [
+//       Checkbox(
+//         value: value,
+//         onChanged: onChanged,
+//         checkColor: Colors.black,
+//         activeColor: AppColors.disabledColor,
+//       ),
+//       Text(
+//         title,
+//         style: GoogleFonts.publicSans(
+//           fontSize: 16.sp,
+//           fontWeight: FontWeight.bold,
+//           color: AppColors.seaShell,
+//         ),
+//       ),
+//     ],
+//   );
+// }
 
-Widget _buildTextField(String hintText) {
-  return TextField(
-    style: GoogleFonts.publicSans(color: Colors.white),
-    decoration: InputDecoration(
-      hintText: hintText,
-      hintStyle: GoogleFonts.publicSans(color: Colors.white60),
-      enabledBorder: OutlineInputBorder(
-        borderSide: const BorderSide(color: Colors.white),
-        borderRadius: BorderRadius.circular(10.r),
-      ),
-      focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
-        borderRadius: BorderRadius.circular(10.r),
-      ),
+Widget _buildCheckbox({
+  required String title,
+  required bool value,
+  void Function(bool?)? onChanged,
+}) {
+  return GestureDetector(
+    onTap: () => onChanged?.call(!value),
+    child: Row(
+      children: [
+        SvgIcon(
+          width: 30,
+          height: 30,
+          icon: value
+              ? IconStrings.checkboxChecked
+              : IconStrings.checkboxUnchecked,
+          color: AppColors.disabledColor,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          title,
+          style: GoogleFonts.publicSans(
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            color: AppColors.seaShell,
+          ),
+        ),
+      ],
     ),
   );
 }
@@ -50,6 +70,7 @@ Widget _buildTextField(String hintText) {
 void editAddressBottomSheeet({
   required BuildContext context,
   required String accountType,
+  required GoogleMapProvider provider,
 }) {
   showModalBottomSheet(
     context: context,
@@ -61,10 +82,10 @@ void editAddressBottomSheeet({
       personalColor: AppColors.darkGreenGrey,
     ),
     builder: (context) {
-      TextEditingController addressController = TextEditingController();
-      TextEditingController floorController = TextEditingController();
-      TextEditingController companyController = TextEditingController();
-      TextEditingController landmarkController = TextEditingController();
+      // TextEditingController addressController = TextEditingController();
+      // TextEditingController floorController = TextEditingController();
+      // TextEditingController companyController = TextEditingController();
+      // TextEditingController landmarkController = TextEditingController();
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
@@ -104,23 +125,40 @@ void editAddressBottomSheeet({
                       color: AppColors.disabledColor,
                     ),
                   ),
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 5.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildCheckbox('HOME'),
+                      Consumer<GoogleMapProvider>(
+                        builder: (context, provider, child) => _buildCheckbox(
+                          title: 'HOME',
+                          value: provider.isCheckedHome,
+                          onChanged: provider.onChangedHome,
+                        ),
+                      ),
                       SizedBox(width: 10.h),
-                      _buildCheckbox('WORK'),
+                      Consumer<GoogleMapProvider>(
+                        builder: (context, provider, child) => _buildCheckbox(
+                            title: 'WORK',
+                            value: provider.isCheckedWork,
+                            onChanged: provider.onChangedWork),
+                      ),
                       SizedBox(width: 10.h),
-                      _buildCheckbox('OTHER'),
+                      Consumer<GoogleMapProvider>(
+                        builder: (context, provider, child) => _buildCheckbox(
+                          title: 'OTHER',
+                          value: provider.isCheckedOther,
+                          onChanged: provider.onChangedOther,
+                        ),
+                      ),
                     ],
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 10.h),
                   CustomTextField(
-                    controller: addressController,
+                    controller: provider.addressController,
                     hint:
                         'AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad',
-                        
+                    maxLines: 3,
                   ),
                   SizedBox(height: 5.h),
                   Text(
@@ -131,11 +169,20 @@ void editAddressBottomSheeet({
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  _buildTextField('Floor *'),
+                  CustomTextField(
+                    hint: 'Floor *',
+                    controller: provider.floorController,
+                  ),
                   SizedBox(height: 15.h),
-                  _buildTextField('Company / Building *'),
+                  CustomTextField(
+                    hint: 'Company / Building *',
+                    controller: provider.companyController,
+                  ),
                   SizedBox(height: 15.h),
-                  _buildTextField('Nearby Landmark (Optional)'),
+                  CustomTextField(
+                    hint: 'Nearby Landmark (optional)',
+                    controller: provider.landmarkController,
+                  ),
                   SizedBox(height: 20.h),
                   CustomButtonWithArrow(
                     isMargin: false,

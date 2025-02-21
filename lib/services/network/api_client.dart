@@ -11,6 +11,8 @@ import '../../models/add_to_cart_request_model.dart';
 import '../../models/billing_model.dart';
 import '../../models/business_list_model.dart';
 import '../../models/deduct_recharge_amount_model.dart';
+import '../../models/edit_location.dart';
+import '../../models/edit_location_request_model.dart';
 import '../../models/edit_profile_model.dart';
 import '../../models/favorite_add_model.dart';
 import '../../models/get_business_details_model.dart';
@@ -191,5 +193,11 @@ abstract class ApiClient {
   Future<EditProfileModel> editPersonalProfile(
     @Path('userId') String userId,
     @Body() Map<String, dynamic> body,
+  );
+
+  @PUT('${ApiEndpoints.location}/{userId}')
+  Future<EditLocationModel> editLocation(
+    @Path('userId') String userId,
+    @Body() EditLocationRequestModel editLocationRequestModel,
   );
 }

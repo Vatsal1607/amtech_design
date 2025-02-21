@@ -1,5 +1,5 @@
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/core/utils/enums/details_enum.dart';
+import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';

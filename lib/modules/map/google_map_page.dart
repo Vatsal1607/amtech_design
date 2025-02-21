@@ -9,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/strings.dart';
@@ -29,18 +30,20 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
-      Provider.of<GoogleMapProvider>(context, listen: false)
-          .getCurrentLocation(context: context);
-      final socketProvider =
-          Provider.of<SocketProvider>(context, listen: false);
-      Future.delayed(
-        const Duration(seconds: 1),
-        () {
-          context
-              .read<GoogleMapProvider>()
-              .emitAndListenGetLocation(socketProvider);
-        },
-      );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Provider.of<GoogleMapProvider>(context, listen: false)
+            .getCurrentLocation(context: context);
+        final socketProvider =
+            Provider.of<SocketProvider>(context, listen: false);
+        Future.delayed(
+          const Duration(seconds: 1),
+          () {
+            context
+                .read<GoogleMapProvider>()
+                .emitAndListenGetLocation(socketProvider);
+          },
+        );
+      });
     });
   }
 
@@ -61,20 +64,20 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         title: 'Change Location',
         accountType: accountType,
       ),
-      body: provider.currentLocation == null
-          ? const Center(
-              child: CustomLoader(
-              color: AppColors.primaryColor,
-            ))
-          : Consumer<GoogleMapProvider>(
-              builder: (context, _, child) => Stack(
+      body: Consumer<GoogleMapProvider>(
+        builder: (context, _, child) => provider.currentLocation == null
+            ? const Center(
+                child: CustomLoader(
+                color: AppColors.primaryColor,
+              ))
+            : Stack(
                 children: [
                   GoogleMap(
                     onMapCreated: (controller) {
-                      provider.mapController = controller;
-                      provider.getCurrentLocation(
-                        context: context,
-                      ); // Ensure location updates
+                      if (provider.mapController == null) {
+                        provider.mapController = controller;
+                        provider.getCurrentLocation(context: context);
+                      }
                     },
                     initialCameraPosition: CameraPosition(
                       target: provider.currentLocation!,
@@ -83,13 +86,14 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     onCameraMove: provider.onCameraMove,
                     onCameraIdle: () {
                       //* Camera stops moving, use the new center position
-                      // provider.getCurrentLocation(
-                      //   context: context,
-                      //   socketProvider: socketProvider,
-                      // );
-                      // Todo Resolve the issue map is not visible after added 'emitAndListenGetLocation'
-                      provider.emitAndListenGetLocation(
-                          socketProvider); //! Issue is here map invisible
+                      if (mounted) {
+                        provider.emitAndListenGetLocation(socketProvider);
+                      }
+
+                      // Future.delayed(Duration(milliseconds: 200), () {
+                      //   provider.emitAndListenGetLocation(
+                      //       socketProvider); //! Issue is here map invisible
+                      // });
                       log("Updated Location: ${provider.selectedLocation?.latitude}, ${provider.selectedLocation?.longitude},");
                     },
                     // markers: provider.markers,
@@ -101,14 +105,13 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     child: Icon(
                       Icons.location_pin,
                       color: AppColors.primaryColor,
-                      size: 40,
+                      size: 50,
                     ),
                   ),
-                  //* Custom Location Button
-                  //! Note: Rouond  bgcolor: primary, icon: seashell,
+                  //* Custom Location Button FAB
                   Positioned(
-                    bottom: 200, //* Adjust as needed
-                    right: 20, //* Adjust as needed
+                    bottom: 280.h,
+                    right: 20.w,
                     child: FloatingActionButton(
                       shape: const CircleBorder(),
                       backgroundColor: AppColors.primaryColor,
@@ -126,14 +129,15 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   ),
                   //* Address bottom widget
                   Positioned(
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: 166.h,
                         color: AppColors.seaShell,
                         padding: EdgeInsets.symmetric(
-                          horizontal: 32.w,
-                        ),
+                            horizontal: 32.w, vertical: 40.h),
                         child: Column(
                           children: [
                             Row(
@@ -173,20 +177,69 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                             ),
                             SizedBox(height: 5.h),
                             Consumer<GoogleMapProvider>(
-                              builder: (context, _, child) => Text(
-                                // 'AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, ahmedabad',
-                                provider.address != null &&
-                                        provider.address != ''
-                                    ? '${provider.address}'
-                                    : '',
-                                style: GoogleFonts.publicSans(
-                                    fontWeight: FontWeight.bold,
-                                    color: getColorAccountType(
-                                      accountType: accountType,
-                                      businessColor: AppColors.primaryColor,
-                                      personalColor: AppColors.darkGreenGrey,
-                                    )),
-                              ),
+                              builder: (context, _, child) => provider.isLoading
+                                  ? Shimmer.fromColors(
+                                      baseColor: Colors.grey[300]!,
+                                      highlightColor: Colors.grey[300]!,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            width: double.infinity,
+                                            height: 20.h,
+                                            color: Colors.white,
+                                          ),
+                                          Container(
+                                            width: double.infinity / 2,
+                                            height: 20.h,
+                                            color: Colors.white,
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : Text(
+                                      provider.address != null &&
+                                              provider.address != ''
+                                          ? '${provider.address}'
+                                          : '',
+                                      style: GoogleFonts.publicSans(
+                                          fontWeight: FontWeight.bold,
+                                          color: getColorAccountType(
+                                            accountType: accountType,
+                                            businessColor:
+                                                AppColors.primaryColor,
+                                            personalColor:
+                                                AppColors.darkGreenGrey,
+                                          )),
+                                    ),
+                            ),
+                            SizedBox(height: 5.h),
+                            Consumer<GoogleMapProvider>(
+                              builder: (context, _, child) => provider
+                                              .distance ==
+                                          null ||
+                                      provider.distance == '1.0' ||
+                                      provider.distance == '0.0' ||
+                                      provider.isLoading
+                                  ? const SizedBox()
+                                  : Container(
+                                      padding: EdgeInsets.all(3.w),
+                                      decoration: BoxDecoration(
+                                          color: Colors.orange.withOpacity(.2),
+                                          border: Border.all(
+                                            width: 1.5.w,
+                                            color: AppColors.red,
+                                          )),
+                                      child: Text(
+                                        'Selected location is ${provider.distance} km Far From Current Location',
+                                        style: GoogleFonts.publicSans(
+                                            color: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor: AppColors.primaryColor,
+                                          personalColor:
+                                              AppColors.darkGreenGrey,
+                                        )),
+                                      ),
+                                    ),
                             ),
                             SizedBox(height: 10.h),
                             CustomButton(
@@ -195,6 +248,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                 editAddressBottomSheeet(
                                   context: context,
                                   accountType: accountType,
+                                  provider: provider,
                                 );
                               },
                               text: 'ADD MORE DETAILS',
@@ -212,7 +266,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   ),
                 ],
               ),
-            ),
+      ),
     );
   }
 }

@@ -10,12 +10,12 @@ import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
 import '../../custom_widgets/bottom_blur_on_page.dart';
 import '../../custom_widgets/select_order_date.dart';
 import '../../services/local/shared_preferences_service.dart';
-import '../reorder/reorder_provider.dart';
 import 'billing_provider.dart';
 import 'widgets/billing_card_widgets.dart';
 
 class BillingPage extends StatefulWidget {
-  const BillingPage({super.key});
+  final ScrollController scrollController;
+  const BillingPage({super.key, required this.scrollController});
 
   @override
   State<BillingPage> createState() => _BillingPageState();

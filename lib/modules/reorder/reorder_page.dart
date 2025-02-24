@@ -14,7 +14,8 @@ import '../../custom_widgets/bottom_blur_on_page.dart';
 import '../../services/local/shared_preferences_service.dart';
 
 class ReorderPage extends StatefulWidget {
-  const ReorderPage({super.key});
+  final ScrollController scrollController;
+  const ReorderPage({super.key, required this.scrollController});
 
   @override
   State<ReorderPage> createState() => _ReorderPageState();

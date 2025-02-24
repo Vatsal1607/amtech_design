@@ -21,6 +21,7 @@ import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';
 import 'modules/firebase/firebase_provider.dart';
 import 'modules/firebase/firebase_services.dart';
+import 'modules/map/address/saved_address/saved_address_provider.dart';
 import 'modules/map/google_map_provider.dart';
 import 'modules/menu/menu_provider.dart';
 import 'modules/order/order_status/order_status_provider.dart';
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SocketProvider()),
         ChangeNotifierProvider(create: (_) => BillingProvider()),
         ChangeNotifierProvider(create: (_) => GoogleMapProvider()),
+        ChangeNotifierProvider(create: (_) => SavedAddressProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)
@@ -98,9 +100,9 @@ class MyApp extends StatelessWidget {
                 ),
               ),
             ),
-            home: BottomBarPage(),
-            // initialRoute: Routes.initial,
-            // routes: Routes.routes,
+            // home: BottomBarPage(),
+            initialRoute: Routes.initial,
+            routes: Routes.routes,
             // onGenerateRoute: (settings) {},
           ),
         ),

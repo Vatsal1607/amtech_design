@@ -12,8 +12,15 @@ import '../../../custom_widgets/svg_icon.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import 'widgets/otp_fields.dart';
 
-class OtpPage extends StatelessWidget {
+class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
+
+  @override
+  State<OtpPage> createState() => _OtpPageState();
+}
+
+class _OtpPageState extends State<OtpPage> {
+  final TextEditingController otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +42,7 @@ class OtpPage extends StatelessWidget {
         backgroundColor: Colors.transparent,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: SvgIcon(
+          child: const SvgIcon(
             icon: IconStrings.arrowBack,
           ),
         ),
@@ -99,7 +106,7 @@ class OtpPage extends StatelessWidget {
 
                   // OTP fields
                   OtpFields(
-                    controller: provider.otpController,
+                    controller: otpController,
                   ),
 
                   Consumer<OtpProvider>(
@@ -153,8 +160,9 @@ class OtpPage extends StatelessWidget {
                       height: 48.h,
                       isLoading: provider.isLoading,
                       onTap: () {
-                        if (provider.otpController.text.isNotEmpty) {
+                        if (otpController.text.isNotEmpty) {
                           provider.verifyOtp(
+                            otpController: otpController,
                             context: context,
                             accountType: accountType,
                             mobile: arguments['mobile'],

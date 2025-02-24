@@ -7,6 +7,7 @@ import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/cart/cart_page.dart';
 import 'package:amtech_design/modules/favorite/favorite_page.dart';
 import 'package:amtech_design/modules/feedback/feedback_page.dart';
+import 'package:amtech_design/modules/map/address/saved_address/saved_address_page.dart';
 import 'package:amtech_design/modules/notification/notification_page.dart';
 import 'package:amtech_design/modules/order/order_list/order_list_page.dart';
 import 'package:amtech_design/modules/profile/edit_profile/edit_profile_page.dart';
@@ -49,6 +50,7 @@ class Routes {
   static const String feedback = '/feedback';
   static const String aboutUs = '/aboutUs';
   static const String googleMapPage = '/googleMapPage';
+  static const String savedAddress = '/savedAddress';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -75,5 +77,6 @@ class Routes {
     feedback: (context) => const FeedbackPage(),
     aboutUs: (context) => const AboutUsPage(),
     googleMapPage: (context) => const GoogleMapPage(),
+    savedAddress: (context) => const SavedAddressPage(),
   };
 }

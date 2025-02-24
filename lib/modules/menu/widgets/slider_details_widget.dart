@@ -76,9 +76,9 @@ class SliderDetailsWidget extends StatelessWidget {
                 Navigator.pushNamed(context, Routes.recharge);
               },
               child: Container(
-                height: 35.h,
-                width: 85.w,
-                padding: EdgeInsets.all(9.w),
+                height: 26.h,
+                width: 64.w,
+                padding: EdgeInsets.all(7.w),
                 decoration: BoxDecoration(
                   color: AppColors.black,
                   borderRadius: BorderRadius.circular(100.r),

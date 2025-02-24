@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../custom_widgets/snackbar.dart';
@@ -20,7 +18,7 @@ class OtpProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   final ApiService apiService = ApiService();
-  final TextEditingController otpController = TextEditingController();
+  //* final TextEditingController otpController = TextEditingController();
   int remainingSeconds = 30;
   Timer? timer;
 
@@ -55,6 +53,7 @@ class OtpProvider extends ChangeNotifier {
     required String accountType,
     required String mobile,
     String? secondaryContact,
+    required TextEditingController otpController,
   }) async {
     _isLoading = true;
     notifyListeners();

@@ -2,7 +2,7 @@ import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/billing_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/models/deduct_recharge_amount_model.dart';
-import 'package:amtech_design/models/edit_location.dart';
+import 'package:amtech_design/models/edit_location_model.dart';
 import 'package:amtech_design/models/edit_location_request_model.dart';
 import 'package:amtech_design/models/edit_profile_model.dart';
 import 'package:amtech_design/models/favorite_add_model.dart';

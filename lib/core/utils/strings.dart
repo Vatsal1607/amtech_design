@@ -89,6 +89,10 @@ class IconStrings {
   static const checkboxChecked = '${BaseIconPath.basePath}checkbox_checked.svg';
   static const checkboxUnchecked =
       '${BaseIconPath.basePath}checkbox_unchecked.svg';
+  static const addLocation = '${BaseIconPath.basePath}add_location.svg';
+  static const useCurrentLocation =
+      '${BaseIconPath.basePath}use_current_location.svg';
+  static const locationMarker = '${BaseIconPath.basePath}location_marker.svg';
 }
 
 class ImageStrings {

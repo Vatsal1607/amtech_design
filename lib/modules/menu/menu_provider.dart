@@ -7,7 +7,6 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/strings.dart';
-import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../services/network/api_service.dart';
@@ -146,6 +145,7 @@ class MenuProvider extends ChangeNotifier {
     }
   }
 
+  final addressWidth = 310;
   // * Account Selection UI data
   double panelHeight = 0.0;
   final double panelMaxHeight = 235.0;

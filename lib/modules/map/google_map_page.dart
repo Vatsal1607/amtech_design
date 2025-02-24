@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/modules/map/widgets/edit_address_bottomsheet.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:shimmer/shimmer.dart';
@@ -38,13 +38,27 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         Future.delayed(
           const Duration(seconds: 1),
           () {
-            context
-                .read<GoogleMapProvider>()
-                .emitAndListenGetLocation(socketProvider);
+            checkLocationPermissionAndEmitEvent();
           },
         );
       });
     });
+  }
+
+  //* check location permission & emit event:
+  Future<void> checkLocationPermissionAndEmitEvent() async {
+    if (await Permission.location.isGranted) {
+      context
+          .read<GoogleMapProvider>()
+          .emitAndListenGetLocation(context.read<SocketProvider>());
+    } else {
+      PermissionStatus status = await Permission.location.request();
+      if (status.isGranted) {
+        checkLocationPermissionAndEmitEvent(); // Retry after permission is granted
+      } else {
+        debugPrint("Location permission denied.");
+      }
+    }
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -89,23 +103,19 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       if (mounted) {
                         provider.emitAndListenGetLocation(socketProvider);
                       }
-
-                      // Future.delayed(Duration(milliseconds: 200), () {
-                      //   provider.emitAndListenGetLocation(
-                      //       socketProvider); //! Issue is here map invisible
-                      // });
                       log("Updated Location: ${provider.selectedLocation?.latitude}, ${provider.selectedLocation?.longitude},");
                     },
-                    // markers: provider.markers,
                     myLocationEnabled: true,
                     myLocationButtonEnabled: false,
                   ),
                   //* Location marker
-                  const Center(
-                    child: Icon(
-                      Icons.location_pin,
+                  Center(
+                    child: SvgIcon(
+                      height: 50.h,
+                      // width: 40.w,
+                      fit: BoxFit.cover,
+                      icon: IconStrings.locationMarker,
                       color: AppColors.primaryColor,
-                      size: 50,
                     ),
                   ),
                   //* Custom Location Button FAB

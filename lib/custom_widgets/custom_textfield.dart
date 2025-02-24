@@ -29,6 +29,8 @@ class CustomTextField extends StatelessWidget {
   final bool? enabled;
   final Widget? prefix;
   final TextCapitalization textCapitalization;
+  final double? borderRadius;
+  final String label;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -53,6 +55,8 @@ class CustomTextField extends StatelessWidget {
     this.enabled = true,
     this.prefix,
     this.textCapitalization = TextCapitalization.sentences,
+    this.borderRadius,
+    this.label = '',
   });
 
   @override
@@ -74,6 +78,10 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       minLines: minLines,
       decoration: InputDecoration(
+        label: Text('$label'),
+        labelStyle: GoogleFonts.publicSans(
+          color: AppColors.seaShell,
+        ),
         hintText: hint,
         prefixText: prefixText,
         prefix: prefix,
@@ -91,25 +99,36 @@ class CustomTextField extends StatelessWidget {
             : null,
         suffixIcon: suffixWidget,
         contentPadding: contentPadding,
-        border: kTextfieldBorderStyle?.copyWith(
+        border: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
+          borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
           borderSide: BorderSide(
             color: borderColor,
             width: 2.w,
           ),
         ),
-        enabledBorder: kTextfieldBorderStyle?.copyWith(
+        enabledBorder: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
+          borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
           borderSide: BorderSide(
             color: borderColor,
             width: 2.w,
           ),
         ),
-        focusedBorder: kTextfieldBorderStyle?.copyWith(
+        disabledBorder: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
+          borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
+          borderSide: BorderSide(
+            color: borderColor.withOpacity(0.5),
+            width: 2.w,
+          ),
+        ),
+        focusedBorder: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
+          borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
           borderSide: BorderSide(
             color: borderColor,
             width: 2,
           ),
         ),
-        errorBorder: kTextfieldBorderStyle?.copyWith(
+        errorBorder: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
+          borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
           borderSide: BorderSide(
             color: AppColors.red,
             width: 2.w,

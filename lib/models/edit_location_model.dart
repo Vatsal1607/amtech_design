@@ -30,7 +30,7 @@ class Data {
   String? userId;
   String? location;
   String? company;
-  String? distance;
+  num? distance;
   List<Addresses>? addresses;
   String? createdAt;
   String? updatedAt;
@@ -60,18 +60,31 @@ class Data {
     userId = json['userId'];
     location = json['location'];
     company = json['company'];
-    distance = json['distance'];
+
+    // Handle distance safely
+    distance = json['distance'] is num
+        ? json['distance']
+        : num.tryParse(json['distance'].toString());
+
     if (json['addresses'] != null) {
       addresses = <Addresses>[];
       json['addresses'].forEach((v) {
         addresses!.add(Addresses.fromJson(v));
       });
     }
+
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    curLat = json['curLat'];
-    curLon = json['curLon'];
+
+    // Handle curLat and curLon safely
+    curLat = json['curLat'] is num
+        ? json['curLat']
+        : num.tryParse(json['curLat'].toString());
+    curLon = json['curLon'] is num
+        ? json['curLon']
+        : num.tryParse(json['curLon'].toString());
+
     role = json['role'];
     address = json['address'];
   }

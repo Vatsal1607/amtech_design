@@ -7,12 +7,14 @@ class SvgIcon extends StatelessWidget {
   final Color color;
   final double? height;
   final double? width;
+  final BoxFit fit;
   const SvgIcon({
     super.key,
     required this.icon,
     this.color = AppColors.seaShell,
     this.height,
     this.width,
+    this.fit = BoxFit.scaleDown,
   });
 
   @override
@@ -23,7 +25,7 @@ class SvgIcon extends StatelessWidget {
         color,
         BlendMode.srcIn, // Use srcIn to apply color
       ),
-      fit: BoxFit.scaleDown,
+      fit: fit,
       height: height,
       width: width,
     );

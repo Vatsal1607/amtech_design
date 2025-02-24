@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
+import '../../custom_widgets/textfield/custom_searchfield.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import '../provider/socket_provider.dart';
@@ -126,9 +127,23 @@ class _MenuPageState extends State<MenuPage> {
                                       ),
                                       SizedBox(width: 5.w),
                                       Text(
-                                        'DELIVER TO,',
+                                        'Deliver To, ',
                                         style: GoogleFonts.publicSans(
                                           fontSize: 12.sp,
+                                          color: getColorAccountType(
+                                            accountType: accountType,
+                                            businessColor:
+                                                AppColors.primaryColor,
+                                            personalColor:
+                                                AppColors.darkGreenGrey,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        'HOME',
+                                        style: GoogleFonts.publicSans(
+                                          fontSize: 12.sp,
+                                          fontWeight: FontWeight.bold,
                                           color: getColorAccountType(
                                             accountType: accountType,
                                             businessColor: AppColors
@@ -147,7 +162,7 @@ class _MenuPageState extends State<MenuPage> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
-                                        width: 330.w,
+                                        width: provider.addressWidth.w,
                                         height: 20.h,
                                         child: Consumer<MenuProvider>(
                                             builder: (context, _, child) {
@@ -170,8 +185,8 @@ class _MenuPageState extends State<MenuPage> {
                                             maxLines: 1,
                                             textDirection: TextDirection.ltr,
                                           )..layout(
-                                              maxWidth: 330
-                                                  .w); //* Change according parent Width
+                                              maxWidth: provider.addressWidth
+                                                  .w); //! Change according parent Width
 
                                           // If text overflows, use Marquee, otherwise use normal Text
                                           bool isOverflowing =
@@ -215,18 +230,19 @@ class _MenuPageState extends State<MenuPage> {
                                       ),
                                       //* Small Edit Button
                                       SmallEditButton(
+                                        height: 26.h,
+                                        width: 64.w,
+                                        text: 'CHANGE',
                                         onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const GoogleMapPage(),
-                                            ),
-                                          );
-                                          // Navigator.pushNamed(
-                                          //   context,
-                                          //   Routes.googleMapPage,
-                                          // );
+                                          Navigator.pushNamed(
+                                              context, Routes.savedAddress);
+                                          //   Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           const GoogleMapPage(),
+                                          //     ),
+                                          //   );
                                         },
                                         accountType: accountType,
                                       ),
@@ -342,43 +358,10 @@ class _MenuPageState extends State<MenuPage> {
                               boxShadow: kDropShadow,
                             ),
                             //* SearchField
-                            child: TextFormField(
+                            child: CustomSearchField(
+                              provider: provider,
+                              accountType: accountType,
                               controller: provider.searchController,
-                              textCapitalization: TextCapitalization.sentences,
-                              textAlignVertical: TextAlignVertical.bottom,
-                              style: GoogleFonts.publicSans(
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.disabledColor,
-                                  personalColor: AppColors.white,
-                                ),
-                                fontSize: 14.0,
-                              ),
-                              decoration: InputDecoration(
-                                hintText: 'Search for Tea, Coffee or Snacks',
-                                hintStyle: GoogleFonts.publicSans(
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.disabledColor,
-                                    personalColor: AppColors.white,
-                                  ),
-                                  fontSize: 14.0,
-                                ),
-
-                                border: textFieldBorderStyle,
-                                enabledBorder: textFieldBorderStyle,
-                                focusedBorder: textFieldBorderStyle,
-                                filled: true, // To add a background color
-                                fillColor: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor:
-                                      AppColors.primaryColor.withOpacity(0.8),
-                                  personalColor:
-                                      AppColors.darkGreenGrey.withOpacity(0.8),
-                                ),
-                                prefixIcon:
-                                    const SvgIcon(icon: IconStrings.search),
-                              ),
                             ),
                           ),
                         ),

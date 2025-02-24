@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 
 class BottomBarProvider extends ChangeNotifier {
   int _selectedIndex = 0;
-
   int get selectedIndex => _selectedIndex;
 
   void updateIndex(int index) {
@@ -14,6 +13,15 @@ class BottomBarProvider extends ChangeNotifier {
 
   BottomBarProvider() {
     getCurrentAccountType();
+  }
+
+  bool isBottomBarVisible = true;
+
+  void setBottomBarVisibility(bool isVisible) {
+    if (isBottomBarVisible != isVisible) {
+      isBottomBarVisible = isVisible;
+      notifyListeners();
+    }
   }
 
   String? selectedAccountType;

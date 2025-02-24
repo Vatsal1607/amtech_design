@@ -8,29 +8,63 @@ import 'package:amtech_design/modules/menu/widgets/account_selection_widget.dart
 import 'package:amtech_design/modules/reorder/reorder_page.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/strings.dart';
 import '../menu/menu_provider.dart';
 import 'bottom_bar_provider.dart';
 
-class BottomBarPage extends StatelessWidget {
-  final List<Widget> _screens = [
-    const MenuPage(),
-    const ReorderPage(),
-    const BillingPage(),
-    // const BlogPage(), // * Blog page nav item
-  ];
-
+class BottomBarPage extends StatefulWidget {
   BottomBarPage({super.key});
 
   @override
+  State<BottomBarPage> createState() => _BottomBarPageState();
+}
+
+class _BottomBarPageState extends State<BottomBarPage> {
+  late ScrollController _scrollController;
+  late List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_onScroll);
+
+    _screens = [
+      MenuPage(scrollController: _scrollController),
+      ReorderPage(scrollController: _scrollController),
+      BillingPage(scrollController: _scrollController),
+    ];
+  }
+
+  void _onScroll() {
+    final provider = Provider.of<BottomBarProvider>(context, listen: false);
+    if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.reverse) {
+      provider.setBottomBarVisibility(false);
+    } else if (_scrollController.position.userScrollDirection ==
+        ScrollDirection.forward) {
+      provider.setBottomBarVisibility(true);
+    }
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType = 'business';
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     debugPrint(
         'User Token is: ${sharedPrefsService.getString(SharedPrefsKeys.userToken.toString())}');
+
     return Scaffold(
       body: Stack(
         children: [
@@ -75,103 +109,113 @@ class BottomBarPage extends StatelessWidget {
                 //     ),
                 //   ),
                 // ),
-                BottomNavigationBar(
-                  type: BottomNavigationBarType.fixed,
-                  backgroundColor: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                  currentIndex: provider.selectedIndex,
-                  onTap: (index) => provider.updateIndex(index),
-                  selectedItemColor: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.white,
-                    personalColor: AppColors.seaMist,
-                  ), // Color for the selected label and icon
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: provider.isBottomBarVisible
+                      ? kBottomNavigationBarHeight + 15.h
+                      : 0,
+                  child: Wrap(
+                    children: [
+                      BottomNavigationBar(
+                        type: BottomNavigationBarType.fixed,
+                        backgroundColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
+                        currentIndex: provider.selectedIndex,
+                        onTap: (index) => provider.updateIndex(index),
+                        selectedItemColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.white,
+                          personalColor: AppColors.seaMist,
+                        ), // Color for the selected label and icon
 
-                  unselectedItemColor: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.disabledColor,
-                    personalColor: AppColors.bayLeaf,
-                  ), // Color for unselected labels and icons
-                  selectedLabelStyle: TextStyle(
-                    height: 2.h, // Adds vertical padding to the label
+                        unselectedItemColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ), // Color for unselected labels and icons
+                        selectedLabelStyle: TextStyle(
+                          height: 2.h, // Adds vertical padding to the label
+                        ),
+                        unselectedLabelStyle: TextStyle(
+                          height: 2.h, // Adds vertical padding to the label
+                        ),
+                        items: [
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.menu,
+                              color: provider.selectedIndex == 0
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'MENU',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.reorder,
+                              color: provider.selectedIndex == 1
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'REORDER',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.billing,
+                              color: provider.selectedIndex == 2
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'BILLING',
+                          ),
+                          // * Blog Nav Item
+                          // BottomNavigationBarItem(
+                          //   icon: SvgIcon(
+                          //     icon: IconStrings.blog,
+                          //     color: provider.selectedIndex == 3
+                          //         ? getColorAccountType(
+                          //             accountType: accountType,
+                          //             businessColor: AppColors.white,
+                          //             personalColor: AppColors.seaMist,
+                          //           )
+                          //         : getColorAccountType(
+                          //             accountType: accountType,
+                          //             businessColor: AppColors.disabledColor,
+                          //             personalColor: AppColors.bayLeaf,
+                          //           ),
+                          //   ),
+                          //   label: 'BLOG',
+                          // ),
+                        ],
+                      ),
+                    ],
                   ),
-                  unselectedLabelStyle: TextStyle(
-                    height: 2.h, // Adds vertical padding to the label
-                  ),
-                  items: [
-                    BottomNavigationBarItem(
-                      icon: SvgIcon(
-                        icon: IconStrings.menu,
-                        color: provider.selectedIndex == 0
-                            ? getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.white,
-                                personalColor: AppColors.seaMist,
-                              )
-                            : getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.disabledColor,
-                                personalColor: AppColors.bayLeaf,
-                              ),
-                      ),
-                      label: 'MENU',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SvgIcon(
-                        icon: IconStrings.reorder,
-                        color: provider.selectedIndex == 1
-                            ? getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.white,
-                                personalColor: AppColors.seaMist,
-                              )
-                            : getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.disabledColor,
-                                personalColor: AppColors.bayLeaf,
-                              ),
-                      ),
-                      label: 'REORDER',
-                    ),
-                    BottomNavigationBarItem(
-                      icon: SvgIcon(
-                        icon: IconStrings.billing,
-                        color: provider.selectedIndex == 2
-                            ? getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.white,
-                                personalColor: AppColors.seaMist,
-                              )
-                            : getColorAccountType(
-                                accountType: accountType,
-                                businessColor: AppColors.disabledColor,
-                                personalColor: AppColors.bayLeaf,
-                              ),
-                      ),
-                      label: 'BILLING',
-                    ),
-                    // * Blog Nav Item
-                    // BottomNavigationBarItem(
-                    //   icon: SvgIcon(
-                    //     icon: IconStrings.blog,
-                    //     color: provider.selectedIndex == 3
-                    //         ? getColorAccountType(
-                    //             accountType: accountType,
-                    //             businessColor: AppColors.white,
-                    //             personalColor: AppColors.seaMist,
-                    //           )
-                    //         : getColorAccountType(
-                    //             accountType: accountType,
-                    //             businessColor: AppColors.disabledColor,
-                    //             personalColor: AppColors.bayLeaf,
-                    //           ),
-                    //   ),
-                    //   label: 'BLOG',
-                    // ),
-                  ],
                 ),
               ],
             ),

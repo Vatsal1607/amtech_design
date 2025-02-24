@@ -15,6 +15,7 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
   final Color iconColor;
   final double borderWidth;
   final String hint;
+  final TextAlignVertical? textAlignVertical;
   const CustomSearchField({
     super.key,
     required this.provider,
@@ -25,6 +26,7 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
     this.iconColor = AppColors.seaShell,
     this.borderWidth = 1.0,
     this.hint = 'Search for Tea, Coffee or Snacks',
+    this.textAlignVertical = TextAlignVertical.center,
   });
 
   @override
@@ -32,7 +34,7 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
     return TextFormField(
       controller: controller,
       textCapitalization: TextCapitalization.sentences,
-      textAlignVertical: TextAlignVertical.center,
+      textAlignVertical: textAlignVertical,
       style: GoogleFonts.publicSans(
         color: getColorAccountType(
           accountType: accountType,

@@ -28,7 +28,8 @@ import 'widgets/slider_details_widget.dart';
 import 'widgets/subscription_widget.dart';
 
 class MenuPage extends StatefulWidget {
-  const MenuPage({super.key});
+  final ScrollController scrollController;
+  const MenuPage({super.key, required this.scrollController});
 
   @override
   State<MenuPage> createState() => _MenuPageState();
@@ -47,8 +48,8 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     log('userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType = 'business';
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
     //* Note: variable is not used but by initialize this socket connect
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
@@ -97,6 +98,7 @@ class _MenuPageState extends State<MenuPage> {
                 child: NotificationListener(
                   onNotification: provider.onNotification,
                   child: CustomScrollView(
+                    controller: widget.scrollController,
                     physics: const ClampingScrollPhysics(),
                     slivers: [
                       CustomSliverAppbar(
@@ -185,8 +187,8 @@ class _MenuPageState extends State<MenuPage> {
                                             maxLines: 1,
                                             textDirection: TextDirection.ltr,
                                           )..layout(
-                                              maxWidth: provider.addressWidth
-                                                  .w); //! Change according parent Width
+                                              maxWidth:
+                                                  provider.addressWidth.w);
 
                                           // If text overflows, use Marquee, otherwise use normal Text
                                           bool isOverflowing =
@@ -236,13 +238,6 @@ class _MenuPageState extends State<MenuPage> {
                                         onTap: () {
                                           Navigator.pushNamed(
                                               context, Routes.savedAddress);
-                                          //   Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //       builder: (context) =>
-                                          //           const GoogleMapPage(),
-                                          //     ),
-                                          //   );
                                         },
                                         accountType: accountType,
                                       ),
@@ -361,6 +356,7 @@ class _MenuPageState extends State<MenuPage> {
                             child: CustomSearchField(
                               provider: provider,
                               accountType: accountType,
+                              textAlignVertical: TextAlignVertical.bottom,
                               controller: provider.searchController,
                             ),
                           ),
@@ -408,6 +404,7 @@ class _MenuPageState extends State<MenuPage> {
                                   Consumer<MenuProvider>(
                                     builder: (context, _, child) {
                                       return ListView.separated(
+                                        // controller: widget.scrollController,
                                         shrinkWrap: true,
                                         padding: EdgeInsets.zero,
                                         physics:

@@ -1,3 +1,4 @@
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,7 @@ class CustomButtonWithArrow extends StatelessWidget {
   final bool isMargin;
   final String? text;
   final String? totalQty;
+  final bool isLoading;
   const CustomButtonWithArrow({
     super.key,
     required this.accountType,
@@ -19,6 +21,7 @@ class CustomButtonWithArrow extends StatelessWidget {
     this.isMargin = true,
     this.text,
     this.totalQty,
+    this.isLoading = false,
   });
 
   @override
@@ -89,9 +92,11 @@ class CustomButtonWithArrow extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(100.r),
               ),
-              child: const SvgIcon(
-                icon: IconStrings.arrowNext,
-              ),
+              child: isLoading
+                  ? CustomLoader()
+                  : const SvgIcon(
+                      icon: IconStrings.arrowNext,
+                    ),
             ),
           ],
         ),

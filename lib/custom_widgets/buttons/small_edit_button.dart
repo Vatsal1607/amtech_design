@@ -7,10 +7,16 @@ import '../../core/utils/constant.dart';
 class SmallEditButton extends StatelessWidget {
   final String accountType;
   final VoidCallback? onTap;
+  final String text;
+  final double width;
+  final double height;
   const SmallEditButton({
     super.key,
     required this.accountType,
     this.onTap,
+    this.text = 'EDIT',
+    this.width = 50,
+    this.height = 20,
   });
 
   @override
@@ -18,8 +24,8 @@ class SmallEditButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 20.h,
-        width: 50.w,
+        height: height.h,
+        width: width.w,
         decoration: BoxDecoration(
           color: getColorAccountType(
             accountType: accountType,
@@ -30,7 +36,7 @@ class SmallEditButton extends StatelessWidget {
         ),
         child: Center(
           child: Text(
-            'EDIT',
+            text,
             style: GoogleFonts.publicSans(
               fontSize: 11.sp,
               color: AppColors.white,

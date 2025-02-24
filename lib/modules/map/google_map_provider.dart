@@ -1,12 +1,14 @@
 import 'dart:developer';
+import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/models/location_model.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:amtech_design/services/network/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../core/utils/constants/keys.dart';
-import '../../models/edit_location.dart';
+import '../../models/edit_location_model.dart';
 import '../../models/edit_location_request_model.dart' as request_model;
 import '../../services/local/shared_preferences_service.dart';
 
@@ -21,14 +23,15 @@ class GoogleMapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isCheckedHome = false;
+  bool isCheckedHome = true;
   bool isCheckedWork = false;
   bool isCheckedOther = false;
-  String? addressType;
+  String addressType = AddressType.Home.name;
 
   onChangedHome(bool? value) {
     isCheckedHome = value ?? false;
     if (isCheckedHome) {
+      addressType = AddressType.Home.name;
       isCheckedWork = false;
       isCheckedOther = false;
     }
@@ -38,6 +41,7 @@ class GoogleMapProvider extends ChangeNotifier {
   onChangedWork(bool? value) {
     isCheckedWork = value ?? false;
     if (isCheckedWork) {
+      addressType = AddressType.Work.name;
       isCheckedHome = false;
       isCheckedOther = false;
     }
@@ -47,6 +51,7 @@ class GoogleMapProvider extends ChangeNotifier {
   onChangedOther(bool? value) {
     isCheckedOther = value ?? false;
     if (isCheckedOther) {
+      addressType = AddressType.Other.name;
       isCheckedHome = false;
       isCheckedWork = false;
     }
@@ -122,8 +127,8 @@ class GoogleMapProvider extends ChangeNotifier {
     );
   }
 
-  void _moveCamera(LatLng position) {
-    mapController?.animateCamera(
+  Future<void> _moveCamera(LatLng position) async {
+    await mapController?.animateCamera(
       CameraUpdate.newCameraPosition(
         CameraPosition(target: position, zoom: 14),
       ),
@@ -195,6 +200,7 @@ class GoogleMapProvider extends ChangeNotifier {
         if (data is Map<String, dynamic>) {
           LocationModel location = LocationModel.fromJson(data);
           address = location.data?.address;
+          addressController.text = location.data?.address ?? '';
           distance = location.data?.distance.toString();
           log('Updated Address: $address');
 
@@ -246,13 +252,19 @@ class GoogleMapProvider extends ChangeNotifier {
               propertyNumber: floorController.text,
               residentialAddress: companyController.text,
               nearLandmark: landmarkController.text,
-              addressType: '', //* checkbox
+              addressType: addressType,
+              lat: selectedLocation?.latitude,
+              long: selectedLocation?.longitude,
             ),
           ],
         ),
       );
       log('editLocation response: ${res.data}');
       if (res.success == true) {
+        floorController.clear();
+        companyController.clear();
+        landmarkController.clear();
+        Navigator.pop(context);
         log('editLocation message: ${res.message}');
       } else {
         log('${res.message}');
@@ -264,23 +276,4 @@ class GoogleMapProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-  // Future<void> editLocation({
-  //   required String userId,
-  //   required EditLocationRequestModel editLocationRequestModel,
-  // }) async {
-  //   isEditLocationLoading = true;
-  //   notifyListeners();
-
-  //   try {
-  //     editLocationModel = await apiService.editLocation(
-  //       userId: userId,
-  //       editLocationRequestModel: editLocationRequestModel,
-  //     );
-  //   } catch (e) {
-  //     debugPrint("Error: $e");
-  //   }
-  //   isEditLocationLoading = false;
-  //   notifyListeners();
-  // }
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
@@ -9,32 +11,6 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
-
-// OLD
-// Widget _buildCheckbox({
-//   required String title,
-//   required bool value,
-//   void Function(bool?)? onChanged,
-// }) {
-//   return Row(
-//     children: [
-//       Checkbox(
-//         value: value,
-//         onChanged: onChanged,
-//         checkColor: Colors.black,
-//         activeColor: AppColors.disabledColor,
-//       ),
-//       Text(
-//         title,
-//         style: GoogleFonts.publicSans(
-//           fontSize: 16.sp,
-//           fontWeight: FontWeight.bold,
-//           color: AppColors.seaShell,
-//         ),
-//       ),
-//     ],
-//   );
-// }
 
 Widget _buildCheckbox({
   required String title,
@@ -82,10 +58,6 @@ void editAddressBottomSheeet({
       personalColor: AppColors.darkGreenGrey,
     ),
     builder: (context) {
-      // TextEditingController addressController = TextEditingController();
-      // TextEditingController floorController = TextEditingController();
-      // TextEditingController companyController = TextEditingController();
-      // TextEditingController landmarkController = TextEditingController();
       return Stack(
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
@@ -155,10 +127,12 @@ void editAddressBottomSheeet({
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
+                    enabled: false,
                     controller: provider.addressController,
-                    hint:
-                        'AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad',
+                    hint: '',
+                    // 'AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad',
                     maxLines: 3,
+                    borderRadius: 30.r,
                   ),
                   SizedBox(height: 5.h),
                   Text(
@@ -171,24 +145,37 @@ void editAddressBottomSheeet({
                   SizedBox(height: 20.h),
                   CustomTextField(
                     hint: 'Floor *',
+                    label: 'Floor *',
                     controller: provider.floorController,
                   ),
                   SizedBox(height: 15.h),
                   CustomTextField(
                     hint: 'Company / Building *',
+                    label: 'Company / Building *',
                     controller: provider.companyController,
                   ),
                   SizedBox(height: 15.h),
                   CustomTextField(
                     hint: 'Nearby Landmark (optional)',
+                    label: 'Nearby Landmark (optional)',
                     controller: provider.landmarkController,
                   ),
                   SizedBox(height: 20.h),
-                  CustomButtonWithArrow(
-                    isMargin: false,
-                    accountType: accountType,
-                    onTap: () {},
-                    text: 'CONFIRM ADDRESS',
+                  Consumer<GoogleMapProvider>(
+                    builder: (context, _, child) => CustomButtonWithArrow(
+                      isMargin: false,
+                      accountType: accountType,
+                      onTap: () {
+                        if (provider.floorController.text.trim().isNotEmpty &&
+                            provider.companyController.text.trim().isNotEmpty) {
+                          //* API call
+                          provider.editLocation(context);
+                        } else {
+                          log('textfields is empty');
+                        }
+                      },
+                      text: 'CONFIRM ADDRESS',
+                    ),
                   ),
                   SizedBox(height: 40.h),
                 ],

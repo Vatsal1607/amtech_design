@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'app_colors.dart';
 
 InputBorder textFieldBorderStyle = OutlineInputBorder(
   borderRadius: BorderRadius.circular(100.0), // Set corner radius
-  borderSide:
-      const BorderSide(color: Colors.transparent), // Optional: no border color
+  borderSide: BorderSide(color: Colors.transparent, width: 1.w),
 );
 
 // * Condition of get color according to accountType

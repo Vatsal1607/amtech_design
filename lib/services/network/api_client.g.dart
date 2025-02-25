@@ -1089,7 +1089,7 @@ class _ApiClient implements ApiClient {
     final _data = <String, dynamic>{};
     _data.addAll(editLocationRequestModel.toJson());
     final _options = _setStreamType<EditLocationModel>(Options(
-      method: 'PUT',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )

@@ -145,7 +145,7 @@ class MenuProvider extends ChangeNotifier {
     }
   }
 
-  final addressWidth = 310;
+  final addressWidth = 290;
   // * Account Selection UI data
   double panelHeight = 0.0;
   final double panelMaxHeight = 235.0;

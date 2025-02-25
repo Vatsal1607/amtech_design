@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
+import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
 import 'package:amtech_design/modules/map/widgets/edit_address_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -67,6 +68,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     }
   }
 
+  TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<GoogleMapProvider>(context, listen: false);
@@ -137,6 +139,19 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       ),
                     ),
                   ),
+                  //* SearchField
+                  Positioned(
+                    top: 32.w,
+                    left: 32.w,
+                    right: 32.w,
+                    child: CustomSearchField(
+                      provider: provider,
+                      accountType: accountType,
+                      hint: 'Search for area, street, etc.',
+                      controller: searchController,
+                    ),
+                  ),
+
                   //* Address bottom widget
                   Positioned(
                     bottom: 0,
@@ -156,7 +171,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                 Row(
                                   children: [
                                     SvgIcon(
-                                      icon: IconStrings.address,
+                                      icon: IconStrings.locationMarker,
                                       color: getColorAccountType(
                                         accountType: accountType,
                                         businessColor: AppColors.primaryColor,
@@ -165,9 +180,9 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                     ),
                                     SizedBox(width: 5.w),
                                     Text(
-                                      'DELIVER TO,',
+                                      'Deliver To,',
                                       style: GoogleFonts.publicSans(
-                                        fontSize: 12.sp,
+                                        fontSize: 15.sp,
                                         color: getColorAccountType(
                                           accountType: accountType,
                                           businessColor: AppColors.primaryColor

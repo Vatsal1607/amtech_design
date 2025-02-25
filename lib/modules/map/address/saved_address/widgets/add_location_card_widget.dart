@@ -2,7 +2,6 @@ import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/strings.dart';
 
@@ -16,12 +15,17 @@ class AddLocationCard extends StatelessWidget {
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(30.r),
       ),
-      padding: EdgeInsets.all(16.w),
+      padding: EdgeInsets.all(20.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildAddNewLocationRow(),
-          const Divider(color: Colors.grey, thickness: 0.5),
+          SizedBox(height: 15.h),
+          const Divider(
+            color: AppColors.disabledColor,
+            thickness: 1,
+          ),
+          SizedBox(height: 15.h),
           _buildCurrentLocationRow(),
         ],
       ),
@@ -80,7 +84,7 @@ class AddLocationCard extends StatelessWidget {
               Text(
                 "AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad",
                 style: GoogleFonts.publicSans(
-                  fontSize: 14.sp,
+                  fontSize: 12.sp,
                   color: Colors.grey,
                 ),
               ),
@@ -90,15 +94,4 @@ class AddLocationCard extends StatelessWidget {
       ],
     );
   }
-
-//   Widget _buildIcon(IconData icon, Color? color) {
-//     return Container(
-//       padding: EdgeInsets.all(6.w),
-//       decoration: const BoxDecoration(
-//         shape: BoxShape.circle,
-//         color: AppColors.disabledColor,
-//       ),
-//       child: Icon(icon, color: color, size: 18.w),
-//     );
-//   }
 }

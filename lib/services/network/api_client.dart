@@ -195,7 +195,7 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> body,
   );
 
-  @PUT('${ApiEndpoints.location}/{userId}')
+  @POST('${ApiEndpoints.location}/{userId}')
   Future<EditLocationModel> editLocation(
     @Path('userId') String userId,
     @Body() EditLocationRequestModel editLocationRequestModel,

@@ -5,14 +5,15 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 
 class CenterTitleWithDivider extends StatelessWidget {
+  final String accountType;
   final String title;
+  final double fontSize;
   const CenterTitleWithDivider({
     super.key,
     required this.accountType,
     required this.title,
+    this.fontSize = 24,
   });
-
-  final String accountType;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class CenterTitleWithDivider extends StatelessWidget {
         Text(
           title,
           style: GoogleFonts.publicSans(
-            fontSize: 24.sp,
+            fontSize: fontSize.sp,
             fontWeight: FontWeight.bold,
             color: getColorAccountType(
               accountType: accountType,

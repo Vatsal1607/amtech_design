@@ -31,6 +31,8 @@ class CustomTextField extends StatelessWidget {
   final TextCapitalization textCapitalization;
   final double? borderRadius;
   final String label;
+  final Widget? suffix;
+  final bool readOnly;
   const CustomTextField({
     super.key,
     required this.hint,
@@ -57,12 +59,15 @@ class CustomTextField extends StatelessWidget {
     this.textCapitalization = TextCapitalization.sentences,
     this.borderRadius,
     this.label = '',
+    this.suffix,
+    this.readOnly = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       enabled: enabled,
+      readOnly: readOnly,
       cursorColor: cursorColor,
       controller: controller,
       textCapitalization: textCapitalization,
@@ -98,6 +103,7 @@ class CustomTextField extends StatelessWidget {
               )
             : null,
         suffixIcon: suffixWidget,
+        suffix: suffix,
         contentPadding: contentPadding,
         border: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
           borderRadius: BorderRadius.circular(borderRadius ?? 100.r),

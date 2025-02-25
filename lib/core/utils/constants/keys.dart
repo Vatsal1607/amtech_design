@@ -16,6 +16,8 @@ class SharedPrefsKeys {
   static const String company = 'company';
   static const String firstSecondaryAccessList = 'firstSecondaryAccessList';
   static const String secondaryAccessList = 'secondaryAccessList';
+  static const String lat = 'lat';
+  static const String long = 'long';
 }
 
 class SocketEvents {
@@ -26,4 +28,8 @@ class SocketEvents {
   static const String userLocation = 'user-location';
   static const String realTimeLocationUpdate = 'real-time-location-update';
   static const String userConnected = 'user-connected';
+  static const String saveAddressEventName = 'save-address';
+  static const String searchSavedLocationListen = 'search-saved-location';
+  static const String nearByLocationEventName = 'nearBy-location';
+  static const String nearByLocationListen = 'near-by-location';
 }

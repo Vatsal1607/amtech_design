@@ -3,9 +3,8 @@ import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
-import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/modules/map/google_map_page.dart';
+import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
@@ -40,6 +39,7 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<MenuProvider>().homeMenuApi();
+      context.read<GoogleMapProvider>().getCurrentLocation();
     });
 
     super.initState();
@@ -48,9 +48,10 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     log('userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    String accountType = 'business';
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
+
     //* Note: variable is not used but by initialize this socket connect
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     //* Show cart snackbar
@@ -113,133 +114,156 @@ class _MenuPageState extends State<MenuPage> {
                             SizedBox(height: 10.h),
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Row(
+                                // mainAxisSize: MainAxisSize.max,
                                 children: [
-                                  Row(
-                                    children: [
-                                      SvgIcon(
-                                        icon: IconStrings.address,
-                                        color: getColorAccountType(
-                                          accountType: accountType,
-                                          businessColor: AppColors.primaryColor,
-                                          personalColor:
-                                              AppColors.darkGreenGrey,
-                                        ),
-                                      ),
-                                      SizedBox(width: 5.w),
-                                      Text(
-                                        'Deliver To, ',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 12.sp,
-                                          color: getColorAccountType(
-                                            accountType: accountType,
-                                            businessColor:
-                                                AppColors.primaryColor,
-                                            personalColor:
-                                                AppColors.darkGreenGrey,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'HOME',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 12.sp,
-                                          fontWeight: FontWeight.bold,
-                                          color: getColorAccountType(
-                                            accountType: accountType,
-                                            businessColor: AppColors
-                                                .primaryColor
-                                                .withOpacity(0.8),
-                                            personalColor: AppColors
-                                                .darkGreenGrey
-                                                .withOpacity(0.8),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                                  SvgIcon(
+                                    icon: IconStrings.locationMarker,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.primaryColor,
+                                      personalColor: AppColors.darkGreenGrey,
+                                    ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  SizedBox(width: 5.w),
+                                  //* Address widget
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(
-                                        width: provider.addressWidth.w,
-                                        height: 20.h,
-                                        child: Consumer<MenuProvider>(
-                                            builder: (context, _, child) {
-                                          final address = provider
-                                              .homeMenuResponse?.data?.address;
-                                          if (address == null ||
-                                              address.isEmpty) {
-                                            return const SizedBox();
-                                          }
-
-                                          // Measure text width
-                                          TextPainter textPainter = TextPainter(
-                                            text: TextSpan(
-                                              text: address,
-                                              style: GoogleFonts.publicSans(
-                                                fontSize: 15.sp,
-                                                fontWeight: FontWeight.bold,
+                                      Row(
+                                        children: [
+                                          Text(
+                                            'Deliver To, ',
+                                            style: GoogleFonts.publicSans(
+                                              fontSize: 12.sp,
+                                              color: getColorAccountType(
+                                                accountType: accountType,
+                                                businessColor:
+                                                    AppColors.primaryColor,
+                                                personalColor:
+                                                    AppColors.darkGreenGrey,
                                               ),
                                             ),
-                                            maxLines: 1,
-                                            textDirection: TextDirection.ltr,
-                                          )..layout(
-                                              maxWidth:
-                                                  provider.addressWidth.w);
-
-                                          // If text overflows, use Marquee, otherwise use normal Text
-                                          bool isOverflowing =
-                                              textPainter.didExceedMaxLines;
-                                          return isOverflowing
-                                              ? Marquee(
-                                                  velocity: 20,
-                                                  scrollAxis: Axis.horizontal,
-                                                  blankSpace: 15,
-                                                  pauseAfterRound:
-                                                      const Duration(
-                                                          seconds: 3),
-                                                  text: '$address.',
-                                                  style: GoogleFonts.publicSans(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: getColorAccountType(
-                                                      accountType: accountType,
-                                                      businessColor: AppColors
-                                                          .primaryColor,
-                                                      personalColor: AppColors
-                                                          .darkGreenGrey,
-                                                    ),
-                                                  ),
-                                                )
-                                              : Text(
-                                                  address,
-                                                  style: GoogleFonts.publicSans(
-                                                    fontSize: 15.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: getColorAccountType(
-                                                      accountType: accountType,
-                                                      businessColor: AppColors
-                                                          .primaryColor,
-                                                      personalColor: AppColors
-                                                          .darkGreenGrey,
-                                                    ),
-                                                  ),
-                                                );
-                                        }),
+                                          ),
+                                          Text(
+                                            'HOME',
+                                            style: GoogleFonts.publicSans(
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: getColorAccountType(
+                                                accountType: accountType,
+                                                businessColor: AppColors
+                                                    .primaryColor
+                                                    .withOpacity(0.8),
+                                                personalColor: AppColors
+                                                    .darkGreenGrey
+                                                    .withOpacity(0.8),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      //* Small Edit Button
-                                      SmallEditButton(
-                                        height: 26.h,
-                                        width: 64.w,
-                                        text: 'CHANGE',
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                              context, Routes.savedAddress);
-                                        },
-                                        accountType: accountType,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          SizedBox(
+                                            width: provider.addressWidth.w,
+                                            height: 20.h,
+                                            child: Consumer<MenuProvider>(
+                                                builder: (context, _, child) {
+                                              final address = provider
+                                                  .homeMenuResponse
+                                                  ?.data
+                                                  ?.address;
+                                              if (address == null ||
+                                                  address.isEmpty) {
+                                                return const SizedBox();
+                                              }
+                                              // Measure text width
+                                              TextPainter textPainter =
+                                                  TextPainter(
+                                                text: TextSpan(
+                                                  text: address,
+                                                  style: GoogleFonts.publicSans(
+                                                    fontSize: 15.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                maxLines: 1,
+                                                textDirection:
+                                                    TextDirection.ltr,
+                                              )..layout(
+                                                      maxWidth: provider
+                                                          .addressWidth.w);
+
+                                              // If text overflows, use Marquee, otherwise use normal Text
+                                              bool isOverflowing =
+                                                  textPainter.didExceedMaxLines;
+                                              return isOverflowing
+                                                  ? Marquee(
+                                                      velocity: 20,
+                                                      scrollAxis:
+                                                          Axis.horizontal,
+                                                      blankSpace: 15,
+                                                      pauseAfterRound:
+                                                          const Duration(
+                                                              seconds: 3),
+                                                      text: '$address.',
+                                                      style: GoogleFonts
+                                                          .publicSans(
+                                                        fontSize: 15.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            getColorAccountType(
+                                                          accountType:
+                                                              accountType,
+                                                          businessColor:
+                                                              AppColors
+                                                                  .primaryColor,
+                                                          personalColor:
+                                                              AppColors
+                                                                  .darkGreenGrey,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : Text(
+                                                      address,
+                                                      style: GoogleFonts
+                                                          .publicSans(
+                                                        fontSize: 15.sp,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            getColorAccountType(
+                                                          accountType:
+                                                              accountType,
+                                                          businessColor:
+                                                              AppColors
+                                                                  .primaryColor,
+                                                          personalColor:
+                                                              AppColors
+                                                                  .darkGreenGrey,
+                                                        ),
+                                                      ),
+                                                    );
+                                            }),
+                                          ),
+                                          SizedBox(width: 10.w),
+                                          //* Small Edit Button
+                                          SmallEditButton(
+                                            height: 26.h,
+                                            width: 64.w,
+                                            text: 'CHANGE',
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, Routes.savedAddress);
+                                            },
+                                            accountType: accountType,
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

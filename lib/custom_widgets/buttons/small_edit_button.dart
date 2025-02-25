@@ -10,6 +10,8 @@ class SmallEditButton extends StatelessWidget {
   final String text;
   final double width;
   final double height;
+  final Color? bgColor;
+  final Color? textColor;
   const SmallEditButton({
     super.key,
     required this.accountType,
@@ -17,6 +19,8 @@ class SmallEditButton extends StatelessWidget {
     this.text = 'EDIT',
     this.width = 50,
     this.height = 20,
+    this.bgColor,
+    this.textColor,
   });
 
   @override
@@ -27,11 +31,12 @@ class SmallEditButton extends StatelessWidget {
         height: height.h,
         width: width.w,
         decoration: BoxDecoration(
-          color: getColorAccountType(
-            accountType: accountType,
-            businessColor: AppColors.primaryColor,
-            personalColor: AppColors.darkGreenGrey,
-          ),
+          color: bgColor ??
+              getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Center(
@@ -39,7 +44,7 @@ class SmallEditButton extends StatelessWidget {
             text,
             style: GoogleFonts.publicSans(
               fontSize: 11.sp,
-              color: AppColors.white,
+              color: textColor ?? AppColors.white,
               fontWeight: FontWeight.bold,
             ),
           ),

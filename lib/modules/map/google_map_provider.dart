@@ -6,7 +6,6 @@ import 'package:amtech_design/services/network/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../models/edit_location_model.dart';
 import '../../models/edit_location_request_model.dart' as request_model;
@@ -64,11 +63,11 @@ class GoogleMapProvider extends ChangeNotifier {
     BuildContext? context,
     SocketProvider? socketProvider,
   }) async {
-    isLoading = true; // Set loader to true
-    notifyListeners(); //
+    isLoading = true;
+    notifyListeners();
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      isLoading = false; // Stop loader
+      isLoading = false;
       notifyListeners();
       if (context != null) {
         _showLocationServiceDialog(context);
@@ -97,13 +96,20 @@ class GoogleMapProvider extends ChangeNotifier {
     );
 
     currentLocation = LatLng(position.latitude, position.longitude);
+    if (currentLocation != null) {
+      sharedPrefsService.setString(
+          SharedPrefsKeys.lat, currentLocation?.latitude.toString() ?? '');
+      sharedPrefsService.setString(
+          SharedPrefsKeys.long, currentLocation?.longitude.toString() ?? '');
+      log('$currentLocation is stored in locally');
+    }
     if (socketProvider != null) {
       emitAndListenGetLocation(socketProvider);
       notifyListeners();
     }
     _updateMarker(currentLocation!);
     _moveCamera(currentLocation!);
-    isLoading = false; // Stop loader
+    isLoading = false;
     notifyListeners();
   }
 

@@ -11,6 +11,7 @@ import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
+import 'suffix_address_widget.dart';
 
 Widget _buildCheckbox({
   required String title,
@@ -127,12 +128,17 @@ void editAddressBottomSheeet({
                   ),
                   SizedBox(height: 10.h),
                   CustomTextField(
-                    enabled: false,
+                    readOnly: true,
                     controller: provider.addressController,
                     hint: '',
-                    // 'AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad',
                     maxLines: 3,
                     borderRadius: 30.r,
+                    suffixWidget: SuffixAddressWidget(
+                      onTap: () {
+                        log('pressed');
+                        Navigator.pop(context);
+                      },
+                    ),
                   ),
                   SizedBox(height: 5.h),
                   Text(

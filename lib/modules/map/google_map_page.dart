@@ -144,7 +144,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                   ),
                   //* SearchField
                   Positioned(
-                    top: 32.w,
+                    top: 38.w,
                     left: 32.w,
                     right: 32.w,
                     child: GestureDetector(

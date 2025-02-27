@@ -1,15 +1,15 @@
 class SavedAddressModel {
   String? message;
-  List<Data>? data;
+  List<SavedAddressList>? data;
 
   SavedAddressModel({this.message, this.data});
 
   SavedAddressModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <SavedAddressList>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(SavedAddressList.fromJson(v));
       });
     }
   }
@@ -24,7 +24,7 @@ class SavedAddressModel {
   }
 }
 
-class Data {
+class SavedAddressList {
   String? propertyNumber;
   String? residentialAddress;
   String? nearLandmark;
@@ -34,7 +34,7 @@ class Data {
   String? sId;
   String? distance;
 
-  Data(
+  SavedAddressList(
       {this.propertyNumber,
       this.residentialAddress,
       this.nearLandmark,
@@ -44,7 +44,7 @@ class Data {
       this.sId,
       this.distance});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  SavedAddressList.fromJson(Map<String, dynamic> json) {
     propertyNumber = json['propertyNumber'];
     residentialAddress = json['residentialAddress'];
     nearLandmark = json['nearLandmark'];

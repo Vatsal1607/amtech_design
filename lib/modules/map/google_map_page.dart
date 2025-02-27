@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
+import 'package:amtech_design/custom_widgets/textfield/custom_search_container.dart';
 import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
 import 'package:amtech_design/modules/map/widgets/edit_address_bottomsheet.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,7 @@ import '../../custom_widgets/buttons/small_edit_button.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../provider/socket_provider.dart';
 import 'google_map_provider.dart';
+import 'widgets/search_bottomsheet.dart';
 
 class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({super.key});
@@ -87,6 +89,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                 color: AppColors.primaryColor,
               ))
             : Stack(
+                clipBehavior: Clip.none,
                 children: [
                   GoogleMap(
                     onMapCreated: (controller) {
@@ -144,11 +147,22 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     top: 32.w,
                     left: 32.w,
                     right: 32.w,
-                    child: CustomSearchField(
-                      provider: provider,
-                      accountType: accountType,
-                      hint: 'Search for area, street, etc.',
-                      controller: searchController,
+                    child: GestureDetector(
+                      onTap: () => _showSearchBottomSheet(context),
+                      child: Container(
+                        color: Colors.transparent,
+                        child: CustomSearchContainer(
+                          accountType: accountType,
+                          controller: searchController,
+                        ),
+                        // child: CustomSearchField(
+                        //   readOnly: true,
+                        //   provider: provider,
+                        //   accountType: accountType,
+                        //   hint: 'Search for area, street, etc.',
+                        //   controller: searchController,
+                        // ),
+                      ),
                     ),
                   ),
 
@@ -292,6 +306,19 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                 ],
               ),
       ),
+    );
+  }
+
+  void _showSearchBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (context) {
+        return const SearchBottomSheet();
+      },
     );
   }
 }

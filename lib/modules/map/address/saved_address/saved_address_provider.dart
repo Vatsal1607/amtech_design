@@ -7,12 +7,13 @@ import '../../../../services/local/shared_preferences_service.dart';
 import '../../../provider/socket_provider.dart';
 
 class SavedAddressProvider extends ChangeNotifier {
-  bool isLoading = false;
+  bool isLoadingSavedAddress = false;
   bool isFirstCall = true;
+  List<SavedAddressList>? savedAddressList;
 
   //* Emit & Listen Saved Address
   void emitAndListenSavedAddress(SocketProvider socketProvider) async {
-    isLoading = true;
+    isLoadingSavedAddress = true;
     notifyListeners();
     final userId = sharedPrefsService.getString(SharedPrefsKeys.userId);
     final lat = sharedPrefsService.getString(SharedPrefsKeys.lat);
@@ -40,20 +41,23 @@ class SavedAddressProvider extends ChangeNotifier {
       try {
         if (data is Map<String, dynamic>) {
           SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
-          isLoading = false;
+          savedAddressList = savedAddress.data;
+          log('savedAddressList ${savedAddressList}');
+          isLoadingSavedAddress = false;
           notifyListeners();
         } else {
           log('Received unexpected data format SavedAddress');
         }
       } catch (e) {
         log('Error parsing socket data SavedAddressModel: $e');
-        isLoading = false;
+        isLoadingSavedAddress = false;
         notifyListeners();
       }
     });
   }
 
   bool isLoadingNearBy = false;
+  List<NearByAddressList>? nearByAddressList;
 
   //* Emit & Listen Nearby Address
   void emitAndListenNearBy({
@@ -68,13 +72,15 @@ class SavedAddressProvider extends ChangeNotifier {
       "longitude": long,
     };
     log('NearBy data is: $data');
-    socketProvider.emitEvent(SocketEvents.nearByLocationEventName, data);
+    socketProvider.emitEvent(SocketEvents.nearByLocationEvent, data);
     socketProvider.listenToEvent(SocketEvents.nearByLocationListen, (data) {
       try {
         log('Raw data socket NearBy: $data');
 
         if (data is Map<String, dynamic>) {
-          NearByAddressModel savedAddress = NearByAddressModel.fromJson(data);
+          NearByAddressModel nearByAddress = NearByAddressModel.fromJson(data);
+          nearByAddressList = nearByAddress.data;
+          log('nearByAddressList ${nearByAddressList}');
           isLoadingNearBy = false;
           notifyListeners();
         } else {
@@ -86,5 +92,23 @@ class SavedAddressProvider extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  String formatDistance(double? distance) {
+    if (distance == null) return "--";
+
+    return distance % 1 == 0
+        ? "${(distance * 1000).toInt()} M away" // Convert to meters if whole number
+        : "$distance KM away"; // Show as KM if decimal
+  }
+
+  double parseDouble(dynamic value) {
+    if (value is double) return value; // If already double, return as is
+    if (value is int) return value.toDouble(); // Convert int to double
+    if (value is String) {
+      return double.tryParse(value) ??
+          0.0; // Try parsing string to double, fallback to 0.0
+    }
+    return 0.0; // Fallback in case of unexpected type
   }
 }

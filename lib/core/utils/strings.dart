@@ -93,6 +93,7 @@ class IconStrings {
   static const useCurrentLocation =
       '${BaseIconPath.basePath}use_current_location.svg';
   static const locationMarker = '${BaseIconPath.basePath}location_marker.svg';
+  static const markerHome = '${BaseIconPath.basePath}marker_home.svg';
   static const delete = '${BaseIconPath.basePath}delete.svg';
 }
 

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/strings.dart';
+import '../../../../../routes.dart';
 
 class AddLocationCard extends StatelessWidget {
   const AddLocationCard({super.key});
@@ -15,12 +16,44 @@ class AddLocationCard extends StatelessWidget {
         color: AppColors.primaryColor,
         borderRadius: BorderRadius.circular(30.r),
       ),
-      padding: EdgeInsets.all(20.w),
+      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildAddNewLocationRow(),
-          SizedBox(height: 15.h),
+          //* Add new location
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, Routes.googleMapPage);
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 5.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const SvgIcon(
+                        icon: IconStrings.addLocation,
+                        color: AppColors.disabledColor,
+                      ),
+                      SizedBox(width: 10.w),
+                      Text(
+                        "Add New Location",
+                        style: GoogleFonts.publicSans(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.seaShell,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Icon(Icons.arrow_forward_ios,
+                      color: Colors.white, size: 18), // Arrow Icon
+                ],
+              ),
+            ),
+          ),
+          SizedBox(height: 5.h),
           const Divider(
             color: AppColors.disabledColor,
             thickness: 1,
@@ -29,33 +62,6 @@ class AddLocationCard extends StatelessWidget {
           _buildCurrentLocationRow(),
         ],
       ),
-    );
-  }
-
-  Widget _buildAddNewLocationRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          children: [
-            const SvgIcon(
-              icon: IconStrings.addLocation,
-              color: AppColors.disabledColor,
-            ),
-            SizedBox(width: 10.w),
-            Text(
-              "Add New Location",
-              style: GoogleFonts.publicSans(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.seaShell,
-              ),
-            ),
-          ],
-        ),
-        const Icon(Icons.arrow_forward_ios,
-            color: Colors.white, size: 18), // Arrow Icon
-      ],
     );
   }
 

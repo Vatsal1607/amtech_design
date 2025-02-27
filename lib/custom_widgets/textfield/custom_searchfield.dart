@@ -16,6 +16,7 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
   final double borderWidth;
   final String hint;
   final TextAlignVertical? textAlignVertical;
+  final bool readOnly;
   const CustomSearchField({
     super.key,
     required this.provider,
@@ -27,11 +28,13 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
     this.borderWidth = 1.0,
     this.hint = 'Search for Tea, Coffee or Snacks',
     this.textAlignVertical = TextAlignVertical.center,
+    this.readOnly = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       controller: controller,
       textCapitalization: TextCapitalization.sentences,
       textAlignVertical: textAlignVertical,

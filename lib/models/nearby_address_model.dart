@@ -1,15 +1,15 @@
 class NearByAddressModel {
   String? message;
-  List<Data>? data;
+  List<NearByAddressList>? data;
 
   NearByAddressModel({this.message, this.data});
 
   NearByAddressModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <NearByAddressList>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        data!.add(NearByAddressList.fromJson(v));
       });
     }
   }
@@ -24,16 +24,17 @@ class NearByAddressModel {
   }
 }
 
-class Data {
+class NearByAddressList {
   String? name;
   String? address;
   double? lat;
   double? lng;
   String? distance;
 
-  Data({this.name, this.address, this.lat, this.lng, this.distance});
+  NearByAddressList(
+      {this.name, this.address, this.lat, this.lng, this.distance});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  NearByAddressList.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     address = json['address'];
     lat = json['lat'];

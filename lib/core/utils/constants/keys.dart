@@ -30,6 +30,6 @@ class SocketEvents {
   static const String userConnected = 'user-connected';
   static const String saveAddressEventName = 'save-address';
   static const String searchSavedLocationListen = 'search-saved-location';
-  static const String nearByLocationEventName = 'nearBy-location';
-  static const String nearByLocationListen = 'near-by-location';
+  static const String nearByLocationEvent = 'near-by-location';
+  static const String nearByLocationListen = 'nearBy-location';
 }

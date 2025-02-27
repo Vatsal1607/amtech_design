@@ -115,10 +115,9 @@ class _MenuPageState extends State<MenuPage> {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 20.w),
                               child: Row(
-                                // mainAxisSize: MainAxisSize.max,
                                 children: [
                                   SvgIcon(
-                                    icon: IconStrings.locationMarker,
+                                    icon: IconStrings.markerHome,
                                     color: getColorAccountType(
                                       accountType: accountType,
                                       businessColor: AppColors.primaryColor,
@@ -251,7 +250,7 @@ class _MenuPageState extends State<MenuPage> {
                                                     );
                                             }),
                                           ),
-                                          SizedBox(width: 10.w),
+                                          SizedBox(width: 8.w),
                                           //* Small Edit Button
                                           SmallEditButton(
                                             height: 26.h,

@@ -1,4 +1,5 @@
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/map/google_map_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,7 +24,13 @@ class AddLocationCard extends StatelessWidget {
           //* Add new location
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, Routes.googleMapPage);
+              // Navigator.pushNamed(context, Routes.googleMapPage);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => GoogleMapPage(),
+                ),
+              );
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 5.h),

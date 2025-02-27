@@ -4,6 +4,7 @@ import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/map/address/saved_address/saved_address_page.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
@@ -48,8 +49,8 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     log('userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    const String accountType = 'business';
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
 
     //* Note: variable is not used but by initialize this socket connect
@@ -252,15 +253,25 @@ class _MenuPageState extends State<MenuPage> {
                                           ),
                                           SizedBox(width: 8.w),
                                           //* Small Edit Button
-                                          SmallEditButton(
-                                            height: 26.h,
-                                            width: 64.w,
-                                            text: 'CHANGE',
-                                            onTap: () {
-                                              Navigator.pushNamed(
-                                                  context, Routes.savedAddress);
-                                            },
-                                            accountType: accountType,
+                                          Container(
+                                            color: Colors.amber,
+                                            child: SmallEditButton(
+                                              height: 26.h,
+                                              width: 64.w,
+                                              text: 'CHANGE',
+                                              onTap: () {
+                                                // Navigator.pushNamed(
+                                                //     context, Routes.savedAddress);
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        SavedAddressPage(),
+                                                  ),
+                                                );
+                                              },
+                                              accountType: accountType,
+                                            ),
                                           ),
                                         ],
                                       ),

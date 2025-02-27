@@ -5,6 +5,7 @@ import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/address/saved_address/widgets/add_location_card_widget.dart';
+import 'package:amtech_design/modules/map/address/saved_address/widgets/not_serviceable_dialog.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/recharge/widgets/center_title_with_divider.dart';
 import 'package:flutter/material.dart';
@@ -55,9 +56,18 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
     const String accountType = 'business'; //Todo set dynamic
     final provider = Provider.of<SavedAddressProvider>(context, listen: false);
     return Scaffold(
-      appBar: const CustomAppbarWithCenterTitle(
+      appBar: CustomAppbarWithCenterTitle(
         title: 'Change Location',
         accountType: accountType,
+        //! TEMP action icon
+        isAction: true,
+        actionIcon: IconStrings.info,
+        onTapAction: () {
+          showNotServiceableDialog(
+            context: context,
+            accountType: accountType,
+          );
+        },
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(

@@ -32,4 +32,7 @@ class SocketEvents {
   static const String searchSavedLocationListen = 'search-saved-location';
   static const String nearByLocationEvent = 'near-by-location';
   static const String nearByLocationListen = 'nearBy-location';
+  static const String searchLocationEvent = 'search-location';
+  static const String searchLocationByGoogleListen =
+      'search-location-by-google';
 }

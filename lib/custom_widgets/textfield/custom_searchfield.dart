@@ -17,6 +17,8 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
   final String hint;
   final TextAlignVertical? textAlignVertical;
   final bool readOnly;
+  final Function(String)? onChanged;
+  final Color? cursorColor;
   const CustomSearchField({
     super.key,
     required this.provider,
@@ -29,15 +31,19 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
     this.hint = 'Search for Tea, Coffee or Snacks',
     this.textAlignVertical = TextAlignVertical.center,
     this.readOnly = false,
+    this.onChanged,
+    this.cursorColor,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       readOnly: readOnly,
+      cursorColor: cursorColor,
       controller: controller,
       textCapitalization: TextCapitalization.sentences,
       textAlignVertical: textAlignVertical,
+      onChanged: onChanged,
       style: GoogleFonts.publicSans(
         color: getColorAccountType(
           accountType: accountType,

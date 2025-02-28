@@ -24,16 +24,17 @@ class AddLocationCard extends StatelessWidget {
           //* Add new location
           GestureDetector(
             onTap: () {
-              // Navigator.pushNamed(context, Routes.googleMapPage);
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => GoogleMapPage(),
-                ),
-              );
+              Navigator.pushNamed(context, Routes.googleMapPage);
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => GoogleMapPage(),
+              //   ),
+              // );
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 5.h),
+              color: Colors.transparent,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

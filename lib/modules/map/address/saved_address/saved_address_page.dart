@@ -10,6 +10,7 @@ import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/recharge/widgets/center_title_with_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/strings.dart';
@@ -55,6 +56,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
   Widget build(BuildContext context) {
     const String accountType = 'business'; //Todo set dynamic
     final provider = Provider.of<SavedAddressProvider>(context, listen: false);
+    final gMapProvider = Provider.of<GoogleMapProvider>(context, listen: false);
+    debugPrint('currentLocation lat ${gMapProvider.currentLocation?.latitude}',
+        wrapWidth: 1024);
+    debugPrint(
+        'currentLocation long ${gMapProvider.currentLocation?.longitude}',
+        wrapWidth: 1024);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
         title: 'Change Location',
@@ -118,22 +125,31 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                     ? const CustomLoader(
                         backgroundColor: AppColors.primaryColor,
                       )
-                    : ListView.separated(
-                        shrinkWrap: true,
-                        itemCount: provider.savedAddressList?.length ?? 0,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 10.h),
-                        itemBuilder: (context, index) {
-                          final savedAddress =
-                              provider.savedAddressList?[index];
-                          return SavedLocationCard(
-                            savedAddress: savedAddress,
-                            provider: provider,
-                          );
-                        },
-                      ),
+                    : provider.savedAddressList?.length == 0
+                        ? Text(
+                            'No Saved Address'.toUpperCase(),
+                            style: GoogleFonts.publicSans(
+                              fontSize: 20.sp,
+                              color: AppColors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )
+                        : ListView.separated(
+                            shrinkWrap: true,
+                            itemCount: provider.savedAddressList?.length ?? 0,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 10.h),
+                            itemBuilder: (context, index) {
+                              final savedAddress =
+                                  provider.savedAddressList?[index];
+                              return SavedLocationCard(
+                                savedAddress: savedAddress,
+                                provider: provider,
+                              );
+                            },
+                          ),
               ),
 
               SizedBox(height: 20.h),
@@ -143,29 +159,35 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                 fontSize: 15.sp,
               ),
               SizedBox(height: 20.h),
-              Consumer<SavedAddressProvider>(
-                builder: (context, _, child) => provider.isLoadingNearBy
+
+              //* NearBy address card
+              Consumer<SavedAddressProvider>(builder: (context, _, child) {
+                log('nearByAddressList length: ${provider.nearByAddressList?.length}');
+                return provider.isLoadingNearBy
                     ? const CustomLoader(
                         backgroundColor: AppColors.primaryColor,
                       )
-                    : ListView.separated(
-                        itemCount: provider.nearByAddressList?.length ?? 0,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, index) {
-                          final nearByAddress =
-                              provider.nearByAddressList?[index];
-                          return SavedLocationCard(
-                            isNearBy: true,
-                            nearByAddress: nearByAddress,
-                            provider: provider,
+                    : (provider.nearByAddressList == null ||
+                            provider.nearByAddressList!.isEmpty)
+                        ? const Text('No nearby addresses found.')
+                        : ListView.separated(
+                            itemCount: provider.nearByAddressList?.length ?? 0,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) {
+                              final nearByAddress =
+                                  provider.nearByAddressList?[index];
+                              return SavedLocationCard(
+                                isNearBy: true,
+                                nearByAddress: nearByAddress,
+                                provider: provider,
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                SizedBox(height: 10.h),
                           );
-                        },
-                        separatorBuilder: (context, index) =>
-                            SizedBox(height: 10.h),
-                      ),
-              ),
+              }),
             ],
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/textfield/custom_search_container.dart';
 import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
+import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/widgets/edit_address_bottomsheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -74,9 +75,16 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<GoogleMapProvider>(context, listen: false);
+    final savedAddressProvider =
+        Provider.of<SavedAddressProvider>(context, listen: false);
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     const String accountType = 'business';
-
+    log(
+      'selected lat ${provider.selectedLocation?.latitude}',
+    );
+    log(
+      'selected long ${provider.selectedLocation?.longitude}',
+    );
     return Scaffold(
       appBar: const CustomAppbarWithCenterTitle(
         title: 'Change Location',
@@ -269,7 +277,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                             color: AppColors.red,
                                           )),
                                       child: Text(
-                                        'Selected location is ${provider.distance} km Far From Current Location',
+                                        // 'Selected location is ${provider.distance} Far From Current Location',
+                                        'Selected location is ${savedAddressProvider.formatDistance(savedAddressProvider.parseDouble(provider.distance))} Far From Current Location',
                                         style: GoogleFonts.publicSans(
                                             color: getColorAccountType(
                                           accountType: accountType,

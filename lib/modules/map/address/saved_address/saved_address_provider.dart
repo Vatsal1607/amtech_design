@@ -7,6 +7,8 @@ import '../../../../services/local/shared_preferences_service.dart';
 import '../../../provider/socket_provider.dart';
 
 class SavedAddressProvider extends ChangeNotifier {
+  List<NearByAddressList> filteredSearchLocationList = [];
+
   bool isLoadingSavedAddress = false;
   bool isFirstCall = true;
   List<SavedAddressList>? savedAddressList;
@@ -79,10 +81,13 @@ class SavedAddressProvider extends ChangeNotifier {
 
         if (data is Map<String, dynamic>) {
           NearByAddressModel nearByAddress = NearByAddressModel.fromJson(data);
-          nearByAddressList = nearByAddress.data;
-          log('nearByAddressList ${nearByAddressList}');
-          isLoadingNearBy = false;
-          notifyListeners();
+          if (nearByAddress.data != null && nearByAddress.data!.isNotEmpty) {
+            nearByAddressList = nearByAddress.data;
+            filteredSearchLocationList = nearByAddress.data ?? [];
+            log('nearByAddressList from assign condition: ${nearByAddressList}');
+            isLoadingNearBy = false;
+            notifyListeners();
+          }
         } else {
           log('Received unexpected data format NearBy');
         }
@@ -98,7 +103,7 @@ class SavedAddressProvider extends ChangeNotifier {
     if (distance == null) return "--";
 
     return distance % 1 == 0
-        ? "${(distance * 1000).toInt()} M away" // Convert to meters if whole number
+        ? "${(distance * 10).toInt()} M away" // Convert to meters if whole number
         : "$distance KM away"; // Show as KM if decimal
   }
 
@@ -110,5 +115,79 @@ class SavedAddressProvider extends ChangeNotifier {
           0.0; // Try parsing string to double, fallback to 0.0
     }
     return 0.0; // Fallback in case of unexpected type
+  }
+
+  bool isLoadingSearchAddress = false;
+
+  // List<NearByAddressList>? searchLocationList;
+
+  //* Emit & Listen search Nearby Address
+  void emitAndListenSearchLocation({
+    required SocketProvider socketProvider,
+    required String search,
+    double? lat,
+    double? long,
+  }) async {
+    isLoadingSearchAddress = true;
+    notifyListeners();
+    Map<String, dynamic> requestData = {
+      "search": search,
+      "userLat": lat,
+      "userLon": long,
+    };
+    log('SearchLocation requestData: $requestData');
+    socketProvider.emitEvent(SocketEvents.searchLocationEvent, requestData);
+    socketProvider.listenToEvent(SocketEvents.searchLocationByGoogleListen,
+        (data) {
+      try {
+        log('Raw data socket SearchLocation: $data');
+        if (data is Map<String, dynamic>) {
+          NearByAddressModel nearByAddress = NearByAddressModel.fromJson(data);
+          if (nearByAddress.data != null && nearByAddress.data!.isNotEmpty) {
+            // searchLocationList = nearByAddress.data;
+            filteredSearchLocationList = nearByAddress.data ?? [];
+            log('SearchLocation from assign condition: ${filteredSearchLocationList}');
+            isLoadingSearchAddress = false;
+            notifyListeners();
+          }
+        } else {
+          log('Received unexpected data form SearchLocation');
+        }
+      } catch (e) {
+        log('Error parsing socket data SearchLocation: $e');
+        isLoadingSearchAddress = false;
+        notifyListeners();
+      }
+    });
+  }
+
+  //* Search Location functionality
+  void onSearchChanged({
+    required String value,
+    required SocketProvider socketProvider,
+    double? lat,
+    double? long,
+  }) {
+    if (value.isNotEmpty) {
+      if (value.length % 3 == 0) {
+        //* Call API every 3rd character
+        emitAndListenSearchLocation(
+          socketProvider: socketProvider,
+          search: value,
+          lat: lat,
+          long: long,
+        );
+        notifyListeners();
+      }
+      notifyListeners();
+    } else {
+      emitAndListenNearBy(
+        socketProvider: socketProvider,
+        lat: lat,
+        long: long,
+      );
+      filteredSearchLocationList = [];
+      notifyListeners();
+    }
   }
 }

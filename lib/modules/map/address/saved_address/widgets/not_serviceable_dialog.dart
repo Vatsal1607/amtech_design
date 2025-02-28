@@ -46,7 +46,9 @@ void showNotServiceableDialog({
             SizedBox(height: 20.h),
             CustomButton(
               height: 48.h,
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+              },
               text: "CHANGE LOCATION",
               textColor: getColorAccountType(
                 accountType: accountType,

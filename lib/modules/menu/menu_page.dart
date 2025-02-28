@@ -253,25 +253,22 @@ class _MenuPageState extends State<MenuPage> {
                                           ),
                                           SizedBox(width: 8.w),
                                           //* Small Edit Button
-                                          Container(
-                                            color: Colors.amber,
-                                            child: SmallEditButton(
-                                              height: 26.h,
-                                              width: 64.w,
-                                              text: 'CHANGE',
-                                              onTap: () {
-                                                // Navigator.pushNamed(
-                                                //     context, Routes.savedAddress);
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        SavedAddressPage(),
-                                                  ),
-                                                );
-                                              },
-                                              accountType: accountType,
-                                            ),
+                                          SmallEditButton(
+                                            height: 26.h,
+                                            width: 64.w,
+                                            text: 'CHANGE',
+                                            onTap: () {
+                                              Navigator.pushNamed(
+                                                  context, Routes.savedAddress);
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         SavedAddressPage(),
+                                              //   ),
+                                              // );
+                                            },
+                                            accountType: accountType,
                                           ),
                                         ],
                                       ),

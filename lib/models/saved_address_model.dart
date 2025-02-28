@@ -29,6 +29,7 @@ class SavedAddressList {
   String? residentialAddress;
   String? nearLandmark;
   String? addressType;
+  String? suggestAddress;
   String? lat;
   String? long;
   String? sId;
@@ -39,6 +40,7 @@ class SavedAddressList {
       this.residentialAddress,
       this.nearLandmark,
       this.addressType,
+      this.suggestAddress,
       this.lat,
       this.long,
       this.sId,
@@ -49,6 +51,7 @@ class SavedAddressList {
     residentialAddress = json['residentialAddress'];
     nearLandmark = json['nearLandmark'];
     addressType = json['addressType'];
+    suggestAddress = json['suggestAddress'];
     lat = json['lat'];
     long = json['long'];
     sId = json['_id'];
@@ -61,6 +64,7 @@ class SavedAddressList {
     data['residentialAddress'] = residentialAddress;
     data['nearLandmark'] = nearLandmark;
     data['addressType'] = addressType;
+    data['suggestAddress'] = suggestAddress;
     data['lat'] = lat;
     data['long'] = long;
     data['_id'] = sId;

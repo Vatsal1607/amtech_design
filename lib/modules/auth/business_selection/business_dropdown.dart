@@ -30,6 +30,7 @@ class BusinessDropdown extends StatelessWidget {
           ),
           child: SearchAnchor.bar(
             onTap: () async {
+              FocusManager.instance.primaryFocus?.unfocus();
               provider.onTapSearch();
               //* API call
               await provider.getBusinessList(

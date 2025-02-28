@@ -103,7 +103,7 @@ class _MenuPageState extends State<MenuPage> {
                     controller: widget.scrollController,
                     physics: const ClampingScrollPhysics(),
                     slivers: [
-                      CustomSliverAppbar(
+                      const CustomSliverAppbar(
                         accountType: accountType,
                       ),
 
@@ -403,11 +403,11 @@ class _MenuPageState extends State<MenuPage> {
                               child: Column(
                                 children: [
                                   //* BannerView
-                                  BannerView(
+                                  const BannerView(
                                     accountType: accountType,
                                   ),
                                   const SizedBox(height: 10.0),
-                                  DividerLabel(
+                                  const DividerLabel(
                                     label: 'subscriptions',
                                     accountType: accountType,
                                   ),
@@ -448,23 +448,20 @@ class _MenuPageState extends State<MenuPage> {
                                         separatorBuilder: (context, index) =>
                                             SizedBox(height: 15.h),
                                         itemBuilder: (context, parentIndex) {
+                                          final categoryTitle = provider
+                                                  .filteredCategories[
+                                                      parentIndex]
+                                                  .categoryTitle ??
+                                              '';
                                           return Column(
                                             children: [
                                               Padding(
                                                 padding: EdgeInsets.symmetric(
                                                     horizontal: 20.w),
                                                 child: DividerLabel(
-                                                  // key: provider.bestSellerKey,
-                                                  label: provider
-                                                          .filteredCategories[
-                                                              parentIndex]
-                                                          .categoryTitle ??
-                                                      '',
-                                                  // label: provider
-                                                  //         .menuCategories?[
-                                                  //             parentIndex]
-                                                  //         .categoryTitle ??
-                                                  //     '',
+                                                  key: provider.dynamicKeys[
+                                                      categoryTitle],
+                                                  label: categoryTitle,
                                                   accountType: accountType,
                                                 ),
                                               ),

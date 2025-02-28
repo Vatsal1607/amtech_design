@@ -140,38 +140,5 @@ class _DropdownLocationState extends State<DropdownLocation> {
         );
       },
     );
-    //* OLD dropdown
-    // return SearchField<String>(
-    //   controller: provider.locationSearchController,
-    //   suggestions: provider.locations
-    //       .map((location) => SearchFieldListItem<String>(location))
-    //       .toList(),
-    //   suggestionState: Suggestion.expand,
-    //   textInputAction: TextInputAction.done,
-    //   hint: 'Search location',
-    //   searchInputDecoration: SearchInputDecoration(
-    //     cursorColor: AppColors.seaShell,
-    //     hintStyle:
-    //         GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
-    //     searchStyle:
-    //         GoogleFonts.publicSans(color: AppColors.seaShell.withOpacity(.8)),
-    //     border: kDropdownBorderStyle,
-    //     enabledBorder: kDropdownBorderStyle,
-    //     focusedBorder: kDropdownBorderStyle,
-    //     prefixIcon: const SvgIcon(icon: IconStrings.selectBusiness),
-    //     suffixIcon: const SvgIcon(icon: IconStrings.dropdown),
-    //   ),
-    //   maxSuggestionsInViewPort: 4,
-    //   itemHeight: 50,
-    //   onSuggestionTap: (SearchFieldListItem<String> item) {
-    //     // Update the controller's text to reflect the selected value
-    //     provider.locationSearchController.text = item.searchKey;
-    //     debugPrint('Selected: ${item.searchKey}');
-    //   },
-    //   suggestionsDecoration: SuggestionDecoration(
-    //     borderRadius: BorderRadius.circular(25.r),
-    //     color: AppColors.seaShell,
-    //   ),
-    // );
   }
 }

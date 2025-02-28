@@ -105,16 +105,12 @@ class MenuProvider extends ChangeNotifier {
     'Best Seller',
   ];
 
-  onSelectedMenuItem(value) {
+  void onSelectedMenuItem(String value) {
     selectedValue = value;
     isMenuOpen = false;
     notifyListeners();
-    if (value == "Best Seller") {
-      scrollToSection(bestSellerKey);
-    } else if (value == "Tea") {
-      scrollToSection(teaKey);
-    } else if (value == "Coffee") {
-      scrollToSection(coffeeKey);
+    if (dynamicKeys.containsKey(value)) {
+      scrollToSection(dynamicKeys[value]!);
     }
   }
 
@@ -128,10 +124,14 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // * Create keys for each section
-  final GlobalKey bestSellerKey = GlobalKey();
-  final GlobalKey teaKey = GlobalKey();
-  final GlobalKey coffeeKey = GlobalKey();
+  Map<String, GlobalKey> dynamicKeys = {}; // Store category keys dynamically
+
+  void generateCategoryKeys(List<MenuCategories> categories) {
+    for (var category in categories) {
+      dynamicKeys[category.categoryTitle ?? ""] = GlobalKey();
+    }
+    notifyListeners(); // Update UI after keys are generated
+  }
 
   // * Scroll to the section with its key
   void scrollToSection(GlobalKey sectionKey) {
@@ -173,8 +173,6 @@ class MenuProvider extends ChangeNotifier {
 
   final requiredSizes = ['MEDIUM', 'LARGE', 'REGULAR'];
   MenuProvider() {
-    // homeMenuApi();
-    log('homeMenuApi called');
     quantities = {for (var size in requiredSizes) size: 0};
 
     // Initially set the filtered categories to the original categories
@@ -232,6 +230,9 @@ class MenuProvider extends ChangeNotifier {
         homeMenuResponse = response;
         menuCategories = response.data?.menuCategories;
         filteredCategories = menuCategories ?? [];
+        if (menuCategories != null) {
+          generateCategoryKeys(menuCategories!);
+        }
         log('Success: homeMenuApi: ${response.message.toString()}');
         return true; // * Indicat success
       } else {

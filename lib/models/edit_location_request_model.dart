@@ -29,6 +29,7 @@ class Addresses {
   String? residentialAddress;
   String? nearLandmark;
   String? addressType;
+  String? suggestAddress;
   double? lat;
   double? long;
 
@@ -37,6 +38,7 @@ class Addresses {
     this.residentialAddress,
     this.nearLandmark,
     this.addressType,
+    this.suggestAddress,
     this.lat,
     this.long,
   });
@@ -46,6 +48,7 @@ class Addresses {
     residentialAddress = json['residentialAddress'];
     nearLandmark = json['nearLandmark'];
     addressType = json['addressType'];
+    suggestAddress = json['suggestAddress'];
     lat = json['lat'];
     long = json['long'];
   }
@@ -56,11 +59,14 @@ class Addresses {
     data['residentialAddress'] = residentialAddress;
     data['nearLandmark'] = nearLandmark;
     data['addressType'] = addressType;
+    data['suggestAddress'] = suggestAddress;
     data['lat'] = lat;
     data['long'] = long;
     return data;
   }
 }
+
+
 
 // OLD
 // class EditLocationRequestModel {
@@ -94,18 +100,25 @@ class Addresses {
 //   String? residentialAddress;
 //   String? nearLandmark;
 //   String? addressType;
+//   double? lat;
+//   double? long;
 
-//   Addresses(
-//       {this.propertyNumber,
-//       this.residentialAddress,
-//       this.nearLandmark,
-//       this.addressType});
+//   Addresses({
+//     this.propertyNumber,
+//     this.residentialAddress,
+//     this.nearLandmark,
+//     this.addressType,
+//     this.lat,
+//     this.long,
+//   });
 
 //   Addresses.fromJson(Map<String, dynamic> json) {
 //     propertyNumber = json['propertyNumber'];
 //     residentialAddress = json['residentialAddress'];
 //     nearLandmark = json['nearLandmark'];
 //     addressType = json['addressType'];
+//     lat = json['lat'];
+//     long = json['long'];
 //   }
 
 //   Map<String, dynamic> toJson() {
@@ -114,6 +127,8 @@ class Addresses {
 //     data['residentialAddress'] = residentialAddress;
 //     data['nearLandmark'] = nearLandmark;
 //     data['addressType'] = addressType;
+//     data['lat'] = lat;
+//     data['long'] = long;
 //     return data;
 //   }
 // }

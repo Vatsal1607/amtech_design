@@ -121,7 +121,7 @@ class SavedLocationCard extends StatelessWidget {
                     Text(
                       isNearBy
                           ? '${nearByAddress?.address}'
-                          : '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark}',
+                          : '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
                       style: GoogleFonts.publicSans(
                         fontSize: 12.sp,
                         color: AppColors.seaShell,
@@ -129,13 +129,11 @@ class SavedLocationCard extends StatelessWidget {
                     ),
                     SizedBox(height: 5.h),
                     Text(
-                      // "${isNearBy ? nearByAddress?.distance : savedAddress?.distance} KM away",
                       isNearBy
                           ? provider.formatDistance(
                               provider.parseDouble(nearByAddress?.distance))
                           : provider.formatDistance(
                               provider.parseDouble(savedAddress?.distance)),
-
                       style: GoogleFonts.publicSans(
                         color: AppColors.disabledColor,
                         fontSize: 11.sp,

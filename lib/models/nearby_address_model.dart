@@ -29,7 +29,7 @@ class NearByAddressList {
   String? address;
   double? lat;
   double? lng;
-  String? distance;
+  num? distance;
 
   NearByAddressList(
       {this.name, this.address, this.lat, this.lng, this.distance});

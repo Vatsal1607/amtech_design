@@ -22,6 +22,20 @@ class GoogleMapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void showSelectedLocation({
+    required double latitude,
+    required double longitude,
+  }) {
+    if (mapController != null) {
+      LatLng location = LatLng(latitude, longitude);
+      mapController!.animateCamera(
+        CameraUpdate.newLatLng(location),
+      );
+      selectedLocation = location;
+      log("Selected Location: $latitude, $longitude");
+    }
+  }
+
   bool isCheckedHome = true;
   bool isCheckedWork = false;
   bool isCheckedOther = false;
@@ -259,6 +273,7 @@ class GoogleMapProvider extends ChangeNotifier {
               residentialAddress: companyController.text,
               nearLandmark: landmarkController.text,
               addressType: addressType,
+              suggestAddress: addressController.text,
               lat: selectedLocation?.latitude,
               long: selectedLocation?.longitude,
             ),

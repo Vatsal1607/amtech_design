@@ -1,8 +1,9 @@
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/modules/map/google_map_page.dart';
+import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/strings.dart';
 import '../../../../../routes.dart';
@@ -25,12 +26,6 @@ class AddLocationCard extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, Routes.googleMapPage);
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => GoogleMapPage(),
-              //   ),
-              // );
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 5.h),
@@ -67,45 +62,53 @@ class AddLocationCard extends StatelessWidget {
             thickness: 1,
           ),
           SizedBox(height: 15.h),
-          _buildCurrentLocationRow(),
+
+          //* Use your current location
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, Routes.googleMapPage);
+            },
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SvgIcon(
+                  icon: IconStrings.useCurrentLocation,
+                  color: AppColors.disabledColor,
+                ),
+                SizedBox(width: 10.w),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Use Your Current Location",
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Consumer<GoogleMapProvider>(
+                        builder: (context, googleMapProvider, child) {
+                          return Text(
+                            // "AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad",
+                            '${googleMapProvider.address}',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 12.sp,
+                              color: Colors.grey,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCurrentLocationRow() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SvgIcon(
-          icon: IconStrings.useCurrentLocation,
-          color: AppColors.disabledColor,
-        ),
-        SizedBox(width: 10.w),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Use Your Current Location",
-                style: TextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(height: 4.h),
-              Text(
-                "AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad",
-                style: GoogleFonts.publicSans(
-                  fontSize: 12.sp,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

@@ -200,4 +200,11 @@ abstract class ApiClient {
     @Path('userId') String userId,
     @Body() EditLocationRequestModel editLocationRequestModel,
   );
+
+  //* Choose location from Saved Address
+  @PUT('${ApiEndpoints.chooseLocation}/{userId}')
+  Future<ApiGlobalModel> chooseLocation(
+    @Path('userId') String userId,
+    @Field() String address,
+  );
 }

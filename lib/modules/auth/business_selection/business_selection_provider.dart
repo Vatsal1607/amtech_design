@@ -127,19 +127,6 @@ class BusinessSelectionProvider extends ChangeNotifier {
     }
   }
 
-  // * Get SelectedBusinessSecondaryAccess
-  // Future<List<SecondaryAccess>> getSelectedBusinessSecondaryAccess() async {
-  //   String? jsonString =
-  //       sharedPrefsService.getString(SharedPrefsKeys.secondaryAccessList);
-
-  //   if (jsonString != null) {
-  //     // Decode JSON and return as List of SecondaryAccessModel
-  //     List<dynamic> decodedList = jsonDecode(jsonString);
-  //     return decodedList.map((item) => SecondaryAccess.fromJson(item)).toList();
-  //   }
-  //   return [];
-  // }
-
   Future<void> saveBusinessNameAndSecondaryAccess(
       List<dynamic> businessList) async {
     // Extract businessName and secondaryAccess
@@ -156,17 +143,3 @@ class BusinessSelectionProvider extends ChangeNotifier {
         SharedPrefsKeys.firstSecondaryAccessList, jsonString);
   }
 }
-
-// ! Usage example
-// void onDropdownSelection(String selectedBusinessName) async {
-//   // Assuming you already have a list of BusinessModel objects
-//   List<BusinessModel> businessList = fetchBusinessListFromApi();
-
-//   // Save selected business's secondaryAccess
-//   await saveSelectedBusinessSecondaryAccess(businessList, selectedBusinessName);
-
-//   // Retrieve and print saved secondaryAccess data
-//   List<SecondaryAccessModel> secondaryAccess =
-//       await getSelectedBusinessSecondaryAccess();
-//   print(secondaryAccess);
-// }

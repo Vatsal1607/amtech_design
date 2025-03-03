@@ -31,4 +31,5 @@ class ApiEndpoints {
   static const String getPersonalDetails = 'user/view';
   static const String editPersonalProfile = 'user/update';
   static const String location = 'location';
+  static const String chooseLocation = 'choose-location';
 }

@@ -6,6 +6,7 @@ import 'package:amtech_design/models/home_menu_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import '../../core/utils/enums/enums.dart';
 import '../../core/utils/strings.dart';
 import '../../models/api_global_model.dart';
 import '../../models/menu_size_model.dart';
@@ -446,5 +447,12 @@ class MenuProvider extends ChangeNotifier {
       setLoading(size, false);
       notifyListeners();
     }
+  }
+
+  HomeAddressType selectedAddressType = HomeAddressType.remote;
+  void updateHomeAddress(HomeAddressType type) {
+    selectedAddressType = type;
+    log('selectedAddressType: ${selectedAddressType.toString()}');
+    notifyListeners();
   }
 }

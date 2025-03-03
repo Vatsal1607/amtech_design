@@ -118,10 +118,11 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                               provider.filteredSearchLocationList[index];
                           return GestureDetector(
                             onTap: () {
-                              //! Todo working...
-                              // googleMapProvider.showSelectedLocation(
-                              //     // latitude: nearByAddress.lat?.toDouble(), longitude: ,
-                              //     );
+                              googleMapProvider.showSelectedLocation(
+                                context: context,
+                                latitude: nearByAddress.lat ?? 0,
+                                longitude: nearByAddress.lng ?? 0,
+                              );
                               log('${nearByAddress.lat}');
                               log('${nearByAddress.lng}');
                             },

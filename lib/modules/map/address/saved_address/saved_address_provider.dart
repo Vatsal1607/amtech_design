@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/utils/constants/keys.dart';
 import '../../../../models/nearby_address_model.dart';
 import '../../../../services/local/shared_preferences_service.dart';
+import '../../../../services/network/api_service.dart';
 import '../../../provider/socket_provider.dart';
 
 class SavedAddressProvider extends ChangeNotifier {
@@ -187,6 +188,37 @@ class SavedAddressProvider extends ChangeNotifier {
         long: long,
       );
       filteredSearchLocationList = [];
+      notifyListeners();
+    }
+  }
+
+  ApiService apiService = ApiService();
+  //* chooseLocation
+  Future chooseLocation({
+    required BuildContext context,
+    required String address,
+  }) async {
+    // isEditLocationLoading = true;
+    // notifyListeners();
+    try {
+      final userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      final res = await apiService.chooseLocation(
+        userId: userId,
+        address: address,
+      );
+      if (res.success == true) {
+        Navigator.pop(context);
+        log('chooseLocation message: ${res.message}');
+        return true; // Indicate success
+      } else {
+        log('${res.message}');
+        return false; // Indicate failure
+      }
+    } catch (e) {
+      debugPrint("Error chooseLocation: ${e.toString()}");
+      return false; // Indicate failure
+    } finally {
+      // isEditLocationLoading = false;
       notifyListeners();
     }
   }

@@ -140,23 +140,6 @@ class LocationSelectionPage extends StatelessWidget {
                       textColor: AppColors.primaryColor,
                     );
                   }
-                  // if (provider.selectedLocation != null &&
-                  //     provider.selectedLocation!.isNotEmpty) {
-                  //   if (accountType != '' && accountType == 'business') {
-                  //     Navigator.pushNamed(context, Routes.companySelection);
-                  //     provider.clearSelectedLocation();
-                  //   } else if (accountType != '' && accountType == 'personal') {
-                  //     Navigator.pushNamed(context, Routes.login);
-                  //     provider.clearSelectedLocation();
-                  //   }
-                  // } else {
-                  //   customSnackBar(
-                  //     context: context,
-                  //     message: 'Please Select Location',
-                  //     backgroundColor: AppColors.seaShell,
-                  //     textColor: AppColors.primaryColor,
-                  //   );
-                  // }
                 },
                 bgColor: accountType != '' && accountType == 'business'
                     ? AppColors.disabledColor

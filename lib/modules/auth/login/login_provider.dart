@@ -36,7 +36,6 @@ class LoginProvider extends ChangeNotifier {
         sharedPrefsService.getString(SharedPrefsKeys.secondaryAccessList);
 
     if (jsonString != null) {
-      // Decode JSON and return as List of SecondaryAccessModel
       List<dynamic> decodedList = jsonDecode(jsonString);
       secondaryAccessList =
           decodedList.map((item) => SecondaryAccess.fromJson(item)).toList();
@@ -51,7 +50,6 @@ class LoginProvider extends ChangeNotifier {
         sharedPrefsService.getString(SharedPrefsKeys.firstSecondaryAccessList);
 
     if (jsonString != null) {
-      // Decode JSON and return as List of Maps
       return List<Map<String, dynamic>>.from(jsonDecode(jsonString));
     }
     return [];
@@ -60,35 +58,16 @@ class LoginProvider extends ChangeNotifier {
   // * Valdiate secondary Access (check Is Authorized emp or Not)
   /// Note: pass prefix 91 while validate number to method because response start from 91{mobilenumber}
   bool validateContactInSecondaryAccess(int enteredContact) {
-    // Check if the secondaryAccessList is not empty
     if (secondaryAccessList.isNotEmpty) {
-      // Use any to find if the contact exists in the secondaryAccessList
       if (secondaryAccessList
           .any((contact) => contact.contact == enteredContact)) {
         log('validateContactInSecondaryAccessList: TRUE');
         return true; // Contact found
       }
     }
-
     log('validateContactInSecondaryAccessList: FALSE');
     return false; // Contact not found
   }
-
-  /// * Old validate method
-  // bool validateContactInSecondaryAccess(int enteredContact) {
-  //   if (businessList.isNotEmpty) {
-  //     for (var business in businessList) {
-  //       List<dynamic> secondaryAccess = business['secondaryAccess'];
-  //       if (secondaryAccess
-  //           .any((contact) => contact['contact'] == enteredContact)) {
-  //         log('validateContactInSecondaryAccess: TRUE');
-  //         return true; // Contact found
-  //       }
-  //     }
-  //   }
-  //   log('validateContactInSecondaryAccess: FALSE');
-  //   return false; // Contact not found
-  // }
 
   String countryCode = '+91'; // Default country code for mobile
   final TextEditingController phoneController = TextEditingController();
@@ -157,7 +136,6 @@ class LoginProvider extends ChangeNotifier {
                 ? '2'
                 : '0'
             : '1',
-        // 'role': accountType == 'business' ? '2' : '1', // pass role '2' while isAccess = true in businesslist
         'fcmToken': fcmToken,
         'deviceId': deviceId,
       };

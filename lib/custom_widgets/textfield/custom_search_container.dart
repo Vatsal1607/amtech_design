@@ -16,6 +16,7 @@ class CustomSearchContainer extends StatelessWidget {
   final String hint;
   final bool readOnly;
   final VoidCallback? onTap;
+  final double? height;
 
   const CustomSearchContainer({
     super.key,
@@ -28,6 +29,7 @@ class CustomSearchContainer extends StatelessWidget {
     this.hint = 'Search for Tea, Coffee or Snacks',
     this.readOnly = false,
     this.onTap,
+    this.height,
   });
 
   @override
@@ -35,6 +37,7 @@ class CustomSearchContainer extends StatelessWidget {
     return GestureDetector(
       onTap: readOnly ? onTap : null,
       child: Container(
+        height: height,
         padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
         decoration: BoxDecoration(
           color: fillColor ??

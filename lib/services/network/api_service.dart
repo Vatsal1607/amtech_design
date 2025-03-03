@@ -249,4 +249,11 @@ class ApiService {
   }) async {
     return await apiClient.editLocation(userId, editLocationRequestModel);
   }
+
+  Future<ApiGlobalModel> chooseLocation({
+    required String userId,
+    required String address,
+  }) async {
+    return await apiClient.chooseLocation(userId, address);
+  }
 }

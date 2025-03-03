@@ -21,6 +21,7 @@ import '../../custom_widgets/svg_icon.dart';
 import '../provider/socket_provider.dart';
 import 'google_map_provider.dart';
 import 'widgets/search_bottomsheet.dart';
+import 'widgets/show_search_address_bottomsheet.dart';
 
 class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({super.key});
@@ -35,8 +36,9 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     super.initState();
     Future.delayed(Duration.zero, () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Provider.of<GoogleMapProvider>(context, listen: false)
-            .getCurrentLocation(context: context);
+        //* getCurrentLocation
+        // Provider.of<GoogleMapProvider>(context, listen: false)
+        //     .getCurrentLocation(context: context);
         final socketProvider =
             Provider.of<SocketProvider>(context, listen: false);
         Future.delayed(
@@ -156,20 +158,13 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     left: 32.w,
                     right: 32.w,
                     child: GestureDetector(
-                      onTap: () => _showSearchBottomSheet(context),
+                      onTap: () => showSearchBottomSheet(context),
                       child: Container(
                         color: Colors.transparent,
                         child: CustomSearchContainer(
                           accountType: accountType,
                           controller: searchController,
                         ),
-                        // child: CustomSearchField(
-                        //   readOnly: true,
-                        //   provider: provider,
-                        //   accountType: accountType,
-                        //   hint: 'Search for area, street, etc.',
-                        //   controller: searchController,
-                        // ),
                       ),
                     ),
                   ),
@@ -297,6 +292,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                   context: context,
                                   accountType: accountType,
                                   provider: provider,
+                                  socketProvider: socketProvider,
+                                  savedAddressProvider: savedAddressProvider,
                                 );
                               },
                               text: 'ADD MORE DETAILS',
@@ -318,16 +315,16 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     );
   }
 
-  void _showSearchBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (context) {
-        return const SearchBottomSheet();
-      },
-    );
-  }
+  // void _showSearchBottomSheet(BuildContext context) {
+  //   showModalBottomSheet(
+  //     context: context,
+  //     isScrollControlled: true,
+  //     shape: const RoundedRectangleBorder(
+  //       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  //     ),
+  //     builder: (context) {
+  //       return const SearchBottomSheet();
+  //     },
+  //   );
+  // }
 }

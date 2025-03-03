@@ -29,13 +29,6 @@ class LocationSelectionProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // final List<String> dropdownItems = [
-  //   'Titanium City Center',
-  //   'Arista Business Hub',
-  //   'Silp Corporate Park',
-  //   '323 Corporate Park',
-  // ];
-
   final List<String> locations = [
     'Titanium City Center',
     'Arista Business Hub',
@@ -43,7 +36,6 @@ class LocationSelectionProvider extends ChangeNotifier {
     '323 Corporate Park',
   ];
 
-  // TextEditingController locationSearchController = TextEditingController();
   SearchController searchController = SearchController();
   void selectLocation(String? location) {
     selectedLocation = location;

@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/models/location_model.dart';
+import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:amtech_design/services/network/api_service.dart';
 import 'package:flutter/material.dart';
@@ -22,16 +23,35 @@ class GoogleMapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void showSelectedLocation({
+  //* show Selected Location in map
+  Future<void> showSelectedLocation({
     required double latitude,
     required double longitude,
-  }) {
+    required BuildContext context,
+    bool isNavigateHome = false,
+  }) async {
+    if (isNavigateHome) {
+      Navigator.pop(context);
+    }
     if (mapController != null) {
+      if (!isNavigateHome) {
+        Navigator.pop(context);
+      }
       LatLng location = LatLng(latitude, longitude);
-      mapController!.animateCamera(
-        CameraUpdate.newLatLng(location),
+      await mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: location,
+            zoom: 14,
+            bearing: 60,
+            tilt: 45,
+          ),
+        ),
       );
+      await Future.delayed(const Duration(milliseconds: 500));
+      await mapController?.animateCamera(CameraUpdate.zoomTo(18));
       selectedLocation = location;
+      currentLocation = location;
       log("Selected Location: $latitude, $longitude");
     }
   }
@@ -95,7 +115,8 @@ class GoogleMapProvider extends ChangeNotifier {
       if (permission == LocationPermission.denied) {
         isLoading = false; // Stop loader
         notifyListeners();
-        return Future.error("Location permission denied.");
+        return Future.error(
+            "Location permission denied from getCurrentLocation.");
       }
     }
 
@@ -118,6 +139,7 @@ class GoogleMapProvider extends ChangeNotifier {
       log('$currentLocation is stored in locally');
     }
     if (socketProvider != null) {
+      //* Emit event
       emitAndListenGetLocation(socketProvider);
       notifyListeners();
     }
@@ -148,11 +170,16 @@ class GoogleMapProvider extends ChangeNotifier {
   }
 
   Future<void> _moveCamera(LatLng position) async {
-    await mapController?.animateCamera(
-      CameraUpdate.newCameraPosition(
-        CameraPosition(target: position, zoom: 14),
-      ),
-    );
+    if (mapController != null) {
+      await mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: position,
+            zoom: 14,
+          ),
+        ),
+      );
+    }
   }
 
   void _showLocationServiceDialog(BuildContext context) {
@@ -254,9 +281,11 @@ class GoogleMapProvider extends ChangeNotifier {
   ApiService apiService = ApiService();
 
   //* Edit location API
-  Future<void> editLocation(
-    BuildContext context,
-  ) async {
+  Future<void> editLocation({
+    required BuildContext context,
+    required SavedAddressProvider savedAddressProvider,
+    required SocketProvider socketProvider,
+  }) async {
     isEditLocationLoading = true;
     notifyListeners();
     try {
@@ -285,6 +314,8 @@ class GoogleMapProvider extends ChangeNotifier {
         floorController.clear();
         companyController.clear();
         landmarkController.clear();
+        //* Emit saved address event
+        savedAddressProvider.emitAndListenSavedAddress(socketProvider);
         Navigator.pop(context);
         log('editLocation message: ${res.message}');
       } else {

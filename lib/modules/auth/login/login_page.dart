@@ -97,9 +97,6 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16.h),
-
-                    /// TextField Widget for Mobile number
-                    // Textfield(), // Extracted widget
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -111,7 +108,6 @@ class LoginPage extends StatelessWidget {
                             color: AppColors.white,
                             shape: BoxShape.circle,
                           ),
-                          // padding:  EdgeInsets.symmetric(horizontal: 8.w),
                           margin: EdgeInsets.only(top: 2.h),
                           child: Center(
                             child: Text(
@@ -131,7 +127,7 @@ class LoginPage extends StatelessWidget {
                           ),
                         ),
                         SizedBox(width: 11.w),
-                        // Mobile Number Text Field
+                        //* Mobile Number Text Field
                         Expanded(
                           child: Consumer<LoginProvider>(
                             builder: (context, provider, child) =>

@@ -42,7 +42,6 @@ class _CartPageState extends State<CartPage> {
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
     return Scaffold(
-      // extendBodyBehindAppBar: true, // show content of body behind appbar
       backgroundColor: getColorAccountType(
         accountType: accountType,
         businessColor: AppColors.seaShell,
@@ -392,11 +391,6 @@ class _CartPageState extends State<CartPage> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Consumer<CartProvider>(builder: (context, _, child) {
-                  //* Total amount, unComment if not update
-                  // provider.totalAmount = provider
-                  //         .listCartResponse?.data?.carts?.first.totalAmount
-                  //         ?.toString() ??
-                  //     '';
                   return CustomButton(
                     onTap: provider.cartItemList == null
                         ? () {
@@ -406,7 +400,6 @@ class _CartPageState extends State<CartPage> {
                             final limitedCartItems = provider.cartItemList
                                 ?.map((item) => item.toLimitedJson())
                                 .toList();
-                            // Prepare the data
                             final Map<String, dynamic> orderCreateData = {
                               "userId": sharedPrefsService
                                       .getString(SharedPrefsKeys.userId) ??

@@ -2,7 +2,9 @@ import 'dart:developer';
 
 import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
+import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
+import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -48,6 +50,8 @@ void editAddressBottomSheeet({
   required BuildContext context,
   required String accountType,
   required GoogleMapProvider provider,
+  required SocketProvider socketProvider,
+  required SavedAddressProvider savedAddressProvider,
 }) {
   showModalBottomSheet(
     context: context,
@@ -135,7 +139,6 @@ void editAddressBottomSheeet({
                     borderRadius: 30.r,
                     suffixWidget: SuffixAddressWidget(
                       onTap: () {
-                        log('pressed');
                         Navigator.pop(context);
                       },
                     ),
@@ -175,7 +178,11 @@ void editAddressBottomSheeet({
                         if (provider.floorController.text.trim().isNotEmpty &&
                             provider.companyController.text.trim().isNotEmpty) {
                           //* API call
-                          provider.editLocation(context);
+                          provider.editLocation(
+                            context: context,
+                            socketProvider: socketProvider,
+                            savedAddressProvider: savedAddressProvider,
+                          );
                         } else {
                           log('textfields is empty');
                         }

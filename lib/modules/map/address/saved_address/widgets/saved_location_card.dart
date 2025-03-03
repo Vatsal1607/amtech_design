@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -71,6 +73,9 @@ class SavedLocationCard extends StatelessWidget {
                 Row(
                   children: [
                     SmallEditButton(
+                      onTap: () {
+                        log('Edit pressed');
+                      },
                       accountType: accountType,
                       width: 64.h,
                       height: 26.h,
@@ -86,18 +91,23 @@ class SavedLocationCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 10.w),
-                    Container(
-                      width: 28.w,
-                      height: 28.h,
-                      decoration: const BoxDecoration(
-                        color: AppColors.red,
-                        shape: BoxShape.circle,
-                      ),
-                      child: SvgIcon(
-                        height: 25.h,
-                        width: 25.w,
-                        icon: IconStrings.delete,
-                        // fit: BoxFit.contain,
+                    GestureDetector(
+                      onTap: () {
+                        log('Delete pressed');
+                      },
+                      child: Container(
+                        width: 28.w,
+                        height: 28.h,
+                        decoration: const BoxDecoration(
+                          color: AppColors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: SvgIcon(
+                          height: 25.h,
+                          width: 25.w,
+                          icon: IconStrings.delete,
+                          // fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ],

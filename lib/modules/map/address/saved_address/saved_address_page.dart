@@ -7,16 +7,21 @@ import 'package:amtech_design/modules/map/address/saved_address/saved_address_pr
 import 'package:amtech_design/modules/map/address/saved_address/widgets/add_location_card_widget.dart';
 import 'package:amtech_design/modules/map/address/saved_address/widgets/not_serviceable_dialog.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/recharge/widgets/center_title_with_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/constants/keys.dart';
+import '../../../../core/utils/enums/enums.dart';
 import '../../../../core/utils/strings.dart';
 import '../../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
-import '../../../../routes.dart';
+import '../../../../custom_widgets/textfield/custom_search_container.dart';
+import '../../../../services/local/shared_preferences_service.dart';
 import '../../../provider/socket_provider.dart';
+import '../../widgets/show_search_address_bottomsheet.dart';
 import 'widgets/saved_location_card.dart';
 
 class SavedAddressPage extends StatefulWidget {
@@ -38,8 +43,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
           Provider.of<SavedAddressProvider>(context, listen: false);
       final googleMapProvider =
           Provider.of<GoogleMapProvider>(context, listen: false);
+      //* get current location
+      googleMapProvider.getCurrentLocation(
+        context: context,
+        socketProvider: socketProvider,
+      );
 
-      log('Socket isConnected ${socketProvider.isConnected}');
       Future.delayed(const Duration(milliseconds: 300), () {
         provider.emitAndListenSavedAddress(socketProvider);
         provider.emitAndListenNearBy(
@@ -56,6 +65,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
   Widget build(BuildContext context) {
     const String accountType = 'business'; //Todo set dynamic
     final provider = Provider.of<SavedAddressProvider>(context, listen: false);
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     final gMapProvider = Provider.of<GoogleMapProvider>(context, listen: false);
     debugPrint('currentLocation lat ${gMapProvider.currentLocation?.latitude}',
         wrapWidth: 1024);
@@ -84,33 +94,64 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              SizedBox(height: 10.h),
               //* SearchField
-              CustomSearchField(
-                provider: provider,
-                accountType: accountType,
-                borderWidth: 2.w,
-                hint: 'Search for area, street, etc.',
-                controller: searchController,
-                iconColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.primaryColor,
-                  personalColor: AppColors.darkGreenGrey,
-                ),
-                borderColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.primaryColor,
-                  personalColor: AppColors.darkGreenGrey,
-                ),
-                fillColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.seaShell,
-                  personalColor: AppColors.seaMist,
+              GestureDetector(
+                onTap: () => showSearchBottomSheet(context),
+                child: Container(
+                  color: Colors.transparent,
+                  child: CustomSearchContainer(
+                    height: 55.h,
+                    borderWidth: 2.w,
+                    accountType: accountType,
+                    controller: searchController,
+                    hint: 'Search for area, street, etc.',
+                    iconColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    borderColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    fillColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell,
+                      personalColor: AppColors.seaMist,
+                    ),
+                  ),
                 ),
               ),
+
+              // CustomSearchField(
+              //   provider: provider,
+              //   accountType: accountType,
+              //   borderWidth: 2.w,
+              //   hint: 'Search for area, street, etc.',
+              //   controller: searchController,
+              //   iconColor: getColorAccountType(
+              //     accountType: accountType,
+              //     businessColor: AppColors.primaryColor,
+              //     personalColor: AppColors.darkGreenGrey,
+              //   ),
+              //   borderColor: getColorAccountType(
+              //     accountType: accountType,
+              //     businessColor: AppColors.primaryColor,
+              //     personalColor: AppColors.darkGreenGrey,
+              //   ),
+              //   fillColor: getColorAccountType(
+              //     accountType: accountType,
+              //     businessColor: AppColors.seaShell,
+              //     personalColor: AppColors.seaMist,
+              //   ),
+              // ),
               SizedBox(height: 20.h),
 
               //* Add new location card:
               const AddLocationCard(),
+
               SizedBox(height: 20.h),
               CenterTitleWithDivider(
                 accountType: accountType,
@@ -144,9 +185,29 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                             itemBuilder: (context, index) {
                               final savedAddress =
                                   provider.savedAddressList?[index];
-                              return SavedLocationCard(
-                                savedAddress: savedAddress,
-                                provider: provider,
+                              return GestureDetector(
+                                onTap: () {
+                                  provider
+                                      .chooseLocation(
+                                    context: context,
+                                    address:
+                                        '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
+                                  )
+                                      .then((isSuccess) {
+                                    if (isSuccess == true) {
+                                      //* Update home address type
+                                      menuProvider.updateHomeAddress(
+                                        HomeAddressType.remote,
+                                      );
+                                    } else {
+                                      // failure
+                                    }
+                                  });
+                                },
+                                child: SavedLocationCard(
+                                  savedAddress: savedAddress,
+                                  provider: provider,
+                                ),
                               );
                             },
                           ),
@@ -178,10 +239,30 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                             itemBuilder: (context, index) {
                               final nearByAddress =
                                   provider.nearByAddressList?[index];
-                              return SavedLocationCard(
-                                isNearBy: true,
-                                nearByAddress: nearByAddress,
-                                provider: provider,
+                              return GestureDetector(
+                                onTap: () async {
+                                  gMapProvider.showSelectedLocation(
+                                    context: context,
+                                    isNavigateHome: true,
+                                    latitude: nearByAddress?.lat ?? 0,
+                                    longitude: nearByAddress?.lng ?? 0,
+                                  );
+                                  //* store address locally
+                                  await sharedPrefsService.setString(
+                                    SharedPrefsKeys.selectedAddress,
+                                    nearByAddress?.address ?? '',
+                                  );
+                                  //* Update home address type
+                                  menuProvider.updateHomeAddress(
+                                    HomeAddressType.local,
+                                  );
+                                  log('nearby  pressed-----');
+                                },
+                                child: SavedLocationCard(
+                                  isNearBy: true,
+                                  nearByAddress: nearByAddress,
+                                  provider: provider,
+                                ),
                               );
                             },
                             separatorBuilder: (context, index) =>

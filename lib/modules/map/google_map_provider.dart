@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/enums/enums.dart';
+import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/models/location_model.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
@@ -104,7 +105,22 @@ class GoogleMapProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       if (context != null) {
-        _showLocationServiceDialog(context);
+        showDialog(
+          context: context,
+          builder: (context) {
+            return CustomConfirmDialog(
+              title: 'Location Required',
+              subTitle:
+                  'Location services are disabled. Please enable them in settings.',
+              accountType: 'business', //Todo set dynamic accountType
+              yesBtnText: 'Open Settings',
+              onTapYes: () async {
+                Navigator.pop(context);
+                await Geolocator.openLocationSettings();
+              },
+            );
+          },
+        );
       }
       return;
     }
@@ -180,31 +196,6 @@ class GoogleMapProvider extends ChangeNotifier {
         ),
       );
     }
-  }
-
-  void _showLocationServiceDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Location Required"),
-        content: const Text(
-          "Location services are disabled. Please enable them in settings.",
-        ),
-        actions: [
-          TextButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await Geolocator.openLocationSettings();
-            },
-            child: const Text("Open Settings"),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Cancel"),
-          ),
-        ],
-      ),
-    );
   }
 
   Future<void> checkLocationOnResume(BuildContext context) async {

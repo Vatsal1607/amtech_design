@@ -292,24 +292,19 @@ class _MenuPageState extends State<MenuPage> {
                                                       );
                                               }),
                                             ),
-                                            SizedBox(width: 8.w),
+                                            SizedBox(width: 4.w),
                                             //* Small Edit Button
-                                            SmallEditButton(
+                                            SizedBox(
                                               height: 26.h,
                                               width: 64.w,
-                                              text: 'CHANGE',
-                                              onTap: () {
-                                                Navigator.pushNamed(context,
-                                                    Routes.savedAddress);
-                                                // Navigator.push(
-                                                //   context,
-                                                //   MaterialPageRoute(
-                                                //     builder: (context) =>
-                                                //         SavedAddressPage(),
-                                                //   ),
-                                                // );
-                                              },
-                                              accountType: accountType,
+                                              child: SmallEditButton(
+                                                text: 'CHANGE',
+                                                onTap: () {
+                                                  Navigator.pushNamed(context,
+                                                      Routes.savedAddress);
+                                                },
+                                                accountType: accountType,
+                                              ),
                                             ),
                                           ],
                                         ),

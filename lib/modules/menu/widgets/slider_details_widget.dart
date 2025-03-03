@@ -70,6 +70,37 @@ class SliderDetailsWidget extends StatelessWidget {
               ],
             ),
           ),
+          //* Perks example widget
+          //! PERKS button with an image
+          // SizedBox(
+          //   height: 26.h,
+          //   width: 64.w,
+          //   child: Container(
+          //     padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+          //     decoration: BoxDecoration(
+          //       color: Colors.black,
+          //       borderRadius: BorderRadius.circular(20.r),
+          //     ),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Image.network(
+          //           'https://images.unsplash.com/photo-1604440976150-c12352c982ce?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGVya3MlMjB0ZXh0fGVufDB8fDB8fHww',
+          //           height: 20.h,
+          //           width: 20.w,
+          //         ),
+          //         SizedBox(width: 5.w),
+          //         const Text(
+          //           "Perks",
+          //           style: TextStyle(
+          //             color: Colors.white,
+          //             fontWeight: FontWeight.bold,
+          //           ),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           if (isShowRecharge)
             GestureDetector(
               onTap: () {

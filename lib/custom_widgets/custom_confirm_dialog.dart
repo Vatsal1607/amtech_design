@@ -100,7 +100,10 @@ class CustomConfirmDialog extends StatelessWidget {
                 // * Cancel Button
                 Expanded(
                   child: GestureDetector(
-                    onTap: onTapCancel,
+                    onTap: onTapCancel ??
+                        () {
+                          Navigator.pop(context);
+                        },
                     child: Container(
                       height: 48.h,
                       decoration: BoxDecoration(

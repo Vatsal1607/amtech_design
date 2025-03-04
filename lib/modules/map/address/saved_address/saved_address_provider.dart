@@ -33,7 +33,7 @@ class SavedAddressProvider extends ChangeNotifier {
       data["role"] = accountType == 'business' ? 0 : 1;
       isFirstCall = false; //* Set to false after first call
     }
-    log('userLocation data is: $data');
+    log('userLocation data is:--- $data');
     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
 
     log('emitAndListenSavedAddress called');
@@ -74,7 +74,7 @@ class SavedAddressProvider extends ChangeNotifier {
       "latitude": lat,
       "longitude": long,
     };
-    log('NearBy data is: $data');
+    log('NearBy data is:----- $data');
     socketProvider.emitEvent(SocketEvents.nearByLocationEvent, data);
     socketProvider.listenToEvent(SocketEvents.nearByLocationListen, (data) {
       try {
@@ -193,6 +193,7 @@ class SavedAddressProvider extends ChangeNotifier {
   }
 
   ApiService apiService = ApiService();
+
   //* chooseLocation
   Future chooseLocation({
     required BuildContext context,
@@ -216,6 +217,52 @@ class SavedAddressProvider extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint("Error chooseLocation: ${e.toString()}");
+      return false; // Indicate failure
+    } finally {
+      // isEditLocationLoading = false;
+      notifyListeners();
+    }
+  }
+
+  // editAddress
+  Future editAddress({
+    required BuildContext context,
+    required String addressId,
+    String? propertyNumber,
+    String? residentialAddress,
+    String? nearLandmark,
+    String? addressType,
+    String? lat,
+    String? long,
+  }) async {
+    // isEditLocationLoading = true;
+    // notifyListeners();
+    try {
+      final userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      Map<String, dynamic> requestBody = {
+        "propertyNumber": "",
+        "residentialAddress": "",
+        "nearLandmark": "",
+        "addressType": "",
+        "lat": "",
+        "long": "",
+      };
+
+      final res = await apiService.editAddress(
+        userId: userId,
+        addressId: addressId,
+        body: requestBody,
+      );
+      if (res.success == true) {
+        Navigator.pop(context);
+        log('editAddress message: ${res.message}');
+        return true; // Indicate success
+      } else {
+        log('${res.message}');
+        return false; // Indicate failure
+      }
+    } catch (e) {
+      debugPrint("Error editAddress: ${e.toString()}");
       return false; // Indicate failure
     } finally {
       // isEditLocationLoading = false;

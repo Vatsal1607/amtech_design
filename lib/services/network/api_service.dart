@@ -23,7 +23,6 @@ import '../../models/home_menu_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
-import '../../models/update_cart_request_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -255,5 +254,17 @@ class ApiService {
     required String address,
   }) async {
     return await apiClient.chooseLocation(userId, address);
+  }
+
+  Future<ApiGlobalModel> editAddress({
+    required String userId,
+    required String addressId,
+    required Map<String, dynamic> body,
+  }) async {
+    return await apiClient.editAddress(
+      userId,
+      addressId,
+      body,
+    );
   }
 }

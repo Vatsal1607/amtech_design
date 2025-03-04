@@ -97,6 +97,7 @@ class GoogleMapProvider extends ChangeNotifier {
   Future<void> getCurrentLocation({
     BuildContext? context,
     SocketProvider? socketProvider,
+    LatLng? editAddressLatLng, // pass if this call from edit address
   }) async {
     isLoading = true;
     notifyListeners();
@@ -156,22 +157,25 @@ class GoogleMapProvider extends ChangeNotifier {
     }
     if (socketProvider != null) {
       //* Emit event
-      emitAndListenGetLocation(socketProvider);
+      emitAndListenGetLocation(socketProvider: socketProvider);
       notifyListeners();
     }
-    _updateMarker(currentLocation!);
-    _moveCamera(currentLocation!);
+    updateMarker(editAddressLatLng ?? currentLocation!);
+    Future.delayed(const Duration(milliseconds: 100), () {
+      moveCamera(editAddressLatLng ?? currentLocation!);
+    });
     isLoading = false;
     notifyListeners();
   }
 
   void updateMarkerLocation(LatLng newPosition) {
     currentLocation = newPosition;
-    _updateMarker(newPosition);
+    updateMarker(newPosition);
     notifyListeners();
   }
 
-  void _updateMarker(LatLng position) {
+  // _updateMarker
+  void updateMarker(LatLng position) {
     markers.clear();
     markers.add(
       Marker(
@@ -185,7 +189,9 @@ class GoogleMapProvider extends ChangeNotifier {
     );
   }
 
-  Future<void> _moveCamera(LatLng position) async {
+  // _moveCamera
+  Future<void> moveCamera(LatLng position) async {
+    log('movecamera latlong: ${position.latitude} ${position.longitude}');
     if (mapController != null) {
       await mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -209,18 +215,32 @@ class GoogleMapProvider extends ChangeNotifier {
   bool isFirstCall = true;
 
   //* Emit location
-  void emitAndListenGetLocation(SocketProvider socketProvider) async {
+  void emitAndListenGetLocation({
+    required SocketProvider socketProvider,
+    // String? editLat,
+    // String? editLong,
+  }) async {
+    // log("Edit Address Latitude emitAndListenGetLocation: $editLat, Longitude: $editLong");
     isLoading = true;
     notifyListeners();
     final accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType);
-
+    final lat = sharedPrefsService.getString(SharedPrefsKeys.lat);
+    final long = sharedPrefsService.getString(SharedPrefsKeys.long);
     Map<String, dynamic> data = {
       "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
       "socketId": socketProvider.socket.id,
       'deviceId': sharedPrefsService.getString(SharedPrefsKeys.deviceId),
-      "latitude": selectedLocation?.latitude,
-      "longitude": selectedLocation?.longitude,
+      // "latitude": editLat ?? lat,
+      // "longitude": editLong ?? long,
+      "latitude":
+          //  editLat == null || editLat == 'null' ?
+          selectedLocation?.latitude,
+      // : editLat,
+      "longitude":
+          // editLong == null || editLong == 'null' ?
+          selectedLocation?.longitude,
+      // : editLong,
       "role": accountType == 'business' ? '0' : '1',
     };
 

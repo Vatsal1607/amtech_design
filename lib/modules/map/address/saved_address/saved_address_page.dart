@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
-import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/address/saved_address/widgets/add_location_card_widget.dart';
 import 'package:amtech_design/modules/map/address/saved_address/widgets/not_serviceable_dialog.dart';
@@ -12,6 +11,7 @@ import 'package:amtech_design/modules/recharge/widgets/center_title_with_divider
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constants/keys.dart';
@@ -48,7 +48,6 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
         context: context,
         socketProvider: socketProvider,
       );
-
       Future.delayed(const Duration(milliseconds: 300), () {
         provider.emitAndListenSavedAddress(socketProvider);
         provider.emitAndListenNearBy(
@@ -57,8 +56,40 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
           long: googleMapProvider.currentLocation?.longitude,
         );
       });
+      checkLocationPermissionAndEmitEvent();
     });
     super.initState();
+  }
+
+  // //* check location permission & emit event:
+  Future<void> checkLocationPermissionAndEmitEvent() async {
+    if (await Permission.location.isGranted) {
+      context.read<GoogleMapProvider>().emitAndListenGetLocation(
+          socketProvider: context.read<SocketProvider>());
+    } else {
+      PermissionStatus status = await Permission.location.request();
+      if (status.isGranted) {
+        checkLocationPermissionAndEmitEvent(); // Retry after permission is granted
+      } else {
+        debugPrint("Location permission denied saved address page.");
+        // showDialog(
+        //   context: context,
+        //   builder: (context) {
+        //     return CustomConfirmDialog(
+        //       title: 'Location Required',
+        //       subTitle:
+        //           'Location services are disabled. Please enable them in settings.',
+        //       accountType: 'business', //Todo set dynamic accountType
+        //       yesBtnText: 'Open Settings',
+        //       onTapYes: () async {
+        //         Navigator.pop(context);
+        //         await Geolocator.openLocationSettings();
+        //       },
+        //     );
+        //   },
+        // );
+      }
+    }
   }
 
   @override
@@ -67,6 +98,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
     final provider = Provider.of<SavedAddressProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     final gMapProvider = Provider.of<GoogleMapProvider>(context, listen: false);
+    log('current Address ${gMapProvider.address}');
     debugPrint('currentLocation lat ${gMapProvider.currentLocation?.latitude}',
         wrapWidth: 1024);
     debugPrint(
@@ -197,10 +229,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                                     if (isSuccess == true) {
                                       //* Update home address type
                                       menuProvider.updateHomeAddress(
-                                        HomeAddressType.remote,
-                                      );
-                                    } else {
-                                      // failure
+                                          HomeAddressType.remote);
                                     }
                                   });
                                 },

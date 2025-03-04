@@ -207,4 +207,18 @@ abstract class ApiClient {
     @Path('userId') String userId,
     @Field() String address,
   );
+
+  // edit-address
+  @PUT('${ApiEndpoints.editAddress}/{userId}/{addressId}')
+  Future<ApiGlobalModel> editAddress(
+    @Path('userId') String userId,
+    @Path('addressId') String addressId,
+    @Body() Map<String, dynamic> body,
+  );
+  //   "propertyNumber": "15",
+  // "residentialAddress": "New Residency",
+  // "nearLandmark": "Central Mall",
+  // "addressType": "Work",
+  // "lat": "23.0427186783082454",
+  // "long": "72.50918641878567"
 }

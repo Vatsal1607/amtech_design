@@ -19,6 +19,7 @@ class SharedPrefsKeys {
   static const String lat = 'lat';
   static const String long = 'long';
   static const String selectedAddress = 'selectedAddress';
+  static const String selectedAddressType = 'selectedAddressType';
 }
 
 class SocketEvents {

@@ -40,6 +40,18 @@ class _MenuPageState extends State<MenuPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // context.read<MenuProvider>().homeMenuApi();
       context.read<GoogleMapProvider>().getCurrentLocation();
+      final provider = Provider.of<MenuProvider>(context, listen: false);
+      final selectedAddressTypeString =
+          sharedPrefsService.getString(SharedPrefsKeys.selectedAddressType);
+
+      // Convert the string to HomeAddressType? (if not null)
+      provider.selectedAddressType = selectedAddressTypeString != null
+          ? HomeAddressType.values.firstWhere(
+              (e) => e.name == selectedAddressTypeString, // Match by enum name
+              orElse: () =>
+                  HomeAddressType.local, // Provide a default if no match
+            )
+          : null; // If the stored value is null, assign null
     });
 
     super.initState();
@@ -292,7 +304,7 @@ class _MenuPageState extends State<MenuPage> {
                                                       );
                                               }),
                                             ),
-                                            SizedBox(width: 4.w),
+                                            SizedBox(width: 7.w),
                                             //* Small Edit Button
                                             SizedBox(
                                               height: 26.h,

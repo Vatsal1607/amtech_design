@@ -241,7 +241,7 @@ class MenuProvider extends ChangeNotifier {
         return false; // * Indicat failure
       }
     } catch (error) {
-      log("Error during homeMenuApi Response: $error");
+      log("Error during homeMenuApi Response------- $error");
       if (error is DioException) {
         final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
         log(apiError.message ?? 'An error occurred');
@@ -449,9 +449,12 @@ class MenuProvider extends ChangeNotifier {
     }
   }
 
-  HomeAddressType selectedAddressType = HomeAddressType.remote;
+  HomeAddressType? selectedAddressType; // HomeAddressType.remote
   void updateHomeAddress(HomeAddressType type) {
     selectedAddressType = type;
+    //* store locally
+    sharedPrefsService.setString(
+        SharedPrefsKeys.selectedAddressType, selectedAddressType?.name ?? '');
     log('selectedAddressType: ${selectedAddressType.toString()}');
     notifyListeners();
   }

@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/textfield/custom_search_container.dart';
-import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/widgets/edit_address_bottomsheet.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,6 @@ import '../../custom_widgets/buttons/small_edit_button.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../provider/socket_provider.dart';
 import 'google_map_provider.dart';
-import 'widgets/search_bottomsheet.dart';
 import 'widgets/show_search_address_bottomsheet.dart';
 
 class GoogleMapPage extends StatefulWidget {
@@ -42,7 +40,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         final socketProvider =
             Provider.of<SocketProvider>(context, listen: false);
         Future.delayed(
-          const Duration(seconds: 1),
+          const Duration(milliseconds: 500),
           () {
             checkLocationPermissionAndEmitEvent();
           },
@@ -51,20 +49,32 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     });
   }
 
+  dynamic args;
+  double? editAddressLat;
+  double? editAddressLong;
+
   //* check location permission & emit event:
   Future<void> checkLocationPermissionAndEmitEvent() async {
-    if (await Permission.location.isGranted) {
-      context
-          .read<GoogleMapProvider>()
-          .emitAndListenGetLocation(context.read<SocketProvider>());
-    } else {
-      PermissionStatus status = await Permission.location.request();
-      if (status.isGranted) {
-        checkLocationPermissionAndEmitEvent(); // Retry after permission is granted
-      } else {
-        debugPrint("Location permission denied.");
-      }
-    }
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () async {
+        if (await Permission.location.isGranted) {
+          log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
+          context.read<GoogleMapProvider>().emitAndListenGetLocation(
+                socketProvider: context.read<SocketProvider>(),
+                // editLat: editAddressLat.toString(),
+                // editLong: editAddressLong.toString(),
+              );
+        } else {
+          PermissionStatus status = await Permission.location.request();
+          if (status.isGranted) {
+            checkLocationPermissionAndEmitEvent(); // Retry after permission is granted
+          } else {
+            debugPrint("Location permission denied map page.");
+          }
+        }
+      },
+    );
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -81,12 +91,17 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         Provider.of<SavedAddressProvider>(context, listen: false);
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     const String accountType = 'business';
-    log(
-      'selected lat ${provider.selectedLocation?.latitude}',
-    );
-    log(
-      'selected long ${provider.selectedLocation?.longitude}',
-    );
+    args = //! arguments
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+            {};
+    editAddressLat = args['editAddressLat'] != null
+        ? double.tryParse(args['editAddressLat'])
+        : null;
+    editAddressLong = args['editAddressLong'] != null
+        ? double.tryParse(args['editAddressLong'])
+        : null;
+    log('editAddressLat: $editAddressLat, editAddressLong: $editAddressLong');
+
     return Scaffold(
       appBar: const CustomAppbarWithCenterTitle(
         title: 'Change Location',
@@ -105,18 +120,30 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     onMapCreated: (controller) {
                       if (provider.mapController == null) {
                         provider.mapController = controller;
-                        provider.getCurrentLocation(context: context);
+                        provider.getCurrentLocation(
+                          context: context,
+                          editAddressLatLng:
+                              editAddressLat != null && editAddressLong != null
+                                  ? LatLng(
+                                      editAddressLat!,
+                                      editAddressLong!,
+                                    )
+                                  : null,
+                        );
                       }
                     },
                     initialCameraPosition: CameraPosition(
-                      target: provider.currentLocation!,
+                      target: editAddressLat != null && editAddressLong != null
+                          ? LatLng(editAddressLat!, editAddressLong!)
+                          : provider.currentLocation!,
                       zoom: 14,
                     ),
                     onCameraMove: provider.onCameraMove,
                     onCameraIdle: () {
                       //* Camera stops moving, use the new center position
                       if (mounted) {
-                        provider.emitAndListenGetLocation(socketProvider);
+                        provider.emitAndListenGetLocation(
+                            socketProvider: socketProvider);
                       }
                       log("Updated Location: ${provider.selectedLocation?.latitude}, ${provider.selectedLocation?.longitude},");
                     },
@@ -314,17 +341,4 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       ),
     );
   }
-
-  // void _showSearchBottomSheet(BuildContext context) {
-  //   showModalBottomSheet(
-  //     context: context,
-  //     isScrollControlled: true,
-  //     shape: const RoundedRectangleBorder(
-  //       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-  //     ),
-  //     builder: (context) {
-  //       return const SearchBottomSheet();
-  //     },
-  //   );
-  // }
 }

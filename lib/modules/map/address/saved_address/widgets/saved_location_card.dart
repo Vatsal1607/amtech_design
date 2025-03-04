@@ -11,6 +11,7 @@ import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/constants/keys.dart';
 import '../../../../../core/utils/strings.dart';
 import '../../../../../models/nearby_address_model.dart';
+import '../../../../../routes.dart';
 import '../../../../../services/local/shared_preferences_service.dart';
 import '../saved_address_provider.dart';
 
@@ -75,6 +76,13 @@ class SavedLocationCard extends StatelessWidget {
                     SmallEditButton(
                       onTap: () {
                         log('Edit pressed');
+                        //* Navigate to map page
+                        Navigator.pushNamed(context, Routes.googleMapPage,
+                            arguments: {
+                              'editAddressLat': savedAddress?.lat,
+                              'editAddressLong': savedAddress?.long,
+                            });
+                        log('Edit button: lat is ${savedAddress?.lat} long is ${savedAddress?.long}');
                       },
                       accountType: accountType,
                       width: 64.h,

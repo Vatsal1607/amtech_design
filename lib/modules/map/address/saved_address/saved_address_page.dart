@@ -64,8 +64,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
   // //* check location permission & emit event:
   Future<void> checkLocationPermissionAndEmitEvent() async {
     if (await Permission.location.isGranted) {
-      context.read<GoogleMapProvider>().emitAndListenGetLocation(
-          socketProvider: context.read<SocketProvider>());
+      final googleMapProvider =
+          Provider.of<GoogleMapProvider>(context, listen: false);
+      final socketProvider =
+          Provider.of<SocketProvider>(context, listen: false);
+      googleMapProvider.emitAndListenGetLocation(
+          socketProvider: socketProvider);
     } else {
       PermissionStatus status = await Permission.location.request();
       if (status.isGranted) {
@@ -270,7 +274,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                                   provider.nearByAddressList?[index];
                               return GestureDetector(
                                 onTap: () async {
-                                  gMapProvider.showSelectedLocation(
+                                  gMapProvider.showSelectedLocationAddressCard(
                                     context: context,
                                     isNavigateHome: true,
                                     latitude: nearByAddress?.lat ?? 0,

@@ -25,7 +25,11 @@ class AddLocationCard extends StatelessWidget {
           //* Add new location
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, Routes.googleMapPage);
+              Navigator.pushNamed(
+                context,
+                Routes.googleMapPage,
+                arguments: null,
+              );
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 5.h),
@@ -92,7 +96,6 @@ class AddLocationCard extends StatelessWidget {
                       Consumer<GoogleMapProvider>(
                         builder: (context, googleMapProvider, child) {
                           return Text(
-                            // "AMTech Design, E-1102, 11th Floor, Titanium City Center, Satellite, Ahmedabad",
                             '${googleMapProvider.address}',
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,

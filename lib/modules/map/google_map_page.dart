@@ -29,46 +29,70 @@ class GoogleMapPage extends StatefulWidget {
 }
 
 class _GoogleMapPageState extends State<GoogleMapPage> {
+  // LatLng? editAddressLatLng;
+  dynamic args;
+  double? editAddressLat;
+  double? editAddressLong;
+
   @override
   void initState() {
     super.initState();
     Future.delayed(Duration.zero, () {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        //* getCurrentLocation
-        // Provider.of<GoogleMapProvider>(context, listen: false)
-        //     .getCurrentLocation(context: context);
+        args = ModalRoute.of(context)?.settings.arguments;
+        args = //! arguments
+            ModalRoute.of(context)?.settings.arguments
+                    as Map<String, dynamic>? ??
+                {};
+        editAddressLat = args['editAddressLat'] != null
+            ? double.tryParse(args['editAddressLat'])
+            : null;
+        editAddressLong = args['editAddressLong'] != null
+            ? double.tryParse(args['editAddressLong'])
+            : null;
+        log('editAddressLat: $editAddressLat, editAddressLong: $editAddressLong');
+
         final socketProvider =
             Provider.of<SocketProvider>(context, listen: false);
+        final googleMapProvider =
+            Provider.of<GoogleMapProvider>(context, listen: false);
         Future.delayed(
-          const Duration(milliseconds: 500),
+          const Duration(milliseconds: 300),
           () {
-            checkLocationPermissionAndEmitEvent();
+            if (editAddressLat != null && editAddressLong != null) {
+              googleMapProvider
+                  .moveCamera(LatLng(editAddressLat!, editAddressLong!));
+              checkLocationPermissionAndEmitEvent(googleMapProvider);
+            } else {
+              checkLocationPermissionAndEmitEvent(googleMapProvider);
+            }
           },
         );
       });
     });
   }
 
-  dynamic args;
-  double? editAddressLat;
-  double? editAddressLong;
-
   //* check location permission & emit event:
-  Future<void> checkLocationPermissionAndEmitEvent() async {
+  Future<void> checkLocationPermissionAndEmitEvent(
+    GoogleMapProvider googleMapProvider,
+  ) async {
     Future.delayed(
-      const Duration(milliseconds: 500),
+      const Duration(milliseconds: 200),
       () async {
         if (await Permission.location.isGranted) {
           log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
-          context.read<GoogleMapProvider>().emitAndListenGetLocation(
-                socketProvider: context.read<SocketProvider>(),
-                // editLat: editAddressLat.toString(),
-                // editLong: editAddressLong.toString(),
-              );
+          final socketProvider =
+              Provider.of<SocketProvider>(context, listen: false);
+          googleMapProvider.emitAndListenGetLocation(
+            socketProvider: socketProvider,
+            editLat: editAddressLat.toString(),
+            editLong: editAddressLong.toString(),
+          );
         } else {
           PermissionStatus status = await Permission.location.request();
           if (status.isGranted) {
-            checkLocationPermissionAndEmitEvent(); // Retry after permission is granted
+            checkLocationPermissionAndEmitEvent(
+                googleMapProvider); // Retry after permission is granted
           } else {
             debugPrint("Location permission denied map page.");
           }
@@ -91,16 +115,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         Provider.of<SavedAddressProvider>(context, listen: false);
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     const String accountType = 'business';
-    args = //! arguments
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
-            {};
-    editAddressLat = args['editAddressLat'] != null
-        ? double.tryParse(args['editAddressLat'])
-        : null;
-    editAddressLong = args['editAddressLong'] != null
-        ? double.tryParse(args['editAddressLong'])
-        : null;
-    log('editAddressLat: $editAddressLat, editAddressLong: $editAddressLong');
 
     return Scaffold(
       appBar: const CustomAppbarWithCenterTitle(

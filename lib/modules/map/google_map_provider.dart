@@ -16,8 +16,8 @@ import '../../services/local/shared_preferences_service.dart';
 class GoogleMapProvider extends ChangeNotifier {
   GoogleMapController? mapController;
   LatLng? currentLocation;
-  Set<Marker> markers = {};
   LatLng? selectedLocation;
+  Set<Marker> markers = {};
 
   onCameraMove(position) {
     selectedLocation = position.target; //* Update marker position dynamically
@@ -25,7 +25,7 @@ class GoogleMapProvider extends ChangeNotifier {
   }
 
   //* show Selected Location in map
-  Future<void> showSelectedLocation({
+  Future<void> showSelectedLocationAddressCard({
     required double latitude,
     required double longitude,
     required BuildContext context,
@@ -97,7 +97,7 @@ class GoogleMapProvider extends ChangeNotifier {
   Future<void> getCurrentLocation({
     BuildContext? context,
     SocketProvider? socketProvider,
-    LatLng? editAddressLatLng, // pass if this call from edit address
+    LatLng? editAddressLatLng, //
   }) async {
     isLoading = true;
     notifyListeners();
@@ -189,10 +189,15 @@ class GoogleMapProvider extends ChangeNotifier {
     );
   }
 
-  // _moveCamera
+  //* moveCamera
   Future<void> moveCamera(LatLng position) async {
     log('movecamera latlong: ${position.latitude} ${position.longitude}');
-    if (mapController != null) {
+    if (mapController == null) {
+      log("MapController is not ready yet, retrying...");
+      await Future.delayed(const Duration(milliseconds: 200));
+      return moveCamera(position);
+    }
+    try {
       await mapController?.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -201,7 +206,20 @@ class GoogleMapProvider extends ChangeNotifier {
           ),
         ),
       );
+    } catch (e) {
+      log("Error moving camera: $e");
     }
+
+    // if (mapController != null) {
+    //   await mapController?.animateCamera(
+    //     CameraUpdate.newCameraPosition(
+    //       CameraPosition(
+    //         target: position,
+    //         zoom: 14,
+    //       ),
+    //     ),
+    //   );
+    // }
   }
 
   Future<void> checkLocationOnResume(BuildContext context) async {
@@ -214,41 +232,38 @@ class GoogleMapProvider extends ChangeNotifier {
   String? distance;
   bool isFirstCall = true;
 
-  //* Emit location
+  //* Emit Get location
   void emitAndListenGetLocation({
     required SocketProvider socketProvider,
-    // String? editLat,
-    // String? editLong,
+    String? editLat,
+    String? editLong,
   }) async {
-    // log("Edit Address Latitude emitAndListenGetLocation: $editLat, Longitude: $editLong");
+    log('emitAndListenGetLocation called');
     isLoading = true;
     notifyListeners();
     final accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType);
-    final lat = sharedPrefsService.getString(SharedPrefsKeys.lat);
-    final long = sharedPrefsService.getString(SharedPrefsKeys.long);
+    // final lat = sharedPrefsService.getString(SharedPrefsKeys.lat);
+    // final long = sharedPrefsService.getString(SharedPrefsKeys.long);
+    final lat = editLat ?? selectedLocation?.latitude.toString();
+    final long = editLong ?? selectedLocation?.longitude.toString();
     Map<String, dynamic> data = {
       "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
       "socketId": socketProvider.socket.id,
       'deviceId': sharedPrefsService.getString(SharedPrefsKeys.deviceId),
-      // "latitude": editLat ?? lat,
-      // "longitude": editLong ?? long,
-      "latitude":
-          //  editLat == null || editLat == 'null' ?
-          selectedLocation?.latitude,
-      // : editLat,
-      "longitude":
-          // editLong == null || editLong == 'null' ?
-          selectedLocation?.longitude,
-      // : editLong,
+      // "latitude": lat,
+      // "longitude": long,
+      "latitude": lat,
+      "longitude": long,
       "role": accountType == 'business' ? '0' : '1',
     };
-
     if (isFirstCall) {
       data["isFirst"] = true;
       isFirstCall = false; //* Set to false after first call
     }
     log('userLocation data is: $data');
+    // log('editLat-long $editLat $editLong');
+    // log('userLocation lat-long: ${selectedLocation?.latitude} ${selectedLocation?.longitude}');
     socketProvider.emitEvent(SocketEvents.userLocation, data);
 
     socketProvider.listenToEvent(SocketEvents.realTimeLocationUpdate, (data) {

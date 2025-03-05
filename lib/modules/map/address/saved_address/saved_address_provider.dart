@@ -33,7 +33,7 @@ class SavedAddressProvider extends ChangeNotifier {
       data["role"] = accountType == 'business' ? 0 : 1;
       isFirstCall = false; //* Set to false after first call
     }
-    log('userLocation data is:--- $data');
+    // log('userLocation data is:--- $data');
     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
 
     log('emitAndListenSavedAddress called');
@@ -45,7 +45,7 @@ class SavedAddressProvider extends ChangeNotifier {
         if (data is Map<String, dynamic>) {
           SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
           savedAddressList = savedAddress.data;
-          log('savedAddressList ${savedAddressList}');
+          log('savedAddressList $savedAddressList');
           isLoadingSavedAddress = false;
           notifyListeners();
         } else {
@@ -85,7 +85,7 @@ class SavedAddressProvider extends ChangeNotifier {
           if (nearByAddress.data != null && nearByAddress.data!.isNotEmpty) {
             nearByAddressList = nearByAddress.data;
             filteredSearchLocationList = nearByAddress.data ?? [];
-            log('nearByAddressList from assign condition: ${nearByAddressList}');
+            log('nearByAddressList from assign condition: $nearByAddressList');
             isLoadingNearBy = false;
             notifyListeners();
           }
@@ -147,7 +147,7 @@ class SavedAddressProvider extends ChangeNotifier {
           if (nearByAddress.data != null && nearByAddress.data!.isNotEmpty) {
             // searchLocationList = nearByAddress.data;
             filteredSearchLocationList = nearByAddress.data ?? [];
-            log('SearchLocation from assign condition: ${filteredSearchLocationList}');
+            log('SearchLocation from assign condition: $filteredSearchLocationList');
             isLoadingSearchAddress = false;
             notifyListeners();
           }

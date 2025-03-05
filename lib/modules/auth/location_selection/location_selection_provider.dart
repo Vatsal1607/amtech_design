@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../services/local/shared_preferences_service.dart';
 
@@ -25,6 +26,7 @@ class LocationSelectionProvider extends ChangeNotifier {
   }
 
   onItemTap() {
+    FocusManager.instance.primaryFocus?.unfocus();
     isSearchOpen = false;
     notifyListeners();
   }

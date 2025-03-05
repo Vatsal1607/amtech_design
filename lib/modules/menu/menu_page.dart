@@ -304,7 +304,7 @@ class _MenuPageState extends State<MenuPage> {
                                                       );
                                               }),
                                             ),
-                                            SizedBox(width: 7.w),
+                                            SizedBox(width: 4.w),
                                             //* Small Edit Button
                                             SizedBox(
                                               height: 26.h,

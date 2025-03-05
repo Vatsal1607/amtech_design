@@ -61,7 +61,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
     super.initState();
   }
 
-  // //* check location permission & emit event:
+  //* check location permission & emit event:
   Future<void> checkLocationPermissionAndEmitEvent() async {
     if (await Permission.location.isGranted) {
       final googleMapProvider =

@@ -19,8 +19,8 @@ class SavedAddressProvider extends ChangeNotifier {
     isLoadingSavedAddress = true;
     notifyListeners();
     final userId = sharedPrefsService.getString(SharedPrefsKeys.userId);
-    final lat = sharedPrefsService.getString(SharedPrefsKeys.lat);
-    final long = sharedPrefsService.getString(SharedPrefsKeys.long);
+    final lat = sharedPrefsService.getString(SharedPrefsKeys.currentLat);
+    final long = sharedPrefsService.getString(SharedPrefsKeys.currentLong);
     final accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType);
     Map<String, dynamic> data = {

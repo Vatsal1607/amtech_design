@@ -118,7 +118,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                               provider.filteredSearchLocationList[index];
                           return GestureDetector(
                             onTap: () {
-                              googleMapProvider.showSelectedLocation(
+                              googleMapProvider.showSelectedLocationAddressCard(
                                 context: context,
                                 latitude: nearByAddress.lat ?? 0,
                                 longitude: nearByAddress.lng ?? 0,

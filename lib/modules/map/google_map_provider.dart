@@ -149,10 +149,10 @@ class GoogleMapProvider extends ChangeNotifier {
 
     currentLocation = LatLng(position.latitude, position.longitude);
     if (currentLocation != null) {
-      sharedPrefsService.setString(
-          SharedPrefsKeys.lat, currentLocation?.latitude.toString() ?? '');
-      sharedPrefsService.setString(
-          SharedPrefsKeys.long, currentLocation?.longitude.toString() ?? '');
+      sharedPrefsService.setString(SharedPrefsKeys.currentLat,
+          currentLocation?.latitude.toString() ?? '');
+      sharedPrefsService.setString(SharedPrefsKeys.currentLong,
+          currentLocation?.longitude.toString() ?? '');
       log('$currentLocation is stored in locally');
     }
     if (socketProvider != null) {
@@ -192,25 +192,12 @@ class GoogleMapProvider extends ChangeNotifier {
   //* moveCamera
   Future<void> moveCamera(LatLng position) async {
     log('movecamera latlong: ${position.latitude} ${position.longitude}');
-    if (mapController == null) {
-      log("MapController is not ready yet, retrying...");
-      await Future.delayed(const Duration(milliseconds: 200));
-      return moveCamera(position);
-    }
-    try {
-      await mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: position,
-            zoom: 14,
-          ),
-        ),
-      );
-    } catch (e) {
-      log("Error moving camera: $e");
-    }
-
-    // if (mapController != null) {
+    // if (mapController == null) {
+    //   log("MapController is not ready yet, retrying...");
+    //   await Future.delayed(const Duration(milliseconds: 200));
+    //   return moveCamera(position);
+    // }
+    // try {
     //   await mapController?.animateCamera(
     //     CameraUpdate.newCameraPosition(
     //       CameraPosition(
@@ -219,7 +206,20 @@ class GoogleMapProvider extends ChangeNotifier {
     //       ),
     //     ),
     //   );
+    // } catch (e) {
+    //   log("Error moving camera: $e");
     // }
+
+    if (mapController != null) {
+      await mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: position,
+            zoom: 14,
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> checkLocationOnResume(BuildContext context) async {

@@ -267,4 +267,14 @@ class ApiService {
       body,
     );
   }
+
+  Future<ApiGlobalModel> deleteAddress({
+    required String userId,
+    required String addressId,
+  }) async {
+    return await apiClient.deleteAddress(
+      userId,
+      addressId,
+    );
+  }
 }

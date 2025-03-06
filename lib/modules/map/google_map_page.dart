@@ -29,7 +29,6 @@ class GoogleMapPage extends StatefulWidget {
 }
 
 class _GoogleMapPageState extends State<GoogleMapPage> {
-  // LatLng? editAddressLatLng;
   dynamic args;
   double? editAddressLat;
   double? editAddressLong;
@@ -37,38 +36,38 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        args = ModalRoute.of(context)?.settings.arguments;
-        args = //! arguments
-            ModalRoute.of(context)?.settings.arguments
-                    as Map<String, dynamic>? ??
-                {};
+    log('initstate called from map page');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      args =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+              {};
+      if (args.isNotEmpty) {
         editAddressLat = args['editAddressLat'] != null
             ? double.tryParse(args['editAddressLat'])
             : null;
         editAddressLong = args['editAddressLong'] != null
             ? double.tryParse(args['editAddressLong'])
             : null;
-        log('editAddressLat: $editAddressLat, editAddressLong: $editAddressLong');
+      }
+      log('editAddressLat: $editAddressLat, editAddressLong: $editAddressLong');
 
-        final socketProvider =
-            Provider.of<SocketProvider>(context, listen: false);
-        final googleMapProvider =
-            Provider.of<GoogleMapProvider>(context, listen: false);
-        Future.delayed(
-          const Duration(milliseconds: 300),
-          () {
-            if (editAddressLat != null && editAddressLong != null) {
-              googleMapProvider
-                  .moveCamera(LatLng(editAddressLat!, editAddressLong!));
-              checkLocationPermissionAndEmitEvent(googleMapProvider);
-            } else {
-              checkLocationPermissionAndEmitEvent(googleMapProvider);
-            }
-          },
-        );
-      });
+      final socketProvider =
+          Provider.of<SocketProvider>(context, listen: false);
+      final googleMapProvider =
+          Provider.of<GoogleMapProvider>(context, listen: false);
+      Future.delayed(
+        const Duration(milliseconds: 100),
+        () {
+          // if (editAddressLat != null && editAddressLong != null) {
+          // Todo verify for edit location & move camera according
+          // googleMapProvider
+          //     .moveCamera(LatLng(editAddressLat!, editAddressLong!));
+          // checkLocationPermissionAndEmitEvent(googleMapProvider);
+          // } else {
+          checkLocationPermissionAndEmitEvent(googleMapProvider);
+          // }
+        },
+      );
     });
   }
 
@@ -76,30 +75,39 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   Future<void> checkLocationPermissionAndEmitEvent(
     GoogleMapProvider googleMapProvider,
   ) async {
-    Future.delayed(
-      const Duration(milliseconds: 200),
-      () async {
-        if (await Permission.location.isGranted) {
-          log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
-          final socketProvider =
-              Provider.of<SocketProvider>(context, listen: false);
-          googleMapProvider.emitAndListenGetLocation(
-            socketProvider: socketProvider,
-            editLat: editAddressLat.toString(),
-            editLong: editAddressLong.toString(),
-          );
-        } else {
-          PermissionStatus status = await Permission.location.request();
-          if (status.isGranted) {
-            checkLocationPermissionAndEmitEvent(
-                googleMapProvider); // Retry after permission is granted
-          } else {
-            debugPrint("Location permission denied map page.");
-          }
-        }
-      },
-    );
+    final status = await Permission.location.request();
+
+    if (status.isGranted) {
+      log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
+      googleMapProvider.emitAndListenGetLocation(
+        socketProvider: context.read<SocketProvider>(),
+        editLat: editAddressLat,
+        editLong: editAddressLong,
+      );
+    } else {
+      debugPrint("Location permission denied on map page.");
+    }
   }
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   log('didChangeDependencies call map page');
+  //   final googleMapProvider = context.read<GoogleMapProvider>();
+  //   final socketProvider = context.read<SocketProvider>();
+
+  //   if (editAddressLat != null && editAddressLong != null) {
+  //     log("Skipping emitAndListenGetLocation in didChangeDependencies because it's an edit");
+  //     return;
+  //   }
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     googleMapProvider.emitAndListenGetLocation(
+  //       socketProvider: socketProvider,
+  //       editLat: editAddressLat,
+  //       editLong: editAddressLong,
+  //     );
+  //   });
+  // }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
@@ -134,16 +142,31 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     onMapCreated: (controller) {
                       if (provider.mapController == null) {
                         provider.mapController = controller;
-                        provider.getCurrentLocation(
-                          context: context,
-                          editAddressLatLng:
-                              editAddressLat != null && editAddressLong != null
-                                  ? LatLng(
-                                      editAddressLat!,
-                                      editAddressLong!,
-                                    )
-                                  : null,
-                        );
+                        // * Call `getCurrentLocation()` only if no edit address is provided
+                        if (editAddressLat != null || editAddressLong != null) {
+                          provider.getCurrentLocation(
+                            context: context,
+                            socketProvider: socketProvider, //!
+                          );
+                        } else {
+                          provider.selectedLocation =
+                              LatLng(editAddressLat!, editAddressLong!);
+                          provider.updateMarker(provider.selectedLocation!);
+                          provider.moveCamera(provider.selectedLocation!);
+                        }
+
+                        // provider.getCurrentLocation(
+                        //   context: context,
+                        //   socketProvider:
+                        //       socketProvider, //! previously not provuded in params
+                        //   editAddressLatLng:
+                        //       editAddressLat != null && editAddressLong != null
+                        //           ? LatLng(
+                        //               editAddressLat!,
+                        //               editAddressLong!,
+                        //             )
+                        //           : null,
+                        // );
                       }
                     },
                     initialCameraPosition: CameraPosition(
@@ -157,7 +180,10 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       //* Camera stops moving, use the new center position
                       if (mounted) {
                         provider.emitAndListenGetLocation(
-                            socketProvider: socketProvider);
+                          socketProvider: socketProvider,
+                          // editLat: null,
+                          // editLong: null,
+                        );
                       }
                       log("Updated Location: ${provider.selectedLocation?.latitude}, ${provider.selectedLocation?.longitude},");
                     },
@@ -185,6 +211,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                         provider.getCurrentLocation(
                           context: context,
                           socketProvider: socketProvider,
+                          editAddressLatLng: null,
                         );
                       },
                       child: const Icon(

@@ -1,6 +1,10 @@
 class BaseUrl {
-  static const String apiBaseUrl = 'http://192.168.1.12:9000/';
-  static const String socketBaseUrl = 'http://192.168.1.12:3000/';
+  // static const String apiBaseUrl = 'http://192.168.1.12:9000/';
+  // static const String socketBaseUrl = 'http://192.168.1.12:3000/';
+  static const String apiBaseUrl =
+      'https://8063-2409-40c1-1f-fdd2-b605-123b-4371-4af5.ngrok-free.app/';
+  static const String socketBaseUrl =
+      'https://663e-2409-40c1-1f-fdd2-b605-123b-4371-4af5.ngrok-free.app/';
   // static const String apiBaseUrl =
   //     'https://node-517461825507.asia-south1.run.app/'; // Dev server
   // static const String socketBaseUrl =

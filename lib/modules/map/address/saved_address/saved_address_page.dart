@@ -57,7 +57,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
           long: googleMapProvider.currentLocation?.longitude,
         );
       });
-      checkLocationPermissionAndEmitEvent();
+      // checkLocationPermissionAndEmitEvent();
     });
     super.initState();
   }

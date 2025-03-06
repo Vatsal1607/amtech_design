@@ -149,10 +149,12 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                             socketProvider: socketProvider, //!
                           );
                         } else {
-                          provider.selectedLocation =
-                              LatLng(editAddressLat!, editAddressLong!);
-                          provider.updateMarker(provider.selectedLocation!);
-                          provider.moveCamera(provider.selectedLocation!);
+                          // provider.selectedLocation =
+                          //     LatLng(editAddressLat!, editAddressLong!);
+                          provider.updateMarker(
+                              LatLng(editAddressLat!, editAddressLong!));
+                          provider.moveCamera(
+                              LatLng(editAddressLat!, editAddressLong!));
                         }
 
                         // provider.getCurrentLocation(

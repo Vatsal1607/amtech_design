@@ -44,11 +44,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
       final googleMapProvider =
           Provider.of<GoogleMapProvider>(context, listen: false);
       //* get current location
-      googleMapProvider.getCurrentLocation(
-        context: context,
-        socketProvider: socketProvider,
-      );
-      Future.delayed(const Duration(milliseconds: 300), () {
+      // googleMapProvider.getCurrentLocation(
+      //   context: context,
+      //   socketProvider: socketProvider,
+      //   editAddressLatLng: null,
+      // );
+      Future.delayed(const Duration(milliseconds: 200), () {
         provider.emitAndListenSavedAddress(socketProvider);
         provider.emitAndListenNearBy(
           socketProvider: socketProvider,
@@ -68,8 +69,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
           Provider.of<GoogleMapProvider>(context, listen: false);
       final socketProvider =
           Provider.of<SocketProvider>(context, listen: false);
+      //* Socket get location
       googleMapProvider.emitAndListenGetLocation(
-          socketProvider: socketProvider);
+        socketProvider: socketProvider,
+        editLat: null,
+        editLong: null,
+      );
     } else {
       PermissionStatus status = await Permission.location.request();
       if (status.isGranted) {

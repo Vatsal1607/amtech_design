@@ -33,4 +33,5 @@ class ApiEndpoints {
   static const String location = 'location';
   static const String chooseLocation = 'choose-location';
   static const String editAddress = 'edit-address';
+  static const String deleteAddress = 'delete-address';
 }

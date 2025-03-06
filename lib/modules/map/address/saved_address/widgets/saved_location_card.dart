@@ -7,12 +7,14 @@ import 'package:amtech_design/models/saved_address_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
 import '../../../../../core/utils/constants/keys.dart';
 import '../../../../../core/utils/strings.dart';
 import '../../../../../models/nearby_address_model.dart';
 import '../../../../../routes.dart';
 import '../../../../../services/local/shared_preferences_service.dart';
+import '../../../../provider/socket_provider.dart';
 import '../saved_address_provider.dart';
 
 class SavedLocationCard extends StatelessWidget {
@@ -32,6 +34,7 @@ class SavedLocationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     return Container(
       decoration: BoxDecoration(
         color: AppColors.primaryColor,
@@ -75,7 +78,6 @@ class SavedLocationCard extends StatelessWidget {
                   children: [
                     SmallEditButton(
                       onTap: () {
-                        log('Edit pressed');
                         //* Navigate to map page
                         Navigator.pushNamed(context, Routes.googleMapPage,
                             arguments: {
@@ -102,6 +104,11 @@ class SavedLocationCard extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         log('Delete pressed');
+                        provider.deleteAddress(
+                          context: context,
+                          addressId: '${savedAddress?.sId}',
+                          socketProvider: socketProvider,
+                        );
                       },
                       child: Container(
                         width: 28.w,

@@ -28,7 +28,7 @@ class SliderDetailsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 20.w, right: 21.w),
+      padding: EdgeInsets.only(left: 20.w, right: 23.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

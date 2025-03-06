@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/saved_address_model.dart';
 import 'package:flutter/material.dart';
+import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constants/keys.dart';
 import '../../../../models/nearby_address_model.dart';
 import '../../../../services/local/shared_preferences_service.dart';
@@ -266,6 +268,44 @@ class SavedAddressProvider extends ChangeNotifier {
       return false; // Indicate failure
     } finally {
       // isEditLocationLoading = false;
+      notifyListeners();
+    }
+  }
+
+  bool isLoadingDeleteAddress = false;
+  // Delete Address
+  Future deleteAddress({
+    required BuildContext context,
+    required String addressId,
+    required SocketProvider socketProvider,
+  }) async {
+    isLoadingDeleteAddress = true;
+    notifyListeners();
+    try {
+      final userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      final res = await apiService.deleteAddress(
+        userId: userId,
+        addressId: addressId,
+      );
+      if (res.success == true) {
+        emitAndListenSavedAddress(socketProvider);
+        customSnackBar(
+          context: context,
+          message: '${res.message}',
+          backgroundColor: AppColors.white,
+          textColor: AppColors.black,
+        );
+        log('deleteAddress message: ${res.message}');
+        return true; // Indicate success
+      } else {
+        log('deleteAddress message: ${res.message}');
+        return false; // Indicate failure
+      }
+    } catch (e) {
+      debugPrint("Error deleteAddress: ${e.toString()}");
+      return false; // Indicate failure
+    } finally {
+      isLoadingDeleteAddress = false;
       notifyListeners();
     }
   }

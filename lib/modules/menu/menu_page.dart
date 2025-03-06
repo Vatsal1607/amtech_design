@@ -38,7 +38,6 @@ class _MenuPageState extends State<MenuPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // context.read<MenuProvider>().homeMenuApi();
       context.read<GoogleMapProvider>().getCurrentLocation();
       final provider = Provider.of<MenuProvider>(context, listen: false);
       final selectedAddressTypeString =

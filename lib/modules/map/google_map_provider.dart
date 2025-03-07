@@ -24,6 +24,19 @@ class GoogleMapProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> moveCameraToLocation(LatLng location) async {
+    if (mapController != null) {
+      await mapController?.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: location,
+            zoom: 14,
+          ),
+        ),
+      );
+    }
+  }
+
   //* show Selected Location in map
   Future<void> showSelectedLocationAddressCard({
     required double latitude,
@@ -99,7 +112,6 @@ class GoogleMapProvider extends ChangeNotifier {
     SocketProvider? socketProvider,
     LatLng? editAddressLatLng,
   }) async {
-    log('getCurrentLocation Called');
     isLoading = true;
     notifyListeners();
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -154,23 +166,19 @@ class GoogleMapProvider extends ChangeNotifier {
           currentLocation?.latitude.toString() ?? '');
       sharedPrefsService.setString(SharedPrefsKeys.currentLong,
           currentLocation?.longitude.toString() ?? '');
-      log('$currentLocation is stored in locally');
     }
-
     // * Prioritize `editAddressLatLng`
     LatLng targetLocation = editAddressLatLng ?? currentLocation!;
-
     // * Emit socket event with the correct location
     if (socketProvider != null) {
       //* Socket get location
       emitAndListenGetLocation(
         socketProvider: socketProvider,
-        // editLat: targetLocation.latitude,
-        // editLong: targetLocation.longitude,
+        editLat: targetLocation.latitude,
+        editLong: targetLocation.longitude,
       );
       notifyListeners();
     }
-
     // * Update marker and move camera to the selected location
     updateMarker(targetLocation);
     Future.delayed(const Duration(milliseconds: 100), () {
@@ -201,9 +209,9 @@ class GoogleMapProvider extends ChangeNotifier {
     );
   }
 
-  //* moveCamera
+  //* move Camera
   Future<void> moveCamera(LatLng position) async {
-    log('movecamera latlong: ${position.latitude} ${position.longitude}');
+    log('move camera latlong: ${position.latitude} ${position.longitude}');
     // if (mapController == null) {
     //   log("MapController is not ready yet, retrying...");
     //   await Future.delayed(const Duration(milliseconds: 200));
@@ -222,16 +230,18 @@ class GoogleMapProvider extends ChangeNotifier {
     //   log("Error moving camera: $e");
     // }
 
-    if (mapController != null) {
-      await mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: position,
-            zoom: 14,
+    Future.delayed(const Duration(milliseconds: 100), () async {
+      if (mapController != null) {
+        await mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: position,
+              zoom: 14,
+            ),
           ),
-        ),
-      );
-    }
+        );
+      }
+    });
   }
 
   Future<void> checkLocationOnResume(BuildContext context) async {
@@ -246,7 +256,6 @@ class GoogleMapProvider extends ChangeNotifier {
   String? address;
   String? distance;
   bool isFirstCall = true;
-  bool isCameraMovedByUser = false;
 
   //* Socket Get location
   void emitAndListenGetLocation({
@@ -254,23 +263,16 @@ class GoogleMapProvider extends ChangeNotifier {
     double? editLat,
     double? editLong,
   }) async {
-    log('emitAndListenGetLocation Called');
     isLoading = true;
     notifyListeners();
     final accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType);
-    // final lat = sharedPrefsService.getString(SharedPrefsKeys.lat);
-    // final long = sharedPrefsService.getString(SharedPrefsKeys.long);
     final lat = editLat ?? selectedLocation?.latitude;
     final long = editLong ?? selectedLocation?.longitude;
-    log('Selected lat long is: ${selectedLocation?.latitude} ${selectedLocation?.longitude}');
-    log('Edit lat long is: $lat $long');
     Map<String, dynamic> data = {
       "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
       "socketId": socketProvider.socket.id,
       'deviceId': sharedPrefsService.getString(SharedPrefsKeys.deviceId),
-      // "latitude": lat,
-      // "longitude": long,
       "latitude": lat.toString(),
       "longitude": long.toString(),
       "role": accountType == 'business' ? '0' : '1',
@@ -281,18 +283,14 @@ class GoogleMapProvider extends ChangeNotifier {
     }
     log('userLocation data is: $data');
     socketProvider.emitEvent(SocketEvents.userLocation, data);
-
     socketProvider.listenToEvent(SocketEvents.realTimeLocationUpdate, (data) {
       try {
         log('Raw socket realTimeLocationUpdate data: $data');
-
         if (data is Map<String, dynamic>) {
           LocationModel location = LocationModel.fromJson(data);
           address = location.data?.address;
           addressController.text = location.data?.address ?? '';
           distance = location.data?.distance.toString();
-          log('Updated Address: $address');
-
           // * Prevent overriding edited lat/long
           if (editLat == null && editLong == null) {
             if (selectedLocation?.latitude != location.data?.latitude ||
@@ -300,16 +298,20 @@ class GoogleMapProvider extends ChangeNotifier {
               selectedLocation = LatLng(
                   double.parse(location.data!.latitude.toString()),
                   double.parse(location.data!.longitude.toString()));
+              // moveCamera(selectedLocation!);
             }
+          } else {
+            selectedLocation = LatLng(editLat!, editLong!);
+            // moveCamera(selectedLocation!);
           }
-          isLoading = false; // Stop loading after receiving data
-          notifyListeners(); // Update UI
+          isLoading = false;
+          notifyListeners();
         } else {
           log('Received unexpected data format');
         }
       } catch (e) {
         log('Error parsing socket data: $e');
-        isLoading = false; // Stop loading even if there's an error
+        isLoading = false;
         notifyListeners();
       }
     });

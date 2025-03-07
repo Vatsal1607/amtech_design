@@ -1,7 +1,7 @@
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/modules/auth/login/login_provider.dart';
-import 'package:amtech_design/modules/bottom_bar/bottom_bar_page.dart';
 import 'package:amtech_design/modules/favorite/favorite_provider.dart';
+import 'package:amtech_design/modules/notification/notification_provider.dart';
 import 'package:amtech_design/modules/product_page/product_details_provider.dart';
 import 'package:amtech_design/modules/welcome/welcome_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -20,10 +20,10 @@ import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';
 import 'modules/firebase/firebase_provider.dart';
-import 'modules/firebase/firebase_services.dart';
 import 'modules/map/address/saved_address/saved_address_provider.dart';
 import 'modules/map/google_map_provider.dart';
 import 'modules/menu/menu_provider.dart';
+import 'modules/notification/notification_service.dart';
 import 'modules/order/order_status/order_status_provider.dart';
 import 'modules/profile/edit_profile/edit_profile_provider.dart';
 import 'modules/profile/profile_provider.dart';
@@ -45,8 +45,9 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
   await Firebase.initializeApp();
+  await NotificationService.initialize();
+  // await FirebaseServices().initNotifications(); //! notifyService
   await sharedPrefsService.init();
-  await FirebaseServices().initNotifications();
   runApp(const MyApp());
 }
 
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BillingProvider()),
         ChangeNotifierProvider(create: (_) => GoogleMapProvider()),
         ChangeNotifierProvider(create: (_) => SavedAddressProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

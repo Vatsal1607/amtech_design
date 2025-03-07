@@ -72,8 +72,6 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
       //* Socket get location
       googleMapProvider.emitAndListenGetLocation(
         socketProvider: socketProvider,
-        editLat: null,
-        editLong: null,
       );
     } else {
       PermissionStatus status = await Permission.location.request();

@@ -37,17 +37,16 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent, // Make status bar transparent
-      statusBarIconBrightness: Brightness.dark, // Set icons to dark
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
     ),
   );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  await sharedPrefsService.init();
   await Firebase.initializeApp();
   await NotificationService.initialize();
-  // await FirebaseServices().initNotifications(); //! notifyService
-  await sharedPrefsService.init();
   runApp(const MyApp());
 }
 
@@ -58,7 +57,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => FirebaseProvider()),
         ChangeNotifierProvider(create: (_) => BottomBarProvider()),
         ChangeNotifierProvider(create: (_) => MenuProvider()),
         ChangeNotifierProvider(create: (_) => WelcomeProvider()),

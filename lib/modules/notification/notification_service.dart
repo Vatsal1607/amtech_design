@@ -3,12 +3,15 @@ import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationService {
   static String? _fcmToken;
   static String? get fcmToken => _fcmToken;
   static final FirebaseMessaging _firebaseMessaging =
       FirebaseMessaging.instance;
+  static final FlutterLocalNotificationsPlugin _notificationsPlugin =
+      FlutterLocalNotificationsPlugin();
 
   static Future<void> initialize() async {
     try {
@@ -43,10 +46,18 @@ class NotificationService {
           sharedPrefsService.setString(SharedPrefsKeys.fcmToken, newToken);
           debugPrint("FCM Token refreshed: $newToken");
         });
+
+        initLocalNotifications();
+
         // * Handle foreground notifications
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-          log("Foreground Notification Received: ${message.notification?.title}");
+          log("Foreground NOTIFICATION RECEIVED: ${message.notification?.title}");
           // Handle foreground notification (e.g., show an in-app alert)
+          showNotification(
+            id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
+            title: message.notification?.title ?? 'No Title',
+            body: message.notification?.body ?? 'No Body',
+          );
         });
 
         FirebaseMessaging.onBackgroundMessage(
@@ -62,7 +73,37 @@ class NotificationService {
 
   // * Background message handler
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    log("Background Notification Received: ${message.notification?.title}");
+    log("Background NOTIFICATION RECEIVED: ${message.notification?.title}");
     // Handle background notification (e.g., store data locally)
+  }
+
+  static Future<void> initLocalNotifications() async {
+    const AndroidInitializationSettings androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const DarwinInitializationSettings iosSettings =
+        DarwinInitializationSettings();
+
+    InitializationSettings settings = const InitializationSettings(
+        android: androidSettings, iOS: iosSettings);
+
+    await _notificationsPlugin.initialize(settings);
+  }
+
+  static Future<void> showNotification(
+      {required int id, required String title, required String body}) async {
+    const AndroidNotificationDetails androidDetails =
+        AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      channelDescription: 'channel_description',
+      importance: Importance.high,
+      priority: Priority.high,
+    );
+
+    const NotificationDetails details =
+        NotificationDetails(android: androidDetails);
+
+    await _notificationsPlugin.show(id, title, body, details);
   }
 }

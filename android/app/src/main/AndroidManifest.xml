@@ -13,7 +13,8 @@
         android:label="135 Degrees"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
-        android:usesCleartextTraffic="true">// allow clear-text traffic for your API's domain.
+        android:usesCleartextTraffic="true"
+        android:enableOnBackInvokedCallback="true">// allow clear-text traffic for your API's domain.
          <service
             android:name="com.dexterous.flutterlocalnotifications.ForegroundService"
             android:foregroundServiceType="mediaPlayback|dataSync|location"

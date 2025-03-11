@@ -1,15 +1,24 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
     id "com.google.gms.google-services"
+    id 'org.jetbrains.kotlin.android'
 }
 
 dependencies {
   implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
   coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4' ///
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+  implementation "in.juspay:hypersdk:2.2.1"  // HDFC Replace with the latest version
+  implementation "in.juspay:hypercheckoutlite:2.2.1"
+  implementation "in.juspay:hyperinteg:2.2.1"
+  implementation "in.juspay:hyperlottie:2.2.1"
+  implementation "in.juspay:hypernfc:2.2.1"
+  implementation "in.juspay.merchants:hyper.assets.hdfcmaster:1.0.41"
 }
+
+//apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
     namespace = "com.example.amtech_design"

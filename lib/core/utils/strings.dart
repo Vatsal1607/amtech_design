@@ -135,6 +135,9 @@ class ImageStrings {
   static const splashScreenImg =
       '${BaseImagePath.basePath}splash_screen_img.png';
   static const salad = '${BaseImagePath.basePath}salad.png';
+  static const paymentSuccess = '${BaseImagePath.basePath}paymentSuccess.png';
+  static const paymentFailed = '${BaseImagePath.basePath}paymentFailed.png';
+  static const pending = '${BaseImagePath.basePath}pending.png';
 }
 
 class LottieStrings {

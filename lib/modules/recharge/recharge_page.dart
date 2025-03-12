@@ -9,14 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../core/utils/validator.dart';
 import '../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import '../../services/local/shared_preferences_service.dart';
+import '../hdfc_payment/payment_page.dart';
 import 'widgets/center_title_with_divider.dart';
 
 class RechargePage extends StatefulWidget {
@@ -28,33 +29,33 @@ class RechargePage extends StatefulWidget {
 
 class _RechargePageState extends State<RechargePage> {
   late RechargeProvider provider;
-  late Razorpay razorpay;
+  // late Razorpay razorpay;
 
-  @override
-  void initState() {
-    super.initState();
-    provider = Provider.of<RechargeProvider>(context, listen: false);
-    razorpay = Razorpay();
-    provider.amountController.addListener(() {
-      provider.formatIndianNumber(provider.amountController.text);
-    });
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   provider = Provider.of<RechargeProvider>(context, listen: false);
+  //   razorpay = Razorpay();
+  //   provider.amountController.addListener(() {
+  //     provider.formatIndianNumber(provider.amountController.text);
+  //   });
 
-    razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (response) {
-      provider.handlePaymentSuccess(context, response);
-    });
-    razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (response) {
-      provider.handlePaymentError(context, response);
-    });
-    razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (response) {
-      provider.handleExternalWallet(context, response);
-    });
-  }
+  //   razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (response) {
+  //     provider.handlePaymentSuccess(context, response);
+  //   });
+  //   razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (response) {
+  //     provider.handlePaymentError(context, response);
+  //   });
+  //   razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (response) {
+  //     provider.handleExternalWallet(context, response);
+  //   });
+  // }
 
   @override
   void dispose() {
     super.dispose();
     // provider.amountController.dispose();
-    razorpay.clear(); // Removes all event listeners
+    // razorpay.clear(); // Removes all event listeners
   }
 
   @override
@@ -229,15 +230,28 @@ class _RechargePageState extends State<RechargePage> {
                     onTap: () {
                       if (provider.formKey.currentState!.validate()) {
                         provider.amountFocusNode.unfocus();
+                        final cleanValue =
+                            provider.amountController.text.replaceAll(',', '');
+                        HyperSDK hyperSDK = HyperSDK();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PaymentPage(
+                              hyperSDK: hyperSDK,
+                              amount: cleanValue,
+                            ),
+                          ),
+                        );
                         // * userRecharge API * open Razorpay on success
-                        provider.userRecharge(context).then((isSuccess) {
-                          if (isSuccess != null && isSuccess) {
-                            openRazorpay();
-                            debugPrint('isSuccess callback api-——: $isSuccess');
-                          } else {
-                            debugPrint('isSuccess callback api-——: $isSuccess');
-                          }
-                        });
+                        // provider.userRecharge(context).then((isSuccess) {
+                        //   if (isSuccess != null && isSuccess) {
+                        //     /// openRazorpay();
+                        //     ///
+                        //     debugPrint('isSuccess callback api-——: $isSuccess');
+                        //   } else {
+                        //     debugPrint('isSuccess callback api-——: $isSuccess');
+                        //   }
+                        // });
                       } else {
                         debugPrint('INVALID Amount');
                       }
@@ -270,33 +284,33 @@ class _RechargePageState extends State<RechargePage> {
   }
 
   // * Open razorpay
-  void openRazorpay() {
-    final cleanValue = provider.amountController.text.replaceAll(',', '');
-    var options = {
-      'key': RazorPayKeys.testKey,
-      // 'key': RazorPayKeys.liveKey,
-      'amount': int.parse(cleanValue) * 100,
-      'currency': 'INR',
-      'order_id': provider.razorpayOrderId,
-      'name': '135 Degrees',
-      'description': 'Payment for Order #1234',
-      'prefill': {
-        'contact': '9876543210',
-        'email': 'customer@example.com',
-      },
-      'method': {
-        'upi': true,
-        'card': true,
-        'wallet': false,
-        'netbanking': false,
-        'paylater': false,
-      },
-    };
+  // void openRazorpay() {
+  //   final cleanValue = provider.amountController.text.replaceAll(',', '');
+  //   var options = {
+  //     'key': RazorPayKeys.testKey,
+  //     // 'key': RazorPayKeys.liveKey,
+  //     'amount': int.parse(cleanValue) * 100,
+  //     'currency': 'INR',
+  //     'order_id': provider.razorpayOrderId,
+  //     'name': '135 Degrees',
+  //     'description': 'Payment for Order #1234',
+  //     'prefill': {
+  //       'contact': '9876543210',
+  //       'email': 'customer@example.com',
+  //     },
+  //     'method': {
+  //       'upi': true,
+  //       'card': true,
+  //       'wallet': false,
+  //       'netbanking': false,
+  //       'paylater': false,
+  //     },
+  //   };
 
-    try {
-      razorpay.open(options);
-    } catch (e) {
-      debugPrint('Error: $e');
-    }
-  }
+  //   try {
+  //     razorpay.open(options);
+  //   } catch (e) {
+  //     debugPrint('Error: $e');
+  //   }
+  // }
 }

@@ -18,8 +18,10 @@ import 'package:dio/dio.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
 import '../../models/get_list_access_model.dart';
+import '../../models/get_payment_response_model.dart';
 import '../../models/get_personal_details_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/initiate_payment_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
@@ -275,6 +277,30 @@ class ApiService {
     return await apiClient.deleteAddress(
       userId,
       addressId,
+    );
+  }
+
+  Future<InitiatePaymentModel> initiateJuspayPayment({
+    required Map<String, dynamic> requestBody,
+  }) async {
+    return await apiClient.initiateJuspayPayment(
+      requestBody,
+    );
+  }
+
+  Future<GetPaymentResponseModel> getPaymentResponse({
+    required orderId,
+  }) async {
+    return await apiClient.getPaymentResponse(
+      orderId,
+    );
+  }
+
+  Future<VerifyRechargeModel> rechargeHandleJuspayResponse({
+    required Map<String, dynamic> requestBody,
+  }) async {
+    return await apiClient.rechargeHandleJuspayResponse(
+      requestBody,
     );
   }
 }

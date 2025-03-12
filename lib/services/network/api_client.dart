@@ -16,8 +16,10 @@ import '../../models/edit_location_request_model.dart';
 import '../../models/edit_profile_model.dart';
 import '../../models/favorite_add_model.dart';
 import '../../models/get_business_details_model.dart';
+import '../../models/get_payment_response_model.dart';
 import '../../models/get_personal_details_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/initiate_payment_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
@@ -220,5 +222,21 @@ abstract class ApiClient {
   Future<ApiGlobalModel> deleteAddress(
     @Path("userId") String userId,
     @Path("addressId") String addressId,
+  );
+
+  // HDFC initiateJuspayPayment
+  @POST(ApiEndpoints.initiateJuspayPayment)
+  Future<InitiatePaymentModel> initiateJuspayPayment(
+    @Body() Map<String, dynamic> requestBody,
+  );
+
+  @GET("${ApiEndpoints.rechargeStatus}/{order_id}")
+  Future<GetPaymentResponseModel> getPaymentResponse(
+    @Path("order_id") String orderId,
+  );
+
+  @POST(ApiEndpoints.rechargeHandleJuspayResponse)
+  Future<VerifyRechargeModel> rechargeHandleJuspayResponse(
+    @Body() Map<String, dynamic> body,
   );
 }

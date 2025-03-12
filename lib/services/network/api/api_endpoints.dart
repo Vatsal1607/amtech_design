@@ -34,4 +34,8 @@ class ApiEndpoints {
   static const String chooseLocation = 'choose-location';
   static const String editAddress = 'edit-address';
   static const String deleteAddress = 'delete-address';
+  static const String initiateJuspayPayment = 'user/initiateJuspayPayment';
+  static const String rechargeStatus = 'recharge/status';
+  static const String rechargeHandleJuspayResponse =
+      'recharge/handleJuspayResponse';
 }

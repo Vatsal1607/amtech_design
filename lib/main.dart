@@ -16,6 +16,7 @@ import 'modules/auth/location_selection/location_selection_provider.dart';
 import 'modules/auth/otp/otp_provider.dart';
 import 'modules/authorized_emp/authorized_emp_provider.dart';
 import 'modules/billing/billing_provider.dart';
+import 'modules/bottom_bar/bottom_bar_page.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';

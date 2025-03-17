@@ -95,6 +95,8 @@ class IconStrings {
   static const locationMarker = '${BaseIconPath.basePath}location_marker.svg';
   static const markerHome = '${BaseIconPath.basePath}marker_home.svg';
   static const delete = '${BaseIconPath.basePath}delete.svg';
+  static const subscriptionCrown =
+      '${BaseIconPath.basePath}subscription_crown.svg';
 }
 
 class ImageStrings {
@@ -138,6 +140,10 @@ class ImageStrings {
   static const paymentSuccess = '${BaseImagePath.basePath}paymentSuccess.png';
   static const paymentFailed = '${BaseImagePath.basePath}paymentFailed.png';
   static const pending = '${BaseImagePath.basePath}pending.png';
+  static const subscriptionBanner1 =
+      '${BaseImagePath.basePath}subscription_banner_1.png';
+  static const subscriptionBannerDoodle =
+      '${BaseImagePath.basePath}subscription_banner_doodle.png';
 }
 
 class LottieStrings {

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
+import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -118,6 +119,9 @@ class RegisterProvider extends ChangeNotifier {
       debugPrint('Personal Register log: $_personalRegisterModel');
       if (_personalRegisterModel?.success == true) {
         Navigator.pop(context);
+        context
+            .read<BusinessSelectionProvider>()
+            .getBusinessList(); //* API call
         customSnackBar(
           context: context,
           message: _personalRegisterModel!.message.toString(),

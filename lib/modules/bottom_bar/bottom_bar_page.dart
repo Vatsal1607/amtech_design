@@ -31,7 +31,6 @@ class _BottomBarPageState extends State<BottomBarPage> {
     super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_onScroll);
-
     _screens = [
       MenuPage(scrollController: _scrollController),
       ReorderPage(scrollController: _scrollController),
@@ -59,12 +58,9 @@ class _BottomBarPageState extends State<BottomBarPage> {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business';
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
-    debugPrint(
-        'User Token is: ${sharedPrefsService.getString(SharedPrefsKeys.userToken.toString())}');
-
     return Scaffold(
       body: Stack(
         children: [

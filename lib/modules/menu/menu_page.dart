@@ -11,6 +11,7 @@ import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
 import 'package:amtech_design/modules/menu/widgets/menu_page_loader.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
+import 'package:amtech_design/modules/menu/widgets/subscription_banner_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,11 +42,11 @@ class _MenuPageState extends State<MenuPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<GoogleMapProvider>().getCurrentLocation();
       context.read<MenuProvider>().homeMenuApi(); //* API call
+      context.read<MenuProvider>().getBanner(); //* API call
       final provider = Provider.of<MenuProvider>(context, listen: false);
       final selectedAddressTypeString =
           sharedPrefsService.getString(SharedPrefsKeys.selectedAddressType);
 
-      // Convert the string to HomeAddressType? (if not null)
       provider.selectedAddressType = selectedAddressTypeString != null
           ? HomeAddressType.values.firstWhere(
               (e) => e.name == selectedAddressTypeString, // Match by enum name
@@ -224,7 +225,6 @@ class _MenuPageState extends State<MenuPage> {
                                                                 .getString(
                                                                     SharedPrefsKeys
                                                                         .selectedAddress);
-                                                        log('storedAddress: $storedAddress');
                                                         if ((address == null ||
                                                                 address
                                                                     .isEmpty) &&
@@ -459,9 +459,8 @@ class _MenuPageState extends State<MenuPage> {
                                     minExtent: 51.h, // Height when pinned
                                     maxExtent: 51.h, // Height when scrolling
                                     child: Container(
-                                      margin: EdgeInsets.only(
-                                        left: 20.h,
-                                        right: 20.h,
+                                      margin: EdgeInsets.symmetric(
+                                        horizontal: 20.w,
                                       ),
                                       decoration: BoxDecoration(
                                         borderRadius:
@@ -492,31 +491,29 @@ class _MenuPageState extends State<MenuPage> {
                                             BannerView(
                                               accountType: accountType,
                                             ),
-                                            const SizedBox(height: 10.0),
-                                            DividerLabel(
-                                              label: 'subscriptions',
-                                              accountType: accountType,
-                                            ),
-                                            const SizedBox(height: 10.0),
+                                            const SizedBox(height: 20.0),
+
+                                            //* Subscriptions Banner
+                                            SubscriptionBannerWidget(),
 
                                             //* Subscriptions
-                                            GestureDetector(
-                                              onTap: () {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  Routes.productDetails,
-                                                  arguments: {
-                                                    'menuId':
-                                                        '', // Todo set menuId
-                                                    'detailsType': DetailsType
-                                                        .subscription.name,
-                                                  },
-                                                );
-                                              },
-                                              child: SubscriptionWidget(
-                                                provider: provider,
-                                              ),
-                                            ),
+                                            // GestureDetector(
+                                            //   onTap: () {
+                                            //     Navigator.pushNamed(
+                                            //       context,
+                                            //       Routes.productDetails,
+                                            //       arguments: {
+                                            //         'menuId':
+                                            //             '', // Todo set menuId
+                                            //         'detailsType': DetailsType
+                                            //             .subscription.name,
+                                            //       },
+                                            //     );
+                                            //   },
+                                            //   child: SubscriptionWidget(
+                                            //     provider: provider,
+                                            //   ),
+                                            // ),
 
                                             // * ListView Categories
                                             Consumer<MenuProvider>(

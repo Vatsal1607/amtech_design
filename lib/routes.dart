@@ -24,6 +24,7 @@ import 'modules/order/order_status/order_status_page.dart';
 import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
 import 'modules/recharge/recharge_page.dart';
+import 'modules/subscriptions/create_subscription_plan/create_subscription_plan.dart';
 
 class Routes {
   static const String initial = '/';
@@ -51,6 +52,7 @@ class Routes {
   static const String aboutUs = '/aboutUs';
   static const String googleMapPage = '/googleMapPage';
   static const String savedAddress = '/savedAddress';
+  static const String createSubscriptionPlan = '/createSubscriptionPlan';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -78,5 +80,6 @@ class Routes {
     aboutUs: (context) => const AboutUsPage(),
     googleMapPage: (context) => const GoogleMapPage(),
     savedAddress: (context) => const SavedAddressPage(),
+    createSubscriptionPlan: (context) => const CreateSubscriptionPlanPage(),
   };
 }

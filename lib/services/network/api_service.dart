@@ -17,6 +17,7 @@ import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
+import '../../models/get_banner_model.dart';
 import '../../models/get_list_access_model.dart';
 import '../../models/get_payment_response_model.dart';
 import '../../models/get_personal_details_model.dart';
@@ -301,6 +302,18 @@ class ApiService {
   }) async {
     return await apiClient.rechargeHandleJuspayResponse(
       requestBody,
+    );
+  }
+
+  Future<GetBennerModel> getBanner() async {
+    return await apiClient.getBanner();
+  }
+
+  Future<ApiGlobalModel> countBanner({
+    required String bannerId,
+  }) async {
+    return await apiClient.countBanner(
+      bannerId,
     );
   }
 }

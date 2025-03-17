@@ -30,7 +30,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? prefix;
   final TextCapitalization textCapitalization;
   final double? borderRadius;
-  final String label;
+  final String? label;
   final Widget? suffix;
   final bool readOnly;
   const CustomTextField({
@@ -58,7 +58,7 @@ class CustomTextField extends StatelessWidget {
     this.prefix,
     this.textCapitalization = TextCapitalization.sentences,
     this.borderRadius,
-    this.label = '',
+    this.label,
     this.suffix,
     this.readOnly = false,
   });
@@ -83,7 +83,7 @@ class CustomTextField extends StatelessWidget {
       maxLines: maxLines,
       minLines: minLines,
       decoration: InputDecoration(
-        label: Text('$label'),
+        label: label != null ? Text('$label') : null,
         labelStyle: GoogleFonts.publicSans(
           color: AppColors.seaShell,
         ),

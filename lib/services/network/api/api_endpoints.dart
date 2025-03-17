@@ -38,4 +38,6 @@ class ApiEndpoints {
   static const String rechargeStatus = 'recharge/status';
   static const String rechargeHandleJuspayResponse =
       'recharge/handleJuspayResponse';
+  static const String getBanner = 'get/banner';
+  static const String countBanner = 'count/banner';
 }

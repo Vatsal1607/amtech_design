@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import '../../core/utils/enums/enums.dart';
 import '../../core/utils/strings.dart';
 import '../../models/api_global_model.dart';
+import '../../models/get_banner_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../services/network/api_service.dart';
 
@@ -65,10 +66,13 @@ class MenuProvider extends ChangeNotifier {
     return true;
   }
 
-  final List<String> banners = [
-    ImageStrings.healthFirstBanner,
-    ImageStrings.healthFirstBanner,
-  ];
+  // final List<String> banners = [
+  //   ImageStrings.healthFirstBanner,
+  //   ImageStrings.healthFirstBanner,
+  // ];
+
+  List<String> banners = [];
+  List<BannersData> bannersData = [];
 
   final List<String> productImage = [
     ImageStrings.masalaTea2,
@@ -303,6 +307,58 @@ class MenuProvider extends ChangeNotifier {
     } finally {
       isLoadingSize = false;
       notifyListeners();
+    }
+  }
+
+  bool isLoadingGetBanner = false;
+  // * getBanner API
+  Future<void> getBanner() async {
+    log('Get banner called');
+    isLoadingGetBanner = true;
+    notifyListeners();
+    try {
+      final res = await apiService.getBanner();
+      log('getBanner: $res');
+      if (res.success == true && res.data != null) {
+        // Extracting image URLs from the response
+        banners = res.data!
+            .where((banner) =>
+                banner.imageUrl != null && banner.imageUrl!.isNotEmpty)
+            .map((banner) =>
+                banner.imageUrl!.first) // Get the first image from each banner
+            .toList();
+        bannersData = res.data!
+            .where((banner) =>
+                banner.imageUrl != null && banner.imageUrl!.isNotEmpty)
+            .toList();
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error fetching getBanner: ${e.toString()}");
+    } finally {
+      isLoadingGetBanner = false;
+      notifyListeners();
+    }
+  }
+
+  // * getBanner API
+  // Todo: call while user clicks on banner
+  Future<void> countBanner({
+    required final String bannerId,
+  }) async {
+    try {
+      final res = await apiService.countBanner(
+        bannerId: bannerId,
+      );
+      log('countBanner: $res');
+      if (res.success == true) {
+        log('countBanner: ${res.message}');
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      debugPrint("Error fetching countBanner: ${e.toString()}");
     }
   }
 

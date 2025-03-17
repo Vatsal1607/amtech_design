@@ -15,6 +15,7 @@ import '../../models/edit_location_model.dart';
 import '../../models/edit_location_request_model.dart';
 import '../../models/edit_profile_model.dart';
 import '../../models/favorite_add_model.dart';
+import '../../models/get_banner_model.dart';
 import '../../models/get_business_details_model.dart';
 import '../../models/get_payment_response_model.dart';
 import '../../models/get_personal_details_model.dart';
@@ -238,5 +239,15 @@ abstract class ApiClient {
   @POST(ApiEndpoints.rechargeHandleJuspayResponse)
   Future<VerifyRechargeModel> rechargeHandleJuspayResponse(
     @Body() Map<String, dynamic> body,
+  );
+
+  // getBanner
+  @GET(ApiEndpoints.getBanner)
+  Future<GetBennerModel> getBanner();
+
+  // Banner click count
+  @PUT('${ApiEndpoints.countBanner}/{bannerId}')
+  Future<ApiGlobalModel> countBanner(
+    @Path("bannerId") String bannerId,
   );
 }

@@ -24,7 +24,7 @@ import 'modules/order/order_status/order_status_page.dart';
 import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
 import 'modules/recharge/recharge_page.dart';
-import 'modules/subscriptions/create_subscription_plan/create_subscription_plan.dart';
+import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
 
 class Routes {
   static const String initial = '/';

@@ -342,8 +342,7 @@ class MenuProvider extends ChangeNotifier {
     }
   }
 
-  // * getBanner API
-  // Todo: call while user clicks on banner
+  // * countBanner API
   Future<void> countBanner({
     required final String bannerId,
   }) async {

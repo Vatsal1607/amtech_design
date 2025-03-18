@@ -89,14 +89,14 @@ class _SubscriptionBannerWidgetState extends State<SubscriptionBannerWidget> {
                 Text(
                   "Grab More, Pay Less!",
                   style: GoogleFonts.poppins(
-                    fontSize: 11.sp,
+                    fontSize: 12.sp,
                     color: AppColors.seaShell,
                   ),
                 ),
                 Text(
                   "Enjoy Your Favorites",
                   style: GoogleFonts.poppins(
-                    fontSize: 15.sp,
+                    fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
                     color: AppColors.disabledColor,
                   ),
@@ -118,7 +118,6 @@ class _SubscriptionBannerWidgetState extends State<SubscriptionBannerWidget> {
             right: 20.w,
             child: GestureDetector(
               onTap: () {
-                debugPrint('Get a subscription pressed');
                 Navigator.pushNamed(context, Routes.createSubscriptionPlan);
               },
               child: Container(

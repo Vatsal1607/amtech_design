@@ -87,7 +87,8 @@ class _MenuPageState extends State<MenuPage> {
     //   });
     // });
     return Consumer<MenuProvider>(
-      builder: (context, _, child) => provider.isLoading
+      builder: (context, _, child) => provider.isLoading ||
+              provider.isLoadingGetBanner
           ? const MenuPageLoader()
           : Scaffold(
               backgroundColor: getColorAccountType(

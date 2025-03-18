@@ -32,6 +32,7 @@ import 'modules/provider/socket_provider.dart';
 import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
+import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'routes.dart';
 
 void main() async {
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => GoogleMapProvider()),
         ChangeNotifierProvider(create: (_) => SavedAddressProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => CreateSubscriptionPlanProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

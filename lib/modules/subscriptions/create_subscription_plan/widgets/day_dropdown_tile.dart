@@ -1,8 +1,13 @@
 import 'dart:developer';
-
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/custom_subs_dropdown.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../core/utils/app_colors.dart';
+import '../create_subscription_plan_provider.dart';
 
 class DaySelectionDropdown extends StatefulWidget {
   const DaySelectionDropdown({super.key});
@@ -12,189 +17,171 @@ class DaySelectionDropdown extends StatefulWidget {
 }
 
 class _DaySelectionDropdownState extends State<DaySelectionDropdown> {
-  bool isExpanded = false;
-  String? selectedTime = "10:00AM To 11:00AM";
-  String? selectedMeal = "Exotic Fruit Salad";
-
-  final List<String> timeSlots = [
-    "08:00AM To 09:00AM",
-    "10:00AM To 11:00AM",
-    "12:00PM To 01:00PM"
-  ];
-  final List<String> mealOptions = [
-    "Exotic Fruit Salad",
-    "Veggie Wrap",
-    "Pasta Bowl"
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        // Keeps the "data" below the dropdown in the same place
-        Column(
-          children: [
-            SizedBox(
-              height: 60.h,
-              width: 280.w,
-            ), // Space for dropdown area
-            // const Text(
-            //   "Below Content (Static)",
-            //   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            // ),
-          ],
-        ),
-        Positioned(
-          top: 0,
-          left: 0,
-          right: 0,
-          child: Column(
-            children: [
-              // Header (Monday Dropdown Button)
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isExpanded = !isExpanded;
-                  });
-                },
-                child: Container(
+    final provider =
+        Provider.of<CreateSubscriptionPlanProvider>(context, listen: false);
+    return Flexible(
+      child: Column(
+        children: [
+          // * Dropdown button using DropdownButton2
+          DropdownButtonHideUnderline(
+            child: Consumer<CreateSubscriptionPlanProvider>(
+              builder: (context, _, child) => DropdownButton2<String>(
+                isExpanded: true,
+                onChanged: (value) {}, // No selection needed for "Monday"
+                onMenuStateChange: provider.onDayDropdownMenuStateChange,
+                customButton: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(16),
+                  height: 50.h,
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF00204A),
-                    borderRadius: BorderRadius.circular(16),
+                    color: AppColors.primaryColor,
+                    borderRadius: provider.isDayDropdownOpen
+                        ? BorderRadius.only(
+                            topLeft: Radius.circular(30.r),
+                            topRight: Radius.circular(30.r),
+                          )
+                        : BorderRadius.circular(30.r),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text(
+                      Text(
                         "Monday",
-                        style: TextStyle(
+                        style: GoogleFonts.publicSans(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Icon(
-                        isExpanded
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        color: Colors.white,
-                      ),
+                      const Icon(Icons.keyboard_arrow_down,
+                          color: Colors.white),
                     ],
                   ),
                 ),
-              ),
-
-              // Expanded Dropdown Content (Overlays Below Text)
-              if (isExpanded)
-                Material(
-                  elevation: 5,
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF00204A),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Column(
-                      children: [
-                        _buildDropdown(
-                            "Select Time Slot", selectedTime, timeSlots,
-                            (value) {
-                          // Prevents closing the main dropdown when interacting with this one
-                          // FocusScope.of(context).requestFocus(FocusNode());
-                          setState(() {
-                            selectedTime = value;
-                            log('Selected time slot $value');
-                          });
-                        }),
-
-                        _buildDropdown("Select Meal", selectedMeal, mealOptions,
-                            (value) {
-                          // Prevents closing the main dropdown when interacting with this one
-                          // FocusScope.of(context).requestFocus(FocusNode());
-                          setState(() {
-                            selectedMeal = value;
-                          });
-                        }),
-
-                        const Divider(color: Colors.white, thickness: 0.5),
-
-                        // Add New Meal Button
-                        Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: ElevatedButton.icon(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.transparent,
-                              side: const BorderSide(color: Colors.white),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              elevation: 0,
-                            ),
-                            onPressed: () {},
-                            icon: const Icon(Icons.add,
-                                color: Colors.white, size: 16),
-                            label: const Text("ADD NEW MEAL",
-                                style: TextStyle(color: Colors.white)),
+                dropdownStyleData: DropdownStyleData(
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    borderRadius: provider.isDayDropdownOpen
+                        ? BorderRadius.zero
+                        : BorderRadius.only(
+                            bottomLeft: Radius.circular(30.r),
+                            bottomRight: Radius.circular(30.r),
                           ),
-                        ),
-                      ],
-                    ),
                   ),
                 ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+                menuItemStyleData: MenuItemStyleData(
+                  height: 200.h, // Ensure each menu item has proper height
+                ),
+                items: [
+                  DropdownMenuItem<String>(
+                    value: "monday",
+                    enabled: false, // Disabling selection
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          // **Time Slot Dropdown
+                          Column(
+                            children: [
+                              Text(
+                                'Select Time Slot',
+                                style: GoogleFonts.publicSans(
+                                  color: AppColors.disabledColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Consumer<CreateSubscriptionPlanProvider>(
+                                builder: (context, _, child) =>
+                                    CustomSubsDropdown(
+                                  items: provider.timeSlots,
+                                  selectedValue: provider.selectedTime,
+                                  onChanged: provider.onChangedTimeslot,
+                                  onMenuStateChange: provider.onMenuStateChange,
+                                  isDropdownOpen:
+                                      provider.isTimeslotDropdownOpen,
+                                ),
+                              ),
+                            ],
+                          ),
 
-  Widget _buildDropdown(String label, String? selectedValue,
-      List<String> options, ValueChanged<String?> onChanged) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label,
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold)),
-          const SizedBox(height: 4),
-          DropdownButtonHideUnderline(
-            child: DropdownButton2<String>(
-              value: selectedValue,
-              isExpanded: true,
-              dropdownStyleData: const DropdownStyleData(
-                elevation: 8,
-                useSafeArea: true, // Prevents dismissing the parent dropdown
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
+                          SizedBox(height: 10.h),
+
+                          // **Meal Selection (Non-Selectable)**
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Select Meal",
+                                style: GoogleFonts.publicSans(
+                                  color: AppColors.disabledColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              SizedBox(width: 25.w),
+                              Expanded(
+                                child: Container(
+                                  height: 30.h,
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 6.w),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.seaShell,
+                                    borderRadius: BorderRadius.circular(30.r),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'Exotic Fruit Salad',
+                                        style: GoogleFonts.publicSans(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14.sp),
+                                      ),
+                                      const Icon(Icons.arrow_forward_ios,
+                                          color: Colors.black, size: 10),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          const Divider(color: Colors.white, thickness: 0.5),
+
+                          // **Add New Meal Button**
+                          Padding(
+                            padding: EdgeInsets.all(12.w),
+                            child: ElevatedButton.icon(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white.withOpacity(0.1),
+                                side: const BorderSide(color: Colors.white),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8.r)),
+                                elevation: 2,
+                              ),
+                              onPressed: () {
+                                log("Add New Meal Button Pressed");
+                              },
+                              icon: const Icon(Icons.add,
+                                  color: Colors.white, size: 16),
+                              label: Text(
+                                "ADD NEW MEAL",
+                                style:
+                                    GoogleFonts.publicSans(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              onChanged: onChanged,
-              buttonStyleData: ButtonStyleData(
-                height: 45,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              iconStyleData: const IconStyleData(
-                icon: Icon(Icons.keyboard_arrow_down, color: Colors.black),
-              ),
-              items: options.map((option) {
-                return DropdownMenuItem(
-                  value: option,
-                  child:
-                      Text(option, style: const TextStyle(color: Colors.black)),
-                );
-              }).toList(),
             ),
           ),
         ],

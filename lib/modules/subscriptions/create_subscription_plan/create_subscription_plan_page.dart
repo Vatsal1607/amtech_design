@@ -105,9 +105,13 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                         inactiveColor: AppColors.disabledColor,
                       ),
                     ),
+                    SizedBox(width: 10.w),
+
+                    // * DayDropdownTile
                     DaySelectionDropdown(),
                   ],
                 ),
+                SizedBox(height: 20.h),
                 Text('data'),
               ],
             ),

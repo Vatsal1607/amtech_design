@@ -29,4 +29,28 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     isSwitched = val;
     notifyListeners();
   }
+
+  bool isTimeslotDropdownOpen = false;
+  onMenuStateChange(isOpen) {
+    isTimeslotDropdownOpen = isOpen;
+    notifyListeners();
+  }
+
+  bool isDayDropdownOpen = false;
+  onDayDropdownMenuStateChange(isOpen) {
+    isDayDropdownOpen = isOpen;
+    notifyListeners();
+  }
+
+  String? selectedTime = "10:00AM To 11:00AM";
+  onChangedTimeslot(value) {
+    selectedTime = value;
+    notifyListeners();
+  }
+
+  final List<String> timeSlots = [
+    "08:00AM To 09:00AM",
+    "10:00AM To 11:00AM",
+    "12:00PM To 01:00PM"
+  ];
 }

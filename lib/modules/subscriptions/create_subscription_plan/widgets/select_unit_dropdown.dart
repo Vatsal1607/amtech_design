@@ -29,7 +29,7 @@ class SelectUnitDropdown extends StatelessWidget {
                   : BorderRadius.only(
                       bottomLeft: Radius.circular(30.r),
                       bottomRight: Radius.circular(30.r),
-                    ), // Rounded corners
+                    ),
             ),
             elevation: 0,
           ),

@@ -14,6 +14,7 @@ class CustomButtonWithArrow extends StatelessWidget {
   final String? text;
   final String? totalQty;
   final bool isLoading;
+  final Widget? leadingWidget;
   const CustomButtonWithArrow({
     super.key,
     required this.accountType,
@@ -22,6 +23,7 @@ class CustomButtonWithArrow extends StatelessWidget {
     this.text,
     this.totalQty,
     this.isLoading = false,
+    this.leadingWidget,
   });
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class CreateSubscriptionPlanProvider extends ChangeNotifier {
@@ -45,6 +47,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   String? selectedTime = "10:00AM To 11:00AM";
   onChangedTimeslot(value) {
     selectedTime = value;
+    log('selectedTime $selectedTime');
     notifyListeners();
   }
 

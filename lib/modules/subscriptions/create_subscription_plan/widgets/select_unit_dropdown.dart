@@ -11,7 +11,7 @@ class SelectUnitDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final createSubsPlanProvider =
-        Provider.of<CreateSubscriptionPlanProvider>(context, listen: false);
+        Provider.of<CreateSubscriptionPlanProvider>(context, listen: true);
 
     return Consumer<CreateSubscriptionPlanProvider>(
       builder: (context, _, child) => DropdownButtonHideUnderline(

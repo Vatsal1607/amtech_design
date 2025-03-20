@@ -1,7 +1,8 @@
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
-
-import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/day_dropdown_tile.dart';
+import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/custom_button_with_arrow.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/day_selection_dropdown.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,102 +21,148 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider =
-        Provider.of<CreateSubscriptionPlanProvider>(context, listen: false);
+        Provider.of<CreateSubscriptionPlanProvider>(context, listen: true);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
         title: 'Create Your Daily Plan',
         leftPadTitle: 35.w,
         accountType: accountType,
       ),
-      body: Column(
+      body: Stack(
         children: [
-          const Divider(
-            color: AppColors.primaryColor,
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            children: [
+              const Divider(
+                color: AppColors.primaryColor,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
+                child: Column(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Select Units',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.primaryColor,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Select Units',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primaryColor,
+                              ),
+                            ),
+                            Text(
+                              "1 Unit = 1 Item",
+                              style: GoogleFonts.publicSans(
+                                fontSize: 14.sp,
+                                color: AppColors.disabledColor,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          "1 Unit = 1 Item",
-                          style: GoogleFonts.publicSans(
-                            fontSize: 14.sp,
-                            color: AppColors.disabledColor,
+
+                        // * Custom dropdown
+                        const SelectUnitDropdown(),
+                      ],
+                    ),
+                    SizedBox(height: 25.h),
+                    // * Select Your Meals
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Select Your Meals',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.primaryColor,
+                            ),
+                          ),
+                          Text(
+                            "We're Closed On Sunday",
+                            style: GoogleFonts.publicSans(
+                              fontSize: 14.sp,
+                              color: AppColors.disabledColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 25.h),
+
+                    // * DayDropdownTile
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FlutterSwitch(
+                          value: provider.isSwitched,
+                          onToggle: provider.onToggleSwitch,
+                          width: 70.w,
+                          height: 35.h,
+                          activeColor: AppColors.primaryColor,
+                          inactiveColor: AppColors.disabledColor,
+                        ),
+                        SizedBox(width: 10.w),
+
+                        // * Day Dropdown
+                        Flexible(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              DaySelectionDropdown(
+                                  // isDropdownOpen: provider.isTimeslotDropdownOpen,
+                                  // onMenuStateChange: provider.onMenuStateChange,
+                                  // dayName: 'Monday',
+                                  // timeSlots: provider.timeSlots,
+                                  // selectedTime: provider.selectedTime,
+                                  // onChangedTimeSlot: (value) {
+                                  //   provider.onChangedTimeslot(value);
+                                  // },
+                                  ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  Text(
+                                    '10:00AM To 11::00AM',
+                                    style: GoogleFonts.publicSans(
+                                      fontSize: 15.sp,
+                                      color: AppColors.disabledColor,
+                                    ),
+                                  ),
+                                  Text(
+                                    'Mexican Salad',
+                                    style: GoogleFonts.publicSans(
+                                      fontSize: 15.sp,
+                                      color: AppColors.disabledColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
-
-                    // * Custom dropdown
-                    SelectUnitDropdown(),
+                    SizedBox(height: 20.h),
                   ],
                 ),
-                SizedBox(height: 25.h),
-                // * Select Your Meals
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Select Your Meals',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primaryColor,
-                        ),
-                      ),
-                      Text(
-                        "We're Closed On Sunday",
-                        style: GoogleFonts.publicSans(
-                          fontSize: 14.sp,
-                          color: AppColors.disabledColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 25.h),
-
-                // * DayDropdownTile
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Consumer<CreateSubscriptionPlanProvider>(
-                      builder: (context, _, child) => FlutterSwitch(
-                        value: provider.isSwitched,
-                        onToggle: provider.onToggleSwitch,
-                        width: 70.w,
-                        height: 35.h,
-                        activeColor: AppColors.primaryColor,
-                        inactiveColor: AppColors.disabledColor,
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
-
-                    // * DayDropdownTile
-                    DaySelectionDropdown(),
-                  ],
-                ),
-                SizedBox(height: 20.h),
-                Text('data'),
-              ],
-            ),
+              ),
+            ],
           ),
+          Positioned.fill(
+              left: 22.w,
+              right: 22.w,
+              bottom: 40.h,
+              child: const Align(
+                alignment: Alignment.bottomCenter,
+                child: CustomSubsButtonWithArrow(),
+              ))
         ],
       ),
     );

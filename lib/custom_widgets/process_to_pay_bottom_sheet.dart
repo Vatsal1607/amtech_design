@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -91,17 +93,13 @@ void showProcessToPayBottomSheeet({
                     //! On Horizontal Drag End
                     onHorizontalDragEnd: (details) async {
                       debugPrint('Horizontal Drag End');
+                      log('orderCreateData $orderCreateData');
                       cartProvider.onHorizontalDragEnd(
                         details: details,
                         context: context,
                         socketProvider: socketProvider,
                         orderCreateData: orderCreateData,
                       );
-                      // //* Emit socket event
-                      // socketProvider.emitEvent(
-                      //   SocketEvents.orderCreate,
-                      //   orderCreateData,
-                      // );
                     },
                   ),
                 ],

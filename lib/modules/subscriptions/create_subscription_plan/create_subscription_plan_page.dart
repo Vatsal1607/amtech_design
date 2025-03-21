@@ -1,7 +1,5 @@
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
-import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
-import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/custom_button_with_arrow.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/day_selection_dropdown.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +9,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import 'create_subscription_plan_provider.dart';
+import 'widgets/custom_subsbutton_with_arrow.dart';
 import 'widgets/select_unit_dropdown.dart';
 
 class CreateSubscriptionPlanPage extends StatelessWidget {
@@ -96,7 +95,6 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
 
                     // * DayDropdownTile
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         FlutterSwitch(
@@ -114,16 +112,7 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              DaySelectionDropdown(
-                                  // isDropdownOpen: provider.isTimeslotDropdownOpen,
-                                  // onMenuStateChange: provider.onMenuStateChange,
-                                  // dayName: 'Monday',
-                                  // timeSlots: provider.timeSlots,
-                                  // selectedTime: provider.selectedTime,
-                                  // onChangedTimeSlot: (value) {
-                                  //   provider.onChangedTimeslot(value);
-                                  // },
-                                  ),
+                              DaySelectionDropdown(),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceAround,

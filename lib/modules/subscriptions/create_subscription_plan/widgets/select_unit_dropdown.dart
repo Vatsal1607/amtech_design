@@ -19,6 +19,8 @@ class SelectUnitDropdown extends StatelessWidget {
           value: createSubsPlanProvider.selectedValue ??
               createSubsPlanProvider.items.first["value"],
           isExpanded: true,
+          menuItemStyleData:
+              MenuItemStyleData(height: 40.h), //height of each item
           dropdownStyleData: DropdownStyleData(
             maxHeight: 200.h,
             width: 220.w,

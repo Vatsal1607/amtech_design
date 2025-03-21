@@ -12,6 +12,7 @@ class SmallEditButton extends StatelessWidget {
   final double height;
   final Color? bgColor;
   final Color? textColor;
+  final double? fontSize;
   const SmallEditButton({
     super.key,
     required this.accountType,
@@ -21,6 +22,7 @@ class SmallEditButton extends StatelessWidget {
     this.height = 20,
     this.bgColor,
     this.textColor,
+    this.fontSize,
   });
 
   @override
@@ -43,7 +45,7 @@ class SmallEditButton extends StatelessWidget {
           child: Text(
             text,
             style: GoogleFonts.publicSans(
-              fontSize: 11.sp,
+              fontSize: fontSize ?? 11.sp,
               color: textColor ?? AppColors.white,
               fontWeight: FontWeight.bold,
             ),

@@ -1,7 +1,12 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
+import '../buttons/custom_bottomsheet_close_button.dart';
+import 'select_meal_bottomsheet_provider.dart';
+import 'widgets/bottomsheet_tabbar_view_widget.dart';
 
 void showSelectMealBottomSheeet({
   required BuildContext context,
@@ -16,51 +21,97 @@ void showSelectMealBottomSheeet({
     ),
     isScrollControlled: true, // Allows full height modal
     builder: (context) {
-      return SizedBox(
-        height: 400.h,
-        child: const DefaultTabController(
-          length: 4,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              // * Tab Bar
-              TabBar(
-                dividerColor: Colors.transparent,
-                indicatorColor: Colors.white,
-                labelColor: Colors.white,
-                unselectedLabelColor: Colors.grey,
-                labelStyle: TextStyle(fontWeight: FontWeight.bold),
-                unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w600),
-                tabs: [
-                  Tab(text: "Salads"),
-                  Tab(text: "Juice"),
-                  Tab(text: "Shakes"),
-                  Tab(text: "Favourites"),
+      final provider =
+          Provider.of<SelectMealBottomsheetProvider>(context, listen: false);
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          SizedBox(
+            height: 600.h,
+            child: DefaultTabController(
+              length: 5,
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  // * Tab Bar
+                  const TabBar(
+                    isScrollable: true,
+                    tabAlignment: TabAlignment.start,
+                    dividerColor: Colors.transparent,
+                    indicatorColor: Colors.white,
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    unselectedLabelStyle:
+                        TextStyle(fontWeight: FontWeight.w600),
+                    tabs: [
+                      Tab(text: "Salads"),
+                      Tab(text: "Juice"),
+                      Tab(text: "Shakes"),
+                      Tab(text: "Favourites"),
+                      Tab(text: "Food"),
+                    ],
+                  ),
+
+                  // * Tab Bar View
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        BottomsheetTabbarViewWidget(
+                          text: "Salads Content",
+                          provider: provider,
+                        ),
+                        BottomsheetTabbarViewWidget(
+                          text: "Juice Content",
+                          provider: provider,
+                        ),
+                        BottomsheetTabbarViewWidget(
+                          text: "Shakes Content",
+                          provider: provider,
+                        ),
+                        BottomsheetTabbarViewWidget(
+                          text: "Favourite Content",
+                          provider: provider,
+                        ),
+                        BottomsheetTabbarViewWidget(
+                          text: "Food",
+                          provider: provider,
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-
-              // * Tab Bar View
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    Center(
-                      child: Text("Salads Content"),
-                    ),
-                    Center(
-                      child: Text("Juice Content"),
-                    ),
-                    Center(
-                      child: Text("Shakes Content"),
-                    ),
-                    Center(
-                      child: Text("Fav Content"),
-                    ),
-                  ],
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            left: 0,
+            child: Container(
+              color: AppColors.primaryColor,
+              padding: EdgeInsets.only(
+                top: 8.h,
+                bottom: 20.h,
+                right: 20.h,
+                left: 20.h,
+              ),
+              child: const CustomSubsButtonWithArrow(
+                bgColor: AppColors.seaShell,
+                singleText: '2 Items Added',
+                iconData: Icons.done,
+                iconColor: AppColors.seaShell,
+                iconBgColor: AppColors.primaryColor,
+              ),
+            ),
+          ),
+          const Positioned(
+            top: -40,
+            right: 0,
+            left: 0,
+            child: CustomBottomsheetCloseButton(),
+          ),
+        ],
       );
     },
   );

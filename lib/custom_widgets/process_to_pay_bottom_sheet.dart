@@ -1,7 +1,6 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
@@ -106,30 +105,11 @@ void showProcessToPayBottomSheeet({
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             top: -40,
             right: 0,
             left: 0,
-            child: IgnorePointer(
-              ignoring: true,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  debugPrint('Close pressed');
-                },
-                child: Container(
-                  height: 30.h,
-                  width: 30.w,
-                  decoration: const BoxDecoration(
-                    color: AppColors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const SvgIcon(
-                    icon: IconStrings.close,
-                  ),
-                ),
-              ),
-            ),
+            child: CustomBottomsheetCloseButton(),
           ),
         ],
       );

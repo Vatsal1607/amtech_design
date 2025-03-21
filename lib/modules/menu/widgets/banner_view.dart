@@ -68,26 +68,29 @@ class BannerView extends StatelessWidget {
         ),
         SizedBox(height: 8.h),
         //* Dots indicator
+
         Consumer<MenuProvider>(
-          builder: (context, provider, child) => AnimatedSmoothIndicator(
-            activeIndex: provider.carouselCurrentIndex,
-            count: provider.banners.length,
-            effect: WormEffect(
-              dotHeight: 7,
-              dotWidth: 7,
-              spacing: 5.w,
-              activeDotColor: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
-              ),
-              dotColor: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor.withOpacity(0.5),
-                personalColor: AppColors.darkGreenGrey.withOpacity(0.5),
-              ),
-            ),
-          ),
+          builder: (context, provider, child) => provider.banners.isEmpty
+              ? const SizedBox()
+              : AnimatedSmoothIndicator(
+                  activeIndex: provider.carouselCurrentIndex,
+                  count: provider.banners.length,
+                  effect: WormEffect(
+                    dotHeight: 7,
+                    dotWidth: 7,
+                    spacing: 5.w,
+                    activeDotColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    dotColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor.withOpacity(0.5),
+                      personalColor: AppColors.darkGreenGrey.withOpacity(0.5),
+                    ),
+                  ),
+                ),
         ),
       ],
     );

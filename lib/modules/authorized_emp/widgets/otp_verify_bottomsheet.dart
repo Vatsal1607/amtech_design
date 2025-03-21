@@ -7,8 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
-import '../../../core/utils/strings.dart';
-import '../../../custom_widgets/svg_icon.dart';
+import '../../../custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 
 void otpVerifyBottomSheeet({
   required BuildContext context,
@@ -138,30 +137,11 @@ void otpVerifyBottomSheeet({
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             top: -40,
             right: 0,
             left: 0,
-            child: IgnorePointer(
-              ignoring: true,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                  debugPrint('Close pressed');
-                },
-                child: Container(
-                  height: 30.h,
-                  width: 30.w,
-                  decoration: const BoxDecoration(
-                    color: AppColors.red,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const SvgIcon(
-                    icon: IconStrings.close,
-                  ),
-                ),
-              ),
-            ),
+            child: CustomBottomsheetCloseButton(),
           ),
         ],
       );

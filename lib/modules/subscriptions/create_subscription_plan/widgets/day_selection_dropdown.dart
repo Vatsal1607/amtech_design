@@ -15,20 +15,8 @@ import '../../../../core/utils/app_colors.dart';
 import '../create_subscription_plan_provider.dart';
 
 class DaySelectionDropdown extends StatelessWidget {
-  // final String dayName;
-  // final List<String> timeSlots;
-  // final String? selectedTime;
-  // Function(String?) onChangedTimeSlot;
-  // Function(bool) onMenuStateChange;
-  // final bool isDropdownOpen;
-  DaySelectionDropdown({
+  const DaySelectionDropdown({
     super.key,
-    // required this.dayName,
-    // required this.timeSlots,
-    // this.selectedTime,
-    // required this.onChangedTimeSlot,
-    // required this.onMenuStateChange,
-    // required this.isDropdownOpen,
   });
 
   @override
@@ -88,13 +76,13 @@ class DaySelectionDropdown extends StatelessWidget {
                 ),
               ),
               menuItemStyleData: MenuItemStyleData(
-                height: 200.h, // Ensure each menu item has proper height
+                height: 180.h, // Ensure each menu item has proper height
               ),
               items: [
                 DropdownMenuItem<String>(
                   value: 'Monday',
                   enabled: false, // Disabling selection
-                  alignment: Alignment.center,
+                  // alignment: Alignment.center,
                   child: SingleChildScrollView(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
@@ -116,12 +104,8 @@ class DaySelectionDropdown extends StatelessWidget {
                             SizedBox(height: 8.h),
                             Consumer<CreateSubscriptionPlanProvider>(
                               builder: (context, _, child) =>
+                                  // * Custom Subscription Dropdown Button
                                   CustomSubsDropdown(
-                                // items: timeSlots,
-                                // selectedValue: selectedTime,
-                                // onChanged: onChangedTimeSlot,
-                                // onMenuStateChange: onMenuStateChange,
-                                // isDropdownOpen: isDropdownOpen,
                                 items: provider.timeSlots,
                                 selectedValue: provider.selectedTime,
                                 onChanged: provider.onChangedTimeslot,
@@ -132,7 +116,7 @@ class DaySelectionDropdown extends StatelessWidget {
                           ],
                         ),
 
-                        SizedBox(height: 10.h),
+                        SizedBox(height: 20.h),
 
                         // **Meal Selection (Non-Selectable)**
                         Row(

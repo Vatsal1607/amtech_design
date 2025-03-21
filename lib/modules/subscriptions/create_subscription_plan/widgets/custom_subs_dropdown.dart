@@ -2,9 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
-import '../create_subscription_plan_provider.dart';
 
 class CustomSubsDropdown extends StatelessWidget {
   final List<String> items;
@@ -30,6 +28,9 @@ class CustomSubsDropdown extends StatelessWidget {
       child: DropdownButton2<String>(
         value: selectedValue ?? items.first,
         isExpanded: true,
+        menuItemStyleData: MenuItemStyleData(
+          height: 38.h,
+        ),
         dropdownStyleData: DropdownStyleData(
           maxHeight: 200.h,
           padding: EdgeInsets.zero,
@@ -48,7 +49,7 @@ class CustomSubsDropdown extends StatelessWidget {
         buttonStyleData: ButtonStyleData(
           height: 30.h,
           // width: 220.w, // dropdown width
-          padding: EdgeInsets.symmetric(horizontal: 15.w),
+          padding: EdgeInsets.only(right: 20.w, left: 2.w),
           decoration: BoxDecoration(
             color: AppColors.seaShell,
             borderRadius: isDropdownOpen

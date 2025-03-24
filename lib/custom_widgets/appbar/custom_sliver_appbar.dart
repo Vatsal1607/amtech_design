@@ -129,19 +129,7 @@ class CustomSliverAppbar extends StatelessWidget {
                         height: 20.h,
                         width: 20.w,
                       ),
-                      // child: Text(
-                      //   'data',
-                      //   style: TextStyle(
-                      //     color: AppColors.white,
-                      //     fontSize: 10.sp,
-                      //   ),
-                      // ),
                     ),
-
-                    // child: Icon(
-                    //   Icons.notifications_outlined,
-                    //   color: AppColors.white,
-                    // ),
                   ),
                   Positioned(
                     top: 0,

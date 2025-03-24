@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'custom_widgets/bottomsheet/select_meal_bottomsheet_provider.dart';
+import 'modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet_provider.dart';
 import 'modules/auth/business_register/register_provider.dart';
 import 'modules/auth/business_selection/business_selection_provider.dart';
 import 'modules/auth/location_selection/location_selection_provider.dart';

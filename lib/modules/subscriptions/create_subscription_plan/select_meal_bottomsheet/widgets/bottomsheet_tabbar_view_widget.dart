@@ -1,10 +1,13 @@
-import 'package:amtech_design/custom_widgets/bottomsheet/widgets/counter_widget.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/widgets/counter_widget.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/app_colors.dart';
 import '../select_meal_bottomsheet_provider.dart';
 
 //! text should Unique category name for each tab
@@ -19,6 +22,8 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return ListView.builder(
       itemCount: 10,
       shrinkWrap: true,
@@ -80,19 +85,28 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                                   width: 108.w,
                                   height: 30.h,
                                   accountType: 'business',
-                                  onTap: () => provider.addItem(text, index),
+                                  onTap: () {
+                                    showIngredientsBottomSheeet(
+                                      context: context,
+                                      accountType: accountType,
+                                    );
+                                    // Todo: Uncomment & call on Done button success select ingredients
+                                    // provider.addItem(text, index);
+                                  },
                                   bgColor: AppColors.seaShell,
                                   textColor: AppColors.primaryColor,
                                   text: 'Add',
                                   fontSize: 14.sp,
                                 )
                               :
-                              // Show Quantity Counter
+                              // * Show Quantity Counter
                               CustomCounterWidget(
-                                  onTapDecrease: () =>
-                                      provider.decrement(text, index),
-                                  onTapIncrease: () =>
-                                      provider.increment(text, index),
+                                  onTapDecrease: () {
+                                    provider.decrement(text, index);
+                                  },
+                                  onTapIncrease: () {
+                                    provider.increment(text, index);
+                                  },
                                   quantity: quantity.toString(),
                                 );
                         }),

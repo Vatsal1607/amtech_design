@@ -26,28 +26,58 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool isSwitched = false;
-  onToggleSwitch(val) {
-    isSwitched = val;
+  Map<String, bool> switchStates = {}; // Holds switch states for each day
+  void toggleSwitch(String day, bool value) {
+    switchStates[day] = value;
+    log('switchStates[$day] ${switchStates[day]}');
     notifyListeners();
   }
 
-  bool isTimeslotDropdownOpen = false;
-  onMenuStateChange(isOpen) {
-    isTimeslotDropdownOpen = isOpen;
+  final List<String> days = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
+  ];
+
+  // Map to track if each day's time slot dropdown is open
+  Map<String, bool> isTimeslotDropdownOpen = {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+    "Sunday": false,
+  };
+
+  // Handle dropdown open/close state for time slots (day-wise)
+  void onMenuStateChange(String day, bool isOpen) {
+    isTimeslotDropdownOpen[day] = isOpen;
     notifyListeners();
   }
 
-  bool isDayDropdownOpen = false;
-  onDayDropdownMenuStateChange(isOpen) {
-    isDayDropdownOpen = isOpen;
+  // Map to track if each day's day dropdown is open
+  Map<String, bool> isDayDropdownOpen = {
+    "Monday": false,
+    "Tuesday": false,
+    "Wednesday": false,
+    "Thursday": false,
+    "Friday": false,
+    "Saturday": false,
+  };
+
+  // Handle dropdown open/close state for day selection (day-wise)
+  void onDayDropdownMenuStateChange(String day, bool isOpen) {
+    isDayDropdownOpen[day] = isOpen;
     notifyListeners();
   }
 
-  String? selectedTime = "10:00AM To 11:00AM";
-  onChangedTimeslot(value) {
-    selectedTime = value;
-    log('selectedTime $selectedTime');
+  void onChangedTimeslot(String day, String? newTime) {
+    selectedTimeslots[day] = newTime;
+    log('selectedTimeslots[day] ${selectedTimeslots[day]}');
     notifyListeners();
   }
 
@@ -57,5 +87,13 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     "12:00PM To 01:00PM"
   ];
 
-  // * 
+  // * Map to store selected time slot for each day
+  Map<String, String?> selectedTimeslots = {
+    "Monday": '08:00AM To 09:00AM',
+    "Tuesday": '08:00AM To 09:00AM',
+    "Wednesday": '08:00AM To 09:00AM',
+    "Thursday": '08:00AM To 09:00AM',
+    "Friday": '08:00AM To 09:00AM',
+    "Saturday": '08:00AM To 09:00AM',
+  };
 }

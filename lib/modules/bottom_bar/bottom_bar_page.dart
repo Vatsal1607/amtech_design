@@ -10,6 +10,7 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/strings.dart';
 import '../menu/menu_provider.dart';
@@ -132,10 +133,10 @@ class _BottomBarPageState extends State<BottomBarPage> {
                           businessColor: AppColors.disabledColor,
                           personalColor: AppColors.bayLeaf,
                         ), // Color for unselected labels and icons
-                        selectedLabelStyle: TextStyle(
+                        selectedLabelStyle: GoogleFonts.publicSans(
                           height: 2.h, // Adds vertical padding to the label
                         ),
-                        unselectedLabelStyle: TextStyle(
+                        unselectedLabelStyle: GoogleFonts.publicSans(
                           height: 2.h, // Adds vertical padding to the label
                         ),
                         items: [

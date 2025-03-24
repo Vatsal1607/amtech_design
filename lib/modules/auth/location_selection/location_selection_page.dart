@@ -44,7 +44,7 @@ class LocationSelectionPage extends StatelessWidget {
           onTap: () => Navigator.pop(context),
           child: Text(
             'back'.toUpperCase(),
-            style: const TextStyle(
+            style: GoogleFonts.publicSans(
               color: AppColors.white,
             ),
           ),

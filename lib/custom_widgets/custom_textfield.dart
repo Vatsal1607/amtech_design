@@ -140,7 +140,7 @@ class CustomTextField extends StatelessWidget {
             width: 2.w,
           ),
         ),
-        errorStyle: const TextStyle(
+        errorStyle: GoogleFonts.publicSans(
           color: AppColors.red,
         ),
       ),

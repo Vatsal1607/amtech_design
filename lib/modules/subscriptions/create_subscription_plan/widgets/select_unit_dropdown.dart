@@ -1,6 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../create_subscription_plan_provider.dart';
@@ -52,7 +53,7 @@ class SelectUnitDropdown extends StatelessWidget {
           iconStyleData: const IconStyleData(
             icon: Icon(Icons.keyboard_arrow_down, color: Colors.white),
           ),
-          style: TextStyle(color: Colors.white, fontSize: 16.sp),
+          style: GoogleFonts.publicSans(color: Colors.white, fontSize: 16.sp),
           onChanged: (String? newValue) {
             createSubsPlanProvider.setSelectedValue(newValue);
           },
@@ -66,7 +67,7 @@ class SelectUnitDropdown extends StatelessWidget {
                 padding: EdgeInsets.symmetric(vertical: 8.h),
                 child: Text(
                   item["label"]!,
-                  style: const TextStyle(color: Colors.white),
+                  style: GoogleFonts.publicSans(color: Colors.white),
                 ),
               ),
             );

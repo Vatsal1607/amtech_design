@@ -13,6 +13,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final bool isLoading;
   final Color? loaderColor;
+  final double fontSize;
   const CustomButton({
     super.key,
     this.text = 'NEXT',
@@ -23,6 +24,7 @@ class CustomButton extends StatelessWidget {
     this.width,
     this.isLoading = false,
     this.loaderColor,
+    this.fontSize = 15,
   });
 
   @override
@@ -46,7 +48,7 @@ class CustomButton extends StatelessWidget {
               : Text(
                   text.toUpperCase(),
                   style: GoogleFonts.publicSans(
-                    fontSize: 15.sp,
+                    fontSize: fontSize.sp,
                     fontWeight: FontWeight.bold,
                     color: textColor,
                   ),

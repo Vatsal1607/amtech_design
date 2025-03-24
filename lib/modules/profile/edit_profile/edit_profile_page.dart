@@ -415,7 +415,8 @@ class EditProfilePage extends StatelessWidget {
                                                       Alignment.centerLeft,
                                                   child: Text(
                                                     value,
-                                                    style: const TextStyle(
+                                                    style:
+                                                        GoogleFonts.publicSans(
                                                       fontSize: 14,
                                                       color: Colors
                                                           .black, // Style for the selected item

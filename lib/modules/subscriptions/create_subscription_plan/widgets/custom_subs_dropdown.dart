@@ -15,7 +15,7 @@ class CustomSubsDropdown extends StatelessWidget {
   const CustomSubsDropdown({
     super.key,
     required this.items,
-    required this.selectedValue,
+    this.selectedValue,
     required this.onChanged,
     this.onMenuStateChange,
     required this.isDropdownOpen,

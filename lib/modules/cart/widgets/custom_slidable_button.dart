@@ -131,7 +131,7 @@ class CustomSlidableButton extends StatelessWidget {
                 children: [
                   Text(
                     "DONE!",
-                    style: TextStyle(
+                    style: GoogleFonts.publicSans(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 18.sp,

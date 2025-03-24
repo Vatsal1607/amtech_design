@@ -31,7 +31,7 @@ void customSnackBar({
         Expanded(
           child: Text(
             message,
-            style: TextStyle(color: textColor),
+            style: GoogleFonts.publicSans(color: textColor),
           ),
         ),
       ],

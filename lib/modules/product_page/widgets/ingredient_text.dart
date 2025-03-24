@@ -17,7 +17,7 @@ class IngredientText extends StatelessWidget {
       children: [
         Text(
           '• ', // Leading dot
-          style: TextStyle(
+          style: GoogleFonts.publicSans(
             fontSize: 18,
             color: Colors.black,
             height: 1.h,

@@ -4,6 +4,7 @@ import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/models/get_payment_response_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../models/verify_recharge_model.dart';
 import '../../routes.dart';
 import '../../services/network/api_service.dart';
@@ -118,9 +119,9 @@ class _ResponseScreenState extends State<ResponseScreen> {
                         width: double.infinity,
                         alignment: Alignment.centerLeft,
                         padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: const Text(
+                        child: Text(
                           "Call handleJuspayResponse API to fetch the Order Status",
-                          style: TextStyle(
+                          style: GoogleFonts.publicSans(
                             fontSize: 14,
                           ),
                         ),
@@ -139,7 +140,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                       child: Center(
                         child: Text(
                           orderStatusText, // Display the payment response
-                          style: TextStyle(
+                          style: GoogleFonts.publicSans(
                               fontSize: 20, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -149,7 +150,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                         child: Text(
                           "Order Id: " +
                               orderId, // Display the payment response
-                          style: TextStyle(
+                          style: GoogleFonts.publicSans(
                               fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -157,9 +158,8 @@ class _ResponseScreenState extends State<ResponseScreen> {
                     Expanded(
                       child: Center(
                         child: Text(
-                          "Status: " +
-                              orderStatus, // Display the payment response
-                          style: TextStyle(
+                          "Status: $orderStatus", // Display the payment response
+                          style: GoogleFonts.publicSans(
                               fontSize: 14, fontWeight: FontWeight.w600),
                         ),
                       ),
@@ -167,7 +167,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
                   ],
                 );
               } else {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
             },
           ),

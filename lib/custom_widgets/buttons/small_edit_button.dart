@@ -33,6 +33,9 @@ class SmallEditButton extends StatelessWidget {
         height: height.h,
         width: width.w,
         decoration: BoxDecoration(
+          border: Border.all(
+            color: AppColors.primaryColor,
+          ),
           color: bgColor ??
               getColorAccountType(
                 accountType: accountType,

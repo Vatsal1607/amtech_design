@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppBarWithBackButton extends StatelessWidget
     implements PreferredSizeWidget {
@@ -26,7 +27,7 @@ class AppBarWithBackButton extends StatelessWidget
         onTap: onBackPressed ?? () => Navigator.pop(context),
         child: Text(
           'back'.toUpperCase(),
-          style: const TextStyle(
+          style: GoogleFonts.publicSans(
             color: Colors.white,
           ),
         ),

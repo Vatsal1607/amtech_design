@@ -45,7 +45,7 @@ class LoginPage extends StatelessWidget {
           onTap: () => Navigator.pop(context),
           child: Text(
             'back'.toUpperCase(),
-            style: const TextStyle(
+            style: GoogleFonts.publicSans(
               color: AppColors.white,
             ),
           ),
@@ -146,8 +146,8 @@ class LoginPage extends StatelessWidget {
                               decoration: InputDecoration(
                                 filled: true,
                                 fillColor: AppColors.white,
-                                errorStyle:
-                                    const TextStyle(color: AppColors.white),
+                                errorStyle: GoogleFonts.publicSans(
+                                    color: AppColors.white),
                                 hintText: 'Enter mobile number',
                                 errorText: provider.mobileErrorText,
                                 hintStyle: GoogleFonts.publicSans(

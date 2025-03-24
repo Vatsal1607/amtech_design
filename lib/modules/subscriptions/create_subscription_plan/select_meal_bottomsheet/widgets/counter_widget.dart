@@ -1,32 +1,35 @@
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/strings.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/strings.dart';
 
-class CustomCounterWidget extends StatefulWidget {
+class CustomCounterWidget extends StatelessWidget {
   final VoidCallback? onTapDecrease;
   final VoidCallback? onTapIncrease;
   final String? quantity;
+  final Color textColor;
+  final Color bgColor;
+  final double height;
   const CustomCounterWidget({
     super.key,
     this.onTapDecrease,
     this.onTapIncrease,
     this.quantity,
+    this.textColor = AppColors.primaryColor,
+    this.bgColor = AppColors.seaShell,
+    this.height = 25,
   });
 
-  @override
-  CustomCounterWidgetState createState() => CustomCounterWidgetState();
-}
-
-class CustomCounterWidgetState extends State<CustomCounterWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 90.w,
-      height: 25.h,
+      height: height.h,
       decoration: BoxDecoration(
-        color: AppColors.seaShell,
+        border: Border.all(color: AppColors.primaryColor),
+        color: bgColor,
         borderRadius: BorderRadius.circular(20.r),
       ),
       child: Row(
@@ -34,13 +37,13 @@ class CustomCounterWidgetState extends State<CustomCounterWidget> {
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: widget.onTapDecrease,
+              onTap: onTapDecrease,
               child: Container(
                 height: 20.h,
                 color: Colors.transparent,
-                child: const SvgIcon(
+                child: SvgIcon(
                   icon: IconStrings.minus,
-                  color: AppColors.primaryColor,
+                  color: textColor,
                 ),
               ),
             ),
@@ -48,20 +51,24 @@ class CustomCounterWidgetState extends State<CustomCounterWidget> {
           Expanded(
             child: Center(
               child: Text(
-                '${widget.quantity}',
-                style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+                '$quantity',
+                style: GoogleFonts.publicSans(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                  color: textColor,
+                ),
               ),
             ),
           ),
           Expanded(
             child: GestureDetector(
-              onTap: widget.onTapIncrease,
+              onTap: onTapIncrease,
               child: Container(
                 height: 20.h,
                 color: Colors.transparent,
-                child: const SvgIcon(
+                child: SvgIcon(
                   icon: IconStrings.plus,
-                  color: AppColors.primaryColor,
+                  color: textColor,
                 ),
               ),
             ),

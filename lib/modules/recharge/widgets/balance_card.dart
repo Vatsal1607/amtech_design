@@ -1,6 +1,7 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 
 class BalanceCard extends StatelessWidget {
@@ -33,7 +34,7 @@ class BalanceCard extends StatelessWidget {
               children: [
                 Text(
                   "Available Balance",
-                  style: TextStyle(
+                  style: GoogleFonts.publicSans(
                     color: Colors.white,
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
@@ -41,7 +42,7 @@ class BalanceCard extends StatelessWidget {
                 ),
                 Text(
                   "₹ 2,000",
-                  style: TextStyle(
+                  style: GoogleFonts.publicSans(
                     color: Colors.white,
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
@@ -72,7 +73,7 @@ class BalanceCard extends StatelessWidget {
               children: [
                 Text(
                   "Total Perks Earned",
-                  style: TextStyle(
+                  style: GoogleFonts.publicSans(
                     color: const Color(0xFF0D1E3A),
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
@@ -80,7 +81,7 @@ class BalanceCard extends StatelessWidget {
                 ),
                 Text(
                   "₹ 20",
-                  style: TextStyle(
+                  style: GoogleFonts.publicSans(
                     color: const Color(0xFF0D1E3A),
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,

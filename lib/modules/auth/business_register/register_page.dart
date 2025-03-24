@@ -347,7 +347,8 @@ class RegisterPage extends StatelessWidget {
                                                       Alignment.centerLeft,
                                                   child: Text(
                                                     value,
-                                                    style: const TextStyle(
+                                                    style:
+                                                        GoogleFonts.publicSans(
                                                       fontSize: 14,
                                                       color: Colors
                                                           .white, // Style for the selected item
@@ -543,7 +544,8 @@ class RegisterPage extends StatelessWidget {
                                                           )
                                                         : Text(
                                                             'VERIFY',
-                                                            style: TextStyle(
+                                                            style: GoogleFonts
+                                                                .publicSans(
                                                               color: AppColors
                                                                   .seaShell,
                                                               fontWeight:

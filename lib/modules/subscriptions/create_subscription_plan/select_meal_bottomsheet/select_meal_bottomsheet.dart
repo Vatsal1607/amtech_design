@@ -2,9 +2,10 @@ import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import '../../core/utils/app_colors.dart';
-import '../buttons/custom_bottomsheet_close_button.dart';
+import '../../../../core/utils/app_colors.dart';
+import '../../../../custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'select_meal_bottomsheet_provider.dart';
 import 'widgets/bottomsheet_tabbar_view_widget.dart';
 
@@ -27,24 +28,25 @@ void showSelectMealBottomSheeet({
         clipBehavior: Clip.none,
         children: [
           SizedBox(
-            height: 600.h,
+            height: 1.sh * .8,
             child: DefaultTabController(
               length: 5,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   // * Tab Bar
-                  const TabBar(
+                  TabBar(
                     isScrollable: true,
                     tabAlignment: TabAlignment.start,
                     dividerColor: Colors.transparent,
                     indicatorColor: Colors.white,
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.grey,
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold),
+                    labelStyle:
+                        GoogleFonts.publicSans(fontWeight: FontWeight.bold),
                     unselectedLabelStyle:
-                        TextStyle(fontWeight: FontWeight.w600),
-                    tabs: [
+                        GoogleFonts.publicSans(fontWeight: FontWeight.w600),
+                    tabs: const [
                       Tab(text: "Salads"),
                       Tab(text: "Juice"),
                       Tab(text: "Shakes"),

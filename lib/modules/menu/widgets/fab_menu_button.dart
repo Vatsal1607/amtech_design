@@ -136,12 +136,13 @@ class FabMenuButton extends StatelessWidget {
                             },
                           ).toList()
                         : [
-                            const Center(
+                            Center(
                               child: Padding(
-                                padding: EdgeInsets.all(20.0),
+                                padding: const EdgeInsets.all(20.0),
                                 child: Text(
                                   "No Categories Available",
-                                  style: TextStyle(color: Colors.white),
+                                  style: GoogleFonts.publicSans(
+                                      color: Colors.white),
                                 ),
                               ),
                             )

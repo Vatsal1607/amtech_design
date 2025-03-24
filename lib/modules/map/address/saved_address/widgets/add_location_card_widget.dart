@@ -86,7 +86,7 @@ class AddLocationCard extends StatelessWidget {
                     children: [
                       Text(
                         "Use Your Current Location",
-                        style: TextStyle(
+                        style: GoogleFonts.publicSans(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,

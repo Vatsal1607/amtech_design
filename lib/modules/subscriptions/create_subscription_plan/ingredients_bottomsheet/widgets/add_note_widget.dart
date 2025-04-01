@@ -1,12 +1,16 @@
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class AddNoteWidget extends StatelessWidget {
   const AddNoteWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider =
+        Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
     return Padding(
       padding: EdgeInsets.all(16.w),
       child: Column(
@@ -22,7 +26,7 @@ class AddNoteWidget extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           TextField(
-            // controller: ,
+            controller: provider.noteController,
             maxLines: 4,
             decoration: InputDecoration(
               hintText: 'e.g., Note For This Order',

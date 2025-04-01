@@ -311,7 +311,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                             color: AppColors.red,
                                           )),
                                       child: Text(
-                                        // 'Selected location is ${provider.distance} Far From Current Location',
                                         'Selected location is ${savedAddressProvider.formatDistance(savedAddressProvider.parseDouble(provider.distance))} Far From Current Location',
                                         style: GoogleFonts.publicSans(
                                             color: getColorAccountType(

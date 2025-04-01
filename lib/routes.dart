@@ -13,6 +13,7 @@ import 'package:amtech_design/modules/order/order_list/order_list_page.dart';
 import 'package:amtech_design/modules/profile/edit_profile/edit_profile_page.dart';
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
+import 'package:amtech_design/modules/subscriptions/subscription_summary/subscription_summary_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'modules/auth/business_register/register_page.dart';
@@ -25,6 +26,7 @@ import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
 import 'modules/recharge/recharge_page.dart';
 import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
+import 'modules/subscriptions/subscription_cart/subscription_cart_page.dart';
 
 class Routes {
   static const String initial = '/';
@@ -53,6 +55,8 @@ class Routes {
   static const String googleMapPage = '/googleMapPage';
   static const String savedAddress = '/savedAddress';
   static const String createSubscriptionPlan = '/createSubscriptionPlan';
+  static const String subscriptionSummary = '/subscriptionSummary';
+  static const String subscriptionCart = '/subscriptionCart';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -81,5 +85,7 @@ class Routes {
     googleMapPage: (context) => const GoogleMapPage(),
     savedAddress: (context) => const SavedAddressPage(),
     createSubscriptionPlan: (context) => const CreateSubscriptionPlanPage(),
+    subscriptionSummary: (context) => const SubscriptionSummaryPage(),
+    subscriptionCart: (context) => const SubscriptionCartPage(),
   };
 }

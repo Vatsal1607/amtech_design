@@ -492,10 +492,11 @@ class _MenuPageState extends State<MenuPage> {
                                             BannerView(
                                               accountType: accountType,
                                             ),
-                                            const SizedBox(height: 20.0),
+                                            SizedBox(height: 20.h),
 
                                             //* Subscriptions Banner
                                             SubscriptionBannerWidget(),
+                                            SizedBox(height: 20.h),
 
                                             //* Subscriptions
                                             // GestureDetector(
@@ -621,7 +622,7 @@ class _MenuPageState extends State<MenuPage> {
                                                                     child:
                                                                         ProductWidget(
                                                                       image:
-                                                                          menuItems?.images ??
+                                                                          menuItems?.images?[0] ??
                                                                               '',
                                                                       name: menuItems
                                                                               ?.itemName ??

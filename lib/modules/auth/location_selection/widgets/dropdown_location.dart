@@ -37,7 +37,10 @@ class _DropdownLocationState extends State<DropdownLocation> {
             ),
           ),
           child: SearchAnchor.bar(
-            onTap: provider.onTapSearch,
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+              provider.onTapSearch();
+            },
             searchController: provider.searchController,
             barHintText: 'Select Your Complex',
             barHintStyle: WidgetStateProperty.all(

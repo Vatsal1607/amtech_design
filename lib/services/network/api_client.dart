@@ -2,6 +2,7 @@ import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
+import 'package:amtech_design/models/subscription_create_request_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
@@ -20,6 +21,7 @@ import '../../models/get_business_details_model.dart';
 import '../../models/get_payment_response_model.dart';
 import '../../models/get_personal_details_model.dart';
 import '../../models/home_menu_model.dart';
+import '../../models/ingredients_and_addons_model.dart';
 import '../../models/initiate_payment_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
@@ -249,5 +251,16 @@ abstract class ApiClient {
   @PUT('${ApiEndpoints.countBanner}/{bannerId}')
   Future<ApiGlobalModel> countBanner(
     @Path("bannerId") String bannerId,
+  );
+
+  @GET("${ApiEndpoints.ingredientsAndAddOns}/{menu_id}")
+  Future<IngredientsAndAddOnsModel> getIngredientsAndAddOns(
+    @Path("menu_id") String menuId,
+  );
+
+  // * Subscription Create
+  @POST(ApiEndpoints.subscriptionCreate)
+  Future<ApiGlobalModel> subscriptionCreate(
+    @Body() SubscriptionCreateRequestModel subscriptionCreateRequestModel,
   );
 }

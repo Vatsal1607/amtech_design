@@ -303,7 +303,7 @@ class MenuProvider extends ChangeNotifier {
         log('${res.message}');
       }
     } catch (e) {
-      debugPrint("Error fetching menuSizeResponse: ${e.toString()}");
+      log("Error fetching menuSizeResponse: ${e.toString()}");
     } finally {
       isLoadingSize = false;
       notifyListeners();

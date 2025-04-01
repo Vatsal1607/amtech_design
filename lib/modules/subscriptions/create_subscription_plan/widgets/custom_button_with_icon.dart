@@ -9,12 +9,15 @@ class CustomButtonWithIcon extends StatelessWidget {
   final String labelText;
   final VoidCallback onPressed;
   final String icon;
-
+  final double? height;
+  final double? width;
   const CustomButtonWithIcon({
     super.key,
     required this.labelText,
     required this.onPressed,
     this.icon = IconStrings.plus,
+    this.height,
+    this.width,
   });
 
   @override
@@ -22,6 +25,8 @@ class CustomButtonWithIcon extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
+        height: height,
+        width: width,
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         decoration: BoxDecoration(
           color: AppColors.seaShell,

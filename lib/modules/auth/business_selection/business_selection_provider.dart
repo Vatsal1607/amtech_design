@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/business_list_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -11,10 +12,10 @@ class BusinessSelectionProvider extends ChangeNotifier {
   bool isLoadingPagination = false;
   int currentPage = 1;
 
-  BusinessSelectionProvider() {
-    //* Api call
-    getBusinessList(currentPage: currentPage);
-  }
+  // BusinessSelectionProvider() {
+  //   //* Api call
+  //   getBusinessList(currentPage: currentPage);
+  // }
 
   TextEditingController searchController = TextEditingController();
   List<BusinessList> _businessList = [];
@@ -45,6 +46,7 @@ class BusinessSelectionProvider extends ChangeNotifier {
   bool isSearchOpen = false;
   SearchController businessSearchController = SearchController();
   onTapSearch() {
+    log('onTapSearch called');
     isSearchOpen = true;
     notifyListeners();
   }

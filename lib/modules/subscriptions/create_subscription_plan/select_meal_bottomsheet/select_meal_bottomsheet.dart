@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,7 +14,10 @@ import 'widgets/bottomsheet_tabbar_view_widget.dart';
 void showSelectMealBottomSheeet({
   required BuildContext context,
   required String accountType,
+  required String day,
 }) {
+  final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+  menuProvider.homeMenuApi(); //* Api call
   showModalBottomSheet(
     context: context,
     backgroundColor: getColorAccountType(
@@ -20,66 +25,61 @@ void showSelectMealBottomSheeet({
       businessColor: AppColors.primaryColor,
       personalColor: AppColors.darkGreenGrey,
     ),
-    isScrollControlled: true, // Allows full height modal
+    isScrollControlled: true,
     builder: (context) {
+      log('Select meal bottomsheet called');
       final provider =
           Provider.of<SelectMealBottomsheetProvider>(context, listen: false);
+
       return Stack(
         clipBehavior: Clip.none,
         children: [
           SizedBox(
             height: 1.sh * .8,
             child: DefaultTabController(
-              length: 5,
+              //* Categories length
+              length: menuProvider.menuCategories?.length ?? 0,
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   // * Tab Bar
-                  TabBar(
-                    isScrollable: true,
-                    tabAlignment: TabAlignment.start,
-                    dividerColor: Colors.transparent,
-                    indicatorColor: Colors.white,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.grey,
-                    labelStyle:
-                        GoogleFonts.publicSans(fontWeight: FontWeight.bold),
-                    unselectedLabelStyle:
-                        GoogleFonts.publicSans(fontWeight: FontWeight.w600),
-                    tabs: const [
-                      Tab(text: "Salads"),
-                      Tab(text: "Juice"),
-                      Tab(text: "Shakes"),
-                      Tab(text: "Favourites"),
-                      Tab(text: "Food"),
-                    ],
+                  Consumer<MenuProvider>(
+                    builder: (context, _, child) => TabBar(
+                      isScrollable: true,
+                      tabAlignment: TabAlignment.start,
+                      dividerColor: Colors.transparent,
+                      indicatorColor: Colors.white,
+                      labelColor: Colors.white,
+                      unselectedLabelColor: Colors.grey,
+                      labelStyle:
+                          GoogleFonts.publicSans(fontWeight: FontWeight.bold),
+                      unselectedLabelStyle:
+                          GoogleFonts.publicSans(fontWeight: FontWeight.w600),
+                      tabs: (menuProvider.menuCategories ?? [])
+                          .map((category) =>
+                              Tab(text: category.categoryTitle ?? ''))
+                          .toList(),
+                    ),
                   ),
 
                   // * Tab Bar View
                   Expanded(
-                    child: TabBarView(
-                      children: [
-                        BottomsheetTabbarViewWidget(
-                          text: "Salads Content",
-                          provider: provider,
-                        ),
-                        BottomsheetTabbarViewWidget(
-                          text: "Juice Content",
-                          provider: provider,
-                        ),
-                        BottomsheetTabbarViewWidget(
-                          text: "Shakes Content",
-                          provider: provider,
-                        ),
-                        BottomsheetTabbarViewWidget(
-                          text: "Favourite Content",
-                          provider: provider,
-                        ),
-                        BottomsheetTabbarViewWidget(
-                          text: "Food",
-                          provider: provider,
-                        ),
-                      ],
+                    child: Consumer<MenuProvider>(
+                      builder: (context, _, child) => TabBarView(
+                        children: (menuProvider.menuCategories ?? [])
+                            .map((category) => BottomsheetTabbarViewWidget(
+                                  day: day,
+                                  itemLength: category.menuItems?.length ?? 0,
+                                  menuItems: category.menuItems,
+                                  menuProvider: menuProvider,
+                                  text: category.menuItems
+                                          ?.map((item) => item.itemName ?? '')
+                                          .join(', ') ??
+                                      'No Items',
+                                  provider: provider,
+                                ))
+                            .toList(),
+                      ),
                     ),
                   ),
                 ],

@@ -119,9 +119,6 @@ class RegisterProvider extends ChangeNotifier {
       debugPrint('Personal Register log: $_personalRegisterModel');
       if (_personalRegisterModel?.success == true) {
         Navigator.pop(context);
-        context
-            .read<BusinessSelectionProvider>()
-            .getBusinessList(); //* API call
         customSnackBar(
           context: context,
           message: _personalRegisterModel!.message.toString(),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
@@ -8,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/strings.dart';
 
-class BusinessDropdown extends StatelessWidget {
+class BusinessDropdown extends StatefulWidget {
   final BusinessSelectionProvider provider;
   const BusinessDropdown({
     super.key,
@@ -16,8 +18,21 @@ class BusinessDropdown extends StatelessWidget {
   });
 
   @override
+  State<BusinessDropdown> createState() => _BusinessDropdownState();
+}
+
+class _BusinessDropdownState extends State<BusinessDropdown> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.provider.getBusinessList(currentPage: 1); //* API call
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //* NEW dropdown (Searchanchor.bar)
+    //* NEW dropdown
     return Consumer<BusinessSelectionProvider>(
       builder: (context, _, child) {
         return Container(
@@ -30,29 +45,23 @@ class BusinessDropdown extends StatelessWidget {
           ),
           child: SearchAnchor.bar(
             onTap: () async {
-              FocusManager.instance.primaryFocus?.unfocus();
-              provider.onTapSearch();
-              //* API call
-              await provider.getBusinessList(
-                currentPage: 1,
-              ); // You can add other parameters here
-              // ✅ Force refresh of the search suggestions
-              // WidgetsBinding.instance.addPostFrameCallback((_) {
-              //   provider.businessSearchController.notifyListeners();
-              // });
+              FocusScope.of(context).requestFocus(FocusNode());
+              widget.provider.onTapSearch();
+              // await widget.provider
+              //     .getBusinessList(currentPage: 1); //* API call
             },
-            searchController: provider.businessSearchController,
+            searchController: widget.provider.businessSearchController,
             barHintText: 'Select Your Business',
             barHintStyle: WidgetStateProperty.all(
               GoogleFonts.publicSans(
-                color: provider.isSearchOpen
+                color: widget.provider.isSearchOpen
                     ? AppColors.primaryColor
                     : AppColors.seaShell.withOpacity(0.8),
               ),
             ),
             barTextStyle: WidgetStateProperty.all(
               GoogleFonts.publicSans(
-                color: provider.isSearchOpen
+                color: widget.provider.isSearchOpen
                     ? AppColors.primaryColor
                     : AppColors.seaShell.withOpacity(0.8),
               ),
@@ -65,8 +74,7 @@ class BusinessDropdown extends StatelessWidget {
             dividerColor: Colors.transparent,
             barElevation: WidgetStateProperty.all(0.0),
             barBackgroundColor: WidgetStateProperty.all(
-              provider.isSearchOpen ? Colors.white : Colors.transparent,
-              // Colors.transparent,
+              widget.provider.isSearchOpen ? Colors.white : Colors.transparent,
             ),
             viewTrailing: [
               Padding(
@@ -86,21 +94,21 @@ class BusinessDropdown extends StatelessWidget {
             ),
             barLeading: SvgIcon(
               icon: IconStrings.selectBusiness,
-              color: !provider.isSearchOpen
+              color: !widget.provider.isSearchOpen
                   ? AppColors.seaShell
                   : AppColors.primaryColor,
             ),
             barTrailing: [
               SvgIcon(
                 icon: IconStrings.arrowDropdown,
-                color: !provider.isSearchOpen
+                color: !widget.provider.isSearchOpen
                     ? AppColors.seaShell
                     : AppColors.primaryColor,
               ),
             ],
             suggestionsBuilder: (context, controller) {
               // if (provider.isLoading) {
-              if (provider.filteredBusinessList.isEmpty) {
+              if (widget.provider.filteredBusinessList.isEmpty) {
                 return const [
                   Center(
                     child: CustomLoader(
@@ -110,7 +118,7 @@ class BusinessDropdown extends StatelessWidget {
                 ];
               }
               final query = controller.text.toLowerCase();
-              final filteredBusinesses = provider.filteredBusinessList
+              final filteredBusinesses = widget.provider.filteredBusinessList
                   .where((business) =>
                       business.businessName!.toLowerCase().contains(query))
                   .toList();
@@ -119,15 +127,16 @@ class BusinessDropdown extends StatelessWidget {
                 return ListTile(
                   title: Text(business.businessName!),
                   onTap: () {
-                    provider.onItemTap();
-                    provider.selectBusiness(business);
+                    FocusScope.of(context).unfocus();
+                    widget.provider.onItemTap();
+                    widget.provider.selectBusiness(business);
                     controller.closeView(business.businessName);
-                    provider.businessSearchController.text =
+                    widget.provider.businessSearchController.text =
                         business.businessName!;
                     debugPrint('Selected Business: ${business.businessName}');
                     // Optionally save selected business
-                    provider.saveSelectedBusinessSecondaryAccess(
-                      provider.filteredBusinessList,
+                    widget.provider.saveSelectedBusinessSecondaryAccess(
+                      widget.provider.filteredBusinessList,
                       business.businessName!,
                     );
                   },

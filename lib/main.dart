@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet_provider.dart';
 import 'modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet_provider.dart';
 import 'modules/auth/business_register/register_provider.dart';
 import 'modules/auth/business_selection/business_selection_provider.dart';
@@ -34,6 +35,7 @@ import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
 import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
+import 'modules/subscriptions/subscription_summary/subscription_summary_provider.dart';
 import 'routes.dart';
 
 void main() async {
@@ -86,6 +88,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
         ChangeNotifierProvider(create: (_) => CreateSubscriptionPlanProvider()),
         ChangeNotifierProvider(create: (_) => SelectMealBottomsheetProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionSummaryProvider()),
+        ChangeNotifierProvider(create: (_) => IngredientsBottomsheetProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

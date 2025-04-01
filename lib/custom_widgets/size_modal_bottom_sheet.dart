@@ -1,17 +1,13 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
-import 'package:amtech_design/custom_widgets/snackbar.dart';
-import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
-import '../core/utils/strings.dart';
 import '../models/home_menu_model.dart';
 import '../models/menu_size_model.dart';
 import '../routes.dart';
@@ -95,9 +91,6 @@ void showSizeModalBottomSheet({
                               separatorBuilder: (context, index) =>
                                   SizedBox(height: 10.h),
                               itemBuilder: (context, index) {
-                                // final sizeDetailsList = provider
-                                //         .menuSizeResponse?.data?.sizeDetails ??
-                                //     [];
                                 final sizeDetailsList =
                                     accountType == 'business'
                                         ? provider.menuSizeResponse?.data
@@ -168,7 +161,7 @@ void showSizeModalBottomSheet({
               top: -40,
               right: 0,
               left: 0,
-              child: const CustomBottomsheetCloseButton(),
+              child: CustomBottomsheetCloseButton(),
             ),
           ],
         ),

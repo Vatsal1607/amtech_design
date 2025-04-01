@@ -9,6 +9,7 @@ import 'package:amtech_design/models/favorite_add_model.dart';
 import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_business_details_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
+import 'package:amtech_design/models/ingredients_and_addons_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/reorder_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
@@ -26,6 +27,7 @@ import '../../models/initiate_payment_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
+import '../../models/subscription_create_request_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -314,6 +316,22 @@ class ApiService {
   }) async {
     return await apiClient.countBanner(
       bannerId,
+    );
+  }
+
+  Future<IngredientsAndAddOnsModel> getIngredientsAndAddOns({
+    required String menuId,
+  }) async {
+    return await apiClient.getIngredientsAndAddOns(
+      menuId,
+    );
+  }
+
+  Future<ApiGlobalModel> subscriptionCreate({
+    required SubscriptionCreateRequestModel subscriptionCreateRequestData,
+  }) async {
+    return await apiClient.subscriptionCreate(
+      subscriptionCreateRequestData,
     );
   }
 }

@@ -29,8 +29,8 @@ class Data {
   String? sId;
   String? categoryId;
   String? itemName;
-  String? images;
-  String? ingredients;
+  List<String>? images; // Updated to List<String>
+  List<String>? ingredients;
   String? description;
   num? ratings;
   List<Size>? size;
@@ -64,8 +64,14 @@ class Data {
     sId = json['_id'];
     categoryId = json['categoryId'];
     itemName = json['itemName'];
-    images = json['images'];
-    ingredients = json['ingredients'];
+    images = json['images'] is List
+        ? List<String>.from(json['images'].map((e) => e.toString()))
+        : json['images'] is String
+            ? [json['images']]
+            : [];
+    ingredients = json['ingredients'] is List
+        ? List<String>.from(json['ingredients'])
+        : [];
     description = json['description'];
     ratings = (json['ratings'] as num?)?.toDouble(); // Converts int to double
     if (json['size'] != null) {

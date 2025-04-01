@@ -40,4 +40,6 @@ class ApiEndpoints {
       'recharge/handleJuspayResponse';
   static const String getBanner = 'get/banner';
   static const String countBanner = 'count/banner';
+  static const String ingredientsAndAddOns = 'subscription/menu/details';
+  static const String subscriptionCreate = 'subscription/create';
 }

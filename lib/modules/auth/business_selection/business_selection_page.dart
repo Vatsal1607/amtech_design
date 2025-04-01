@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,7 @@ import 'business_selection_provider.dart';
 class BusinessSelectionPage extends StatelessWidget {
   const BusinessSelectionPage({super.key});
 
+  // @override
   @override
   Widget build(BuildContext context) {
     final provider =
@@ -70,7 +73,13 @@ class BusinessSelectionPage extends StatelessWidget {
                   GestureDetector(
                     onTap: () {
                       /// Navigator
-                      Navigator.pushNamed(context, Routes.register);
+                      Navigator.pushNamed(context, Routes.register)
+                          .then((value) {
+                        context
+                            .read<BusinessSelectionProvider>()
+                            .getBusinessList(); //* API call
+                        log('getBusinessList called from navigator then');
+                      });
                     },
                     child: Container(
                       padding: EdgeInsets.all(10.w),

@@ -1,6 +1,8 @@
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import 'day_selection_dropdown.dart';
 import 'selected_time_and_item_widget.dart';
@@ -10,7 +12,6 @@ class DayDropdownTile extends StatelessWidget {
   final bool isSwitched;
   final Function(bool) onToggleSwitch;
   final String? selectedTime;
-
   const DayDropdownTile({
     super.key,
     required this.day,
@@ -23,7 +24,7 @@ class DayDropdownTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.start, //
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FlutterSwitch(
           value: isSwitched,
@@ -46,11 +47,14 @@ class DayDropdownTile extends StatelessWidget {
                 ),
               ),
               if (selectedTime != null)
-                SelectedTimeAndItemWidget(
-                  selectedTime: selectedTime!,
-                  selectedItem: 'Mexican Salad',
+                //* Time & Item widget
+                Consumer<CreateSubscriptionPlanProvider>(
+                  builder: (context, provider, child) =>
+                      SelectedTimeAndItemWidget(
+                    selectedTime: selectedTime!,
+                    selectedItem: provider.daywiseSelectedItem[day] ?? '',
+                  ),
                 ),
-                
             ],
           ),
         ),

@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/widgets/counter_widget.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
@@ -8,16 +11,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../models/home_menu_model.dart';
 import '../select_meal_bottomsheet_provider.dart';
 
 //! text should Unique category name for each tab
 class BottomsheetTabbarViewWidget extends StatelessWidget {
   final String text;
   final SelectMealBottomsheetProvider provider;
+  final MenuProvider menuProvider;
+  final int itemLength;
+  final List<MenuItems>? menuItems;
+  final String day;
   const BottomsheetTabbarViewWidget({
     super.key,
     required this.text,
     required this.provider,
+    required this.menuProvider,
+    required this.itemLength,
+    required this.menuItems,
+    required this.day,
   });
 
   @override
@@ -25,7 +37,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return ListView.builder(
-      itemCount: 10,
+      itemCount: itemLength,
       shrinkWrap: true,
       padding: EdgeInsets.only(top: 10.h, bottom: 80.h),
       itemBuilder: (context, index) {
@@ -47,7 +59,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          "Exotic Fruit Salad",
+                          text,
                           style: GoogleFonts.publicSans(
                               color: Colors.white,
                               fontSize: 16.sp,
@@ -60,7 +72,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                                 color: AppColors.disabledColor, size: 16),
                             SizedBox(width: 4.w),
                             Text(
-                              "4.5",
+                              menuItems?[index].ratings.toString() ?? '',
                               style: GoogleFonts.publicSans(
                                 fontSize: 14.sp,
                                 color: AppColors.disabledColor,
@@ -87,8 +99,14 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                                   accountType: 'business',
                                   onTap: () {
                                     showIngredientsBottomSheeet(
+                                      day: day,
+                                      // index: index,
                                       context: context,
                                       accountType: accountType,
+                                      menuId: menuItems?[index].menuId ?? '',
+                                      itemName:
+                                          menuItems?[index].itemName ?? '',
+                                      menuItems: menuItems?[index],
                                     );
                                     // Todo: Uncomment & call on Done button success select ingredients
                                     // provider.addItem(text, index);
@@ -120,7 +138,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                       width: 80.w,
                       height: 80.h,
                       child: Image.network(
-                        "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Zm9vZCUyMHBuZ3xlbnwwfHwwfHx8MA%3D%3D",
+                        '${menuItems?[index].images?[0]}',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(Icons.broken_image, color: Colors.white),

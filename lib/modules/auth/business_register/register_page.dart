@@ -27,12 +27,12 @@ class RegisterPage extends StatelessWidget {
         Provider.of<BusinessSelectionProvider>(context, listen: false);
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      //* Api call
-      businessSelectionProvider.getBusinessList(
-          currentPage: businessSelectionProvider.currentPage);
-    });
-    debugPrint('build called');
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   //* Api call
+    //   businessSelectionProvider.getBusinessList(
+    //       currentPage: businessSelectionProvider.currentPage);
+    // });
+
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: getColorAccountType(
@@ -614,6 +614,9 @@ class RegisterPage extends StatelessWidget {
                       if (provider.businessFormKey.currentState!.validate()) {
                         //! Api call business register
                         provider.businessRegister(context);
+                        // context
+                        //     .read<BusinessSelectionProvider>()
+                        //     .getBusinessList(); //* API call
                         debugPrint('Business form is valid');
                       } else {
                         debugPrint('Business form is not valid');

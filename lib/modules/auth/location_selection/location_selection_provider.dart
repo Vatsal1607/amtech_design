@@ -20,13 +20,11 @@ class LocationSelectionProvider extends ChangeNotifier {
 
   bool isSearchOpen = false;
   onTapSearch() {
-    FocusManager.instance.primaryFocus?.unfocus();
     isSearchOpen = true;
     notifyListeners();
   }
 
   onItemTap() {
-    FocusManager.instance.primaryFocus?.unfocus();
     isSearchOpen = false;
     notifyListeners();
   }

@@ -121,7 +121,7 @@ class MenuCategories {
 class MenuItems {
   String? menuId;
   String? itemName;
-  String? images; //Todo change to List<String> images
+  List<String>? images; // Updated to List<String>
   String? description;
   num? ratings;
   List<Size>? size;
@@ -143,7 +143,9 @@ class MenuItems {
   MenuItems.fromJson(Map<String, dynamic> json) {
     menuId = json['menuId'];
     itemName = json['itemName'];
-    images = json['images'];
+    images = json['images'] != null
+        ? List<String>.from(json['images'])
+        : null; // Convert to List<String>
     description = json['description'];
     ratings = json['ratings'];
     if (json['size'] != null) {

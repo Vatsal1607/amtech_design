@@ -38,13 +38,16 @@ class _ResponseScreenState extends State<ResponseScreen> {
     // Ensure orderId is set only once
     if (orderId == null) {
       // orderId = ModalRoute.of(context)!.settings.arguments as String?;
+      // final args =
+      //     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final args =
-          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-
-      orderId = args['orderId'];
-      amount = args['amount'];
-      if (orderId != null) {
-        _paymentFuture = getPaymentResponse(orderId!);
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+      if (args != null) {
+        orderId = args['orderId'];
+        amount = args['amount'];
+        if (orderId != null) {
+          _paymentFuture = getPaymentResponse(orderId!);
+        }
       }
     }
   }

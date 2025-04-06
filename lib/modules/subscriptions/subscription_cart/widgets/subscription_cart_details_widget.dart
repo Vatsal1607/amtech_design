@@ -2,9 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../subscription_cart_provider.dart';
 
 class SubscriptionCartDetailsWidget extends StatelessWidget {
-  const SubscriptionCartDetailsWidget({super.key});
+  SubscriptionCartProvider provider;
+  SubscriptionCartDetailsWidget({
+    super.key,
+    required this.provider,
+  });
 
   @override
   Widget build(BuildContext context) {

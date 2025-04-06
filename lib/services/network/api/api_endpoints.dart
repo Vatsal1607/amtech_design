@@ -42,4 +42,7 @@ class ApiEndpoints {
   static const String countBanner = 'count/banner';
   static const String ingredientsAndAddOns = 'subscription/menu/details';
   static const String subscriptionCreate = 'subscription/create';
+  static const String subscriptionsDetails = 'subscriptions/details';
+  static const String subscriptionsUpdate = 'subscriptions/update';
+  static const String rechargeHistory = 'recharge/history';
 }

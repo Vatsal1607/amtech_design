@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -118,7 +119,13 @@ class _SubscriptionBannerWidgetState extends State<SubscriptionBannerWidget> {
             right: 20.w,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, Routes.createSubscriptionPlan);
+                // Navigator.pushNamed(context, Routes.createSubscriptionPlan);
+                // Todo: Replace with named routes
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CreateSubscriptionPlanPage(),
+                    ));
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),

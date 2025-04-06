@@ -12,11 +12,6 @@ class BusinessSelectionProvider extends ChangeNotifier {
   bool isLoadingPagination = false;
   int currentPage = 1;
 
-  // BusinessSelectionProvider() {
-  //   //* Api call
-  //   getBusinessList(currentPage: currentPage);
-  // }
-
   TextEditingController searchController = TextEditingController();
   List<BusinessList> _businessList = [];
   List<BusinessList> get businessList => _businessList;
@@ -63,47 +58,56 @@ class BusinessSelectionProvider extends ChangeNotifier {
   BusinessListModel? get personalRegisterModel => _businessListModel;
 
   int totalRecords = 0;
+  bool isLoadingMore = false;
+  bool hasMoreData = true;
 
-  //* getBusinessList
+  Future<void> loadMoreBusinesses() async {
+    if (hasMoreData && !isLoadingMore) {
+      currentPage++;
+      await getBusinessList(currentPage: currentPage);
+    }
+  }
+
+  //* Get Business list API
   Future<void> getBusinessList({
     String searchText = '',
     int currentPage = 1,
   }) async {
-    debugPrint('$totalRecords');
-    _isLoading = true;
-    notifyListeners();
+    if (isLoadingMore) return;
+    // Set loading states
+    if (currentPage == 1) {
+      _isLoading = true;
+    } else {
+      isLoadingMore = true;
+    }
     try {
       _businessListModel = await apiService.getBusinessList(
         page: currentPage,
         limit: 10,
         search: searchText,
       );
-      debugPrint('currentPage : $currentPage');
       if (_businessListModel?.success == true &&
           _businessListModel?.data != null) {
         totalRecords = _businessListModel!.data!.totalRecords ?? 0;
-        // Add new data to the existing list for pagination
         if (currentPage == 1) {
-          // For the first page, replace the list
           _businessList = _businessListModel?.data?.businessList ?? [];
         } else {
-          // For subsequent pages, append new data
           _businessList.addAll(_businessListModel?.data?.businessList ?? []);
         }
-        // Clear and update the suggestion list
         suggestionList.clear();
-        // suggestionList.addAll(_businessList);
         suggestionList.addAll(_businessList.where((item) =>
             !suggestionList.any((suggestion) => suggestion.sId == item.sId)));
-        // Update filtered list
         filteredBusinessList = List.from(suggestionList);
         // * storeSecondaryAccessLocally
         saveBusinessNameAndSecondaryAccess(businessList);
       }
+      // Check if more data is available
+      hasMoreData = _businessList.length < totalRecords;
     } catch (e) {
-      debugPrint("Error fetching business list: ${e.toString()}");
+      log("Error fetching business list: $e");
     } finally {
       _isLoading = false;
+      isLoadingMore = false;
       notifyListeners();
     }
   }

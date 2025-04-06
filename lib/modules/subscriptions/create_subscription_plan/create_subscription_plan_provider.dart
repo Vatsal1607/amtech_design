@@ -8,6 +8,7 @@ import 'package:amtech_design/services/network/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/timeslot_day_model.dart';
+import '../../../routes.dart';
 
 class CreateSubscriptionPlanProvider extends ChangeNotifier {
   String? _selectedValue;
@@ -48,12 +49,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   }
 
   Map<String, bool> switchStates = {}; // Holds switch states for each day
-  //! Keep this method for toggle switch
-  // void toggleSwitch(String day, bool value) {
-  //   switchStates[day] = value;
-  //   log('switchStates[$day] ${switchStates[day]}');
-  //   notifyListeners();
-  // }
 
   void toggleSwitch(String day, bool value, BuildContext context) {
     switchStates[day] = value;
@@ -111,12 +106,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     isDayDropdownOpen[day] = isOpen;
     notifyListeners();
   }
-
-  // void onChangedTimeslot(String day, String? newTime) {
-  //   selectedTimeslots[day] = newTime;
-  //   log('selectedTimeslots[day] ${selectedTimeslots[day]}');
-  //   notifyListeners();
-  // }
 
   final List<String> timeSlots = [
     "08:00AM To 09:00AM",
@@ -250,6 +239,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
 
   ApiService apiService = ApiService();
   bool isLoading = false;
+  String? subsId;
 
   // * SubscriptionCreate API
   Future<void> subscriptionCreate(BuildContext context) async {
@@ -261,7 +251,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
           sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
       final ingredientsProvider =
           Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
-
       // ! Request data
       final requestData = SubscriptionCreateRequestModel(
         userId: userId,
@@ -280,13 +269,14 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
       );
       log('subscriptionCreate: $res');
       if (res.success == true) {
-        log('subscriptionCreate: ${res.message}');
-        subsItems.clear(); //* Clear subsItem list on subc create
+        subsId = res.data?.sId; // Subscription ID
+        // subsItems.clear(); //* Clear subsItem list on subc create
+        Navigator.pushNamed(context, Routes.subscriptionSummary);
       } else {
         log('${res.message}');
       }
     } catch (e) {
-      log("Error fetching subscriptionCreate: ${e.toString()}");
+      log("Error subscriptionCreate: ${e.toString()}");
     } finally {
       isLoading = false;
       notifyListeners();
@@ -296,12 +286,13 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   //! Subscription variables
   List<SubscriptionItem> subsItems = [];
 
-  void addItem({
+  void addSubsItem({
     required String menuId,
     Size? size,
     List<MealSubscription>? meals,
     List<Customization>? customize,
   }) {
+    log('addSubsItem called');
     subsItems.add(
       SubscriptionItem(
         menuIds: menuId,
@@ -313,11 +304,40 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateItem(int index, SubscriptionItem updatedItem) {
-    if (index >= 0 && index < subsItems.length) {
-      subsItems[index] = updatedItem;
-      notifyListeners();
+  void updateSubsItem({
+    required String menuId,
+    Size? size,
+    List<MealSubscription>? meals,
+    List<Customization>? customize,
+    required String day,
+  }) {
+    log('updateSubsItem called');
+
+    // Find the index of the item to update based on the day
+    int updateIndex = subsItems.indexWhere((item) =>
+        item.mealSubscription?.any((meal) => meal.day == day) ?? false);
+
+    if (updateIndex != -1) {
+      // Update the existing item if day matches
+      subsItems[updateIndex] = SubscriptionItem(
+        menuIds: menuId,
+        size: size,
+        mealSubscription: meals,
+        customize: customize,
+      );
+    } else {
+      // Add a new item if no matching day is found
+      subsItems.add(
+        SubscriptionItem(
+          menuIds: menuId,
+          size: size,
+          mealSubscription: meals,
+          customize: customize,
+        ),
+      );
     }
+
+    notifyListeners();
   }
 
   void removeItem(int index) {
@@ -332,49 +352,63 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Meal subscription list for ListView in the second page
-  List<MealSubscription> mealSubscriptions = [];
-
-  // Customization list for ListView in the third page
-  List<Customization> customizations = [];
-
   // Set items
   void setSubsItems(List<SubscriptionItem> newItems) {
     subsItems = newItems;
     notifyListeners();
   }
 
-  // Add a single item
-  // void addSubsItem(SubscriptionItem? item) {
-  //   if (item != null) {
-  //     subsItems.add(item);
-  //     log('Subscription item: $item');
-  //     log('addSubsItem called: ${subsItems[0].menuIds}');
-  //     notifyListeners();
-  //   }
-  // }
-
-  // Set meal subscriptions
-  void setMealSubscriptions(List<MealSubscription> newMealSubscriptions) {
-    mealSubscriptions = newMealSubscriptions;
+  //* isUpdate or isCreate Subscription
+  bool isUpdateSubscription = false;
+  void setUpdateSubscription(bool value) {
+    isUpdateSubscription = value;
+    log('isUpdate subscription: $isUpdateSubscription');
     notifyListeners();
   }
 
-  // Add a single meal subscription
-  void addMealSubscription(MealSubscription meal) {
-    mealSubscriptions.add(meal);
-    notifyListeners();
-  }
+  bool isLoadingSubsUpdate = false;
 
-  // Set customizations
-  void setCustomizations(List<Customization> newCustomizations) {
-    customizations = newCustomizations;
-    notifyListeners();
-  }
+  // * SubscriptionUpdate API
+  Future<void> subscriptionUpdate(BuildContext context) async {
+    isLoadingSubsUpdate = true;
+    try {
+      String userId =
+          sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      String accountType =
+          sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+      final ingredientsProvider =
+          Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
+      // ! Request data
+      final requestData = SubscriptionCreateRequestModel(
+        userId: userId,
+        userType: accountType == 'business' ? 'BusinessUser' : 'User',
+        items: subsItems, //* Subscription Itemlist
+        price: selectedPrice,
+        units: selectedUnits,
+        notes: ingredientsProvider.noteController.text,
+        paymentMethod: 'paymentMethod',
+        paymentStatus: true,
+      );
 
-  // Add a single customization
-  void addCustomization(Customization customization) {
-    customizations.add(customization);
-    notifyListeners();
+      log('requestData subscriptionUpdate: $requestData');
+      final res = await apiService.subscriptionUpdate(
+        subsId: subsId ?? '',
+        subscriptionUpdateRequestData: requestData,
+      );
+      log('subscriptionUpdate: $res');
+      if (res.success == true) {
+        context
+            .read<CreateSubscriptionPlanProvider>()
+            .setUpdateSubscription(false); // isUpadte: False
+        Navigator.pushNamed(context, Routes.subscriptionSummary);
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      log("Error subscriptionUpdate: ${e.toString()}");
+    } finally {
+      isLoadingSubsUpdate = false;
+      notifyListeners();
+    }
   }
 }

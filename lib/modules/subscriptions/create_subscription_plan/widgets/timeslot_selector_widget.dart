@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,11 +10,12 @@ import '../../../../core/utils/app_colors.dart';
 class TimeSlotSelectorWidget extends StatelessWidget {
   final String day;
   final int mealIndex;
-
+  final String accountType;
   const TimeSlotSelectorWidget({
     super.key,
     required this.day,
     required this.mealIndex,
+    required this.accountType,
   });
 
   @override
@@ -43,8 +45,16 @@ class TimeSlotSelectorWidget extends StatelessWidget {
                   margin: EdgeInsets.symmetric(horizontal: 8.w),
                   decoration: BoxDecoration(
                     color: isSelected
-                        ? AppColors.disabledColor
-                        : AppColors.seaShell,
+                        ? getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.disabledColor,
+                            personalColor: AppColors.bayLeaf,
+                          )
+                        : getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                     borderRadius: BorderRadius.circular(20.r),
                   ),
                   child: Center(

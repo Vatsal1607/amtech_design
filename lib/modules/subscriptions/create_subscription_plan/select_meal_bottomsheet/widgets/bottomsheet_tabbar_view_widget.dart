@@ -11,25 +11,28 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/constant.dart';
 import '../../../../../models/home_menu_model.dart';
 import '../select_meal_bottomsheet_provider.dart';
 
 //! text should Unique category name for each tab
 class BottomsheetTabbarViewWidget extends StatelessWidget {
-  final String text;
+  final String itemName;
   final SelectMealBottomsheetProvider provider;
   final MenuProvider menuProvider;
   final int itemLength;
   final List<MenuItems>? menuItems;
   final String day;
+  final int mealIndex;
   const BottomsheetTabbarViewWidget({
     super.key,
-    required this.text,
+    required this.itemName,
     required this.provider,
     required this.menuProvider,
     required this.itemLength,
     required this.menuItems,
     required this.day,
+    required this.mealIndex,
   });
 
   @override
@@ -43,8 +46,12 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
       itemBuilder: (context, index) {
         return Column(
           children: [
-            const Divider(
-              color: AppColors.disabledColor,
+            Divider(
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.disabledColor,
+                personalColor: AppColors.bayLeaf,
+              ),
               thickness: 0.5,
             ),
             Padding(
@@ -59,7 +66,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          text,
+                          itemName,
                           style: GoogleFonts.publicSans(
                               color: Colors.white,
                               fontSize: 16.sp,
@@ -68,21 +75,36 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                         SizedBox(height: 4.h),
                         Row(
                           children: [
-                            const Icon(Icons.star,
-                                color: AppColors.disabledColor, size: 16),
+                            Icon(
+                              Icons.star,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.disabledColor,
+                                personalColor: AppColors.bayLeaf,
+                              ),
+                              size: 16,
+                            ),
                             SizedBox(width: 4.w),
                             Text(
                               menuItems?[index].ratings.toString() ?? '',
                               style: GoogleFonts.publicSans(
                                 fontSize: 14.sp,
-                                color: AppColors.disabledColor,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.disabledColor,
+                                  personalColor: AppColors.bayLeaf,
+                                ),
                               ),
                             ),
                             SizedBox(width: 8.w),
                             Text(
                               "• Best Seller",
                               style: GoogleFonts.publicSans(
-                                color: AppColors.disabledColor,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.disabledColor,
+                                  personalColor: AppColors.bayLeaf,
+                                ),
                                 fontSize: 14.sp,
                               ),
                             ),
@@ -91,7 +113,8 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                         SizedBox(height: 10.h),
                         Consumer<SelectMealBottomsheetProvider>(
                             builder: (context, provider, child) {
-                          int quantity = provider.getQuantity(text, index);
+                          int quantity =
+                              provider.getQuantity(day, itemName, index);
                           return quantity == 0
                               ? SmallEditButton(
                                   width: 108.w,
@@ -100,18 +123,23 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                                   onTap: () {
                                     showIngredientsBottomSheeet(
                                       day: day,
-                                      // index: index,
+                                      mealIndex: mealIndex,
                                       context: context,
                                       accountType: accountType,
                                       menuId: menuItems?[index].menuId ?? '',
                                       itemName:
                                           menuItems?[index].itemName ?? '',
                                       menuItems: menuItems?[index],
+                                      mealItemIndex: index,
                                     );
-                                    // Todo: Uncomment & call on Done button success select ingredients
-                                    // provider.addItem(text, index);
+                                    // Add meal item
+                                    // provider.addMealItem(itemName, index);
                                   },
-                                  bgColor: AppColors.seaShell,
+                                  bgColor: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.seaShell,
+                                    personalColor: AppColors.seaMist,
+                                  ),
                                   textColor: AppColors.primaryColor,
                                   text: 'Add',
                                   fontSize: 14.sp,
@@ -119,11 +147,14 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                               :
                               // * Show Quantity Counter
                               CustomCounterWidget(
+                                  accountType: accountType,
                                   onTapDecrease: () {
-                                    provider.decrement(text, index);
+                                    //* decrementMealItem
+                                    // provider.decrementMealItem(itemName, index);
                                   },
                                   onTapIncrease: () {
-                                    provider.increment(text, index);
+                                    //* incrementMealItem
+                                    // provider.incrementMealItem(itemName, index);
                                   },
                                   quantity: quantity.toString(),
                                 );
@@ -138,7 +169,9 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                       width: 80.w,
                       height: 80.h,
                       child: Image.network(
-                        '${menuItems?[index].images?[0]}',
+                        (menuItems?[index].images?.isNotEmpty ?? false)
+                            ? menuItems![index].images![0]
+                            : 'https://via.placeholder.com/150', // Fallback image URL
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) =>
                             const Icon(Icons.broken_image, color: Colors.white),

@@ -132,7 +132,11 @@ class ProductDetailsPage extends StatelessWidget {
                       Image.network(
                         height: 440.h,
                         width: double.infinity,
-                        provider.menuDetailsResponse?.data?.images?[0] ?? '',
+                        (provider.menuDetailsResponse?.data?.images
+                                    ?.isNotEmpty ??
+                                false)
+                            ? provider.menuDetailsResponse!.data!.images![0]
+                            : '',
                         fit: BoxFit.cover,
                       ),
                       // Expanded(

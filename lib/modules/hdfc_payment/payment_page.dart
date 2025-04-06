@@ -3,6 +3,8 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hypersdkflutter/hypersdkflutter.dart';
 import '../../models/initiate_payment_model.dart';
 import '../../services/network/api_service.dart';
@@ -11,8 +13,7 @@ import 'response.dart';
 class PaymentPage extends StatefulWidget {
   final HyperSDK hyperSDK;
   final String amount;
-  const PaymentPage({Key? key, required this.hyperSDK, required this.amount})
-      : super(key: key);
+  const PaymentPage({super.key, required this.hyperSDK, required this.amount});
   @override
   _PaymentPageState createState() => _PaymentPageState(amount);
 }
@@ -23,9 +24,7 @@ class _PaymentPageState extends State<PaymentPage> {
   var paymentSuccess = false;
   var paymentFailed = false;
   var amount = "0";
-  _PaymentPageState(amount) {
-    this.amount = amount;
-  }
+  _PaymentPageState(this.amount);
 
   @override
   void initState() {
@@ -58,10 +57,25 @@ class _PaymentPageState extends State<PaymentPage> {
         }
       },
 //block:end:onBackPress
-      child: Container(
-        color: Colors.white,
-        child: Center(
-          child: showLoader ? const CircularProgressIndicator() : Container(),
+      child: Scaffold(
+        body: Container(
+          color: Colors.white,
+          child: Center(
+            child: showLoader
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const CircularProgressIndicator(),
+                      SizedBox(height: 10.h),
+                      Text('Please wait...',
+                          style: GoogleFonts.publicSans(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ],
+                  )
+                : Container(),
+          ),
         ),
       ),
     );

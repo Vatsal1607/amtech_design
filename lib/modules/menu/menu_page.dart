@@ -62,11 +62,11 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     log('userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    String accountType =
+    final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
 
-    //* Note: variable is not used but by initialize this socket connect
+    //! Note: variable is not used but by initialize this socket connect
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     //* Show cart snackbar
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -368,12 +368,12 @@ class _MenuPageState extends State<MenuPage> {
                                       ),
                                       SizedBox(height: 15.h),
 
-                                      //* Slider details widget
+                                      //* Progress bar details widget
                                       Consumer<MenuProvider>(
                                           builder: (context, _, child) {
                                         final homeMenuData =
                                             provider.homeMenuResponse?.data;
-                                        return SliderDetailsWidget(
+                                        return ProgressDetailsWidget(
                                           isShowRecharge: true,
                                           accountType: accountType,
                                           filledValue:
@@ -386,13 +386,12 @@ class _MenuPageState extends State<MenuPage> {
                                       }),
                                       SizedBox(height: 13.h),
 
-                                      // * Linear progress indicator:
+                                      // * Linear progress indicator
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 22.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 22.w),
                                         child: Container(
-                                          height: 6
-                                              .h, // Height of the credit progress bar
+                                          height: 6.h,
                                           width: double.infinity,
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(
@@ -405,29 +404,32 @@ class _MenuPageState extends State<MenuPage> {
                                             borderRadius: BorderRadius.circular(
                                                 5.0), // Rounded corners
                                           ),
-                                          child: Stack(
-                                            children: [
-                                              FractionallySizedBox(
-                                                widthFactor:
-                                                    0.4, // * based on progress
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    gradient: LinearGradient(
-                                                      colors: [
-                                                        AppColors.lightGreen
-                                                            .withOpacity(.5),
-                                                        AppColors.lightGreen
-                                                            .withOpacity(.5),
-                                                      ], // Gradient for active
+                                          child: Consumer<MenuProvider>(
+                                              builder: (context, _, child) {
+                                            return Stack(
+                                              children: [
+                                                FractionallySizedBox(
+                                                  widthFactor: provider
+                                                      .progress, // Progress
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      gradient: LinearGradient(
+                                                        colors: [
+                                                          AppColors.lightGreen
+                                                              .withOpacity(.5),
+                                                          AppColors.lightGreen
+                                                              .withOpacity(.5),
+                                                        ], // Gradient for active
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              5.0),
                                                     ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.0),
                                                   ),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                              ],
+                                            );
+                                          }),
                                         ),
                                       ),
                                     ],
@@ -488,35 +490,15 @@ class _MenuPageState extends State<MenuPage> {
                                         padding: EdgeInsets.only(top: 20.h),
                                         child: Column(
                                           children: [
-                                            //* BannerView
+                                            // * Banner View
                                             BannerView(
                                               accountType: accountType,
                                             ),
                                             SizedBox(height: 20.h),
-
-                                            //* Subscriptions Banner
+                                            // * Subscriptions Banner
                                             SubscriptionBannerWidget(),
+
                                             SizedBox(height: 20.h),
-
-                                            //* Subscriptions
-                                            // GestureDetector(
-                                            //   onTap: () {
-                                            //     Navigator.pushNamed(
-                                            //       context,
-                                            //       Routes.productDetails,
-                                            //       arguments: {
-                                            //         'menuId':
-                                            //             '', // Todo set menuId
-                                            //         'detailsType': DetailsType
-                                            //             .subscription.name,
-                                            //       },
-                                            //     );
-                                            //   },
-                                            //   child: SubscriptionWidget(
-                                            //     provider: provider,
-                                            //   ),
-                                            // ),
-
                                             // * ListView Categories
                                             Consumer<MenuProvider>(
                                               builder: (context, _, child) {
@@ -526,9 +508,6 @@ class _MenuPageState extends State<MenuPage> {
                                                   padding: EdgeInsets.zero,
                                                   physics:
                                                       const NeverScrollableScrollPhysics(),
-                                                  // itemCount:
-                                                  //     provider.menuCategories?.length ??
-                                                  //         0,
                                                   itemCount: provider
                                                       .filteredCategories
                                                       .length,
@@ -621,9 +600,11 @@ class _MenuPageState extends State<MenuPage> {
                                                                     },
                                                                     child:
                                                                         ProductWidget(
-                                                                      image:
-                                                                          menuItems?.images?[0] ??
-                                                                              '',
+                                                                      image: (menuItems?.images?.isNotEmpty ??
+                                                                              false)
+                                                                          ? menuItems!
+                                                                              .images![0]
+                                                                          : '',
                                                                       name: menuItems
                                                                               ?.itemName ??
                                                                           '',
@@ -648,56 +629,9 @@ class _MenuPageState extends State<MenuPage> {
                                                 );
                                               },
                                             ),
-                                            // * Best seller Product
-                                            // * Best Seller Divider
-                                            // Padding(
-                                            //   padding: const EdgeInsets.symmetric(
-                                            //       horizontal: 20.0),
-                                            //   child: DividerLabel(
-                                            //     key: provider.bestSellerKey,
-                                            //     label: 'BEST SELLER',
-                                            //     accountType: accountType,
-                                            //   ),
-                                            // ),
-                                            // const SizedBox(height: 15.0),
-                                            // // * Best seller horizontal view
-                                            // SizedBox(
-                                            //   height: 157.h,
-                                            //   child: ListView.separated(
-                                            //     padding: EdgeInsets.symmetric(
-                                            //         horizontal: 20.w),
-                                            //     shrinkWrap: true,
-                                            //     itemCount: 4,
-                                            //     scrollDirection: Axis.horizontal,
-                                            //     separatorBuilder: (context, index) =>
-                                            //         SizedBox(width: 10.w),
-                                            //     itemBuilder: (context, index) {
-                                            //       return Consumer<MenuProvider>(
-                                            //         builder: (context, provider, child) =>
-                                            //             GestureDetector(
-                                            //           onTap: () {
-                                            //             debugPrint(
-                                            //                 'Product item pressed $index');
-                                            //             Navigator.pushNamed(
-                                            //               context,
-                                            //               Routes.productDetails,
-                                            //             );
-                                            //           },
-                                            //           child: ProductWidget(
-                                            //             image:
-                                            //                 provider.productImage[index],
-                                            //             name: provider.productName[index],
-                                            //             index: index,
-                                            //             accountType: accountType,
-                                            //           ),
-                                            //         ),
-                                            //       );
-                                            //     },
-                                            //   ),
-                                            // ),
                                             SizedBox(height: 18.h),
                                             const SizedBox(height: 20.0),
-                                            // * Health First (Keep it for ref)
+                                            //! Health First (Keep it for ref)
                                             // Stack(
                                             //   children: [
                                             //     Container(

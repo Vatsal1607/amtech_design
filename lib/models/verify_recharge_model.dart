@@ -10,7 +10,7 @@ class VerifyRechargeModel {
     success = json['success'];
     statusCode = json['statusCode'];
     message = json['message'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Data.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -26,27 +26,30 @@ class VerifyRechargeModel {
 }
 
 class Data {
-  PaymentHistory? paymentHistory;
+  // PaymentHistory? paymentHistory;
   Recharge? recharge;
   Perks? perks;
 
-  Data({this.paymentHistory, this.recharge, this.perks});
+  Data({
+    // this.paymentHistory,
+    this.recharge,
+    this.perks,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
-    paymentHistory = json['paymentHistory'] != null
-        ? new PaymentHistory.fromJson(json['paymentHistory'])
-        : null;
-    recharge = json['recharge'] != null
-        ? new Recharge.fromJson(json['recharge'])
-        : null;
-    perks = json['perks'] != null ? new Perks.fromJson(json['perks']) : null;
+    // paymentHistory = json['paymentHistory'] != null
+    //     ? PaymentHistory.fromJson(json['paymentHistory'])
+    //     : null;
+    recharge =
+        json['recharge'] != null ? Recharge.fromJson(json['recharge']) : null;
+    perks = json['perks'] != null ? Perks.fromJson(json['perks']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    if (paymentHistory != null) {
-      data['paymentHistory'] = paymentHistory!.toJson();
-    }
+    // if (paymentHistory != null) {
+    //   data['paymentHistory'] = paymentHistory!.toJson();
+    // }
     if (recharge != null) {
       data['recharge'] = recharge!.toJson();
     }
@@ -57,42 +60,42 @@ class Data {
   }
 }
 
-class PaymentHistory {
-  String? userId;
-  int? rechargeAmount;
-  int? perks;
-  String? sId;
-  String? transactionDate;
-  int? iV;
+// class PaymentHistory {
+//   String? userId;
+//   int? rechargeAmount;
+//   int? perks;
+//   String? sId;
+//   String? transactionDate;
+//   int? iV;
 
-  PaymentHistory(
-      {this.userId,
-      this.rechargeAmount,
-      this.perks,
-      this.sId,
-      this.transactionDate,
-      this.iV});
+//   PaymentHistory(
+//       {this.userId,
+//       this.rechargeAmount,
+//       this.perks,
+//       this.sId,
+//       this.transactionDate,
+//       this.iV});
 
-  PaymentHistory.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'];
-    rechargeAmount = json['rechargeAmount'];
-    perks = json['perks'];
-    sId = json['_id'];
-    transactionDate = json['transactionDate'];
-    iV = json['__v'];
-  }
+//   PaymentHistory.fromJson(Map<String, dynamic> json) {
+//     userId = json['userId'];
+//     rechargeAmount = json['rechargeAmount'];
+//     perks = json['perks'];
+//     sId = json['_id'];
+//     transactionDate = json['transactionDate'];
+//     iV = json['__v'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['userId'] = userId;
-    data['rechargeAmount'] = rechargeAmount;
-    data['perks'] = perks;
-    data['_id'] = sId;
-    data['transactionDate'] = transactionDate;
-    data['__v'] = iV;
-    return data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['userId'] = userId;
+//     data['rechargeAmount'] = rechargeAmount;
+//     data['perks'] = perks;
+//     data['_id'] = sId;
+//     data['transactionDate'] = transactionDate;
+//     data['__v'] = iV;
+//     return data;
+//   }
+// }
 
 class Recharge {
   String? userId;

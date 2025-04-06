@@ -1,9 +1,12 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/constants/keys.dart';
+import '../../../../services/local/shared_preferences_service.dart';
 
 class CustomButtonWithIcon extends StatelessWidget {
   final String labelText;
@@ -22,6 +25,8 @@ class CustomButtonWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return GestureDetector(
       onTap: onPressed,
       child: Container(
@@ -29,20 +34,35 @@ class CustomButtonWithIcon extends StatelessWidget {
         width: width,
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.h),
         decoration: BoxDecoration(
-          color: AppColors.seaShell,
+          color: getColorAccountType(
+            accountType: accountType,
+            businessColor: AppColors.seaShell,
+            personalColor: AppColors.seaMist,
+          ),
           borderRadius: BorderRadius.circular(30.r),
           border: Border.all(color: Colors.transparent),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SvgIcon(icon: icon, color: AppColors.primaryColor),
-            SizedBox(width: 5.w),
+            SvgIcon(
+              icon: icon,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
+            ),
+            // SizedBox(width: 5.w),
             Text(
               labelText,
               style: GoogleFonts.publicSans(
                   fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   fontSize: 12.sp),
             ),
           ],

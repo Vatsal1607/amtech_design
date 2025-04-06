@@ -1,12 +1,14 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 
-class BalanceCard extends StatelessWidget {
+class BalanceCardWidget extends StatelessWidget {
   final String accountType;
-  const BalanceCard({
+  const BalanceCardWidget({
     super.key,
     required this.accountType,
   });
@@ -40,12 +42,14 @@ class BalanceCard extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  "₹ 2,000",
-                  style: GoogleFonts.publicSans(
-                    color: Colors.white,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.bold,
+                Consumer<RechargeProvider>(
+                  builder: (context, provider, child) => Text(
+                    '₹ ${provider.historyRes?.data?.totalAmount}',
+                    style: GoogleFonts.publicSans(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -79,12 +83,14 @@ class BalanceCard extends StatelessWidget {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                Text(
-                  "₹ 20",
-                  style: GoogleFonts.publicSans(
-                    color: const Color(0xFF0D1E3A),
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+                Consumer<RechargeProvider>(
+                  builder: (context, provider, child) => Text(
+                    '₹ ${provider.historyRes?.data?.totalPerks}',
+                    style: GoogleFonts.publicSans(
+                      color: const Color(0xFF0D1E3A),
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

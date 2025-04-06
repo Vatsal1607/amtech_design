@@ -97,6 +97,10 @@ class IconStrings {
   static const delete = '${BaseIconPath.basePath}delete.svg';
   static const subscriptionCrown =
       '${BaseIconPath.basePath}subscription_crown.svg';
+  static const subsDetails = '${BaseIconPath.basePath}subs_details.svg';
+  static const subsDetails2 = '${BaseIconPath.basePath}subs_details_2.svg';
+  static const editPen = '${BaseIconPath.basePath}edit_pen.svg';
+  static const appFill = '${BaseIconPath.basePath}apps_fill.svg';
 }
 
 class ImageStrings {

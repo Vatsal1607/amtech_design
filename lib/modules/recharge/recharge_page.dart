@@ -52,10 +52,11 @@ class _RechargePageState extends State<RechargePage> {
   // }
 
   @override
-  void dispose() {
-    super.dispose();
-    // provider.amountController.dispose();
-    // razorpay.clear(); // Removes all event listeners
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<RechargeProvider>().getRechargeHistory(context);
+    });
+    super.initState();
   }
 
   @override
@@ -99,8 +100,8 @@ class _RechargePageState extends State<RechargePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                //* balance card
-                BalanceCard(
+                //* Balance card
+                BalanceCardWidget(
                   accountType: accountType,
                 ),
 

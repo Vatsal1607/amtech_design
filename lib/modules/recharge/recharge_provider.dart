@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
@@ -7,12 +6,10 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
-
 import '../../core/utils/app_colors.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
+import '../../models/recharge_history_model.dart';
 import '../../services/network/api_service.dart';
 
 class RechargeProvider extends ChangeNotifier {
@@ -26,11 +23,9 @@ class RechargeProvider extends ChangeNotifier {
 
     // Remove any commas before formatting
     String plainNumber = value.replaceAll(',', '');
-
     // Format the number using Indian Numbering Style
     String formattedNumber =
         _indianFormat.format(int.tryParse(plainNumber) ?? 0);
-
     // Prevent cursor from jumping
     if (formattedNumber != value) {
       amountController.value = amountController.value.copyWith(
@@ -58,7 +53,6 @@ class RechargeProvider extends ChangeNotifier {
         'userId': '6750773be63d357449cb4903',
         'rechargeAmount': int.parse(cleanValue),
       };
-      debugPrint('--Request body userRecharge: $body');
       // Make the API call
       final UserRechargeModel response = await apiService.userRecharge(
         body: body,
@@ -69,10 +63,8 @@ class RechargeProvider extends ChangeNotifier {
         if (response.data != null) {
           razorpayOrderId = response.data!.razorpayOrderId;
         }
-
         return true; // * Indicating success
       } else {
-        debugPrint('UserRecharge Response: ${response.message}');
         return false; // * Indicating failure
       }
     } catch (error) {
@@ -113,7 +105,6 @@ class RechargeProvider extends ChangeNotifier {
         "rechargeAmount": int.parse(cleanValue),
         "razorpayPaymentId": paymentId,
       };
-      debugPrint('--Request body userRecharge: $body');
       // Make the API call
       final VerifyRechargeModel response = await apiService.verifyRecharge(
         body: body,
@@ -124,7 +115,6 @@ class RechargeProvider extends ChangeNotifier {
         verifyRechargeMsg = response.message;
         return true; // Indicating success
       } else {
-        debugPrint('verifyRecharge Response: ${response.message}');
         verifyRechargeMsg = response.message;
         return false; // Indicating failure
       }
@@ -150,6 +140,32 @@ class RechargeProvider extends ChangeNotifier {
     }
   }
 
+  bool isLoadingRechargeHistory = false;
+  RechargeHistoryModel? historyRes;
+  List<PaymentHistory>? paymentHistoryList;
+
+  // * Recharge History API
+  Future<void> getRechargeHistory(BuildContext context) async {
+    isLoadingRechargeHistory = true;
+    try {
+      String userId =
+          sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
+      final res = await apiService.rechargeHistory(userId: userId);
+      log('getRechargeHistory: $res');
+      if (res.success == true) {
+        historyRes = res;
+        paymentHistoryList = res.data?.paymentHistory;
+      } else {
+        log('${res.message}');
+      }
+    } catch (e) {
+      log("Error getRechargeHistory: ${e.toString()}");
+    } finally {
+      isLoadingRechargeHistory = false;
+      notifyListeners();
+    }
+  }
+
   // ! Razorpay
   // late Razorpay razorpay;
 
@@ -166,67 +182,67 @@ class RechargeProvider extends ChangeNotifier {
   //   razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, handleExternalWallet);
   // }
 
-  void handlePaymentSuccess(
-      BuildContext context, PaymentSuccessResponse response) {
-    log('Payment-Success: ${response.data}');
-    if (response.paymentId != null) {
-      verifyRecharge(context, response.paymentId!);
-      amountController.clear();
-    }
-    // Payment success callback
-    showDialog(
-      context: context,
-      builder: (context) => Consumer<RechargeProvider>(
-        builder: (context, _, child) => AlertDialog(
-          title: const Text("Payment Successful"),
-          content: Text(verifyRechargeMsg ?? ''),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text("OK"),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+  // void handlePaymentSuccess(
+  //     BuildContext context, PaymentSuccessResponse response) {
+  //   log('Payment-Success: ${response.data}');
+  //   if (response.paymentId != null) {
+  //     verifyRecharge(context, response.paymentId!);
+  //     amountController.clear();
+  //   }
+  //   // Payment success callback
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => Consumer<RechargeProvider>(
+  //       builder: (context, _, child) => AlertDialog(
+  //         title: const Text("Payment Successful"),
+  //         content: Text(verifyRechargeMsg ?? ''),
+  //         actions: [
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text("OK"),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  void handlePaymentError(
-      BuildContext context, PaymentFailureResponse response) {
-    log('Payment-Failure: ${response.toString()}');
-    // Payment failure callback
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Payment Failed"),
-        content: Text(
-            "Error Code: ${response.code}\nError Message: ${response.message}"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("Retry"),
-          )
-        ],
-      ),
-    );
-  }
+  // void handlePaymentError(
+  //     BuildContext context, PaymentFailureResponse response) {
+  //   log('Payment-Failure: ${response.toString()}');
+  //   // Payment failure callback
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text("Payment Failed"),
+  //       content: Text(
+  //           "Error Code: ${response.code}\nError Message: ${response.message}"),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text("Retry"),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  void handleExternalWallet(
-      BuildContext context, ExternalWalletResponse response) {
-    log('Payment-External wallet: ${response.toString()}');
-    // External wallet callback
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("External Wallet Selected"),
-        content: Text("Wallet Name: ${response.walletName}"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text("OK"),
-          )
-        ],
-      ),
-    );
-  }
+  // void handleExternalWallet(
+  //     BuildContext context, ExternalWalletResponse response) {
+  //   log('Payment-External wallet: ${response.toString()}');
+  //   // External wallet callback
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text("External Wallet Selected"),
+  //       content: Text("Wallet Name: ${response.walletName}"),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context),
+  //           child: const Text("OK"),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 }

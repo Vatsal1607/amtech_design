@@ -65,7 +65,7 @@ class _OtpPageState extends State<OtpPage> {
             width: 1.sw,
             height: 1.sh,
             ImageStrings.loginBg,
-            // fit: BoxFit.cover,
+            fit: BoxFit.cover,
           ),
           Positioned.fill(
             child: Padding(

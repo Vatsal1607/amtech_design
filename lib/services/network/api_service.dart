@@ -11,6 +11,7 @@ import 'package:amtech_design/models/get_business_details_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/ingredients_and_addons_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
+import 'package:amtech_design/models/recharge_history_model.dart';
 import 'package:amtech_design/models/reorder_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
@@ -27,7 +28,9 @@ import '../../models/initiate_payment_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
+import '../../models/subscription_create_model.dart';
 import '../../models/subscription_create_request_model.dart';
+import '../../models/subscription_summary_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -327,11 +330,33 @@ class ApiService {
     );
   }
 
-  Future<ApiGlobalModel> subscriptionCreate({
+  Future<SubscriptionCreateModel> subscriptionCreate({
     required SubscriptionCreateRequestModel subscriptionCreateRequestData,
   }) async {
     return await apiClient.subscriptionCreate(
       subscriptionCreateRequestData,
     );
+  }
+
+  Future<SubscriptionSummaryModel> subscriptionsSummary({
+    required String subsId,
+  }) async {
+    return await apiClient.subscriptionsDetails(
+      subsId,
+    );
+  }
+
+  Future<ApiGlobalModel> subscriptionUpdate({
+    required String subsId,
+    required SubscriptionCreateRequestModel subscriptionUpdateRequestData,
+  }) async {
+    return await apiClient.subscriptionUpdate(
+      subsId,
+      subscriptionUpdateRequestData,
+    );
+  }
+
+  Future<RechargeHistoryModel> rechargeHistory({required String userId}) async {
+    return await apiClient.rechargeHistory(userId);
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/constant.dart';
 import 'day_selection_dropdown.dart';
 import 'selected_time_and_item_widget.dart';
 
@@ -12,12 +13,14 @@ class DayDropdownTile extends StatelessWidget {
   final bool isSwitched;
   final Function(bool) onToggleSwitch;
   final String? selectedTime;
+  final String accountType;
   const DayDropdownTile({
     super.key,
     required this.day,
     required this.isSwitched,
     required this.onToggleSwitch,
     this.selectedTime,
+    required this.accountType,
   });
 
   @override
@@ -31,8 +34,16 @@ class DayDropdownTile extends StatelessWidget {
           onToggle: onToggleSwitch,
           width: 70.w,
           height: 35.h,
-          activeColor: AppColors.primaryColor,
-          inactiveColor: AppColors.disabledColor,
+          activeColor: getColorAccountType(
+            accountType: accountType,
+            businessColor: AppColors.primaryColor,
+            personalColor: AppColors.darkGreenGrey,
+          ),
+          inactiveColor: getColorAccountType(
+            accountType: accountType,
+            businessColor: AppColors.disabledColor,
+            personalColor: AppColors.bayLeaf,
+          ),
         ),
         SizedBox(width: 10.w),
         Flexible(
@@ -51,6 +62,7 @@ class DayDropdownTile extends StatelessWidget {
                 Consumer<CreateSubscriptionPlanProvider>(
                   builder: (context, provider, child) =>
                       SelectedTimeAndItemWidget(
+                    accountType: accountType,
                     selectedTime: selectedTime!,
                     selectedItem: provider.daywiseSelectedItem[day] ?? '',
                   ),

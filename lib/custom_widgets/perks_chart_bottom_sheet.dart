@@ -5,8 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../core/utils/app_colors.dart';
 import '../core/utils/constant.dart';
-import '../core/utils/strings.dart';
-import 'svg_icon.dart';
 
 void showPerksChartBottomSheeet({
   required BuildContext context,
@@ -14,7 +12,6 @@ void showPerksChartBottomSheeet({
 }) {
   showModalBottomSheet(
     context: context,
-    // barrierColor: Colors.transparent,
     backgroundColor: getColorAccountType(
       accountType: accountType,
       businessColor: AppColors.primaryColor,
@@ -47,7 +44,7 @@ void showPerksChartBottomSheeet({
                       ),
                     ),
                   ),
-                  SizedBox(height: 17.h),
+                  SizedBox(height: 15.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

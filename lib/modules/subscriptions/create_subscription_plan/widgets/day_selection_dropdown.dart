@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet.dart';
@@ -51,7 +51,11 @@ class DaySelectionDropdown extends StatelessWidget {
                 height: 50.h,
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   borderRadius: provider.isDayDropdownOpen[day] ?? false
                       ? BorderRadius.only(
                           topLeft: Radius.circular(30.r),
@@ -76,7 +80,11 @@ class DaySelectionDropdown extends StatelessWidget {
               ),
               dropdownStyleData: DropdownStyleData(
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   borderRadius: provider.isDayDropdownOpen[day] ?? false
                       ? BorderRadius.zero
                       : BorderRadius.only(
@@ -117,7 +125,12 @@ class DaySelectionDropdown extends StatelessWidget {
                                       Text(
                                         'Select Time Slot',
                                         style: GoogleFonts.publicSans(
-                                          color: AppColors.disabledColor,
+                                          color: getColorAccountType(
+                                            accountType: accountType,
+                                            businessColor:
+                                                AppColors.disabledColor,
+                                            personalColor: AppColors.bayLeaf,
+                                          ),
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -125,13 +138,11 @@ class DaySelectionDropdown extends StatelessWidget {
                                       SizedBox(height: 8.h),
 
                                       // * Timeslot selector
-                                      Builder(builder: (context) {
-                                        log('mealindex: $index');
-                                        return TimeSlotSelectorWidget(
-                                          day: day,
-                                          mealIndex: index,
-                                        );
-                                      }),
+                                      TimeSlotSelectorWidget(
+                                        day: day,
+                                        mealIndex: index,
+                                        accountType: accountType,
+                                      ),
                                     ],
                                   ),
 
@@ -145,7 +156,12 @@ class DaySelectionDropdown extends StatelessWidget {
                                       Text(
                                         "Select Meal",
                                         style: GoogleFonts.publicSans(
-                                          color: AppColors.disabledColor,
+                                          color: getColorAccountType(
+                                            accountType: accountType,
+                                            businessColor:
+                                                AppColors.disabledColor,
+                                            personalColor: AppColors.bayLeaf,
+                                          ),
                                           fontSize: 14.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
@@ -158,6 +174,7 @@ class DaySelectionDropdown extends StatelessWidget {
                                               context: context,
                                               accountType: accountType,
                                               day: day,
+                                              mealIndex: index,
                                             );
                                           },
                                           child: Container(
@@ -165,7 +182,13 @@ class DaySelectionDropdown extends StatelessWidget {
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 6.w),
                                             decoration: BoxDecoration(
-                                              color: AppColors.seaShell,
+                                              color: getColorAccountType(
+                                                accountType: accountType,
+                                                businessColor:
+                                                    AppColors.seaShell,
+                                                personalColor:
+                                                    AppColors.seaMist,
+                                              ),
                                               borderRadius:
                                                   BorderRadius.circular(30.r),
                                             ),
@@ -174,14 +197,21 @@ class DaySelectionDropdown extends StatelessWidget {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                Text(
-                                                  provider.selectedMeals[day]
-                                                          ?[index] ??
-                                                      "No Meal Selected",
-                                                  style: GoogleFonts.publicSans(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14.sp,
+                                                SizedBox(
+                                                  width: 125.w,
+                                                  child: Text(
+                                                    provider.selectedMeals[day]
+                                                            ?[index] ??
+                                                        "No Meal Selected",
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style:
+                                                        GoogleFonts.publicSans(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 14.sp,
+                                                    ),
                                                   ),
                                                 ),
                                                 Row(
@@ -189,8 +219,15 @@ class DaySelectionDropdown extends StatelessWidget {
                                                     SvgIcon(
                                                       icon:
                                                           IconStrings.arrowNext,
-                                                      color: AppColors
-                                                          .primaryColor,
+                                                      color:
+                                                          getColorAccountType(
+                                                        accountType:
+                                                            accountType,
+                                                        businessColor: AppColors
+                                                            .primaryColor,
+                                                        personalColor: AppColors
+                                                            .darkGreenGrey,
+                                                      ),
                                                       height: 12.h,
                                                     ),
                                                     SizedBox(width: 8.w),

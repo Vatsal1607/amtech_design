@@ -1,13 +1,14 @@
-import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'dart:developer';
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
-import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../routes.dart';
+import '../../../core/utils/constants/keys.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import 'create_subscription_plan_provider.dart';
 import 'widgets/custom_subsbutton_with_arrow.dart';
 import 'widgets/dropdown_tile.dart';
@@ -18,11 +19,16 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final String accountType = 'personal';
+    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider =
         Provider.of<CreateSubscriptionPlanProvider>(context, listen: true);
     return Scaffold(
+      backgroundColor: getColorAccountType(
+        accountType: accountType,
+        businessColor: AppColors.seaShell,
+        personalColor: AppColors.seaMist,
+      ),
       appBar: CustomAppbarWithCenterTitle(
         title: 'Create Your Daily Plan',
         leftPadTitle: 35.w,
@@ -33,8 +39,12 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
           Positioned.fill(
             child: Column(
               children: [
-                const Divider(
-                  color: AppColors.primaryColor,
+                Divider(
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
                 Expanded(
                   child: SingleChildScrollView(
@@ -54,21 +64,31 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                                     style: GoogleFonts.publicSans(
                                       fontSize: 20.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.primaryColor,
+                                      color: getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.primaryColor,
+                                        personalColor: AppColors.darkGreenGrey,
+                                      ),
                                     ),
                                   ),
                                   Text(
                                     "1 Unit = 1 Item",
                                     style: GoogleFonts.publicSans(
                                       fontSize: 14.sp,
-                                      color: AppColors.disabledColor,
+                                      color: getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.disabledColor,
+                                        personalColor: AppColors.bayLeaf,
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
 
                               // * Custom dropdown
-                              const SelectUnitDropdown(),
+                              SelectUnitDropdown(
+                                accountType: accountType,
+                              ),
                             ],
                           ),
                           SizedBox(height: 25.h),
@@ -84,14 +104,22 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                                   style: GoogleFonts.publicSans(
                                     fontSize: 20.sp,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.primaryColor,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.primaryColor,
+                                      personalColor: AppColors.darkGreenGrey,
+                                    ),
                                   ),
                                 ),
                                 Text(
                                   "We're Closed On Sunday",
                                   style: GoogleFonts.publicSans(
                                     fontSize: 14.sp,
-                                    color: AppColors.disabledColor,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -108,7 +136,7 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 20.h),
                                 child: DayDropdownTile(
-                                  // selectedItem: ,
+                                  accountType: accountType,
                                   day: provider.days[index],
                                   isSwitched: provider
                                           .switchStates[provider.days[index]] ??
@@ -116,8 +144,6 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                                   onToggleSwitch: (value) =>
                                       provider.toggleSwitch(
                                           provider.days[index], value, context),
-                                  // selectedTime: provider
-                                  //     .selectedTimeslots[provider.days[index]],
                                   selectedTime: provider
                                           .selectedTimeSlots[
                                               provider.days[index]]
@@ -128,7 +154,6 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                               );
                             },
                           ),
-
                           SizedBox(height: 120.h),
                         ],
                       ),
@@ -146,12 +171,28 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: CustomSubsButtonWithArrow(
-                  iconBgColor: AppColors.seaShell,
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
+                  iconBgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                   unit: provider.subsItems.length.toString(),
                   onTap: () {
                     if (provider.subsItems.isNotEmpty) {
-                      provider.subscriptionCreate(context); //* Api call
-                      // Navigator.pushNamed(context, Routes.subscriptionSummary);
+                      //! Note: if isUpdateSubscription == true then Update api will call otherwise create Api call
+                      if (provider.isUpdateSubscription) {
+                        // Todo: call subcription Update Api
+                        provider.subscriptionUpdate(context); //* Api call
+                        log('subscriptionUpdate called');
+                      } else {
+                        provider.subscriptionCreate(context); //* Api call
+                        log('subscriptionCreate called');
+                      }
                     } else {
                       customSnackBar(
                           context: context, message: 'Please Select Meal');

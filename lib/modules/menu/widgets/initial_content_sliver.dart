@@ -89,7 +89,7 @@ class InitialContentSliver extends StatelessWidget {
         SizedBox(height: 15.h),
 
         //* Slider details widget
-        SliderDetailsWidget(
+        ProgressDetailsWidget(
           accountType: accountType,
           filledValue: '₹ 135',
           totalValue: '₹ 2,000',
@@ -179,7 +179,7 @@ class InitialContentSliver extends StatelessWidget {
         // SizedBox(height: 18.h),
 
         //* Slider details widget
-        SliderDetailsWidget(
+        ProgressDetailsWidget(
           accountType: accountType,
           filledValue: '140',
           totalValue: '200',

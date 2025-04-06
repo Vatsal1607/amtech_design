@@ -7,13 +7,13 @@ import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
 
-class SliderDetailsWidget extends StatelessWidget {
+class ProgressDetailsWidget extends StatelessWidget {
   final String icon;
   final String totalValue;
   final String filledValue;
   final String label;
   final bool isShowRecharge;
-  const SliderDetailsWidget({
+  const ProgressDetailsWidget({
     super.key,
     required this.accountType,
     required this.icon,
@@ -120,27 +120,6 @@ class SliderDetailsWidget extends StatelessWidget {
                   ImageStrings.perksLogoWhite,
                   fit: BoxFit.scaleDown,
                 ),
-                //* Old Recharge text & icon
-                // child: Row(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   children: [
-                //     const SvgIcon(
-                //       icon: IconStrings.rupeeGreen,
-                //       color: AppColors.lightGreen,
-                //     ),
-                //     SizedBox(
-                //       width: 5.w,
-                //     ),
-                //     Text(
-                //       'recharge'.toUpperCase(),
-                //       style: GoogleFonts.publicSans(
-                //         fontSize: 10.sp,
-                //         fontWeight: FontWeight.w700,
-                //         color: AppColors.seaShell,
-                //       ),
-                //     ),
-                //   ],
-                // ),
               ),
             ),
           if (!isShowRecharge)

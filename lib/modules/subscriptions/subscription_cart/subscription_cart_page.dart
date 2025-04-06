@@ -1,22 +1,48 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_cart/widgets/subscription_cart_details_widget.dart';
+import 'package:amtech_design/modules/subscriptions/subscription_summary/subscription_summary_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import '../create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
+import 'subscription_cart_provider.dart';
 
-class SubscriptionCartPage extends StatelessWidget {
+class SubscriptionCartPage extends StatefulWidget {
   const SubscriptionCartPage({super.key});
+
+  @override
+  State<SubscriptionCartPage> createState() => _SubscriptionCartPageState();
+}
+
+class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context
+          .read<SubscriptionCartProvider>()
+          .getSubscriptionDetails(context: context);
+      // final total =
+      //     context.read<SubscriptionCartProvider>().summaryRes?.data?.price ?? 0;
+      // Future.delayed(const Duration(milliseconds: 500), () {
+      //   context.read<SubscriptionCartProvider>().getGST(total);
+      // });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final provider =
+        Provider.of<SubscriptionCartProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
         title: 'Cart',
@@ -101,12 +127,72 @@ class SubscriptionCartPage extends StatelessWidget {
                                         ],
                                       ),
 
-                                      // List of Items
-                                      _buildItemRow("25 Units", "₹2199"),
-                                      _buildItemRow("1 x Apple Juice", "₹99"),
-                                      _buildItemRow(
-                                          "1 x Pineapple Juice", "₹99"),
-                                      _buildItemRow("1 x Paneer(10gm)", "₹19"),
+                                      //* Items & Amount
+                                      Consumer<SubscriptionCartProvider>(
+                                        builder: (context, _, child) =>
+                                            _buildItemRow(
+                                          "${provider.summaryRes?.data?.units} ${provider.summaryRes?.data?.units == '1' ? 'UNIT' : 'UNITS'}",
+                                          '${provider.summaryRes?.data?.price}',
+                                        ),
+                                      ),
+
+                                      //* Addons details
+                                      Consumer<SubscriptionCartProvider>(
+                                        builder: (context, _, child) =>
+                                            ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: context
+                                                  .watch<
+                                                      SubscriptionSummaryProvider>()
+                                                  .summaryRes
+                                                  ?.data
+                                                  ?.items
+                                                  ?.length ??
+                                              0,
+                                          itemBuilder: (context, index) {
+                                            final summaryRes = context
+                                                .watch<
+                                                    SubscriptionSummaryProvider>()
+                                                .summaryRes;
+                                            final item =
+                                                summaryRes?.data?.items?[index];
+                                            final addOns = item?.customize
+                                                    ?.where((custom) =>
+                                                        custom.addOns != null)
+                                                    .expand((custom) =>
+                                                        custom.addOns!)
+                                                    .toList() ??
+                                                [];
+                                            // Creating a list of widgets to display
+                                            List<Widget> itemWidgets = [];
+                                            // Add the list of add-ons
+                                            for (var addOn in addOns) {
+                                              final singlePrice = addOn.price;
+                                              final title =
+                                                  '${addOn.quantity} x ${addOn.name} (₹$singlePrice)';
+                                              final quantity = addOn.quantity;
+                                              final totalPrice =
+                                                  (singlePrice ?? 0) *
+                                                      (quantity ?? 0);
+                                              // Accumulate the grand total
+
+                                              itemWidgets.add(
+                                                _buildItemRow(title,
+                                                    totalPrice.toString()),
+                                              );
+                                            }
+
+                                            // Return a column with all item and add-on rows
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: itemWidgets,
+                                            );
+                                          },
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -154,26 +240,36 @@ class SubscriptionCartPage extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Text(
-                                          "₹2705.92",
-                                          style: GoogleFonts.publicSans(
-                                            fontSize: 18.sp,
-                                            color: AppColors.primaryColor,
-                                            fontWeight: FontWeight.bold,
+                                        //* Grand total
+                                        Consumer<SubscriptionCartProvider>(
+                                          builder: (context, _, child) => Text(
+                                            '₹ ${provider.getGrandTotal(context).toStringAsFixed(2)}',
+                                            style: GoogleFonts.publicSans(
+                                              fontSize: 18.sp,
+                                              color: AppColors.primaryColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
                                     children: [
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 16.w),
                                         child: Column(
                                           children: [
-                                            _buildItemRow(
-                                                "Item Total", "₹2416"),
-                                            _buildItemRow("GST", "₹289.92"),
-                                            _buildItemRow("Delivery Fee", "₹0"),
+                                            Consumer<SubscriptionCartProvider>(
+                                              builder: (context, _, child) =>
+                                                  _buildItemRow("Item Total",
+                                                      '${provider.summaryRes?.data?.price}'),
+                                            ),
+                                            Consumer<SubscriptionCartProvider>(
+                                              builder: (context, _, child) =>
+                                                  _buildItemRow("GST",
+                                                      '${provider.getGST(provider.summaryRes?.data?.price ?? 0)}'),
+                                            ),
+                                            _buildItemRow("Delivery Fee", "0"),
                                           ],
                                         ),
                                       ),
@@ -187,7 +283,9 @@ class SubscriptionCartPage extends StatelessWidget {
                           SizedBox(height: 20.h),
 
                           // * SubscriptionCartDetailsWidget
-                          const SubscriptionCartDetailsWidget(),
+                          SubscriptionCartDetailsWidget(
+                            provider: provider,
+                          ),
                         ],
                       ),
                     ),
@@ -212,8 +310,22 @@ class SubscriptionCartPage extends StatelessWidget {
                 ),
                 child: CustomSubsButtonWithArrow(
                   onTap: () {},
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   singleText: 'Place Order',
-                  singleTextColor: AppColors.seaShell,
+                  singleTextColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
+                  iconBgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.seaShell,
+                    personalColor: AppColors.seaMist,
+                  ),
                 ),
               ),
             ),
@@ -239,7 +351,7 @@ class SubscriptionCartPage extends StatelessWidget {
             ),
           ),
           Text(
-            price,
+            '₹ $price',
             style: GoogleFonts.publicSans(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,

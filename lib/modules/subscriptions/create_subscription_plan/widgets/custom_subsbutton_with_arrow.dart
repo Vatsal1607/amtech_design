@@ -1,5 +1,6 @@
-import 'dart:developer';
-
+import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class CustomSubsButtonWithArrow extends StatelessWidget {
   final IconData? iconData;
   final VoidCallback? onTap;
   final String? unit;
+
   const CustomSubsButtonWithArrow({
     super.key,
     this.bgColor = AppColors.primaryColor,
@@ -28,6 +30,8 @@ class CustomSubsButtonWithArrow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -58,7 +62,11 @@ class CustomSubsButtonWithArrow extends StatelessWidget {
                         'YOUR WEEKLY CONSUMPION',
                         style: GoogleFonts.publicSans(
                           fontSize: 14.sp,
-                          color: AppColors.disabledColor,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.disabledColor,
+                            personalColor: AppColors.bayLeaf,
+                          ),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -68,7 +76,11 @@ class CustomSubsButtonWithArrow extends StatelessWidget {
                             : '$unit UNITS',
                         style: GoogleFonts.publicSans(
                           fontSize: 18.sp,
-                          color: AppColors.seaShell,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                           fontWeight: FontWeight.bold,
                         ),
                       ),

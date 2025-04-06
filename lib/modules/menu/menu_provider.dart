@@ -230,15 +230,14 @@ class MenuProvider extends ChangeNotifier {
         userType: accountType == 'business' ? 0 : 1,
         search: search,
       );
-      log('homeMenuApi Response: ${response.data?.menuCategories}');
       if (response.success == true) {
         homeMenuResponse = response;
         menuCategories = response.data?.menuCategories;
         filteredCategories = menuCategories ?? [];
+        updateMenuData(response); // perks Progress
         if (menuCategories != null) {
           generateCategoryKeys(menuCategories!);
         }
-        log('Success: homeMenuApi: ${response.message.toString()}');
         return true; // * Indicat success
       } else {
         debugPrint('homeMenuApi Message: ${response.message}');
@@ -511,6 +510,16 @@ class MenuProvider extends ChangeNotifier {
     sharedPrefsService.setString(
         SharedPrefsKeys.selectedAddressType, selectedAddressType?.name ?? '');
     log('selectedAddressType: ${selectedAddressType.toString()}');
+    notifyListeners();
+  }
+
+  double progress = 0.0;
+
+  void updateMenuData(HomeMenuModel? homeMenuModel) {
+    double filledAmount = (homeMenuModel?.data?.usedAmount ?? 0).toDouble();
+    double totalAmount = (homeMenuModel?.data?.rechargeAmount ?? 1).toDouble();
+    progress =
+        (totalAmount == 0) ? 0 : (filledAmount / totalAmount).clamp(0.0, 1.0);
     notifyListeners();
   }
 }

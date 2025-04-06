@@ -27,7 +27,10 @@ import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../models/personal_register_model.dart';
+import '../../models/recharge_history_model.dart';
 import '../../models/reorder_model.dart';
+import '../../models/subscription_create_model.dart';
+import '../../models/subscription_summary_model.dart';
 import '../../models/update_cart_request_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
@@ -260,7 +263,25 @@ abstract class ApiClient {
 
   // * Subscription Create
   @POST(ApiEndpoints.subscriptionCreate)
-  Future<ApiGlobalModel> subscriptionCreate(
+  Future<SubscriptionCreateModel> subscriptionCreate(
     @Body() SubscriptionCreateRequestModel subscriptionCreateRequestModel,
+  );
+
+  // * Subscription Summary
+  @GET("${ApiEndpoints.subscriptionsDetails}/{subs_id}")
+  Future<SubscriptionSummaryModel> subscriptionsDetails(
+    @Path("subs_id") String subsId,
+  );
+
+  //* Subscription Update
+  @PUT('${ApiEndpoints.subscriptionsUpdate}/{subs_id}')
+  Future<ApiGlobalModel> subscriptionUpdate(
+    @Path("subs_id") String subsId,
+    @Body() SubscriptionCreateRequestModel subscriptionCreateRequestModel,
+  );
+
+  @GET(ApiEndpoints.rechargeHistory)
+  Future<RechargeHistoryModel> rechargeHistory(
+    @Query("userId") String userId,
   );
 }

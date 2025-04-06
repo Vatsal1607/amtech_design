@@ -30,7 +30,10 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   void initState() {
-    context.read<CartProvider>().getListCart();
+    // Wait until the first frame is rendered
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CartProvider>().getListCart();
+    });
     super.initState();
   }
 

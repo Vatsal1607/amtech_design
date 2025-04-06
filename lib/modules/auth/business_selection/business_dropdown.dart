@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
@@ -22,8 +20,21 @@ class BusinessDropdown extends StatefulWidget {
 }
 
 class _BusinessDropdownState extends State<BusinessDropdown> {
+  late ScrollController _scrollController;
+
   @override
   void initState() {
+    _scrollController = ScrollController();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+              _scrollController.position.maxScrollExtent - 50 &&
+          !widget.provider.isLoadingMore &&
+          widget.provider.hasMoreData) {
+        widget.provider.loadMoreBusinesses(); // Trigger pagination
+      }
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.provider.getBusinessList(currentPage: 1); //* API call
     });
@@ -31,8 +42,14 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
   }
 
   @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    //* NEW dropdown
+    //* NEW dropdown With pagination
     return Consumer<BusinessSelectionProvider>(
       builder: (context, _, child) {
         return Container(
@@ -47,8 +64,6 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
             onTap: () async {
               FocusScope.of(context).requestFocus(FocusNode());
               widget.provider.onTapSearch();
-              // await widget.provider
-              //     .getBusinessList(currentPage: 1); //* API call
             },
             searchController: widget.provider.businessSearchController,
             barHintText: 'Select Your Business',
@@ -107,41 +122,72 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
               ),
             ],
             suggestionsBuilder: (context, controller) {
-              // if (provider.isLoading) {
               if (widget.provider.filteredBusinessList.isEmpty) {
                 return const [
                   Center(
                     child: CustomLoader(
                       backgroundColor: AppColors.primaryColor,
                     ),
-                  )
+                  ),
                 ];
               }
+
               final query = controller.text.toLowerCase();
               final filteredBusinesses = widget.provider.filteredBusinessList
                   .where((business) =>
                       business.businessName!.toLowerCase().contains(query))
                   .toList();
 
-              return filteredBusinesses.map((business) {
-                return ListTile(
-                  title: Text(business.businessName!),
-                  onTap: () {
-                    FocusScope.of(context).unfocus();
-                    widget.provider.onItemTap();
-                    widget.provider.selectBusiness(business);
-                    controller.closeView(business.businessName);
-                    widget.provider.businessSearchController.text =
-                        business.businessName!;
-                    debugPrint('Selected Business: ${business.businessName}');
-                    // Optionally save selected business
-                    widget.provider.saveSelectedBusinessSecondaryAccess(
-                      widget.provider.filteredBusinessList,
-                      business.businessName!,
-                    );
-                  },
-                );
-              }).toList();
+              return [
+                SizedBox(
+                  height: 300.h, // Adjust the height as needed
+                  child: ListView.builder(
+                    controller: _scrollController, //  Attach ScrollController
+                    padding: EdgeInsets.only(bottom: 35.h),
+                    shrinkWrap: true,
+                    itemCount: filteredBusinesses.length +
+                        (widget.provider.isLoadingMore ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index == filteredBusinesses.length) {
+                        // Show a loading indicator at the end
+                        return const Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+
+                      final business = filteredBusinesses[index];
+                      return ListTile(
+                        dense: true,
+                        title: Text(
+                          business.businessName!,
+                          style: GoogleFonts.publicSans(
+                            fontSize: 18.sp,
+                            // fontWeight: FontWeight.bold,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                        onTap: () {
+                          FocusScope.of(context).unfocus();
+                          widget.provider.onItemTap();
+                          widget.provider.selectBusiness(business);
+                          controller.closeView(business.businessName);
+                          widget.provider.businessSearchController.text =
+                              business.businessName!;
+                          debugPrint(
+                              'Selected Business: ${business.businessName}');
+                          widget.provider.saveSelectedBusinessSecondaryAccess(
+                            widget.provider.filteredBusinessList,
+                            business.businessName!,
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ];
             },
             viewShape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25.r),
@@ -150,6 +196,125 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
         );
       },
     );
+
+    //* NEW dropdown Without pagination
+    // return Consumer<BusinessSelectionProvider>(
+    //   builder: (context, _, child) {
+    //     return Container(
+    //       decoration: BoxDecoration(
+    //         borderRadius: BorderRadius.circular(100.r),
+    //         border: Border.all(
+    //           color: AppColors.seaShell,
+    //           width: 2.w,
+    //         ),
+    //       ),
+    //       child: SearchAnchor.bar(
+    //         onTap: () async {
+    //           FocusScope.of(context).requestFocus(FocusNode());
+    //           widget.provider.onTapSearch();
+    //           // await widget.provider
+    //           //     .getBusinessList(currentPage: 1); //* API call
+    //         },
+    //         searchController: widget.provider.businessSearchController,
+    //         barHintText: 'Select Your Business',
+    //         barHintStyle: WidgetStateProperty.all(
+    //           GoogleFonts.publicSans(
+    //             color: widget.provider.isSearchOpen
+    //                 ? AppColors.primaryColor
+    //                 : AppColors.seaShell.withOpacity(0.8),
+    //           ),
+    //         ),
+    //         barTextStyle: WidgetStateProperty.all(
+    //           GoogleFonts.publicSans(
+    //             color: widget.provider.isSearchOpen
+    //                 ? AppColors.primaryColor
+    //                 : AppColors.seaShell.withOpacity(0.8),
+    //           ),
+    //         ),
+    //         isFullScreen: false,
+    //         viewConstraints: const BoxConstraints(
+    //           minHeight: kToolbarHeight,
+    //           maxHeight: kToolbarHeight * 5,
+    //         ),
+    //         dividerColor: Colors.transparent,
+    //         barElevation: WidgetStateProperty.all(0.0),
+    //         barBackgroundColor: WidgetStateProperty.all(
+    //           widget.provider.isSearchOpen ? Colors.white : Colors.transparent,
+    //         ),
+    //         viewTrailing: [
+    //           Padding(
+    //             padding: EdgeInsets.only(right: 13.w),
+    //             child: const SvgIcon(
+    //               icon: IconStrings.arrowUp,
+    //               color: AppColors.primaryColor,
+    //             ),
+    //           ),
+    //         ],
+    //         viewLeading: Padding(
+    //           padding: EdgeInsets.only(left: 8.w, right: 8.w),
+    //           child: const SvgIcon(
+    //             icon: IconStrings.selectBusiness,
+    //             color: AppColors.primaryColor,
+    //           ),
+    //         ),
+    //         barLeading: SvgIcon(
+    //           icon: IconStrings.selectBusiness,
+    //           color: !widget.provider.isSearchOpen
+    //               ? AppColors.seaShell
+    //               : AppColors.primaryColor,
+    //         ),
+    //         barTrailing: [
+    //           SvgIcon(
+    //             icon: IconStrings.arrowDropdown,
+    //             color: !widget.provider.isSearchOpen
+    //                 ? AppColors.seaShell
+    //                 : AppColors.primaryColor,
+    //           ),
+    //         ],
+    //         suggestionsBuilder: (context, controller) {
+    //           // if (provider.isLoading) {
+    //           if (widget.provider.filteredBusinessList.isEmpty) {
+    //             return const [
+    //               Center(
+    //                 child: CustomLoader(
+    //                   backgroundColor: AppColors.primaryColor,
+    //                 ),
+    //               )
+    //             ];
+    //           }
+    //           final query = controller.text.toLowerCase();
+    //           final filteredBusinesses = widget.provider.filteredBusinessList
+    //               .where((business) =>
+    //                   business.businessName!.toLowerCase().contains(query))
+    //               .toList();
+
+    //           return filteredBusinesses.map((business) {
+    //             return ListTile(
+    //               title: Text(business.businessName!),
+    //               onTap: () {
+    //                 FocusScope.of(context).unfocus();
+    //                 widget.provider.onItemTap();
+    //                 widget.provider.selectBusiness(business);
+    //                 controller.closeView(business.businessName);
+    //                 widget.provider.businessSearchController.text =
+    //                     business.businessName!;
+    //                 debugPrint('Selected Business: ${business.businessName}');
+    //                 // Optionally save selected business
+    //                 widget.provider.saveSelectedBusinessSecondaryAccess(
+    //                   widget.provider.filteredBusinessList,
+    //                   business.businessName!,
+    //                 );
+    //               },
+    //             );
+    //           }).toList();
+    //         },
+    //         viewShape: RoundedRectangleBorder(
+    //           borderRadius: BorderRadius.circular(25.r),
+    //         ),
+    //       ),
+    //     );
+    //   },
+    // );
 
     //* OLD dropdown (Searchfield)
     //! Keep this: It is in Working functionality

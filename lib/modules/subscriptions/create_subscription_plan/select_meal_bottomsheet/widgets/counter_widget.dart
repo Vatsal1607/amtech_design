@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/constant.dart';
 import '../../../../../core/utils/strings.dart';
 
 class CustomCounterWidget extends StatelessWidget {
@@ -12,6 +13,7 @@ class CustomCounterWidget extends StatelessWidget {
   final Color textColor;
   final Color bgColor;
   final double height;
+  final String accountType;
   const CustomCounterWidget({
     super.key,
     this.onTapDecrease,
@@ -20,6 +22,7 @@ class CustomCounterWidget extends StatelessWidget {
     this.textColor = AppColors.primaryColor,
     this.bgColor = AppColors.seaShell,
     this.height = 25,
+    required this.accountType,
   });
 
   @override
@@ -28,7 +31,13 @@ class CustomCounterWidget extends StatelessWidget {
       width: 90.w,
       height: height.h,
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.primaryColor),
+        border: Border.all(
+          color: getColorAccountType(
+            accountType: accountType,
+            businessColor: AppColors.primaryColor,
+            personalColor: AppColors.darkGreenGrey,
+          ),
+        ),
         color: bgColor,
         borderRadius: BorderRadius.circular(20.r),
       ),

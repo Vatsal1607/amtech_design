@@ -1,9 +1,13 @@
+import 'dart:developer';
+
+import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
+import '../../../core/utils/utils.dart';
 import 'center_title_with_divider.dart';
 import 'recharge_history_value.dart';
 
@@ -95,35 +99,39 @@ class RechargeHistoryWidget extends StatelessWidget {
         SizedBox(height: 8.h),
 
         // * List Items
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const ClampingScrollPhysics(),
-          itemCount: 4,
-          separatorBuilder: (context, index) => Column(
-            children: [
-              SizedBox(height: 12.h),
-              DottedDashedLine(
-                dashWidth: 10.w,
-                height: 16.h,
-                axis: Axis.horizontal,
-                width: double.infinity,
-                dashColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.primaryColor.withOpacity(.5),
-                  personalColor: AppColors.darkGreenGrey.withOpacity(.5),
+        Consumer<RechargeProvider>(
+          builder: (context, provider, child) => ListView.separated(
+            shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            itemCount: provider.paymentHistoryList?.length ?? 0,
+            separatorBuilder: (context, index) => Column(
+              children: [
+                SizedBox(height: 12.h),
+                DottedDashedLine(
+                  dashWidth: 10.w,
+                  height: 16.h,
+                  axis: Axis.horizontal,
+                  width: double.infinity,
+                  dashColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor.withOpacity(.5),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(.5),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
+            itemBuilder: (context, index) {
+              final paymentHistory = provider.paymentHistoryList?[index];
+              return RechargeHistoryValue(
+                accountType: accountType,
+                date: Utils.formatDateToDDMMYYYY(
+                    '${paymentHistory?.transactionDate}'),
+                amount: '₹ ${paymentHistory?.rechargeAmount}',
+                perks: '₹ ${paymentHistory?.perks}',
+                isSuccess: true,
+              );
+            },
           ),
-          itemBuilder: (context, index) {
-            return RechargeHistoryValue(
-              accountType: accountType,
-              date: '9/12/2024',
-              amount: '₹ 500',
-              perks: '₹ 10',
-              isSuccess: true,
-            );
-          },
         ),
       ],
     );

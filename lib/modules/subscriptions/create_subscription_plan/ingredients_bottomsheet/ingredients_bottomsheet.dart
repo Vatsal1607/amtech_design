@@ -5,6 +5,7 @@ import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/widgets/add_ons_selection_widget.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,20 +25,26 @@ Future<void> showIngredientsBottomSheeet({
   required String menuId,
   required String itemName,
   home.MenuItems? menuItems,
-  // required int index,
+  required int mealIndex,
+  required int mealItemIndex,
 }) async {
-  // log('Index is: $index');
+  log('mealIndex is: $mealIndex');
   final ingredientsProvider =
       Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
   final menuProvider = Provider.of<MenuProvider>(context, listen: false);
   await ingredientsProvider.getIngredientsAndAddOns(
       menuId: menuId); //* Api call
   await menuProvider.getMenuSize(menuId: menuId); //* Api call
-  final size = menuProvider.menuSizeResponse?.data?.sizeDetails?.first;
+  // final size = menuProvider.menuSizeResponse?.data?.sizeDetails?.first;
+  final size =
+      (menuProvider.menuSizeResponse?.data?.sizeDetails?.isNotEmpty ?? false)
+          ? menuProvider.menuSizeResponse!.data!.sizeDetails!.first
+          : null;
+
   final String sizeId = size?.sizeId ?? '';
   final String sizeName = size?.sizeName ?? '';
   final num sizePrice = size?.price ?? 0;
-  log('Get menusize price: ${menuProvider.menuSizeResponse?.data?.sizeDetails?.first.price}');
+  // log('Get menusize price: ${menuProvider.menuSizeResponse?.data?.sizeDetails?.first.price}');
   showModalBottomSheet(
     context: context,
     backgroundColor: getColorAccountType(
@@ -139,7 +146,9 @@ Future<void> showIngredientsBottomSheeet({
                           ),
 
                           //* Add-Ons Checkbox
-                          const AddOnsSelectionWidget(),
+                          AddOnsSelectionWidget(
+                            accountType: accountType,
+                          ),
 
                           // * Add Note widget
                           const AddNoteWidget(),
@@ -172,40 +181,74 @@ Future<void> showIngredientsBottomSheeet({
                     // DayWiseSelected ItemName
                     createSubsProvider.addOrUpdateDayWiseSelectedItem(
                         day, itemName);
-                    //* Subscription create Add items depends on selected days
-                    createSubsProvider.addItem(
-                      menuId: menuId,
-                      size: subscription.Size(
-                        sizeId: sizeId,
-                        name: sizeName,
-                        price: sizePrice.toDouble(),
-                      ),
-                      meals: [
-                        subscription.MealSubscription(
-                          day: day,
-                          // timeSlot: createSubsProvider.getSelectedTimeSlot(
-                          //   day,
-                          //   mealIndex,
-                          // ),
-                          timeSlot: createSubsProvider
-                                  .selectedTimeSlots[day]?.values.first ??
-                              '',
-                          quantity: 1, // Todo (Static): set dynamic
+                    // Set Selected meal
+                    createSubsProvider.selectedMeals[day]?[mealIndex] =
+                        itemName;
+                    //! Condition of where it is Create or Update subscription
+                    if (createSubsProvider.isUpdateSubscription) {
+                      //* Subscription Update items depends on selected days
+                      createSubsProvider.updateSubsItem(
+                        menuId: menuId,
+                        day: day,
+                        size: subscription.Size(
+                          sizeId: sizeId,
+                          name: sizeName,
+                          price: sizePrice.toDouble(),
                         ),
-                      ],
-                      customize: [
-                        subscription.Customization(
-                          ingredients:
-                              ingredientsProvider.getSelectedIngredients(),
-                          addOns: ingredientsProvider.getSelectedAddOns(),
+                        meals: [
+                          subscription.MealSubscription(
+                            day: day,
+                            timeSlot: createSubsProvider.getSelectedTimeSlot(
+                              day,
+                              mealIndex,
+                            ),
+                            quantity: 1,
+                          ),
+                        ],
+                        customize: [
+                          subscription.Customization(
+                            ingredients:
+                                ingredientsProvider.getSelectedIngredients(),
+                            addOns: ingredientsProvider.getSelectedAddOns(),
+                          ),
+                        ],
+                      );
+                    } else {
+                      //* Subscription create Add items depends on selected days
+                      createSubsProvider.addSubsItem(
+                        menuId: menuId,
+                        size: subscription.Size(
+                          sizeId: sizeId,
+                          name: sizeName,
+                          price: sizePrice.toDouble(),
                         ),
-                      ],
-                    );
+                        meals: [
+                          subscription.MealSubscription(
+                            day: day,
+                            timeSlot: createSubsProvider.getSelectedTimeSlot(
+                              day,
+                              mealIndex,
+                            ),
+                            quantity: 1,
+                          ),
+                        ],
+                        customize: [
+                          subscription.Customization(
+                            ingredients:
+                                ingredientsProvider.getSelectedIngredients(),
+                            addOns: ingredientsProvider.getSelectedAddOns(),
+                          ),
+                        ],
+                      );
+                    }
                     // Reset addOnsQuantity
                     ingredientsProvider.addOnsQuantity = {};
-                    log('addOnsQuantity: ${ingredientsProvider.addOnsQuantity}');
+                    // Add meal item
+                    context
+                        .read<SelectMealBottomsheetProvider>()
+                        .addMealItem(day, itemName, mealItemIndex);
+
                     Navigator.pop(context);
-                    log('subsItems.length: ${createSubsProvider.subsItems.length}');
                   },
                   text: 'DONE',
                   fontSize: 20.sp,

@@ -35,4 +35,15 @@ class Utils {
     if (date == null) return '';
     return DateFormat('dd-MM-yyyy').format(date);
   }
+
+  static String formatDateToDDMMYYYY(String isoDateString) {
+    try {
+      final dateTime = DateTime.parse(isoDateString)
+          .toLocal(); // Convert to local time if needed
+      final formatter = DateFormat('dd/MM/yyyy');
+      return formatter.format(dateTime);
+    } catch (e) {
+      return ''; // Return empty if parsing fails
+    }
+  }
 }

@@ -9,7 +9,8 @@ import '../../../../../custom_widgets/loader/custom_loader.dart';
 import '../../select_meal_bottomsheet/widgets/counter_widget.dart';
 
 class AddOnsSelectionWidget extends StatefulWidget {
-  const AddOnsSelectionWidget({super.key});
+  final String accountType;
+  const AddOnsSelectionWidget({super.key, required this.accountType});
 
   @override
   AddOnsSelectionWidgetState createState() => AddOnsSelectionWidgetState();
@@ -102,6 +103,7 @@ class AddOnsSelectionWidgetState extends State<AddOnsSelectionWidget> {
                                       .addOnsSelections[key]?.values.first ==
                                   true
                               ? CustomCounterWidget(
+                                  accountType: widget.accountType,
                                   height: 32.h,
                                   onTapDecrease: () {
                                     ingredientsProvider.addOnsDecrement(key);

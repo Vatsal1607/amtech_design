@@ -2,20 +2,20 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
 import 'package:amtech_design/modules/menu/widgets/divider_label.dart';
+import 'package:amtech_design/modules/menu/widgets/edge_gradient_blur_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/menu_page_loader.dart';
+import 'package:amtech_design/modules/menu/widgets/page_edge_blur_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/subscription_banner_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:marquee/marquee.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
@@ -24,9 +24,9 @@ import '../../custom_widgets/textfield/custom_searchfield.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import '../provider/socket_provider.dart';
+import 'widgets/address_widget_home_page.dart';
 import 'widgets/fab_menu_button.dart';
 import 'widgets/slider_details_widget.dart';
-import 'widgets/subscription_widget.dart';
 
 class MenuPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -154,214 +154,9 @@ class _MenuPageState extends State<MenuPage> {
                                             ),
                                             SizedBox(width: 5.w),
                                             //* Address widget
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Text(
-                                                      'Deliver To, ',
-                                                      style: GoogleFonts
-                                                          .publicSans(
-                                                        fontSize: 12.sp,
-                                                        color:
-                                                            getColorAccountType(
-                                                          accountType:
-                                                              accountType,
-                                                          businessColor:
-                                                              AppColors
-                                                                  .primaryColor,
-                                                          personalColor:
-                                                              AppColors
-                                                                  .darkGreenGrey,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      'HOME',
-                                                      style: GoogleFonts
-                                                          .publicSans(
-                                                        fontSize: 12.sp,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            getColorAccountType(
-                                                          accountType:
-                                                              accountType,
-                                                          businessColor:
-                                                              AppColors
-                                                                  .primaryColor
-                                                                  .withOpacity(
-                                                                      0.8),
-                                                          personalColor:
-                                                              AppColors
-                                                                  .darkGreenGrey
-                                                                  .withOpacity(
-                                                                      0.8),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    SizedBox(
-                                                      width: provider
-                                                          .addressWidth.w,
-                                                      height: 20.h,
-                                                      child: Consumer<
-                                                              MenuProvider>(
-                                                          builder: (context, _,
-                                                              child) {
-                                                        final address = provider
-                                                            .homeMenuResponse
-                                                            ?.data
-                                                            ?.address;
-                                                        final storedAddress =
-                                                            sharedPrefsService
-                                                                .getString(
-                                                                    SharedPrefsKeys
-                                                                        .selectedAddress);
-                                                        if ((address == null ||
-                                                                address
-                                                                    .isEmpty) &&
-                                                            (storedAddress ==
-                                                                    null ||
-                                                                storedAddress
-                                                                    .isEmpty)) {
-                                                          return SizedBox(
-                                                            child: Text(
-                                                              'Please Select Your Address',
-                                                              style: GoogleFonts
-                                                                  .publicSans(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        //* Measure text width Address
-                                                        TextPainter
-                                                            textPainter =
-                                                            TextPainter(
-                                                          text: TextSpan(
-                                                            text: provider
-                                                                        .selectedAddressType ==
-                                                                    HomeAddressType
-                                                                        .local
-                                                                ? storedAddress
-                                                                : address,
-                                                            style: GoogleFonts
-                                                                .publicSans(
-                                                              fontSize: 15.sp,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                          maxLines: 1,
-                                                          textDirection:
-                                                              TextDirection.ltr,
-                                                        )..layout(
-                                                                maxWidth: provider
-                                                                    .addressWidth
-                                                                    .w);
-
-                                                        // If text overflows, use Marquee, otherwise use normal Text
-                                                        bool isOverflowing =
-                                                            textPainter
-                                                                .didExceedMaxLines;
-                                                        return isOverflowing
-                                                            ? Marquee(
-                                                                velocity: 20,
-                                                                scrollAxis: Axis
-                                                                    .horizontal,
-                                                                blankSpace: 15,
-                                                                pauseAfterRound:
-                                                                    const Duration(
-                                                                        seconds:
-                                                                            3),
-                                                                text: provider
-                                                                            .selectedAddressType ==
-                                                                        HomeAddressType
-                                                                            .local
-                                                                    ? '$storedAddress.'
-                                                                    : '$address.',
-                                                                style: GoogleFonts
-                                                                    .publicSans(
-                                                                  fontSize:
-                                                                      15.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color:
-                                                                      getColorAccountType(
-                                                                    accountType:
-                                                                        accountType,
-                                                                    businessColor:
-                                                                        AppColors
-                                                                            .primaryColor,
-                                                                    personalColor:
-                                                                        AppColors
-                                                                            .darkGreenGrey,
-                                                                  ),
-                                                                ),
-                                                              )
-                                                            : Text(
-                                                                provider.selectedAddressType ==
-                                                                        HomeAddressType
-                                                                            .local
-                                                                    ? storedAddress ??
-                                                                        ''
-                                                                    : address ??
-                                                                        '',
-                                                                style: GoogleFonts
-                                                                    .publicSans(
-                                                                  fontSize:
-                                                                      15.sp,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  color:
-                                                                      getColorAccountType(
-                                                                    accountType:
-                                                                        accountType,
-                                                                    businessColor:
-                                                                        AppColors
-                                                                            .primaryColor,
-                                                                    personalColor:
-                                                                        AppColors
-                                                                            .darkGreenGrey,
-                                                                  ),
-                                                                ),
-                                                              );
-                                                      }),
-                                                    ),
-                                                    SizedBox(width: 4.w),
-                                                    //* Small Edit Button
-                                                    SizedBox(
-                                                      height: 26.h,
-                                                      width: 64.w,
-                                                      child: SmallEditButton(
-                                                        text: 'CHANGE',
-                                                        onTap: () {
-                                                          Navigator.pushNamed(
-                                                              context,
-                                                              Routes
-                                                                  .savedAddress);
-                                                        },
-                                                        accountType:
-                                                            accountType,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
+                                            AddressWidgetHomePage(
+                                              accountType: accountType,
+                                              provider: provider,
                                             ),
                                           ],
                                         ),
@@ -458,7 +253,7 @@ class _MenuPageState extends State<MenuPage> {
                                 SliverPersistentHeader(
                                   pinned: true,
                                   delegate: PinnedHeaderDelegate(
-                                    // Hint: Change min/max height incase of sliver size issue
+                                    //* Hint: Change min/max height incase of sliver size issue
                                     minExtent: 51.h, // Height when pinned
                                     maxExtent: 51.h, // Height when scrolling
                                     child: Container(
@@ -496,8 +291,7 @@ class _MenuPageState extends State<MenuPage> {
                                             ),
                                             SizedBox(height: 20.h),
                                             // * Subscriptions Banner
-                                            SubscriptionBannerWidget(),
-
+                                            const SubscriptionBannerWidget(),
                                             SizedBox(height: 20.h),
                                             // * ListView Categories
                                             Consumer<MenuProvider>(
@@ -582,8 +376,6 @@ class _MenuPageState extends State<MenuPage> {
                                                                           child) =>
                                                                       GestureDetector(
                                                                     onTap: () {
-                                                                      debugPrint(
-                                                                          'Product item pressed $childIndex');
                                                                       Navigator
                                                                           .pushNamed(
                                                                         context,
@@ -716,192 +508,95 @@ class _MenuPageState extends State<MenuPage> {
                                                   ),
                                                 ),
                                                 // Top edge gradient
-                                                Positioned(
-                                                  left: 0,
-                                                  right: 0,
-                                                  top:
-                                                      -15, // Changed from `bottom: 0` to `top: 0`
-                                                  height:
-                                                      150, // Adjust the height of the blur effect
-                                                  child: IgnorePointer(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin: Alignment
-                                                              .topCenter,
-                                                          end: Alignment
-                                                              .bottomCenter,
-                                                          colors: [
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell,
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist,
-                                                            ), // Your background color
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell
-                                                                      .withOpacity(
-                                                                          0),
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist
-                                                                      .withOpacity(
-                                                                          0),
-                                                            ), // Fades to transparent
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
+                                                EdgeGradientBlurWidget(
+                                                  position: EdgePosition.top,
+                                                  size: 150.h,
+                                                  solidColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor:
+                                                        AppColors.seaShell,
+                                                    personalColor:
+                                                        AppColors.seaMist,
+                                                  ),
+                                                  transparentColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor: AppColors
+                                                        .seaShell
+                                                        .withOpacity(0),
+                                                    personalColor: AppColors
+                                                        .seaMist
+                                                        .withOpacity(0),
                                                   ),
                                                 ),
                                                 // Left edge gradient
-                                                Positioned(
-                                                  top: 0,
-                                                  bottom: 0,
-                                                  left: 0,
-                                                  width:
-                                                      50, // Adjust the width of the blur effect
-                                                  child: IgnorePointer(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin: Alignment
-                                                              .centerLeft,
-                                                          end: Alignment
-                                                              .centerRight,
-                                                          colors: [
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell,
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist,
-                                                            ), // Your background color
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell
-                                                                      .withOpacity(
-                                                                          0),
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist
-                                                                      .withOpacity(
-                                                                          0),
-                                                            ), // Fades to transparent
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
+                                                EdgeGradientBlurWidget(
+                                                  position: EdgePosition.left,
+                                                  size: 50,
+                                                  solidColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor:
+                                                        AppColors.seaShell,
+                                                    personalColor:
+                                                        AppColors.seaMist,
+                                                  ),
+                                                  transparentColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor: AppColors
+                                                        .seaShell
+                                                        .withOpacity(0),
+                                                    personalColor: AppColors
+                                                        .seaMist
+                                                        .withOpacity(0),
                                                   ),
                                                 ),
                                                 // Right edge gradient
-                                                Positioned(
-                                                  top: 0,
-                                                  bottom: 0,
-                                                  right: 0,
-                                                  width:
-                                                      50, // Adjust the width of the blur effect
-                                                  child: IgnorePointer(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin: Alignment
-                                                              .centerRight,
-                                                          end: Alignment
-                                                              .centerLeft,
-                                                          colors: [
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell,
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist,
-                                                            ), // Your background color
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell
-                                                                      .withOpacity(
-                                                                          0),
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist
-                                                                      .withOpacity(
-                                                                          0),
-                                                            ), // Fades to transparent
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
+                                                EdgeGradientBlurWidget(
+                                                  position: EdgePosition.right,
+                                                  size: 50,
+                                                  solidColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor:
+                                                        AppColors.seaShell,
+                                                    personalColor:
+                                                        AppColors.seaMist,
+                                                  ),
+                                                  transparentColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor: AppColors
+                                                        .seaShell
+                                                        .withOpacity(0),
+                                                    personalColor: AppColors
+                                                        .seaMist
+                                                        .withOpacity(0),
                                                   ),
                                                 ),
                                                 // Bottom edge gradient
-                                                Positioned(
-                                                  left: 0,
-                                                  right: 0,
-                                                  bottom: 0,
-                                                  height:
-                                                      150, // Adjust the height of the blur effect
-                                                  child: IgnorePointer(
-                                                    child: Container(
-                                                      decoration: BoxDecoration(
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin: Alignment
-                                                              .bottomCenter,
-                                                          end: Alignment
-                                                              .topCenter,
-                                                          colors: [
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell,
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist,
-                                                            ), // Your background color
-                                                            getColorAccountType(
-                                                              accountType:
-                                                                  accountType,
-                                                              businessColor:
-                                                                  AppColors
-                                                                      .seaShell
-                                                                      .withOpacity(
-                                                                          0),
-                                                              personalColor:
-                                                                  AppColors
-                                                                      .seaMist
-                                                                      .withOpacity(
-                                                                          0),
-                                                            ), // Fades to transparent
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
+                                                EdgeGradientBlurWidget(
+                                                  position: EdgePosition.bottom,
+                                                  size: 150,
+                                                  solidColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor:
+                                                        AppColors.seaShell,
+                                                    personalColor:
+                                                        AppColors.seaMist,
+                                                  ),
+                                                  transparentColor:
+                                                      getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor: AppColors
+                                                        .seaShell
+                                                        .withOpacity(0),
+                                                    personalColor: AppColors
+                                                        .seaMist
+                                                        .withOpacity(0),
                                                   ),
                                                 ),
                                               ],
@@ -909,116 +604,55 @@ class _MenuPageState extends State<MenuPage> {
                                           ],
                                         ),
                                       ),
-
                                       //* Added for blur effect on page (left, right, bottom)
-                                      // Left edge gradient
-                                      Positioned(
-                                        top: 0,
-                                        bottom: 0,
-                                        left: 0,
-                                        width:
-                                            20, // Adjust the width of the blur effect
-                                        child: IgnorePointer(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                colors: [
-                                                  // AppColors.seaShell, // Your background color
-                                                  // AppColors.seaShell.withOpacity(0.0),
-                                                  getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor:
-                                                        AppColors.seaShell,
-                                                    personalColor:
-                                                        AppColors.seaMist,
-                                                  ), // Your background color
-                                                  getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor: AppColors
-                                                        .seaShell
-                                                        .withOpacity(0),
-                                                    personalColor: AppColors
-                                                        .seaMist
-                                                        .withOpacity(0),
-                                                  ), // Fades to transparent
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                      PageEdgeBlurWidget(
+                                        edge: PageEdge.left,
+                                        size: 20,
+                                        solidColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor: AppColors.seaShell,
+                                          personalColor: AppColors.seaMist,
+                                        ),
+                                        transparentColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor:
+                                              AppColors.seaShell.withOpacity(0),
+                                          personalColor:
+                                              AppColors.seaMist.withOpacity(0),
                                         ),
                                       ),
                                       // Right edge gradient
-                                      Positioned(
-                                        top: 0,
-                                        bottom: 0,
-                                        right: 0,
-                                        width:
-                                            20, // Adjust the width of the blur effect
-                                        child: IgnorePointer(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.centerRight,
-                                                end: Alignment.centerLeft,
-                                                colors: [
-                                                  getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor:
-                                                        AppColors.seaShell,
-                                                    personalColor:
-                                                        AppColors.seaMist,
-                                                  ), // Your background color
-                                                  getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor: AppColors
-                                                        .seaShell
-                                                        .withOpacity(0),
-                                                    personalColor: AppColors
-                                                        .seaMist
-                                                        .withOpacity(0),
-                                                  ), // Fades to transparent
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                      PageEdgeBlurWidget(
+                                        edge: PageEdge.right,
+                                        size: 20,
+                                        solidColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor: AppColors.seaShell,
+                                          personalColor: AppColors.seaMist,
+                                        ),
+                                        transparentColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor:
+                                              AppColors.seaShell.withOpacity(0),
+                                          personalColor:
+                                              AppColors.seaMist.withOpacity(0),
                                         ),
                                       ),
                                       // Bottom edge gradient
-                                      Positioned(
-                                        left: 0,
-                                        right: 0,
-                                        bottom: 0,
-                                        height:
-                                            20, // Adjust the height of the blur effect
-                                        child: IgnorePointer(
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.bottomCenter,
-                                                end: Alignment.topCenter,
-                                                colors: [
-                                                  getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor:
-                                                        AppColors.seaShell,
-                                                    personalColor:
-                                                        AppColors.seaMist,
-                                                  ), // Your background color
-                                                  getColorAccountType(
-                                                    accountType: accountType,
-                                                    businessColor: AppColors
-                                                        .seaShell
-                                                        .withOpacity(0),
-                                                    personalColor: AppColors
-                                                        .seaMist
-                                                        .withOpacity(0),
-                                                  ), // Fades to transparent
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                      PageEdgeBlurWidget(
+                                        edge: PageEdge.bottom,
+                                        size: 20,
+                                        solidColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor: AppColors.seaShell,
+                                          personalColor: AppColors.seaMist,
+                                        ),
+                                        transparentColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor:
+                                              AppColors.seaShell.withOpacity(0),
+                                          personalColor:
+                                              AppColors.seaMist.withOpacity(0),
                                         ),
                                       ),
                                     ],
@@ -1033,7 +667,6 @@ class _MenuPageState extends State<MenuPage> {
                     Consumer<MenuProvider>(
                       builder: (context, _, child) => Positioned(
                         left: 32.w,
-                        // bottom: 28.h,
                         bottom: provider.isSnackBarVisible
                             ? provider.viewOrderBottomPadding + 60
                             : provider.viewOrderBottomPadding,

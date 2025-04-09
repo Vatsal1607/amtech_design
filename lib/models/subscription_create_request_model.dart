@@ -7,6 +7,8 @@ class SubscriptionCreateRequestModel {
   final String notes;
   final String paymentMethod;
   final bool paymentStatus;
+  final DateTime? createdAt; // newly added
+  final String? deliveryAddress; // newly added
 
   SubscriptionCreateRequestModel({
     required this.userId,
@@ -17,6 +19,8 @@ class SubscriptionCreateRequestModel {
     required this.notes,
     required this.paymentMethod,
     required this.paymentStatus,
+    this.createdAt,
+    this.deliveryAddress,
   });
 
   Map<String, dynamic> toJson() {
@@ -29,6 +33,8 @@ class SubscriptionCreateRequestModel {
       "notes": notes,
       "paymentMethod": paymentMethod,
       "paymentStatus": paymentStatus,
+      "createdAt": createdAt?.toIso8601String(),
+      "deliveryAddress": deliveryAddress,
     };
   }
 }

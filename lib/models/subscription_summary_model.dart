@@ -41,22 +41,25 @@ class Data {
   String? createdAt;
   String? updatedAt;
   int? iV;
+  UserDetails? userDetails; // <-- New field
 
-  Data(
-      {this.sId,
-      this.userId,
-      this.userType,
-      this.items,
-      this.units,
-      this.notes,
-      this.price,
-      this.paymentMethod,
-      this.paymentStatus,
-      this.isActive,
-      this.isDelete,
-      this.createdAt,
-      this.updatedAt,
-      this.iV});
+  Data({
+    this.sId,
+    this.userId,
+    this.userType,
+    this.items,
+    this.units,
+    this.notes,
+    this.price,
+    this.paymentMethod,
+    this.paymentStatus,
+    this.isActive,
+    this.isDelete,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.userDetails, // <-- New field
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -78,6 +81,9 @@ class Data {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
+    userDetails = json['userDetails'] != null
+        ? UserDetails.fromJson(json['userDetails'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -98,6 +104,43 @@ class Data {
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
+    if (userDetails != null) {
+      data['userDetails'] = userDetails!.toJson();
+    }
+    return data;
+  }
+}
+
+class UserDetails {
+  String? sId;
+  String? businessName; // For BusinessUser
+  String? firstName; // For PersonalUser
+  String? lastName; // For PersonalUser
+  int? contact;
+
+  UserDetails({
+    this.sId,
+    this.businessName,
+    this.firstName,
+    this.lastName,
+    this.contact,
+  });
+
+  UserDetails.fromJson(Map<String, dynamic> json) {
+    sId = json['_id'];
+    businessName = json['businessName'];
+    firstName = json['firstName'];
+    lastName = json['lastName'];
+    contact = json['contact'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    if (businessName != null) data['businessName'] = businessName;
+    if (firstName != null) data['firstName'] = firstName;
+    if (lastName != null) data['lastName'] = lastName;
+    data['contact'] = contact;
     return data;
   }
 }

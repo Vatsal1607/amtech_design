@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/subscription_summary_model.dart' as summaryModel;
@@ -69,8 +71,13 @@ class SubscriptionSummaryProvider extends ChangeNotifier {
         );
         if (res.success == true) {
           summaryRes = res;
+          final userDetails = summaryRes?.data?.userDetails;
+          final userName = userDetails?.businessName?.isNotEmpty == true
+              ? userDetails!.businessName!
+              : '${userDetails?.firstName ?? ''} ${userDetails?.lastName ?? ''}'
+                  .trim();
+          sharedPrefsService.setString(SharedPrefsKeys.userName, userName);
           subsItems = res.data?.items ?? [];
-          log('getSubscriptionSummary: ${res.message}');
         } else {
           log('${res.message}');
         }

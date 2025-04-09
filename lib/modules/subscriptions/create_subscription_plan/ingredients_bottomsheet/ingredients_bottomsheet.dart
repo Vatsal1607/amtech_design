@@ -103,9 +103,13 @@ Future<void> showIngredientsBottomSheeet({
                           Consumer<IngredientsBottomsheetProvider>(
                             builder: (context, _, child) => ingredientsProvider
                                     .isLoading
-                                ? const Center(
+                                ? Center(
                                     child: CustomLoader(
-                                      backgroundColor: AppColors.primaryColor,
+                                      backgroundColor: getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.primaryColor,
+                                        personalColor: AppColors.darkGreenGrey,
+                                      ),
                                     ),
                                   )
                                 : ListView(
@@ -123,7 +127,12 @@ Future<void> showIngredientsBottomSheeet({
 
                                       return CheckboxListTile(
                                         dense: true,
-                                        activeColor: AppColors.primaryColor,
+                                        activeColor: getColorAccountType(
+                                          accountType: accountType,
+                                          businessColor: AppColors.primaryColor,
+                                          personalColor:
+                                              AppColors.darkGreenGrey,
+                                        ),
                                         title: Text(
                                           name,
                                           style: GoogleFonts.publicSans(

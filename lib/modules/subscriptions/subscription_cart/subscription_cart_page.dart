@@ -1,16 +1,23 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_cart/widgets/subscription_cart_details_widget.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_summary/subscription_summary_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
+import '../../../core/utils/enums/enums.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import '../../../services/local/shared_preferences_service.dart';
+import '../../hdfc_payment/payment_page.dart';
 import '../create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
 import 'subscription_cart_provider.dart';
 
@@ -266,8 +273,8 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                             ),
                                             Consumer<SubscriptionCartProvider>(
                                               builder: (context, _, child) =>
-                                                  _buildItemRow("GST",
-                                                      '${provider.getGST(provider.summaryRes?.data?.price ?? 0)}'),
+                                                  _buildItemRow("GST (12%)",
+                                                      '${provider.getGST(provider.getGrandTotal(context)).toStringAsFixed(2)}'),
                                             ),
                                             _buildItemRow("Delivery Fee", "0"),
                                           ],
@@ -285,6 +292,7 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                           // * SubscriptionCartDetailsWidget
                           SubscriptionCartDetailsWidget(
                             provider: provider,
+                            accountType: accountType,
                           ),
                         ],
                       ),
@@ -309,7 +317,31 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                   color: AppColors.seaShell,
                 ),
                 child: CustomSubsButtonWithArrow(
-                  onTap: () {},
+                  onTap: () {
+                    showProcessToPayBottomSheeet(
+                      context: context,
+                      payableAmount: provider.getGrandTotal(context).toString(),
+                      accountType: accountType,
+                      isSubscriptionPay: true,
+                    );
+                    //* HDFC payment integrated
+                    // HyperSDK hyperSDK = HyperSDK();
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => PaymentPage(
+                    //       paymentType: PaymentType.subscription,
+                    //       hyperSDK: hyperSDK,
+                    //       subsId: context
+                    //           .read<CreateSubscriptionPlanProvider>()
+                    //           .subsId,
+                    //       amount: provider
+                    //           .getGrandTotal(context)
+                    //           .toStringAsFixed(2),
+                    //     ),
+                    //   ),
+                    // );
+                  },
                   bgColor: getColorAccountType(
                     accountType: accountType,
                     businessColor: AppColors.primaryColor,

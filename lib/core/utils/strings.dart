@@ -146,6 +146,8 @@ class ImageStrings {
   static const pending = '${BaseImagePath.basePath}pending.png';
   static const subscriptionBanner1 =
       '${BaseImagePath.basePath}subscription_banner_1.png';
+  static const subscriptionBanner2 =
+      '${BaseImagePath.basePath}subscription_banner_2.png';
   static const subscriptionBannerDoodle =
       '${BaseImagePath.basePath}subscription_banner_doodle.png';
 }

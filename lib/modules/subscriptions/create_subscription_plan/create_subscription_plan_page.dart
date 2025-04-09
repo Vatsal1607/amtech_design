@@ -19,8 +19,8 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String accountType = 'personal';
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider =
         Provider.of<CreateSubscriptionPlanProvider>(context, listen: true);
     return Scaffold(
@@ -144,12 +144,18 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                                   onToggleSwitch: (value) =>
                                       provider.toggleSwitch(
                                           provider.days[index], value, context),
-                                  selectedTime: provider
+                                  selectedTime: (provider
+                                              .selectedTimeSlots[
+                                                  provider.days[index]]
+                                              ?.values
+                                              .isNotEmpty ??
+                                          false)
+                                      ? provider
                                           .selectedTimeSlots[
-                                              provider.days[index]]
-                                          ?.values
-                                          .first ??
-                                      "No Time Slot",
+                                              provider.days[index]]!
+                                          .values
+                                          .first
+                                      : "No Time Slot",
                                 ),
                               );
                             },
@@ -186,8 +192,9 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                     if (provider.subsItems.isNotEmpty) {
                       //! Note: if isUpdateSubscription == true then Update api will call otherwise create Api call
                       if (provider.isUpdateSubscription) {
-                        // Todo: call subcription Update Api
-                        provider.subscriptionUpdate(context); //* Api call
+                        provider.subscriptionUpdate(
+                          context: context,
+                        ); //* Api call
                         log('subscriptionUpdate called');
                       } else {
                         provider.subscriptionCreate(context); //* Api call

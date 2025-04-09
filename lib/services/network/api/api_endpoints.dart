@@ -45,4 +45,9 @@ class ApiEndpoints {
   static const String subscriptionsDetails = 'subscriptions/details';
   static const String subscriptionsUpdate = 'subscriptions/update';
   static const String rechargeHistory = 'recharge/history';
+  static const String subscriptionsPayment = 'subscriptions/payment';
+  static const String orderPaymentDeduct = 'order/payment/deduct';
+  static const String subscriptionsPaymentDeduct =
+      'subscriptions/payment/deduct';
+  static const String orderPayment = 'order/payment';
 }

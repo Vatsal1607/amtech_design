@@ -355,8 +355,9 @@ class GoogleMapProvider extends ChangeNotifier {
           ],
         ),
       );
-      log('editLocation response: ${res.data}');
       if (res.success == true) {
+        sharedPrefsService.setString(
+            SharedPrefsKeys.selectedAddress, addressController.text);
         floorController.clear();
         companyController.clear();
         landmarkController.clear();

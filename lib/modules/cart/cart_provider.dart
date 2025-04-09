@@ -1,11 +1,18 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/list_cart_model.dart';
+import 'package:amtech_design/modules/provider/socket_provider.dart';
+import 'package:amtech_design/modules/subscriptions/subscription_cart/subscription_cart_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hypersdkflutter/hypersdkflutter.dart';
+import 'package:provider/provider.dart';
+import '../../core/utils/enums/enums.dart';
 import '../../routes.dart';
 import '../../services/network/api_service.dart';
+import '../hdfc_payment/payment_page.dart';
+import '../subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 
 class CartProvider extends ChangeNotifier {
   bool isExpanded = false;
@@ -20,11 +27,11 @@ class CartProvider extends ChangeNotifier {
   final minDrag = 10.w;
   bool isConfirmed = false; // Track if the action is confirmed
 
-  String selectedPaymentMethod = 'Perks';
+  String selectedPaymentMethod = SelectedPaymentMethod.perks.name;
 
   updateSelectedPaymentMethod(value) {
     selectedPaymentMethod = value;
-    debugPrint('selectedPaymentMethod: $selectedPaymentMethod');
+    log('selectedPaymentMethod: $selectedPaymentMethod');
     notifyListeners();
   }
 
@@ -42,30 +49,128 @@ class CartProvider extends ChangeNotifier {
     notifyListeners(); // Notify listeners of the change
   }
 
+  String? orderId;
   Future<void> onHorizontalDragEnd({
     required DragEndDetails details,
     required BuildContext context,
-    required socketProvider,
-    required orderCreateData,
+    required SocketProvider socketProvider,
+    orderCreateData,
+    required bool isSubscriptionPay,
+    required String payableAmount,
   }) async {
     if (dragPosition >= maxDrag * 0.8) {
       dragPosition = maxDrag; // Snap to the end
-      //! API call
-      await rechargeDeduct(context).then(
-        (isSuccess) {
-          if (isSuccess == true) {
-            //* Emit socket event
-            socketProvider.emitEvent(
-              SocketEvents.orderCreate,
-              orderCreateData,
-            );
-          } else if (isSuccess == false) {
-            //* Reset position
-            dragPosition = 10.w;
-            isConfirmed = false;
-          }
-        },
-      );
+      if (!isSubscriptionPay) {
+        //! Normal order payment things
+        //* Handle API call Normal Order PERKS
+        if (selectedPaymentMethod == SelectedPaymentMethod.perks.name) {
+          await rechargeDeduct(
+            context,
+            totalAmount ?? '',
+            isSubscriptionPay,
+          ).then(
+            (isSuccess) {
+              if (isSuccess == true) {
+                //* Emit socket event
+                socketProvider.emitEvent(
+                  SocketEvents.orderCreate,
+                  orderCreateData,
+                );
+                socketProvider.listenToEvent(
+                  SocketEvents.orderReceive,
+                  (data) {
+                    log('listenToEvent orderReceive: $data');
+                    final order = data['order'];
+                    if (order != null && order['_id'] != null) {
+                      orderId = order['_id'];
+                      orderPaymentDeduct(orderId: orderId ?? ''); //* API call
+                    } else {
+                      log('Order or _id not found in received data.');
+                    }
+                  },
+                );
+              } else if (isSuccess == false) {
+                //* Reset position
+                dragPosition = 10.w;
+                isConfirmed = false;
+              }
+            },
+          );
+        } else if (selectedPaymentMethod == SelectedPaymentMethod.upi.name) {
+          //* Emit socket event
+          socketProvider.emitEvent(
+            SocketEvents.orderCreate,
+            orderCreateData,
+          );
+          socketProvider.listenToEvent(
+            SocketEvents.orderReceive,
+            (data) {
+              log('listenToEvent orderReceive: $data');
+              final order = data['order'];
+              if (order != null && order['_id'] != null) {
+                orderId = order['_id'];
+                log('ApiResponseOrderId is: $orderId');
+                // * Handle API call Normal Order UPI
+                HyperSDK hyperSDK = HyperSDK();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PaymentPage(
+                      apiResponseOrderId: orderId,
+                      paymentType: PaymentType.order,
+                      hyperSDK: hyperSDK,
+                      subsId:
+                          context.read<CreateSubscriptionPlanProvider>().subsId,
+                      amount: totalAmount ?? '',
+                    ),
+                  ),
+                );
+              } else {
+                log('Order or _id not found in received data.');
+              }
+            },
+          );
+        }
+      } else if (isSubscriptionPay) {
+        //! Subscription payment things
+        if (selectedPaymentMethod == SelectedPaymentMethod.perks.name) {
+          await rechargeDeduct(
+            context,
+            payableAmount,
+            isSubscriptionPay,
+          ).then(
+            (isSuccess) {
+              if (isSuccess == true) {
+                context
+                    .read<SubscriptionCartProvider>()
+                    .subscriptionsPaymentDeduct(context); //* API call
+              } else if (isSuccess == false) {
+                //* Reset position
+                dragPosition = 10.w;
+                isConfirmed = false;
+              }
+            },
+          );
+        } else if (selectedPaymentMethod == SelectedPaymentMethod.upi.name) {
+          HyperSDK hyperSDK = HyperSDK();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentPage(
+                paymentType: PaymentType.subscription,
+                hyperSDK: hyperSDK,
+                subsId: context.read<CreateSubscriptionPlanProvider>().subsId,
+                amount: context
+                    .read<SubscriptionCartProvider>()
+                    .getGrandTotal(context)
+                    .toStringAsFixed(2),
+              ),
+            ),
+          );
+        }
+      } else {
+        log('No payment handler found');
+      }
     } else {
       //* Reset position
       dragPosition = 10.w;
@@ -109,13 +214,16 @@ class CartProvider extends ChangeNotifier {
 
   String? totalAmount;
   // * rechargeDeduct API
-  Future rechargeDeduct(BuildContext context) async {
+  Future rechargeDeduct(
+    BuildContext context,
+    String payableAmount,
+    bool isSubscriptionPay,
+  ) async {
     isLoading = true;
-    notifyListeners();
     try {
       final requestBody = {
         "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
-        "amountToDeduct": totalAmount,
+        "amountToDeduct": int.tryParse(payableAmount) ?? 0,
       };
       log('requestBody: ${requestBody.toString()}');
       final res = await apiService.rechargeDeduct(
@@ -123,21 +231,30 @@ class CartProvider extends ChangeNotifier {
       );
       log('rechargeDeduct: ${res.data}');
       if (res.success == true && res.data != null) {
-        Future.delayed(
-          const Duration(seconds: 1),
-          () async {
-            debugPrint("Order Placed!");
-            //* Action confirmed
-            isConfirmed = true;
-            notifyListeners();
-            //* clear cart API
-            Navigator.pushNamed(context, Routes.orderStatus);
-            await clearCart();
-            Future.delayed(const Duration(seconds: 1), () {
-              dragPosition = 10.w;
-            });
-          },
-        );
+        if (!isSubscriptionPay) {
+          Future.delayed(
+            const Duration(seconds: 1),
+            () async {
+              debugPrint("Order Placed!");
+              //* Action confirmed
+              isConfirmed = true;
+              //* clear cart API
+              Navigator.pushNamed(context, Routes.orderStatus);
+              await clearCart();
+              Future.delayed(const Duration(seconds: 1), () {
+                dragPosition = 10.w;
+              });
+            },
+          );
+        } else {
+          //* Subscription
+          debugPrint("Order Placed!");
+          //* Action confirmed
+          isConfirmed = true;
+          Future.delayed(const Duration(seconds: 1), () {
+            dragPosition = 10.w;
+          });
+        }
         return true; //* success
       } else {
         log('${res.message}');
@@ -149,6 +266,22 @@ class CartProvider extends ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  //* Order payment deduct (payment complete)
+  Future orderPaymentDeduct({required String orderId}) async {
+    try {
+      final response = await apiService.orderPaymentDeduct(
+        orderId: orderId,
+      );
+      log('orderPaymentDeduct: $response');
+      if (response.success == true) {
+        log('SUCCESS of orderPaymentDeduct');
+      }
+      return response;
+    } catch (e) {
+      throw Exception('API call failed: $e');
     }
   }
 

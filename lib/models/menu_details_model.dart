@@ -29,18 +29,24 @@ class Data {
   String? sId;
   String? categoryId;
   String? itemName;
-  List<String>? images; // Updated to List<String>
+  List<String>? images;
   List<String>? ingredients;
   String? description;
+  String? recipe;
   num? ratings;
   List<Size>? size;
+  List<Size>? personalSize;
+  List<String>? addOn;
+  bool? isActiveForBusiness;
+  bool? isActiveForPersonal;
   bool? isActive;
   bool? isDelete;
+  bool? isFavorite;
   String? createdAt;
   String? updatedAt;
   int? iV;
-  List<Size>? personalSize;
-  bool? isFavorite; // New field added
+  List<IngredientDetails>? ingredientDetails;
+  List<AddOnDetails>? addOnDetails;
 
   Data({
     this.sId,
@@ -49,49 +55,59 @@ class Data {
     this.images,
     this.ingredients,
     this.description,
+    this.recipe,
     this.ratings,
     this.size,
+    this.personalSize,
+    this.addOn,
+    this.isActiveForBusiness,
+    this.isActiveForPersonal,
     this.isActive,
     this.isDelete,
+    this.isFavorite,
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.personalSize,
-    this.isFavorite,
+    this.ingredientDetails,
+    this.addOnDetails,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     categoryId = json['categoryId'];
     itemName = json['itemName'];
-    images = json['images'] is List
-        ? List<String>.from(json['images'].map((e) => e.toString()))
-        : json['images'] is String
-            ? [json['images']]
-            : [];
-    ingredients = json['ingredients'] is List
-        ? List<String>.from(json['ingredients'])
-        : [];
+    images = (json['images'] as List?)?.map((e) => e.toString()).toList();
+    ingredients =
+        (json['ingredients'] as List?)?.map((e) => e.toString()).toList();
     description = json['description'];
-    ratings = (json['ratings'] as num?)?.toDouble(); // Converts int to double
+    recipe = json['recipe'];
+    ratings = (json['ratings'] as num?)?.toDouble();
     if (json['size'] != null) {
-      size = <Size>[];
-      json['size'].forEach((v) {
-        size!.add(Size.fromJson(v));
-      });
+      size = (json['size'] as List).map((v) => Size.fromJson(v)).toList();
     }
+    if (json['personalSize'] != null) {
+      personalSize =
+          (json['personalSize'] as List).map((v) => Size.fromJson(v)).toList();
+    }
+    addOn = (json['addOn'] as List?)?.map((e) => e.toString()).toList();
+    isActiveForBusiness = json['isActiveForBusiness'];
+    isActiveForPersonal = json['isActiveForPersonal'];
     isActive = json['isActive'];
     isDelete = json['isDelete'];
+    isFavorite = json['isFavorite'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     iV = json['__v'];
-    if (json['personalSize'] != null) {
-      personalSize = <Size>[];
-      json['personalSize'].forEach((v) {
-        personalSize!.add(Size.fromJson(v));
-      });
+    if (json['ingredientDetails'] != null) {
+      ingredientDetails = (json['ingredientDetails'] as List)
+          .map((e) => IngredientDetails.fromJson(e))
+          .toList();
     }
-    isFavorite = json['isFavorite']; // Parse new field
+    if (json['addOnDetails'] != null) {
+      addOnDetails = (json['addOnDetails'] as List)
+          .map((e) => AddOnDetails.fromJson(e))
+          .toList();
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -102,19 +118,22 @@ class Data {
     data['images'] = images;
     data['ingredients'] = ingredients;
     data['description'] = description;
+    data['recipe'] = recipe;
     data['ratings'] = ratings;
-    if (size != null) {
-      data['size'] = size!.map((v) => v.toJson()).toList();
-    }
+    data['size'] = size?.map((e) => e.toJson()).toList();
+    data['personalSize'] = personalSize?.map((e) => e.toJson()).toList();
+    data['addOn'] = addOn;
+    data['isActiveForBusiness'] = isActiveForBusiness;
+    data['isActiveForPersonal'] = isActiveForPersonal;
     data['isActive'] = isActive;
     data['isDelete'] = isDelete;
+    data['isFavorite'] = isFavorite;
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
-    if (personalSize != null) {
-      data['personalSize'] = personalSize!.map((v) => v.toJson()).toList();
-    }
-    data['isFavorite'] = isFavorite; // Add new field to JSON
+    data['ingredientDetails'] =
+        ingredientDetails?.map((e) => e.toJson()).toList();
+    data['addOnDetails'] = addOnDetails?.map((e) => e.toJson()).toList();
     return data;
   }
 }
@@ -130,8 +149,7 @@ class Size {
   Size.fromJson(Map<String, dynamic> json) {
     sizeId = json['sizeId'];
     volume = json['volume'];
-    sizePrice = (json['sizePrice'] as num?)
-        ?.toDouble(); // Converts int to double ! working
+    sizePrice = (json['sizePrice'] as num?)?.toDouble();
     sId = json['_id'];
   }
 
@@ -142,5 +160,43 @@ class Size {
     data['sizePrice'] = sizePrice;
     data['_id'] = sId;
     return data;
+  }
+}
+
+class IngredientDetails {
+  String? ingredientId;
+  String? ingredientName;
+
+  IngredientDetails({this.ingredientId, this.ingredientName});
+
+  IngredientDetails.fromJson(Map<String, dynamic> json) {
+    ingredientId = json['ingredientId'];
+    ingredientName = json['ingredientName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'ingredientId': ingredientId,
+      'ingredientName': ingredientName,
+    };
+  }
+}
+
+class AddOnDetails {
+  String? addOnId;
+  String? addOnName;
+
+  AddOnDetails({this.addOnId, this.addOnName});
+
+  AddOnDetails.fromJson(Map<String, dynamic> json) {
+    addOnId = json['addOnId'];
+    addOnName = json['addOnName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'addOnId': addOnId,
+      'addOnName': addOnName,
+    };
   }
 }

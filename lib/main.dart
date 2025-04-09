@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'core/utils/app_globals.dart';
 import 'modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet_provider.dart';
 import 'modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet_provider.dart';
 import 'modules/auth/business_register/register_provider.dart';
@@ -18,11 +19,9 @@ import 'modules/auth/location_selection/location_selection_provider.dart';
 import 'modules/auth/otp/otp_provider.dart';
 import 'modules/authorized_emp/authorized_emp_provider.dart';
 import 'modules/billing/billing_provider.dart';
-import 'modules/bottom_bar/bottom_bar_page.dart';
 import 'modules/bottom_bar/bottom_bar_provider.dart';
 import 'modules/cart/cart_provider.dart';
 import 'modules/feedback/feedback_provider.dart';
-import 'modules/firebase/firebase_provider.dart';
 import 'modules/map/address/saved_address/saved_address_provider.dart';
 import 'modules/map/google_map_provider.dart';
 import 'modules/menu/menu_provider.dart';
@@ -98,6 +97,7 @@ class MyApp extends StatelessWidget {
         minTextAdapt: true,
         child: Consumer<MenuProvider>(
           builder: (context, menuProvider, child) => MaterialApp(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: '135 Degrees',
             scaffoldMessengerKey: menuProvider.scaffoldMessengerKey,

@@ -2,7 +2,7 @@ class BaseUrl {
   // static const String apiBaseUrl = 'http://192.168.1.9:9000/';
   // static const String socketBaseUrl = 'http://192.168.1.9:3000/';
   static const String apiBaseUrl =
-      'https://node-517461825507.asia-south1.run.app/'; // Dev server
+      '.'; // Dev server
   static const String socketBaseUrl =
       'https://websocket-517461825507.asia-south1.run.app/'; // Dev socket
 }

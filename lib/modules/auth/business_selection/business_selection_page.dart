@@ -18,7 +18,6 @@ import 'business_selection_provider.dart';
 class BusinessSelectionPage extends StatelessWidget {
   const BusinessSelectionPage({super.key});
 
-  // @override
   @override
   Widget build(BuildContext context) {
     final provider =
@@ -27,7 +26,7 @@ class BusinessSelectionPage extends StatelessWidget {
       resizeToAvoidBottomInset: false, //image did't by the keyboard
       backgroundColor: AppColors.primaryColor,
       appBar: const AppBarWithBackButton(),
-      extendBodyBehindAppBar: true, // show content of body behind appbar
+      extendBodyBehindAppBar: true,
       body: Stack(
         children: [
           Image.asset(

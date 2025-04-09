@@ -20,13 +20,9 @@ class RechargeProvider extends ChangeNotifier {
 
   void formatIndianNumber(String value) {
     if (value.isEmpty) return;
-
-    // Remove any commas before formatting
     String plainNumber = value.replaceAll(',', '');
-    // Format the number using Indian Numbering Style
     String formattedNumber =
         _indianFormat.format(int.tryParse(plainNumber) ?? 0);
-    // Prevent cursor from jumping
     if (formattedNumber != value) {
       amountController.value = amountController.value.copyWith(
         text: formattedNumber,

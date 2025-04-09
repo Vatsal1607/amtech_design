@@ -4,20 +4,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
+import '../../../services/local/shared_preferences_service.dart';
 
 class SelectPaymentMethodWidget extends StatelessWidget {
   final String logoImage;
   final bool isPerks;
   final VoidCallback? onTap;
   final bool isSelectedMethod;
+  final String payableAmount;
+  final String? perksBalance;
   const SelectPaymentMethodWidget({
     super.key,
     required this.logoImage,
     this.isPerks = false,
     this.onTap,
     this.isSelectedMethod = false,
+    required this.payableAmount,
+    this.perksBalance,
   });
 
   @override
@@ -46,7 +52,8 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '₹ 1500 ',
+                  // '₹ 1500 ',
+                  '₹ ${payableAmount} ',
                   style: GoogleFonts.publicSans(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
@@ -81,15 +88,18 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgIcon(
+                    const SvgIcon(
                       icon: IconStrings.rupee,
                       color: AppColors.primaryColor,
                     ),
                     SizedBox(
                       width: 3.w,
                     ),
+                    //* Perks remaining amount
                     Text(
-                      '50,000'.toUpperCase(),
+                      '${sharedPrefsService.getString(
+                        SharedPrefsKeys.remainingPerksAmount,
+                      )}',
                       style: GoogleFonts.publicSans(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.bold,

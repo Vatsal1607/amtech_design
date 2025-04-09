@@ -284,4 +284,27 @@ abstract class ApiClient {
   Future<RechargeHistoryModel> rechargeHistory(
     @Query("userId") String userId,
   );
+
+  @PUT(ApiEndpoints.subscriptionsPayment)
+  Future<ApiGlobalModel> subscriptionsPayment(
+    @Field("orderId") String orderId,
+    @Field("subscriptionId") String subsId,
+  );
+
+  // Payment complete normal order deduct
+  @PUT('${ApiEndpoints.orderPaymentDeduct}/{order_id}')
+  Future<ApiGlobalModel> orderPaymentDeduct(
+    @Path("order_id") String orderId,
+  );
+
+  @PUT('${ApiEndpoints.subscriptionsPaymentDeduct}/{subs_id}')
+  Future<ApiGlobalModel> subscriptionsPaymentDeduct(
+    @Path("subs_id") String subsId,
+  );
+
+  @PUT('${ApiEndpoints.orderPayment}/{order_id}')
+  Future<ApiGlobalModel> orderPayment(
+    @Path("order_id") String orderId,
+    @Field("orderIdByJustpay") String orderIdByJustpay,
+  );
 }

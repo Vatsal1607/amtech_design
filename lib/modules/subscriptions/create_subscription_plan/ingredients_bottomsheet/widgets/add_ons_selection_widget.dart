@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/constant.dart';
 import '../../../../../custom_widgets/buttons/small_edit_button.dart';
 import '../../../../../custom_widgets/loader/custom_loader.dart';
 import '../../select_meal_bottomsheet/widgets/counter_widget.dart';
@@ -48,9 +49,13 @@ class AddOnsSelectionWidgetState extends State<AddOnsSelectionWidget> {
         // Add-Ons List
         Consumer<IngredientsBottomsheetProvider>(
           builder: (context, _, child) => ingredientsProvider.isLoading
-              ? const Center(
+              ? Center(
                   child: CustomLoader(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: getColorAccountType(
+                      accountType: widget.accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 )
               : ListView(
@@ -63,7 +68,11 @@ class AddOnsSelectionWidgetState extends State<AddOnsSelectionWidget> {
                             .name ??
                         key;
                     return CheckboxListTile(
-                      activeColor: AppColors.primaryColor,
+                      activeColor: getColorAccountType(
+                        accountType: widget.accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                       value: ingredientsProvider
                               .addOnsSelections[key]?.values.first ??
                           false,
@@ -104,7 +113,7 @@ class AddOnsSelectionWidgetState extends State<AddOnsSelectionWidget> {
                                   true
                               ? CustomCounterWidget(
                                   accountType: widget.accountType,
-                                  height: 32.h,
+                                  height: 35.h,
                                   onTapDecrease: () {
                                     ingredientsProvider.addOnsDecrement(key);
                                   },
@@ -115,17 +124,29 @@ class AddOnsSelectionWidgetState extends State<AddOnsSelectionWidget> {
                                       .addOnsQuantity[key]
                                       .toString(),
                                   bgColor: AppColors.primaryColor,
-                                  textColor: AppColors.seaShell,
+                                  textColor: getColorAccountType(
+                                    accountType: widget.accountType,
+                                    businessColor: AppColors.seaShell,
+                                    personalColor: AppColors.seaMist,
+                                  ),
                                 )
                               : SmallEditButton(
                                   width: 108.w,
-                                  height: 32.h,
+                                  height: 35.h,
                                   accountType: 'business',
                                   onTap: () {
                                     ingredientsProvider.addAddOnsItem(key);
                                   },
-                                  bgColor: AppColors.seaShell,
-                                  textColor: AppColors.primaryColor,
+                                  bgColor: getColorAccountType(
+                                    accountType: widget.accountType,
+                                    businessColor: AppColors.seaShell,
+                                    personalColor: AppColors.seaMist,
+                                  ),
+                                  textColor: getColorAccountType(
+                                    accountType: widget.accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
                                   text: 'Add',
                                   fontSize: 14.sp,
                                 ),

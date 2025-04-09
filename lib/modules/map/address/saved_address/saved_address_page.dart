@@ -18,6 +18,7 @@ import '../../../../core/utils/constants/keys.dart';
 import '../../../../core/utils/enums/enums.dart';
 import '../../../../core/utils/strings.dart';
 import '../../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
+import '../../../../custom_widgets/dialog/custom_info_dialog.dart';
 import '../../../../custom_widgets/textfield/custom_search_container.dart';
 import '../../../../services/local/shared_preferences_service.dart';
 import '../../../provider/socket_provider.dart';
@@ -119,9 +120,11 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
         isAction: true,
         actionIcon: IconStrings.info,
         onTapAction: () {
-          showNotServiceableDialog(
+          showCustomInfoDialog(
             context: context,
             accountType: accountType,
+            message:
+                "Sorry, We Are Currently Not Available To Your Selected Location.",
           );
         },
       ),
@@ -164,28 +167,6 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                 ),
               ),
 
-              // CustomSearchField(
-              //   provider: provider,
-              //   accountType: accountType,
-              //   borderWidth: 2.w,
-              //   hint: 'Search for area, street, etc.',
-              //   controller: searchController,
-              //   iconColor: getColorAccountType(
-              //     accountType: accountType,
-              //     businessColor: AppColors.primaryColor,
-              //     personalColor: AppColors.darkGreenGrey,
-              //   ),
-              //   borderColor: getColorAccountType(
-              //     accountType: accountType,
-              //     businessColor: AppColors.primaryColor,
-              //     personalColor: AppColors.darkGreenGrey,
-              //   ),
-              //   fillColor: getColorAccountType(
-              //     accountType: accountType,
-              //     businessColor: AppColors.seaShell,
-              //     personalColor: AppColors.seaMist,
-              //   ),
-              // ),
               SizedBox(height: 20.h),
 
               //* Add new location card:
@@ -277,6 +258,21 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                                   provider.nearByAddressList?[index];
                               return GestureDetector(
                                 onTap: () async {
+                                  // Choose location
+                                  // provider
+                                  //     .chooseLocation(.
+                                  //   context: context,
+                                  //   address:
+                                  //       '${nearByAddress?.propertyNumber} ${nearByAddress?.residentialAddress} ${nearByAddress?.nearLandmark} ${nearByAddress?.suggestAddress ?? ''}',
+                                  // )
+                                  //     .then((isSuccess) {
+                                  //   if (isSuccess == true) {
+                                  //     //* Update home address type
+                                  //     menuProvider.updateHomeAddress(
+                                  //         HomeAddressType.remote);
+                                  //   }
+                                  // });
+                                  //
                                   gMapProvider.showSelectedLocationAddressCard(
                                     context: context,
                                     isNavigateHome: true,

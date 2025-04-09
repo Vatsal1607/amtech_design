@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
-import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
+import '../core/utils/enums/enums.dart';
 import '../core/utils/strings.dart';
 import '../modules/cart/widgets/custom_slidable_button.dart';
 import '../modules/cart/widgets/select_payment_method_widget.dart';
@@ -15,12 +15,13 @@ import '../modules/provider/socket_provider.dart';
 
 double dragPosition = 0.0; // Track the drag position
 const double maxDrag = 250.0; // Maximum drag length
-// bool isConfirmed = false; // Track if the action is confirmed
 
 void showProcessToPayBottomSheeet({
   required BuildContext context,
   required String accountType,
-  required Map<String, dynamic> orderCreateData,
+  Map<String, dynamic>? orderCreateData,
+  bool isSubscriptionPay = false,
+  required final String payableAmount,
 }) {
   showModalBottomSheet(
     context: context,
@@ -63,11 +64,14 @@ void showProcessToPayBottomSheeet({
                   Consumer<CartProvider>(
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
+                      perksBalance: '',
+                      payableAmount: payableAmount,
                       onTap: () {
-                        provider.updateSelectedPaymentMethod('Perks');
+                        provider.updateSelectedPaymentMethod(
+                            SelectedPaymentMethod.perks.name);
                       },
-                      isSelectedMethod:
-                          provider.selectedPaymentMethod == 'Perks',
+                      isSelectedMethod: provider.selectedPaymentMethod ==
+                          SelectedPaymentMethod.perks.name,
                       logoImage: ImageStrings.perksLogo,
                       isPerks: true,
                     ),
@@ -77,10 +81,13 @@ void showProcessToPayBottomSheeet({
                   Consumer<CartProvider>(
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
+                      payableAmount: payableAmount,
                       onTap: () {
-                        provider.updateSelectedPaymentMethod('UPI');
+                        provider.updateSelectedPaymentMethod(
+                            SelectedPaymentMethod.upi.name);
                       },
-                      isSelectedMethod: provider.selectedPaymentMethod == 'UPI',
+                      isSelectedMethod: provider.selectedPaymentMethod ==
+                          SelectedPaymentMethod.upi.name,
                       logoImage: ImageStrings.razorpayLogo,
                     ),
                   ),
@@ -91,14 +98,15 @@ void showProcessToPayBottomSheeet({
                     accountType: accountType,
                     //! On Horizontal Drag End
                     onHorizontalDragEnd: (details) async {
-                      debugPrint('Horizontal Drag End');
-                      log('orderCreateData $orderCreateData');
                       cartProvider.onHorizontalDragEnd(
                         details: details,
                         context: context,
                         socketProvider: socketProvider,
                         orderCreateData: orderCreateData,
+                        isSubscriptionPay: isSubscriptionPay,
+                        payableAmount: payableAmount,
                       );
+                      log('Horizontal Drag End');
                     },
                   ),
                 ],

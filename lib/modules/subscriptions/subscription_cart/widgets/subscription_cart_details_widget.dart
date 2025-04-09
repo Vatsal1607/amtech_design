@@ -1,15 +1,40 @@
+import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/core/utils/utils.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
+import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../routes.dart';
 import '../subscription_cart_provider.dart';
 
-class SubscriptionCartDetailsWidget extends StatelessWidget {
-  SubscriptionCartProvider provider;
-  SubscriptionCartDetailsWidget({
+class SubscriptionCartDetailsWidget extends StatefulWidget {
+  final SubscriptionCartProvider provider;
+  final String accountType;
+  const SubscriptionCartDetailsWidget({
     super.key,
     required this.provider,
+    required this.accountType,
   });
+
+  @override
+  State<SubscriptionCartDetailsWidget> createState() =>
+      _SubscriptionCartDetailsWidgetState();
+}
+
+class _SubscriptionCartDetailsWidgetState
+    extends State<SubscriptionCartDetailsWidget> {
+  @override
+  void initState() {
+    Future.microtask(() {
+      context.read<SubscriptionCartProvider>().loadAddress();
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +43,41 @@ class SubscriptionCartDetailsWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDetailRow(
-            icon: Icons.calendar_today,
-            title: "Subscription Start Date",
-            subtitle: "12/03/2025",
+          Consumer<SubscriptionCartProvider>(
+            builder: (context, provider, child) => _buildDetailRow(
+              icon: Icons.calendar_today,
+              onTapChange: () {
+                provider.pickStartDate(context);
+              },
+              title: "Subscription Start Date",
+              subtitle: Utils.formatDateToDDMMYYYY('${provider.subsStartDate}'),
+            ),
           ),
           _buildDetailRow(
+            isChange: false,
             icon: Icons.phone,
-            title: "Rahul Sharma",
-            subtitle: "+91 9624917829",
-          ),
-          _buildDetailRow(
-            icon: Icons.location_city,
-            title: "Delivery At",
+            title: '${sharedPrefsService.getString(SharedPrefsKeys.userName)}',
             subtitle:
-                "E/807, 8th Floor, Titanium City Center, 100 Feet Anand Nagar Road, Jodhpur Village, Ahmedabad",
-            highlightText: "Work",
+                '+${sharedPrefsService.getString(SharedPrefsKeys.userContact)}',
+          ),
+          Consumer<SubscriptionCartProvider>(
+            builder: (context, provider, child) => _buildDetailRow(
+              onTapChange: () async {
+                await Navigator.pushNamed(context, Routes.googleMapPage);
+                await widget.provider.loadAddress();
+                context //* Api call
+                    .read<CreateSubscriptionPlanProvider>()
+                    .subscriptionUpdate(
+                      context: context,
+                      deliveryAddress: provider.selectedAddress,
+                    );
+              },
+              icon: Icons.location_city,
+              title: "Delivery At",
+              subtitle:
+                  widget.provider.selectedAddress ?? 'Please Select Address',
+              highlightText: "Work",
+            ),
           ),
           SizedBox(height: 20.h),
           Text(
@@ -41,7 +85,11 @@ class SubscriptionCartDetailsWidget extends StatelessWidget {
             style: GoogleFonts.publicSans(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.disabledColor,
+              color: getColorAccountType(
+                accountType: widget.accountType,
+                businessColor: AppColors.disabledColor,
+                personalColor: AppColors.bayLeaf,
+              ),
             ),
           ),
           SizedBox(height: 4.h),
@@ -49,7 +97,11 @@ class SubscriptionCartDetailsWidget extends StatelessWidget {
             "You can cancel your subscription anytime before the next billing cycle. Refunds are not applicable once the subscription period has started.",
             style: GoogleFonts.publicSans(
               fontSize: 14.sp,
-              color: AppColors.disabledColor,
+              color: getColorAccountType(
+                accountType: widget.accountType,
+                businessColor: AppColors.disabledColor,
+                personalColor: AppColors.bayLeaf,
+              ),
             ),
           ),
         ],
@@ -63,6 +115,8 @@ class SubscriptionCartDetailsWidget extends StatelessWidget {
     required String title,
     required String subtitle,
     String? highlightText,
+    bool isChange = true,
+    VoidCallback? onTapChange,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
@@ -107,21 +161,25 @@ class SubscriptionCartDetailsWidget extends StatelessWidget {
             ),
           ),
           // * Change button
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 6.h),
-            decoration: BoxDecoration(
-              color: AppColors.primaryColor,
-              borderRadius: BorderRadius.circular(20.r),
-            ),
-            child: Text(
-              "Change",
-              style: GoogleFonts.publicSans(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+          if (isChange)
+            GestureDetector(
+              onTap: onTapChange,
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 6.h),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryColor,
+                  borderRadius: BorderRadius.circular(20.r),
+                ),
+                child: Text(
+                  "Change",
+                  style: GoogleFonts.publicSans(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

@@ -24,6 +24,7 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
 
   @override
   void initState() {
+    super.initState();
     _scrollController = ScrollController();
 
     _scrollController.addListener(() {
@@ -38,7 +39,6 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       widget.provider.getBusinessList(currentPage: 1); //* API call
     });
-    super.initState();
   }
 
   @override

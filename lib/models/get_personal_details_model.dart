@@ -38,7 +38,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  Null? otp;
+  String? otp;
 
   Data(
       {this.sId,

@@ -15,21 +15,33 @@ class BalanceCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final borderColor = getColorAccountType(
+      accountType: accountType,
+      businessColor: AppColors.primaryColor,
+      personalColor: AppColors.darkGreenGrey,
+    );
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: getColorAccountType(
-          accountType: accountType,
-          businessColor: AppColors.primaryColor,
-          personalColor: AppColors.darkGreenGrey,
-        ),
         borderRadius: BorderRadius.circular(40.r),
-        border: Border.all(color: const Color(0xFF0D1E3A), width: 0.1.w),
+        border: Border.all(
+          color: borderColor,
+          width: 1.w,
+        ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          //* Upper Section (Dark Blue Background)
-          Padding(
+          //* Top Section - Available Balance
+          Container(
+            decoration: BoxDecoration(
+              color: borderColor,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40.r),
+                topRight: Radius.circular(40.r),
+              ),
+            ),
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -39,15 +51,15 @@ class BalanceCardWidget extends StatelessWidget {
                   style: GoogleFonts.publicSans(
                     color: Colors.white,
                     fontSize: 16.sp,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 Consumer<RechargeProvider>(
                   builder: (context, provider, child) => Text(
-                    '₹ ${provider.historyRes?.data?.totalAmount}',
+                    '₹ ${provider.historyRes?.data?.totalAmount ?? '0'}',
                     style: GoogleFonts.publicSans(
                       color: Colors.white,
-                      fontSize: 20.sp,
+                      fontSize: 22.sp,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -56,9 +68,47 @@ class BalanceCardWidget extends StatelessWidget {
             ),
           ),
 
-          //* Lower Section (White Background with Bottom Border)
+          //* Middle Section - Closing Balance
           Container(
-            width: double.infinity,
+            decoration: BoxDecoration(
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.disabledColor,
+                personalColor: AppColors.bayLeaf,
+              ),
+              border: Border(
+                top: BorderSide(color: borderColor, width: 1.w),
+                bottom: BorderSide(color: borderColor, width: 1.w),
+              ),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Closing Balance",
+                  style: GoogleFonts.publicSans(
+                    color: borderColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Consumer<RechargeProvider>(
+                  builder: (context, provider, child) => Text(
+                    '₹ ${provider.historyRes?.data?.closingBalance ?? '0'}',
+                    style: GoogleFonts.publicSans(
+                      color: borderColor,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          //* Bottom Section - Total Perks Earned
+          Container(
             decoration: BoxDecoration(
               color: getColorAccountType(
                 accountType: accountType,
@@ -69,9 +119,8 @@ class BalanceCardWidget extends StatelessWidget {
                 bottomLeft: Radius.circular(40.r),
                 bottomRight: Radius.circular(40.r),
               ),
-              border: Border.all(color: const Color(0xFF0D1E3A), width: 2.w),
             ),
-            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+            padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 14.h),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -85,7 +134,7 @@ class BalanceCardWidget extends StatelessWidget {
                 ),
                 Consumer<RechargeProvider>(
                   builder: (context, provider, child) => Text(
-                    '₹ ${provider.historyRes?.data?.totalPerks}',
+                    '₹ ${provider.historyRes?.data?.totalPerks ?? '0'}',
                     style: GoogleFonts.publicSans(
                       color: const Color(0xFF0D1E3A),
                       fontSize: 16.sp,

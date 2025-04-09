@@ -198,7 +198,7 @@ class DaySelectionDropdown extends StatelessWidget {
                                                       .spaceBetween,
                                               children: [
                                                 SizedBox(
-                                                  width: 125.w,
+                                                  width: 100.w,
                                                   child: Text(
                                                     provider.selectedMeals[day]
                                                             ?[index] ??

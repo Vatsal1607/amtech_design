@@ -269,7 +269,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
       );
       log('subscriptionCreate: $res');
       if (res.success == true) {
-        subsId = res.data?.sId; // Subscription ID
+        subsId = res.data?.sId; //! Subscription ID
         // subsItems.clear(); //* Clear subsItem list on subc create
         Navigator.pushNamed(context, Routes.subscriptionSummary);
       } else {
@@ -369,7 +369,11 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   bool isLoadingSubsUpdate = false;
 
   // * SubscriptionUpdate API
-  Future<void> subscriptionUpdate(BuildContext context) async {
+  Future subscriptionUpdate({
+    required BuildContext context,
+    DateTime? createdAtDate,
+    String? deliveryAddress,
+  }) async {
     isLoadingSubsUpdate = true;
     try {
       String userId =
@@ -388,24 +392,28 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         notes: ingredientsProvider.noteController.text,
         paymentMethod: 'paymentMethod',
         paymentStatus: true,
+        createdAt: createdAtDate,
+        deliveryAddress: deliveryAddress,
       );
-
-      log('requestData subscriptionUpdate: $requestData');
       final res = await apiService.subscriptionUpdate(
         subsId: subsId ?? '',
         subscriptionUpdateRequestData: requestData,
       );
-      log('subscriptionUpdate: $res');
       if (res.success == true) {
-        context
-            .read<CreateSubscriptionPlanProvider>()
-            .setUpdateSubscription(false); // isUpadte: False
-        Navigator.pushNamed(context, Routes.subscriptionSummary);
+        if (createdAtDate == null && deliveryAddress == null) {
+          context
+              .read<CreateSubscriptionPlanProvider>()
+              .setUpdateSubscription(false); // isUpadte: False
+          Navigator.pushNamed(context, Routes.subscriptionSummary);
+        }
+        return true; // * success
       } else {
         log('${res.message}');
+        return false; // * failure
       }
     } catch (e) {
       log("Error subscriptionUpdate: ${e.toString()}");
+      return false; // * failure
     } finally {
       isLoadingSubsUpdate = false;
       notifyListeners();

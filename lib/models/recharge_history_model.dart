@@ -28,13 +28,19 @@ class RechargeHistoryModel {
 
 class Data {
   int? totalAmount;
+  int? closingBalance;
   int? totalPerks;
   List<PaymentHistory>? paymentHistory;
 
-  Data({this.totalAmount, this.totalPerks, this.paymentHistory});
+  Data(
+      {this.totalAmount,
+      this.closingBalance,
+      this.totalPerks,
+      this.paymentHistory});
 
   Data.fromJson(Map<String, dynamic> json) {
     totalAmount = json['totalAmount'];
+    closingBalance = json['closingBalance'];
     totalPerks = json['totalPerks'];
     if (json['paymentHistory'] != null) {
       paymentHistory = <PaymentHistory>[];
@@ -47,6 +53,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['totalAmount'] = totalAmount;
+    data['closingBalance'] = closingBalance;
     data['totalPerks'] = totalPerks;
     if (paymentHistory != null) {
       data['paymentHistory'] = paymentHistory!.map((v) => v.toJson()).toList();

@@ -359,4 +359,25 @@ class ApiService {
   Future<RechargeHistoryModel> rechargeHistory({required String userId}) async {
     return await apiClient.rechargeHistory(userId);
   }
+
+  Future<ApiGlobalModel> subscriptionsPayment(
+      {required String orderId, required String subsId}) async {
+    return await apiClient.subscriptionsPayment(orderId, subsId);
+  }
+
+  Future<ApiGlobalModel> orderPaymentDeduct({required String orderId}) async {
+    return await apiClient.orderPaymentDeduct(orderId);
+  }
+
+  Future<ApiGlobalModel> subscriptionsPaymentDeduct(
+      {required String subsId}) async {
+    return await apiClient.subscriptionsPaymentDeduct(subsId);
+  }
+
+  Future<ApiGlobalModel> orderPayment({
+    required String orderId,
+    required String orderIdByJustpay,
+  }) async {
+    return await apiClient.orderPayment(orderId, orderIdByJustpay);
+  }
 }

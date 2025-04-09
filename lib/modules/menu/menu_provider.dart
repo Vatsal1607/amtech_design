@@ -224,7 +224,6 @@ class MenuProvider extends ChangeNotifier {
           sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
       final accountType =
           sharedPrefsService.getString(SharedPrefsKeys.accountType);
-
       final HomeMenuModel response = await apiService.getHomeMenu(
         userId: userId,
         userType: accountType == 'business' ? 0 : 1,
@@ -234,6 +233,11 @@ class MenuProvider extends ChangeNotifier {
         homeMenuResponse = response;
         menuCategories = response.data?.menuCategories;
         filteredCategories = menuCategories ?? [];
+        //* Set remaining perks amount
+        sharedPrefsService.setString(
+          SharedPrefsKeys.remainingPerksAmount,
+          (response.data?.remainingAmount ?? '').toString(),
+        );
         updateMenuData(response); // perks Progress
         if (menuCategories != null) {
           generateCategoryKeys(menuCategories!);

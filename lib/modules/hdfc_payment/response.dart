@@ -1,10 +1,12 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/get_payment_response_model.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/utils/enums/enums.dart';
 import '../../models/verify_recharge_model.dart';
 import '../../routes.dart';
 import '../../services/network/api_service.dart';
@@ -27,9 +29,12 @@ class _ResponseScreenState extends State<ResponseScreen> {
   //   orderId = ModalRoute.of(context)!.settings.arguments.toString();
   //   _paymentFuture = getPaymentResponse(orderId.toString());
   // });
-
   //   super.initState();
   // }
+
+  PaymentType? paymentType;
+  String? subsId;
+  String? apiResponseOrderId;
 
   @override
   void didChangeDependencies() {
@@ -37,16 +42,16 @@ class _ResponseScreenState extends State<ResponseScreen> {
 
     // Ensure orderId is set only once
     if (orderId == null) {
-      // orderId = ModalRoute.of(context)!.settings.arguments as String?;
-      // final args =
-      //     ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
       final args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       if (args != null) {
         orderId = args['orderId'];
         amount = args['amount'];
+        paymentType = args['paymentType'];
+        subsId = args['subsId']; // SubscriptionId
+        apiResponseOrderId = args['apiResponseOrderId'];
         if (orderId != null) {
-          _paymentFuture = getPaymentResponse(orderId!);
+          _paymentFuture = getPaymentResponse(orderId!, subsId);
         }
       }
     }
@@ -86,17 +91,18 @@ class _ResponseScreenState extends State<ResponseScreen> {
                     case "COD_INITIATED":
                       orderStatusText = "Payment Successful";
                       statusImageUrl = ImageStrings.paymentSuccess;
-                      // //* API call
-                      // rechargeHandleJuspayResponse(
-                      //   orderId: orderId,
-                      //   amount: amount ?? '',
-                      // );
                       Future.delayed(
                         const Duration(seconds: 3),
                         () {
-                          Navigator.popUntil(context, (route) {
-                            return route.settings.name == Routes.bottomBarPage;
-                          });
+                          if (!mounted) return;
+                          log('3 sec done after success payment');
+                          if (paymentType == PaymentType.order) {
+                            Navigator.pushReplacementNamed(
+                                context, Routes.orderStatus);
+                          } else {
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          }
                         },
                       );
                       break;
@@ -180,7 +186,10 @@ class _ResponseScreenState extends State<ResponseScreen> {
   ApiService apiService = ApiService();
 
   // * getPaymentResponse api
-  Future<GetPaymentResponseModel> getPaymentResponse(String orderId) async {
+  Future<GetPaymentResponseModel> getPaymentResponse(
+    String orderId,
+    String? subsId,
+  ) async {
     try {
       final response = await apiService.getPaymentResponse(
         orderId: orderId,
@@ -188,12 +197,28 @@ class _ResponseScreenState extends State<ResponseScreen> {
       log('getPaymentResponse: $response');
       log('response.status: ${response.status.toString()}');
       if (response.status == 'CHARGED') {
-        //* API call
-        rechargeHandleJuspayResponse(
-          orderId: orderId,
-          amount: amount ?? '',
-        );
-        log('response.status: ${response.status.toString()}');
+        switch (paymentType) {
+          case PaymentType.recharge:
+            //* API call
+            await rechargeHandleJuspayResponse(
+                orderId: orderId, amount: amount ?? '');
+            break;
+          case PaymentType.subscription:
+            //* API call
+            await subscriptionHandleJuspayResponse(
+              orderId: orderId,
+              subsId: subsId ?? '',
+            );
+            break;
+          case PaymentType.order:
+            //* API call
+            await orderPayment(
+              orderId: apiResponseOrderId ?? '', // apiResponseOrderId
+              orderIdByJustpay: orderId,
+            );
+          default:
+            break;
+        }
       }
       return response;
     } catch (e) {
@@ -202,10 +227,8 @@ class _ResponseScreenState extends State<ResponseScreen> {
   }
 
   // * rechargeHandleJuspayResponse
-  Future<VerifyRechargeModel> rechargeHandleJuspayResponse({
-    required String orderId,
-    required String amount,
-  }) async {
+  Future<VerifyRechargeModel> rechargeHandleJuspayResponse(
+      {required String orderId, required String amount}) async {
     try {
       Map<String, dynamic> requestBody = {
         "order_id": orderId,
@@ -219,6 +242,44 @@ class _ResponseScreenState extends State<ResponseScreen> {
       log('response.status: ${response.success}');
       if (response.success == true) {
         log('SUCCESS of handleJuspayResponse');
+      }
+      return response;
+    } catch (e) {
+      throw Exception('API call failed: $e');
+    }
+  }
+
+  // subscriptionHandleJuspayResponse
+  Future<ApiGlobalModel> subscriptionHandleJuspayResponse(
+      {required String orderId, required String subsId}) async {
+    try {
+      final response = await apiService.subscriptionsPayment(
+        orderId: orderId,
+        subsId: subsId,
+      );
+      log('rechargeHandleJuspayResponse: $response');
+      log('response.status: ${response.success}');
+      if (response.success == true) {
+        log('SUCCESS of handleJuspayResponse');
+      }
+      return response;
+    } catch (e) {
+      throw Exception('API call failed: $e');
+    }
+  }
+
+  // orderPayment
+  Future<ApiGlobalModel> orderPayment({
+    required String orderId,
+    required String orderIdByJustpay,
+  }) async {
+    try {
+      final response = await apiService.orderPayment(
+        orderId: orderId,
+        orderIdByJustpay: orderIdByJustpay,
+      );
+      if (response.success == true) {
+        log('SUCCESS of orderPayment');
       }
       return response;
     } catch (e) {

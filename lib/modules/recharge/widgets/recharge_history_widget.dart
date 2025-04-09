@@ -1,9 +1,9 @@
 import 'dart:developer';
-
 import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
@@ -13,9 +13,11 @@ import 'recharge_history_value.dart';
 
 class RechargeHistoryWidget extends StatelessWidget {
   final String accountType;
+  final RechargeProvider provider;
   const RechargeHistoryWidget({
     super.key,
     required this.accountType,
+    required this.provider,
   });
 
   @override
@@ -31,76 +33,95 @@ class RechargeHistoryWidget extends StatelessWidget {
         ),
 
         SizedBox(height: 16.h),
-        // * New table headers
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              flex: 2,
+        // * Table Header
+        if (provider.paymentHistoryList != null &&
+            provider.paymentHistoryList!.isNotEmpty)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  "DATE",
+                  style: kRechargeTableHeaderStyle?.copyWith(
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Center(
+                  child: Text(
+                    "AMOUNT",
+                    style: kRechargeTableHeaderStyle?.copyWith(
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Center(
+                  child: Text(
+                    "STATUS",
+                    style: kRechargeTableHeaderStyle?.copyWith(
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Text(
+                    "PERKS",
+                    style: kRechargeTableHeaderStyle?.copyWith(
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        SizedBox(height: 8.h),
+
+        // * List Items
+        Consumer<RechargeProvider>(builder: (context, provider, child) {
+          final list = provider.paymentHistoryList;
+          if (list == null || list.isEmpty) {
+            return Center(
               child: Text(
-                "DATE",
-                style: kRechargeTableHeaderStyle?.copyWith(
+                'No recharge history available.',
+                style: GoogleFonts.publicSans(
+                  fontSize: 20.sp,
                   color: getColorAccountType(
                     accountType: accountType,
                     businessColor: AppColors.primaryColor,
                     personalColor: AppColors.darkGreenGrey,
                   ),
+                  fontWeight: FontWeight.w500,
                 ),
               ),
-            ),
-            Expanded(
-              flex: 2,
-              child: Center(
-                child: Text(
-                  "AMOUNT",
-                  style: kRechargeTableHeaderStyle?.copyWith(
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Center(
-                child: Text(
-                  "STATUS",
-                  style: kRechargeTableHeaderStyle?.copyWith(
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 1,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  "PERKS",
-                  style: kRechargeTableHeaderStyle?.copyWith(
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-        SizedBox(height: 8.h),
-
-        // * List Items
-        Consumer<RechargeProvider>(
-          builder: (context, provider, child) => ListView.separated(
+            );
+          }
+          return ListView.separated(
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             itemCount: provider.paymentHistoryList?.length ?? 0,
@@ -131,8 +152,8 @@ class RechargeHistoryWidget extends StatelessWidget {
                 isSuccess: true,
               );
             },
-          ),
-        ),
+          );
+        }),
       ],
     );
   }

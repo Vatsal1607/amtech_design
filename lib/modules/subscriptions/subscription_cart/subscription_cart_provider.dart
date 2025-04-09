@@ -1,30 +1,16 @@
 import 'dart:developer';
+import 'package:amtech_design/core/utils/app_globals.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../models/subscription_summary_model.dart';
+import '../../../services/local/shared_preferences_service.dart';
 import '../../../services/network/api_service.dart';
 import '../create_subscription_plan/create_subscription_plan_provider.dart';
 
 class SubscriptionCartProvider extends ChangeNotifier {
-  // double getGrandTotal(BuildContext context) {
-  //   if (summaryRes?.data?.items == null) return 0.0;
-  //   return summaryRes!.data!.items!.fold(0.0, (sum, item) {
-  //     final addOns = item.customize
-  //             ?.where((custom) => custom.addOns != null)
-  //             .expand((custom) => custom.addOns!)
-  //             .toList() ??
-  //         [];
-  //     final itemTotal = addOns.fold(0.0, (addOnSum, addOn) {
-  //       final singlePrice = addOn.price ?? 0.0;
-  //       final quantity = addOn.quantity ?? 0;
-  //       return addOnSum + (singlePrice * quantity);
-  //     });
-  //     return sum + itemTotal;
-  //   });
-  // }
   num getGrandTotal(BuildContext context) {
     if (summaryRes?.data == null) return 0.0;
-    // Get base price from summaryRes.data.price
     num basePrice = summaryRes!.data!.price ?? 0.0;
     // Calculate add-on total
     num addOnTotal = summaryRes?.data?.items?.fold(0.0, (sum, item) {
@@ -42,14 +28,14 @@ class SubscriptionCartProvider extends ChangeNotifier {
           return (sum ?? 0.0) + itemTotal;
         }) ??
         0.0;
-
-    return basePrice + addOnTotal;
+    // return basePrice + addOnTotal;
+    num total = basePrice + addOnTotal;
+    return double.parse(total.toStringAsFixed(2));
   }
 
   double gstAmount = 0.0;
   getGST(num totalAmount) {
     return gstAmount = totalAmount * 0.12;
-    // notifyListeners(); // Notify all widgets listening to this provider
   }
 
   ApiService apiService = ApiService();
@@ -69,7 +55,7 @@ class SubscriptionCartProvider extends ChangeNotifier {
         );
         if (res.success == true) {
           summaryRes = res;
-          log('getSubscriptionSummary cart page: ${res.message}');
+          subsStartDate = summaryRes?.data?.createdAt;
         } else {
           log('${res.message}');
         }
@@ -79,6 +65,57 @@ class SubscriptionCartProvider extends ChangeNotifier {
     } finally {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  String? selectedAddress;
+
+  loadAddress() {
+    selectedAddress =
+        sharedPrefsService.getString(SharedPrefsKeys.selectedAddress);
+    notifyListeners();
+  }
+
+  String? subsStartDate;
+
+  // Show date picker (Subscription Start Date)
+  Future<void> pickStartDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+    if (pickedDate != null) {
+      await context //* Api call
+          .read<CreateSubscriptionPlanProvider>()
+          .subscriptionUpdate(
+            context: context,
+            createdAtDate: pickedDate,
+          )
+          .then((isSuccess) {
+        if (isSuccess) {
+          getSubscriptionDetails(context: context);
+        } else {
+          log("API failed");
+        }
+      });
+    }
+  }
+
+  //* Subscription payment deduct (payment complete)
+  Future subscriptionsPaymentDeduct(BuildContext context) async {
+    try {
+      final response = await apiService.subscriptionsPaymentDeduct(
+        subsId: context.read<CreateSubscriptionPlanProvider>().subsId ?? '',
+      );
+      log('subscriptionsPaymentDeduct: $response');
+      if (response.success == true) {
+        log('SUCCESS of subscriptionsPaymentDeduct');
+      }
+      return response;
+    } catch (e) {
+      throw Exception('API call failed: $e');
     }
   }
 }

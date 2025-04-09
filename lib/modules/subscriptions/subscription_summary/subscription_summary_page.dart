@@ -38,8 +38,8 @@ class _SubscriptionSummaryPageState extends State<SubscriptionSummaryPage> {
 
   @override
   Widget build(BuildContext context) {
-    final String accountType = 'personal';
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider =
         Provider.of<SubscriptionSummaryProvider>(context, listen: false);
     return Scaffold(
@@ -112,6 +112,7 @@ class _SubscriptionSummaryPageState extends State<SubscriptionSummaryPage> {
                                     height: 25.h,
                                     labelText: 'EDIT',
                                     icon: IconStrings.editPen,
+                                    isWidthBetween: false,
                                     onPressed: () {
                                       log('Edit called');
                                       context

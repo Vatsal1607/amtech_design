@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
@@ -5,6 +7,7 @@ import 'package:amtech_design/custom_widgets/perks_chart_bottom_sheet.dart';
 import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:amtech_design/modules/recharge/widgets/balance_card.dart';
 import 'package:amtech_design/modules/recharge/widgets/recharge_history_widget.dart';
+import 'package:amtech_design/modules/recharge/widgets/recharge_shimmer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +16,7 @@ import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constants/keys.dart';
+import '../../core/utils/enums/enums.dart';
 import '../../core/utils/strings.dart';
 import '../../core/utils/validator.dart';
 import '../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
@@ -54,6 +58,8 @@ class _RechargePageState extends State<RechargePage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      provider = Provider.of<RechargeProvider>(context, listen: false);
+      provider.amountController.clear();
       context.read<RechargeProvider>().getRechargeHistory(context);
     });
     super.initState();
@@ -64,223 +70,232 @@ class _RechargePageState extends State<RechargePage> {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<RechargeProvider>(context, listen: false);
-    return Scaffold(
-      backgroundColor: getColorAccountType(
-        accountType: accountType,
-        businessColor: AppColors.seaShell,
-        personalColor: AppColors.seaMist,
-      ),
-      appBar: CustomAppbarWithCenterTitle(
-        accountType: accountType,
-        onBackButtonPressed: () {
-          provider.amountController.clear();
-          Navigator.pop(context);
-        },
-        title: '',
-        isAction: true,
-        actionIconColor: getColorAccountType(
-          accountType: accountType,
-          businessColor: AppColors.disabledColor,
-          personalColor: AppColors.bayLeaf,
-        ),
-        onTapAction: () {
-          // * Show Perks chart
-          showPerksChartBottomSheeet(
-            context: context,
-            accountType: accountType,
-          );
-        },
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: provider.formKey,
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 23.h),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                //* Balance card
-                BalanceCardWidget(
+    return Consumer<RechargeProvider>(
+      builder: (context, _, child) => provider.isLoadingRechargeHistory
+          ? const RechargeShimmerWidget()
+          : Scaffold(
+              backgroundColor: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.seaShell,
+                personalColor: AppColors.seaMist,
+              ),
+              appBar: CustomAppbarWithCenterTitle(
+                accountType: accountType,
+                onBackButtonPressed: () {
+                  provider.amountController.clear();
+                  Navigator.pop(context);
+                },
+                title: '',
+                isAction: true,
+                actionIconColor: getColorAccountType(
                   accountType: accountType,
+                  businessColor: AppColors.disabledColor,
+                  personalColor: AppColors.bayLeaf,
                 ),
+                onTapAction: () {
+                  // * Show Perks chart
+                  showPerksChartBottomSheeet(
+                    context: context,
+                    accountType: accountType,
+                  );
+                },
+              ),
+              body: SingleChildScrollView(
+                child: Form(
+                  key: provider.formKey,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 32.w, vertical: 23.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        //* Balance card
+                        BalanceCardWidget(
+                          accountType: accountType,
+                        ),
 
-                SizedBox(height: 20.h),
-                CenterTitleWithDivider(
-                  accountType: accountType,
-                  title: 'Recharge',
-                ),
-                SizedBox(height: 20.h),
-                Consumer<RechargeProvider>(
-                  builder: (context, _, child) => CustomTextField(
-                    hint: 'Enter Amount',
-                    cursorColor: AppColors.primaryColor,
-                    validator: Validator.rechargeAmountValidator,
-                    textColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    borderColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    iconColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    prefixIcon: IconStrings.rupee,
-                    controller: provider.amountController,
-                    focusNode: provider.amountFocusNode,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: [
-                      FilteringTextInputFormatter.digitsOnly,
-                      LengthLimitingTextInputFormatter(5), // Max 5 digits
-                    ],
-                  ),
-                ),
-                SizedBox(height: 5.h),
-                Padding(
-                  padding: EdgeInsets.only(left: 8.w),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Available Balance: ',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 13.sp,
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.primaryColor,
-                            personalColor: AppColors.darkGreenGrey,
+                        SizedBox(height: 20.h),
+                        CenterTitleWithDivider(
+                          accountType: accountType,
+                          title: 'Recharge',
+                        ),
+                        SizedBox(height: 20.h),
+                        Consumer<RechargeProvider>(
+                          builder: (context, _, child) => CustomTextField(
+                            hint: 'Enter Amount',
+                            cursorColor: AppColors.primaryColor,
+                            validator: Validator.rechargeAmountValidator,
+                            textColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                            borderColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                            iconColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                            prefixIcon: IconStrings.rupee,
+                            controller: provider.amountController,
+                            focusNode: provider.amountFocusNode,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(
+                                  5), // Max 5 digits
+                            ],
                           ),
                         ),
-                      ),
-                      Text(
-                        '₹ 11'.toUpperCase(),
-                        style: GoogleFonts.publicSans(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.bold,
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.primaryColor,
-                            personalColor: AppColors.darkGreenGrey,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15.h),
-                Text(
-                  'Note:',
-                  style: GoogleFonts.publicSans(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.bold,
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'You Can Recharge ',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12.sp,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'Minimum ₹500 Upto ₹50,000 ',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      'At Once.',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12.sp,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 23.h),
-                Consumer<RechargeProvider>(
-                  builder: (context, _, child) => CustomButton(
-                    height: 55.h,
-                    isLoading: provider.isLoading,
-                    onTap: () {
-                      if (provider.formKey.currentState!.validate()) {
-                        provider.amountFocusNode.unfocus();
-                        final cleanValue =
-                            provider.amountController.text.replaceAll(',', '');
-                        HyperSDK hyperSDK = HyperSDK();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PaymentPage(
-                              hyperSDK: hyperSDK,
-                              amount: cleanValue,
+                        SizedBox(height: 5.h),
+                        // Padding(
+                        //   padding: EdgeInsets.only(left: 8.w),
+                        //   child: Row(
+                        //     children: [
+                        //       Text(
+                        //         'Available Balance: ',
+                        //         style: GoogleFonts.publicSans(
+                        //           fontSize: 13.sp,
+                        //           color: getColorAccountType(
+                        //             accountType: accountType,
+                        //             businessColor: AppColors.primaryColor,
+                        //             personalColor: AppColors.darkGreenGrey,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //       Text(
+                        //         '₹ 11'.toUpperCase(),
+                        //         style: GoogleFonts.publicSans(
+                        //           fontSize: 13.sp,
+                        //           fontWeight: FontWeight.bold,
+                        //           color: getColorAccountType(
+                        //             accountType: accountType,
+                        //             businessColor: AppColors.primaryColor,
+                        //             personalColor: AppColors.darkGreenGrey,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        SizedBox(height: 15.h),
+                        Text(
+                          'Note:',
+                          style: GoogleFonts.publicSans(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.bold,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
                             ),
                           ),
-                        );
-                        // * userRecharge API * open Razorpay on success
-                        // provider.userRecharge(context).then((isSuccess) {
-                        //   if (isSuccess != null && isSuccess) {
-                        //     /// openRazorpay();
-                        //     ///
-                        //     debugPrint('isSuccess callback api-——: $isSuccess');
-                        //   } else {
-                        //     debugPrint('isSuccess callback api-——: $isSuccess');
-                        //   }
-                        // });
-                      } else {
-                        debugPrint('INVALID Amount');
-                      }
-                    },
-                    text: 'recharge',
-                    textColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.seaShell,
-                      personalColor: AppColors.seaMist,
-                    ),
-                    bgColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              'You Can Recharge ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'Minimum ₹500 Upto ₹50,000 ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.bold,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                              ),
+                            ),
+                            Text(
+                              'At Once.',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 12.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 23.h),
+                        Consumer<RechargeProvider>(
+                          builder: (context, _, child) => CustomButton(
+                            height: 55.h,
+                            isLoading: provider.isLoading,
+                            onTap: () {
+                              if (provider.formKey.currentState!.validate()) {
+                                provider.amountFocusNode.unfocus();
+                                final cleanValue = provider
+                                    .amountController.text
+                                    .replaceAll(',', '');
+                                HyperSDK hyperSDK = HyperSDK();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PaymentPage(
+                                      hyperSDK: hyperSDK,
+                                      amount: cleanValue,
+                                      paymentType: PaymentType.recharge,
+                                    ),
+                                  ),
+                                );
+                                // * userRecharge API * open Razorpay on success
+                                // provider.userRecharge(context).then((isSuccess) {
+                                //   if (isSuccess != null && isSuccess) {
+                                //     /// openRazorpay();
+                                //     ///
+                                //     debugPrint('isSuccess callback api-——: $isSuccess');
+                                //   } else {
+                                //     debugPrint('isSuccess callback api-——: $isSuccess');
+                                //   }
+                                // });
+                              } else {
+                                log('INVALID Amount');
+                              }
+                            },
+                            text: 'recharge',
+                            textColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ),
+                            bgColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 23.h),
+
+                        // * RechargeHistoryWidget
+                        RechargeHistoryWidget(
+                          accountType: accountType,
+                          provider: provider,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                SizedBox(height: 23.h),
-
-                // * RechargeHistoryWidget
-                RechargeHistoryWidget(
-                  accountType: accountType,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 

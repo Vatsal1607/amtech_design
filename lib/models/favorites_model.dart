@@ -56,7 +56,7 @@ class FavoriteItem {
 class MenuDetails {
   String? sId;
   String? itemName;
-  String? images;
+  List<String>? images; // Updated to List<String>
   List<Size>? size;
 
   MenuDetails({this.sId, this.itemName, this.images, this.size});
@@ -64,7 +64,9 @@ class MenuDetails {
   MenuDetails.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     itemName = json['itemName'];
-    images = json['images'];
+    images = json['images'] != null
+        ? List<String>.from(json['images'])
+        : null; // Convert to List<String>
     if (json['size'] != null) {
       size = <Size>[];
       json['size'].forEach((v) {

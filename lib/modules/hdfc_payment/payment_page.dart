@@ -1,11 +1,12 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hypersdkflutter/hypersdkflutter.dart';
+import '../../core/utils/enums/enums.dart';
 import '../../models/initiate_payment_model.dart';
 import '../../services/network/api_service.dart';
 import 'response.dart';
@@ -13,7 +14,17 @@ import 'response.dart';
 class PaymentPage extends StatefulWidget {
   final HyperSDK hyperSDK;
   final String amount;
-  const PaymentPage({super.key, required this.hyperSDK, required this.amount});
+  final PaymentType paymentType;
+  final String? subsId;
+  final String? apiResponseOrderId;
+  const PaymentPage({
+    super.key,
+    required this.hyperSDK,
+    required this.amount,
+    required this.paymentType,
+    this.subsId,
+    this.apiResponseOrderId,
+  });
   @override
   _PaymentPageState createState() => _PaymentPageState(amount);
 }
@@ -29,7 +40,7 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     if (!processCalled) {
-      //Todo Call of start payment method: step: 2
+      // * Start payment
       startPayment(double.parse(amount));
     }
     super.initState();
@@ -38,7 +49,6 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   Widget build(BuildContext context) {
     // if (!processCalled) {
-    //   //Todo Call of start payment method: step: 2
     //   startPayment(double.parse(amount));
     // }
 //block:start:onBackPress
@@ -92,24 +102,21 @@ class _PaymentPageState extends State<PaymentPage> {
         // "order_id": "test${(Random().nextInt(900000) + 100000)}",
         "amount": amount,
       };
-
       final InitiatePaymentModel response =
           await apiService.initiateJuspayPayment(
         requestBody: requestBody,
-      );
-
-      debugPrint("API Response: ${response.toJson()}");
-
+      ); // * API call
+      log("API Response: ${response.toJson()}");
       if (response.sdkPayload != null) {
         widget.hyperSDK.openPaymentPage(
           response.sdkPayload!.toJson(),
           hyperSDKCallbackHandler,
         );
       } else {
-        debugPrint("Error: SDK Payload is missing");
+        log("Error: SDK Payload is missing");
       }
     } catch (e) {
-      debugPrint("API call failed: $e");
+      log("API call failed: $e");
     }
   }
   // * block:end:startPayment
@@ -128,7 +135,7 @@ class _PaymentPageState extends State<PaymentPage> {
         try {
           args = json.decode(methodCall.arguments);
         } catch (e) {
-          print(e);
+          log('log args: $e');
         }
         var innerPayload = args["payload"] ?? {};
         var status = innerPayload["status"] ?? " ";
@@ -145,11 +152,13 @@ class _PaymentPageState extends State<PaymentPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ResponseScreen(),
-                // settings: RouteSettings(arguments: orderId),
+                builder: (context) => const ResponseScreen(),
                 settings: RouteSettings(arguments: {
                   'orderId': orderId,
+                  'apiResponseOrderId': widget.apiResponseOrderId,
                   'amount': amount,
+                  'paymentType': widget.paymentType,
+                  'subsId': widget.subsId,
                 }),
               ),
             );

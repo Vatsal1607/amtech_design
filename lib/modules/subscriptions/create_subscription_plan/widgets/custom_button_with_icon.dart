@@ -14,6 +14,7 @@ class CustomButtonWithIcon extends StatelessWidget {
   final String icon;
   final double? height;
   final double? width;
+  final bool isWidthBetween;
   const CustomButtonWithIcon({
     super.key,
     required this.labelText,
@@ -21,6 +22,7 @@ class CustomButtonWithIcon extends StatelessWidget {
     this.icon = IconStrings.plus,
     this.height,
     this.width,
+    this.isWidthBetween = true,
   });
 
   @override
@@ -53,7 +55,7 @@ class CustomButtonWithIcon extends StatelessWidget {
                 personalColor: AppColors.darkGreenGrey,
               ),
             ),
-            // SizedBox(width: 5.w),
+            if (isWidthBetween) SizedBox(width: 5.w),
             Text(
               labelText,
               style: GoogleFonts.publicSans(

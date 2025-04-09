@@ -6,13 +6,11 @@ import '../core/utils/app_colors.dart';
 
 class SelectOrderDateWidget extends StatelessWidget {
   final String accountType;
-  // final String text;
   final String selectedDate;
   final VoidCallback? onTap;
   const SelectOrderDateWidget({
     super.key,
     required this.accountType,
-    // required this.text,
     required this.selectedDate,
     this.onTap,
   });

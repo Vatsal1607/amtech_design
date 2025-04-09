@@ -20,11 +20,13 @@ class SharedPrefsKeys {
   static const String currentLong = 'long';
   static const String selectedAddress = 'selectedAddress';
   static const String selectedAddressType = 'selectedAddressType';
+  static const String userName = 'user_name';
+  static const String remainingPerksAmount = 'remaining_perks_amount';
 }
 
 class SocketEvents {
   static const String orderCreate = 'order-create';
-  static const String orderReceived = 'order-received';
+  static const String orderReceive = 'order-receive';
   static const String getOrderStatus = 'get-order-status';
   static const String orderStatusResponse = 'order-status-response';
   static const String userLocation = 'user-location';

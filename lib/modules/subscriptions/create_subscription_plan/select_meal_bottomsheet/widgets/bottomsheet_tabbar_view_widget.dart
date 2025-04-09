@@ -118,7 +118,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                           return quantity == 0
                               ? SmallEditButton(
                                   width: 108.w,
-                                  height: 30.h,
+                                  height: 35.h,
                                   accountType: 'business',
                                   onTap: () {
                                     showIngredientsBottomSheeet(
@@ -147,6 +147,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                               :
                               // * Show Quantity Counter
                               CustomCounterWidget(
+                                  height: 35.h,
                                   accountType: accountType,
                                   onTapDecrease: () {
                                     //* decrementMealItem

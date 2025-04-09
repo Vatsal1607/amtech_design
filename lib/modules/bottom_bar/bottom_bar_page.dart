@@ -6,6 +6,7 @@ import 'package:amtech_design/modules/billing/billing_page.dart';
 import 'package:amtech_design/modules/menu/menu_page.dart';
 import 'package:amtech_design/modules/menu/widgets/account_selection_widget.dart';
 import 'package:amtech_design/modules/reorder/reorder_page.dart';
+import 'package:amtech_design/modules/subscriptions/subscription/subscription_page.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -17,7 +18,7 @@ import '../menu/menu_provider.dart';
 import 'bottom_bar_provider.dart';
 
 class BottomBarPage extends StatefulWidget {
-  BottomBarPage({super.key});
+  const BottomBarPage({super.key});
 
   @override
   State<BottomBarPage> createState() => _BottomBarPageState();
@@ -34,6 +35,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
     _scrollController.addListener(_onScroll);
     _screens = [
       MenuPage(scrollController: _scrollController),
+      const SubscriptionPage(),
       ReorderPage(scrollController: _scrollController),
       BillingPage(scrollController: _scrollController),
     ];
@@ -82,8 +84,8 @@ class _BottomBarPageState extends State<BottomBarPage> {
         builder: (context, provider, child) {
           return Theme(
             data: ThemeData(
-              splashColor: Colors.transparent, // Removes splash effect
-              highlightColor: Colors.transparent, // Removes highlight effect
+              splashColor: Colors.transparent, // Removes splashEffect
+              highlightColor: Colors.transparent, // Removes highlightEffect
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -157,10 +159,29 @@ class _BottomBarPageState extends State<BottomBarPage> {
                             ),
                             label: 'MENU',
                           ),
+                          // * Subscription Nav Item
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.subscriptions,
+                              height: 25.h,
+                              color: provider.selectedIndex == 1
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'SUBSCRIPTION',
+                          ),
                           BottomNavigationBarItem(
                             icon: SvgIcon(
                               icon: IconStrings.reorder,
-                              color: provider.selectedIndex == 1
+                              color: provider.selectedIndex == 2
                                   ? getColorAccountType(
                                       accountType: accountType,
                                       businessColor: AppColors.white,
@@ -177,7 +198,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
                           BottomNavigationBarItem(
                             icon: SvgIcon(
                               icon: IconStrings.billing,
-                              color: provider.selectedIndex == 2
+                              color: provider.selectedIndex == 3
                                   ? getColorAccountType(
                                       accountType: accountType,
                                       businessColor: AppColors.white,
@@ -191,24 +212,6 @@ class _BottomBarPageState extends State<BottomBarPage> {
                             ),
                             label: 'BILLING',
                           ),
-                          // * Blog Nav Item
-                          // BottomNavigationBarItem(
-                          //   icon: SvgIcon(
-                          //     icon: IconStrings.blog,
-                          //     color: provider.selectedIndex == 3
-                          //         ? getColorAccountType(
-                          //             accountType: accountType,
-                          //             businessColor: AppColors.white,
-                          //             personalColor: AppColors.seaMist,
-                          //           )
-                          //         : getColorAccountType(
-                          //             accountType: accountType,
-                          //             businessColor: AppColors.disabledColor,
-                          //             personalColor: AppColors.bayLeaf,
-                          //           ),
-                          //   ),
-                          //   label: 'BLOG',
-                          // ),
                         ],
                       ),
                     ],

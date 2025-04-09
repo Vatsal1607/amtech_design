@@ -44,7 +44,7 @@ class FavoriteItemsWidget extends StatelessWidget {
           width: width,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(menuDetails?.images ?? ''),
+              image: NetworkImage(menuDetails?.images?.first ?? ''),
               fit: BoxFit.cover,
             ),
             borderRadius: BorderRadius.circular(30.r),

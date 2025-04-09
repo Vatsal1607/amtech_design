@@ -352,7 +352,6 @@ class BottomsheetContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15.h),
-
           Align(
             alignment: Alignment.centerLeft,
             child: Text(
@@ -367,29 +366,23 @@ class BottomsheetContent extends StatelessWidget {
           SizedBox(height: 10.h),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              '${menuDetails?.data?.ingredients}',
-              style: GoogleFonts.publicSans(
-                height: 1.h,
-                fontSize: 14.sp,
-                color: AppColors.primaryColor,
-              ),
-            ),
+            child: Builder(builder: (context) {
+              String ingredientText = menuDetails?.data?.ingredientDetails
+                      ?.map((e) => e.ingredientName ?? '')
+                      .where((name) => name.isNotEmpty)
+                      .join(', ') ??
+                  '';
+
+              return Text(
+                ingredientText,
+                style: GoogleFonts.publicSans(
+                  height: 1.h,
+                  fontSize: 14.sp,
+                  color: AppColors.primaryColor,
+                ),
+              );
+            }),
           ),
-          // ListView.builder(
-          //   padding: EdgeInsets.zero, // Remove extra space from top in listview
-          //   shrinkWrap: true,
-          //   itemCount: 4,
-          //   physics: const NeverScrollableScrollPhysics(),
-          //   itemBuilder: (context, index) {
-          //     return const Padding(
-          //       padding: EdgeInsets.all(0),
-          //       child: IngredientText(
-          //         text: 'Lorem ipsum dolor sit amet',
-          //       ),
-          //     );
-          //   },
-          // ),
           SizedBox(height: 30.h),
           SvgIcon(
             icon: IconStrings.hygiene,
@@ -411,31 +404,6 @@ class BottomsheetContent extends StatelessWidget {
               color: AppColors.primaryColor.withOpacity(0.5),
             ),
           ),
-
-          // AddToCart Button
-          // GestureDetector(
-          //   onTap: () {
-          //     //
-          //   },
-          //   child: Container(
-          //     height: 55.h,
-          //     width: double.infinity,
-          //     decoration: BoxDecoration(
-          //       color: AppColors.primaryColor,
-          //       borderRadius: BorderRadius.circular(40.0),
-          //     ),
-          //     child: Center(
-          //       child: Text(
-          //         'ADD TO CART',
-          //         style: GoogleFonts.publicSans(
-          //           fontSize: 16.0,
-          //           fontWeight: FontWeight.bold,
-          //           color: AppColors.seaShell,
-          //         ),
-          //       ),
-          //     ),
-          //   ),
-          // ),
           SizedBox(height: 200.h),
         ],
       ),

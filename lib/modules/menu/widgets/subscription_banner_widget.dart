@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/strings.dart';
-import '../../../routes.dart';
 
 class SubscriptionBannerWidget extends StatefulWidget {
   const SubscriptionBannerWidget({super.key});
@@ -60,7 +58,7 @@ class _SubscriptionBannerWidgetState extends State<SubscriptionBannerWidget> {
             bottom: 0,
             top: -20,
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 400), // Smooth transition
+              duration: const Duration(milliseconds: 500), // Smooth transition
               transitionBuilder: (Widget child, Animation<double> animation) {
                 return FadeTransition(opacity: animation, child: child);
               },
@@ -72,7 +70,7 @@ class _SubscriptionBannerWidgetState extends State<SubscriptionBannerWidget> {
                       fit: BoxFit.cover,
                     )
                   : Image.asset(
-                      ImageStrings.masalaTea2,
+                      ImageStrings.subscriptionBanner2,
                       key: const ValueKey(2),
                       height: 150.h,
                       fit: BoxFit.cover,

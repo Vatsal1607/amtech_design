@@ -14,13 +14,13 @@ enum HomeAddressType {
   remote,
 }
 
-// extension DetailsTypeExtension on DetailsType {
-//   String get value {
-//     switch (this) {
-//       case DetailsType.details:
-//         return 'details';
-//       case DetailsType.subscription:
-//         return 'subscription';
-//     }
-//   }
-// }
+enum PaymentType {
+  order,
+  recharge,
+  subscription,
+}
+
+enum SelectedPaymentMethod {
+  perks,
+  upi,
+}

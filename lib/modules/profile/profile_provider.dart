@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/custom_widgets/dialog/custom_info_dialog.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/app_globals.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../routes.dart';
@@ -22,7 +24,8 @@ class ProfileProvider extends ChangeNotifier {
 
   // * logout api method
   Future logout({
-    required BuildContext context,
+    BuildContext? context,
+    bool isTokenExpired = false,
   }) async {
     _isLoading = true;
     notifyListeners();
@@ -33,61 +36,156 @@ class ProfileProvider extends ChangeNotifier {
         'userId': userId,
         'deviceId': deviceId,
       };
-      debugPrint('--Request logout: $body');
-      final ApiGlobalModel response = await apiService.logout(
-        body: body,
-      );
-      log('logout Response: $response');
+      final ApiGlobalModel response = await apiService.logout(body: body);
       if (response.success == true) {
         sharedPrefsService.setBool(SharedPrefsKeys.isLoggedIn, false);
-        log('Success: logout: ${response.message.toString()}');
-
-        // * Navigate Replace all routes navigate to Login page after logout
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          Routes.accountSelection,
-          (Route<dynamic> route) => false,
-        );
-        customSnackBar(
-          context: context,
-          message: response.message.toString(),
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
-        );
-        return true; // * Indicat success
+        if (context != null) {
+          if (isTokenExpired) {
+            if (navigatorKey.currentContext != null) {
+              showCustomInfoDialog(
+                context: navigatorKey.currentContext!,
+                buttonText: 'Login Again!',
+                onTap: () {
+                  Navigator.pushNamedAndRemoveUntil(
+                    navigatorKey.currentContext!,
+                    Routes.accountSelection,
+                    (Route<dynamic> route) => false,
+                  );
+                },
+                title: 'Session Expired',
+                accountType:
+                    sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
+                        '',
+                message:
+                    'Your session has expired for security reasons. Please log in again to continue.',
+              );
+            }
+          } else {
+            Navigator.pushNamedAndRemoveUntil(
+              navigatorKey.currentContext!,
+              Routes.accountSelection,
+              (Route<dynamic> route) => false,
+            );
+          }
+          customSnackBar(
+            context: navigatorKey.currentContext!,
+            message: response.message.toString(),
+            backgroundColor: AppColors.seaShell,
+            textColor: AppColors.primaryColor,
+          );
+        }
+        // else {
+        //   navigatorKey.currentState?.pushNamedAndRemoveUntil(
+        //     Routes.accountSelection,
+        //     (route) => false,
+        //   );
+        // }
+        return true;
       } else {
-        customSnackBar(
-          context: context,
-          message: response.message.toString(),
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
-        );
-        debugPrint('User logout Message: ${response.message}');
-        return false; // * Indicat failure
+        if (context != null) {
+          customSnackBar(
+            context: context,
+            message: response.message.toString(),
+            backgroundColor: AppColors.seaShell,
+            textColor: AppColors.primaryColor,
+          );
+        }
+        return false;
       }
     } catch (error) {
       log("Error during logout Response: $error");
-
-      if (error is DioException) {
-        final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
-        customSnackBar(
-          context: context,
-          message: apiError.message ?? 'An error occurred',
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
-        );
-      } else {
-        customSnackBar(
-          context: context,
-          message: 'An unexpected error occurred',
-          backgroundColor: AppColors.seaShell,
-          textColor: AppColors.primaryColor,
-        );
+      if (context != null) {
+        if (error is DioException) {
+          final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
+          customSnackBar(
+            context: context,
+            message: apiError.message ?? 'An error occurred',
+            backgroundColor: AppColors.seaShell,
+            textColor: AppColors.primaryColor,
+          );
+        } else {
+          customSnackBar(
+            context: context,
+            message: 'An unexpected error occurred',
+            backgroundColor: AppColors.seaShell,
+            textColor: AppColors.primaryColor,
+          );
+        }
       }
     } finally {
-      // Ensure loading state is reset
       _isLoading = false;
       notifyListeners();
     }
   }
+
+  // Future logout({
+  //   required BuildContext context,
+  // }) async {
+  //   _isLoading = true;
+  //   notifyListeners();
+  //   final userId = sharedPrefsService.getString(SharedPrefsKeys.userId);
+  //   final deviceId = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
+  //   try {
+  //     final Map<String, dynamic> body = {
+  //       'userId': userId,
+  //       'deviceId': deviceId,
+  //     };
+  //     debugPrint('--Request logout: $body');
+  //     final ApiGlobalModel response = await apiService.logout(
+  //       body: body,
+  //     );
+  //     log('logout Response: $response');
+  //     if (response.success == true) {
+  //       sharedPrefsService.setBool(SharedPrefsKeys.isLoggedIn, false);
+  //       sharedPrefsService.clear(); // * clear local data on logout
+  //       log('Success: logout: ${response.message.toString()}');
+
+  //       // * Navigate Replace all routes navigate to Login page after logout
+  //       Navigator.pushNamedAndRemoveUntil(
+  //         context,
+  //         Routes.accountSelection,
+  //         (Route<dynamic> route) => false,
+  //       );
+  //       customSnackBar(
+  //         context: context,
+  //         message: response.message.toString(),
+  //         backgroundColor: AppColors.seaShell,
+  //         textColor: AppColors.primaryColor,
+  //       );
+  //       return true; // * Indicat success
+  //     } else {
+  //       customSnackBar(
+  //         context: context,
+  //         message: response.message.toString(),
+  //         backgroundColor: AppColors.seaShell,
+  //         textColor: AppColors.primaryColor,
+  //       );
+  //       debugPrint('User logout Message: ${response.message}');
+  //       return false; // * Indicat failure
+  //     }
+  //   } catch (error) {
+  //     log("Error during logout Response: $error");
+
+  //     if (error is DioException) {
+  //       final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
+  //       customSnackBar(
+  //         context: context,
+  //         message: apiError.message ?? 'An error occurred',
+  //         backgroundColor: AppColors.seaShell,
+  //         textColor: AppColors.primaryColor,
+  //       );
+  //     } else {
+  //       customSnackBar(
+  //         context: context,
+  //         message: 'An unexpected error occurred',
+  //         backgroundColor: AppColors.seaShell,
+  //         textColor: AppColors.primaryColor,
+  //       );
+  //     }
+  //   } finally {
+  //     // Ensure loading state is reset
+  //     _isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
 }

@@ -44,18 +44,31 @@ class SubscriptionCartProvider extends ChangeNotifier {
   // * Subscription Summary API
   Future<void> getSubscriptionDetails({
     required BuildContext context,
+    String? subsId,
   }) async {
+    log('getSubscriptionDetails called, subsId: $subsId');
     isLoading = true;
     try {
       final provider =
           Provider.of<CreateSubscriptionPlanProvider>(context, listen: false);
       if (provider.subsId != null) {
         final res = await apiService.subscriptionsSummary(
-          subsId: provider.subsId!,
+          subsId: subsId ?? provider.subsId!,
         );
         if (res.success == true) {
           summaryRes = res;
           subsStartDate = summaryRes?.data?.createdAt;
+        } else {
+          log('${res.message}');
+        }
+      } else if (subsId != null) {
+        //* For Subscription details page
+        final res = await apiService.subscriptionsSummary(
+          subsId: subsId,
+        );
+        if (res.success == true) {
+          summaryRes = res;
+          // subsStartDate = summaryRes?.data?.createdAt;
         } else {
           log('${res.message}');
         }

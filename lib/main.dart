@@ -34,6 +34,8 @@ import 'modules/ratings/ratings_provider.dart';
 import 'modules/recharge/recharge_provider.dart';
 import 'modules/reorder/reorder_provider.dart';
 import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
+import 'modules/subscriptions/subscription/subscription_details/subscription_details_provider.dart';
+import 'modules/subscriptions/subscription/subscription_provider.dart';
 import 'modules/subscriptions/subscription_cart/subscription_cart_provider.dart';
 import 'modules/subscriptions/subscription_summary/subscription_summary_provider.dart';
 import 'routes.dart';
@@ -91,6 +93,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SubscriptionSummaryProvider()),
         ChangeNotifierProvider(create: (_) => IngredientsBottomsheetProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionCartProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionDetailsProvider()),
+        ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://node-517461825507.asia-south1.run.app/';
+    baseUrl ??= 'http://192.168.1.9:9000/';
   }
 
   final Dio _dio;
@@ -1700,6 +1700,47 @@ class _ApiClient implements ApiClient {
     late ApiGlobalModel _value;
     try {
       _value = ApiGlobalModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubsListModel> getSubsList(
+    int page,
+    int limit,
+    String userId,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': page,
+      r'limit': limit,
+      r'userId': userId,
+    };
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<SubsListModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'user/subscriptions/list',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubsListModel _value;
+    try {
+      _value = SubsListModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

@@ -120,47 +120,100 @@ class _ReorderPageState extends State<ReorderPage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 4.h),
-                      SizedBox(height: 20.h),
+                      SizedBox(height: 24.h),
                       // * Reorder card listview
                       Consumer<ReorderProvider>(
-                        builder: (context, _, child) => provider.isLoading
-                            ? const Center(
-                                child: CustomLoader(
-                                  backgroundColor: AppColors.darkGreenGrey,
-                                ),
-                              )
-                            : NotificationListener(
-                                onNotification:
-                                    (ScrollNotification scrollInfo) {
-                                  if (scrollInfo.metrics.pixels >=
-                                      scrollInfo.metrics.maxScrollExtent *
-                                          0.9) {
-                                    // When the user scrolls to 90% of the list, load more
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) {
-                                      provider.getReorder(); //* API call
-                                    });
-                                  }
-                                  return false;
-                                },
-                                child: ListView.separated(
-                                  padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  // physics: const ClampingScrollPhysics(),
-                                  itemCount: provider.reorderList.length,
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(height: 15.h),
-                                  itemBuilder: (context, index) {
-                                    final reorder = provider.reorderList[index];
-                                    return ReorderCardWidget(
-                                      accountType: accountType,
-                                      reorder: reorder,
-                                    );
-                                  },
+                        builder: (context, _, child) {
+                          if (provider.isLoading) {
+                            return Center(
+                              child: CustomLoader(
+                                backgroundColor: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
                                 ),
                               ),
+                            );
+                          }
+                          if (provider.reorderList.isEmpty) {
+                            return Text(
+                              'No items available.',
+                              style: GoogleFonts.publicSans(
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                                fontSize: 20.sp,
+                              ),
+                            );
+                          }
+                          return NotificationListener<ScrollNotification>(
+                            onNotification: (scrollInfo) {
+                              if (scrollInfo.metrics.pixels >=
+                                  scrollInfo.metrics.maxScrollExtent * 0.9) {
+                                WidgetsBinding.instance
+                                    .addPostFrameCallback((_) {
+                                  provider.getReorder(); //* API call
+                                });
+                              }
+                              return false;
+                            },
+                            child: ListView.separated(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              itemCount: provider.reorderList.length,
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 15.h),
+                              itemBuilder: (context, index) {
+                                final reorder = provider.reorderList[index];
+                                return ReorderCardWidget(
+                                  accountType: accountType,
+                                  reorder: reorder,
+                                );
+                              },
+                            ),
+                          );
+                        },
                       ),
+
+                      // Consumer<ReorderProvider>(
+                      //   builder: (context, _, child) => provider.isLoading
+                      //       ? const Center(
+                      //           child: CustomLoader(
+                      //             backgroundColor: AppColors.darkGreenGrey,
+                      //           ),
+                      //         )
+                      //       : NotificationListener(
+                      //           onNotification:
+                      //               (ScrollNotification scrollInfo) {
+                      //             if (scrollInfo.metrics.pixels >=
+                      //                 scrollInfo.metrics.maxScrollExtent *
+                      //                     0.9) {
+                      //               // When the user scrolls to 90% of the list, load more
+                      //               WidgetsBinding.instance
+                      //                   .addPostFrameCallback((_) {
+                      //                 provider.getReorder(); //* API call
+                      //               });
+                      //             }
+                      //             return false;
+                      //           },
+                      //           child: ListView.separated(
+                      //             padding: EdgeInsets.zero,
+                      //             shrinkWrap: true,
+                      //             itemCount: provider.reorderList.length,
+                      //             separatorBuilder: (context, index) =>
+                      //                 SizedBox(height: 15.h),
+                      //             itemBuilder: (context, index) {
+                      //               final reorder = provider.reorderList[index];
+                      //               return ReorderCardWidget(
+                      //                 accountType: accountType,
+                      //                 reorder: reorder,
+                      //               );
+                      //             },
+                      //           ),
+                      //         ),
+                      // ),
                     ],
                   ),
                 ),

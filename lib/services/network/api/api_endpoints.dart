@@ -50,4 +50,5 @@ class ApiEndpoints {
   static const String subscriptionsPaymentDeduct =
       'subscriptions/payment/deduct';
   static const String orderPayment = 'order/payment';
+  static const String subscriptionsList = 'user/subscriptions/list';
 }

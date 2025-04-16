@@ -52,8 +52,9 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  // '₹ 1500 ',
-                  '₹ ${payableAmount} ',
+                  // '₹ $payableAmount ',
+                  '₹ ${double.parse(payableAmount).toInt()} ',
+
                   style: GoogleFonts.publicSans(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
@@ -67,7 +68,7 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                     color: AppColors.primaryColor,
                   ),
                 ),
-                SizedBox(width: 4.w),
+                SizedBox(width: 3.w),
                 Image.asset(
                   logoImage,
                   height: isPerks ? 18.h : 20.h,

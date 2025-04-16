@@ -29,9 +29,9 @@ import '../../models/menu_size_model.dart';
 import '../../models/personal_register_model.dart';
 import '../../models/recharge_history_model.dart';
 import '../../models/reorder_model.dart';
+import '../../models/subs_list_model.dart';
 import '../../models/subscription_create_model.dart';
 import '../../models/subscription_summary_model.dart';
-import '../../models/update_cart_request_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
 import 'api/api_constants.dart';
@@ -306,5 +306,12 @@ abstract class ApiClient {
   Future<ApiGlobalModel> orderPayment(
     @Path("order_id") String orderId,
     @Field("orderIdByJustpay") String orderIdByJustpay,
+  );
+
+  @GET(ApiEndpoints.subscriptionsList)
+  Future<SubsListModel> getSubsList(
+    @Query('page') int page,
+    @Query('limit') int limit,
+    @Query('userId') String userId,
   );
 }

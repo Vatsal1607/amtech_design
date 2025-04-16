@@ -26,6 +26,7 @@ import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
 import 'modules/recharge/recharge_page.dart';
 import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
+import 'modules/subscriptions/subscription/subscription_details/subscripton_details_page.dart';
 import 'modules/subscriptions/subscription_cart/subscription_cart_page.dart';
 
 class Routes {
@@ -57,6 +58,7 @@ class Routes {
   static const String createSubscriptionPlan = '/createSubscriptionPlan';
   static const String subscriptionSummary = '/subscriptionSummary';
   static const String subscriptionCart = '/subscriptionCart';
+  static const String subscriptonDetailsPage = '/subscriptonDetailsPage';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -87,5 +89,6 @@ class Routes {
     createSubscriptionPlan: (context) => const CreateSubscriptionPlanPage(),
     subscriptionSummary: (context) => const SubscriptionSummaryPage(),
     subscriptionCart: (context) => const SubscriptionCartPage(),
+    subscriptonDetailsPage: (context) => const SubscriptonDetailsPage(),
   };
 }

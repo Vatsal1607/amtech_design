@@ -318,6 +318,7 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                 ),
                 child: CustomSubsButtonWithArrow(
                   onTap: () {
+                    log('Payable Amount subsCartPage: ${provider.getGrandTotal(context).toString()}');
                     showProcessToPayBottomSheeet(
                       context: context,
                       payableAmount: provider.getGrandTotal(context).toString(),

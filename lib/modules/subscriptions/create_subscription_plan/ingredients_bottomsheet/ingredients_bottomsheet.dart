@@ -258,6 +258,7 @@ Future<void> showIngredientsBottomSheeet({
                         .addMealItem(day, itemName, mealItemIndex);
 
                     Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   text: 'DONE',
                   fontSize: 20.sp,

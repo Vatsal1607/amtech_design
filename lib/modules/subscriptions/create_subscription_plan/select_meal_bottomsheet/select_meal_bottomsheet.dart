@@ -74,10 +74,15 @@ void showSelectMealBottomSheeet({
                                   itemLength: category.menuItems?.length ?? 0,
                                   menuItems: category.menuItems,
                                   menuProvider: menuProvider,
-                                  itemName: category.menuItems
-                                          ?.map((item) => item.itemName ?? '')
-                                          .join(', ') ??
-                                      'No Items',
+                                  itemName: category.menuItems?.isNotEmpty ==
+                                          true
+                                      ? category.menuItems!.first.itemName ??
+                                          'No Item'
+                                      : 'No Items',
+                                  // itemName: category.menuItems
+                                  //         ?.map((item) => item.itemName ?? '')
+                                  //         .join(', ') ??
+                                  //     'No Items',
                                   provider: provider,
                                 ))
                             .toList(),

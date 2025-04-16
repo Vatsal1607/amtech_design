@@ -77,7 +77,7 @@ void showProcessToPayBottomSheeet({
                     ),
                   ),
                   SizedBox(height: 10.h),
-                  // * Pay with razor pay button
+                  // * Pay with HDFC pay button
                   Consumer<CartProvider>(
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
@@ -88,7 +88,7 @@ void showProcessToPayBottomSheeet({
                       },
                       isSelectedMethod: provider.selectedPaymentMethod ==
                           SelectedPaymentMethod.upi.name,
-                      logoImage: ImageStrings.razorpayLogo,
+                      logoImage: ImageStrings.hdfc,
                     ),
                   ),
 

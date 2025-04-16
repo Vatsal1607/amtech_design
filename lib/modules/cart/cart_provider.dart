@@ -78,12 +78,13 @@ class CartProvider extends ChangeNotifier {
                 );
                 socketProvider.listenToEvent(
                   SocketEvents.orderReceive,
-                  (data) {
+                  (data) async {
                     log('listenToEvent orderReceive: $data');
                     final order = data['order'];
                     if (order != null && order['_id'] != null) {
                       orderId = order['_id'];
-                      orderPaymentDeduct(orderId: orderId ?? ''); //* API call
+                      await orderPaymentDeduct(
+                          orderId: orderId ?? ''); //* API call
                     } else {
                       log('Order or _id not found in received data.');
                     }
@@ -223,7 +224,7 @@ class CartProvider extends ChangeNotifier {
     try {
       final requestBody = {
         "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
-        "amountToDeduct": int.tryParse(payableAmount) ?? 0,
+        "amountToDeduct": double.parse(payableAmount).toInt(),
       };
       log('requestBody: ${requestBody.toString()}');
       final res = await apiService.rechargeDeduct(
@@ -239,18 +240,20 @@ class CartProvider extends ChangeNotifier {
               //* Action confirmed
               isConfirmed = true;
               //* clear cart API
-              Navigator.pushNamed(context, Routes.orderStatus);
               await clearCart();
+              Navigator.pushNamed(context, Routes.orderStatus);
               Future.delayed(const Duration(seconds: 1), () {
                 dragPosition = 10.w;
               });
             },
           );
-        } else {
+        } else if (isSubscriptionPay) {
           //* Subscription
           debugPrint("Order Placed!");
           //* Action confirmed
           isConfirmed = true;
+          Navigator.popUntil(
+              context, ModalRoute.withName(Routes.bottomBarPage));
           Future.delayed(const Duration(seconds: 1), () {
             dragPosition = 10.w;
           });

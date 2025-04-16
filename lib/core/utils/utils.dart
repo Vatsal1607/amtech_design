@@ -46,4 +46,56 @@ class Utils {
       return ''; // Return empty if parsing fails
     }
   }
+
+  // Date format 1st JAN 2025
+  static String formatSubscriptionDate(String dateString) {
+    try {
+      DateTime date = DateTime.parse(dateString)
+          .toLocal(); // Convert to local time if needed
+
+      String day = date.day.toString();
+      String month = _monthAbbreviation(date.month);
+      String year = date.year.toString();
+
+      String dayWithSuffix = _addDaySuffix(date.day);
+
+      return '$dayWithSuffix $month $year';
+    } catch (e) {
+      return '';
+    }
+  }
+
+  static String _addDaySuffix(int day) {
+    if (day >= 11 && day <= 13) {
+      return '${day}th';
+    }
+    switch (day % 10) {
+      case 1:
+        return '${day}st';
+      case 2:
+        return '${day}nd';
+      case 3:
+        return '${day}rd';
+      default:
+        return '${day}th';
+    }
+  }
+
+  static String _monthAbbreviation(int month) {
+    const months = [
+      'JAN',
+      'FEB',
+      'MAR',
+      'APR',
+      'MAY',
+      'JUN',
+      'JUL',
+      'AUG',
+      'SEP',
+      'OCT',
+      'NOV',
+      'DEC'
+    ];
+    return months[month - 1];
+  }
 }

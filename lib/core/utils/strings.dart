@@ -150,6 +150,8 @@ class ImageStrings {
       '${BaseImagePath.basePath}subscription_banner_2.png';
   static const subscriptionBannerDoodle =
       '${BaseImagePath.basePath}subscription_banner_doodle.png';
+  static const hdfc =
+      '${BaseImagePath.basePath}hdfc.png';
 }
 
 class LottieStrings {

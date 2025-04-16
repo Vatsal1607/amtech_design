@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/custom_widgets/appbar/custom_sliver_appbar.dart';
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/get_payment_response_model.dart';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../core/utils/enums/enums.dart';
 import '../../models/verify_recharge_model.dart';
 import '../../routes.dart';
@@ -93,12 +96,19 @@ class _ResponseScreenState extends State<ResponseScreen> {
                       statusImageUrl = ImageStrings.paymentSuccess;
                       Future.delayed(
                         const Duration(seconds: 3),
-                        () {
+                        () async {
                           if (!mounted) return;
                           log('3 sec done after success payment');
+                          //* Navigatation After Payment success HDFC
                           if (paymentType == PaymentType.order) {
+                            await context
+                                .read<CartProvider>()
+                                .clearCart(); //* Api call
                             Navigator.pushReplacementNamed(
                                 context, Routes.orderStatus);
+                          } else if (paymentType == PaymentType.subscription) {
+                            Navigator.popUntil(context,
+                                ModalRoute.withName(Routes.bottomBarPage));
                           } else {
                             Navigator.pop(context);
                             Navigator.pop(context);

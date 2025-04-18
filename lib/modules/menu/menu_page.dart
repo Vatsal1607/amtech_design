@@ -13,6 +13,8 @@ import 'package:amtech_design/modules/menu/widgets/page_edge_blur_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/subscription_banner_widget.dart';
+import 'package:amtech_design/modules/notification/notification_page.dart';
+import 'package:amtech_design/modules/notification/notification_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,6 +45,9 @@ class _MenuPageState extends State<MenuPage> {
       context.read<GoogleMapProvider>().getCurrentLocation();
       context.read<MenuProvider>().homeMenuApi(); //* API call
       context.read<MenuProvider>().getBanner(); //* API call
+      context
+          .read<NotificationProvider>()
+          .unreadNotificationCount(); //* API call
       final provider = Provider.of<MenuProvider>(context, listen: false);
       final selectedAddressTypeString =
           sharedPrefsService.getString(SharedPrefsKeys.selectedAddressType);
@@ -61,7 +66,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    log('userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
+    log('log userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
@@ -109,7 +114,7 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ),
               body: FocusableActionDetector(
-                // autofocus: true,
+                // autofocus: false,
                 // onFocusChange: (value) {
                 //   if (value == true) {
                 //     context.read<MenuProvider>().homeMenuApi(); //* API call
@@ -269,8 +274,6 @@ class _MenuPageState extends State<MenuPage> {
                                       child: CustomSearchField(
                                         provider: provider,
                                         accountType: accountType,
-                                        textAlignVertical:
-                                            TextAlignVertical.bottom,
                                         controller: provider.searchController,
                                       ),
                                     ),

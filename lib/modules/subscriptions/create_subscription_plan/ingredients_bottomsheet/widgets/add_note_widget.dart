@@ -28,6 +28,7 @@ class AddNoteWidget extends StatelessWidget {
           TextField(
             controller: provider.noteController,
             maxLines: 4,
+            textInputAction: TextInputAction.done,
             decoration: InputDecoration(
               hintText: 'e.g., Note For This Order',
               hintStyle: GoogleFonts.publicSans(

@@ -234,7 +234,7 @@ class MenuProvider extends ChangeNotifier {
         menuCategories = response.data?.menuCategories;
         filteredCategories = menuCategories ?? [];
         //* Set remaining perks amount
-        sharedPrefsService.setString(
+        await sharedPrefsService.setString(
           SharedPrefsKeys.remainingPerksAmount,
           (response.data?.remainingAmount ?? '').toString(),
         );

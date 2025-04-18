@@ -23,6 +23,7 @@ class DayWiseDetailsListWidget extends StatelessWidget {
     return Consumer<SubscriptionSummaryProvider>(
       builder: (context, _, child) => ListView.builder(
         itemCount: provider.subsItems?.length ?? 0,
+        physics: const ClampingScrollPhysics(),
         itemBuilder: (context, index) {
           final subsDetails = provider.subsItems?[index];
           return Padding(

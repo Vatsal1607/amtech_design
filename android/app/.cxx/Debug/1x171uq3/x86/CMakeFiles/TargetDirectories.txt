@@ -1,0 +1,2 @@
+/Volumes/SSD 1/StudioProjects/amtech_design/android/app/.cxx/Debug/1x171uq3/x86/CMakeFiles/edit_cache.dir
+/Volumes/SSD 1/StudioProjects/amtech_design/android/app/.cxx/Debug/1x171uq3/x86/CMakeFiles/rebuild_cache.dir

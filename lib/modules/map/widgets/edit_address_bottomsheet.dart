@@ -68,131 +68,135 @@ void editAddressBottomSheeet({
         clipBehavior: Clip.none, // Allow visible outside the bounds
         children: [
           Positioned(
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 19.h,
-                left: 32.w,
-                right: 32.w,
-                //* Adjust bottomsheet while keyboard open
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-              ),
-              width: 1.sw,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Text(
-                      'ADD MORE DETAILS',
+            child: SingleChildScrollView(
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: 19.h,
+                  left: 32.w,
+                  right: 32.w,
+                  //* Adjust bottomsheet while keyboard open
+                  bottom: MediaQuery.of(context).viewInsets.bottom,
+                ),
+                width: 1.sw,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Text(
+                        'ADD MORE DETAILS',
+                        style: GoogleFonts.publicSans(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.bold,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      'SAVE ADDRESS AS',
                       style: GoogleFonts.publicSans(
                         fontSize: 16.sp,
-                        fontWeight: FontWeight.bold,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.seaShell,
-                          personalColor: AppColors.seaMist,
+                        color: AppColors.disabledColor,
+                      ),
+                    ),
+                    SizedBox(height: 5.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Consumer<GoogleMapProvider>(
+                          builder: (context, provider, child) => _buildCheckbox(
+                            title: 'HOME',
+                            value: provider.isCheckedHome,
+                            onChanged: provider.onChangedHome,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    'SAVE ADDRESS AS',
-                    style: GoogleFonts.publicSans(
-                      fontSize: 16.sp,
-                      color: AppColors.disabledColor,
-                    ),
-                  ),
-                  SizedBox(height: 5.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Consumer<GoogleMapProvider>(
-                        builder: (context, provider, child) => _buildCheckbox(
-                          title: 'HOME',
-                          value: provider.isCheckedHome,
-                          onChanged: provider.onChangedHome,
+                        SizedBox(width: 10.h),
+                        Consumer<GoogleMapProvider>(
+                          builder: (context, provider, child) => _buildCheckbox(
+                              title: 'WORK',
+                              value: provider.isCheckedWork,
+                              onChanged: provider.onChangedWork),
                         ),
-                      ),
-                      SizedBox(width: 10.h),
-                      Consumer<GoogleMapProvider>(
-                        builder: (context, provider, child) => _buildCheckbox(
-                            title: 'WORK',
-                            value: provider.isCheckedWork,
-                            onChanged: provider.onChangedWork),
-                      ),
-                      SizedBox(width: 10.h),
-                      Consumer<GoogleMapProvider>(
-                        builder: (context, provider, child) => _buildCheckbox(
-                          title: 'OTHER',
-                          value: provider.isCheckedOther,
-                          onChanged: provider.onChangedOther,
+                        SizedBox(width: 10.h),
+                        Consumer<GoogleMapProvider>(
+                          builder: (context, provider, child) => _buildCheckbox(
+                            title: 'OTHER',
+                            value: provider.isCheckedOther,
+                            onChanged: provider.onChangedOther,
+                          ),
                         ),
+                      ],
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextField(
+                      readOnly: true,
+                      controller: provider.addressController,
+                      hint: '',
+                      maxLines: 3,
+                      borderRadius: 30.r,
+                      suffixWidget: SuffixAddressWidget(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                       ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomTextField(
-                    readOnly: true,
-                    controller: provider.addressController,
-                    hint: '',
-                    maxLines: 3,
-                    borderRadius: 30.r,
-                    suffixWidget: SuffixAddressWidget(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
                     ),
-                  ),
-                  SizedBox(height: 5.h),
-                  Text(
-                    'ADDED BASED ON YOUR MAP PIN YOU SELECTED',
-                    style: GoogleFonts.publicSans(
-                      color: AppColors.disabledColor,
-                      fontSize: 12.sp,
+                    SizedBox(height: 5.h),
+                    Text(
+                      'ADDED BASED ON YOUR MAP PIN YOU SELECTED',
+                      style: GoogleFonts.publicSans(
+                        color: AppColors.disabledColor,
+                        fontSize: 12.sp,
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 20.h),
-                  CustomTextField(
-                    hint: 'Floor *',
-                    label: 'Floor *',
-                    controller: provider.floorController,
-                  ),
-                  SizedBox(height: 15.h),
-                  CustomTextField(
-                    hint: 'Company / Building *',
-                    label: 'Company / Building *',
-                    controller: provider.companyController,
-                  ),
-                  SizedBox(height: 15.h),
-                  CustomTextField(
-                    hint: 'Nearby Landmark (optional)',
-                    label: 'Nearby Landmark (optional)',
-                    controller: provider.landmarkController,
-                  ),
-                  SizedBox(height: 20.h),
-                  Consumer<GoogleMapProvider>(
-                    builder: (context, _, child) => CustomButtonWithArrow(
-                      isMargin: false,
-                      accountType: accountType,
-                      onTap: () {
-                        if (provider.floorController.text.trim().isNotEmpty &&
-                            provider.companyController.text.trim().isNotEmpty) {
-                          //* API call
-                          provider.editLocation(
-                            context: context,
-                            socketProvider: socketProvider,
-                            savedAddressProvider: savedAddressProvider,
-                          );
-                        } else {
-                          log('textfields is empty');
-                        }
-                      },
-                      text: 'CONFIRM ADDRESS',
+                    SizedBox(height: 20.h),
+                    CustomTextField(
+                      hint: 'Floor *',
+                      label: 'Floor *',
+                      controller: provider.floorController,
                     ),
-                  ),
-                  SizedBox(height: 40.h),
-                ],
+                    SizedBox(height: 15.h),
+                    CustomTextField(
+                      hint: 'Company / Building *',
+                      label: 'Company / Building *',
+                      controller: provider.companyController,
+                    ),
+                    SizedBox(height: 15.h),
+                    CustomTextField(
+                      hint: 'Nearby Landmark (optional)',
+                      label: 'Nearby Landmark (optional)',
+                      controller: provider.landmarkController,
+                    ),
+                    SizedBox(height: 20.h),
+                    Consumer<GoogleMapProvider>(
+                      builder: (context, _, child) => CustomButtonWithArrow(
+                        isMargin: false,
+                        accountType: accountType,
+                        onTap: () async {
+                          if (provider.floorController.text.trim().isNotEmpty &&
+                              provider.companyController.text
+                                  .trim()
+                                  .isNotEmpty) {
+                            //* API call
+                            await provider.editLocation(
+                              context: context,
+                              socketProvider: socketProvider,
+                              savedAddressProvider: savedAddressProvider,
+                            );
+                          } else {
+                            log('textfields is empty');
+                          }
+                        },
+                        text: 'CONFIRM ADDRESS',
+                      ),
+                    ),
+                    SizedBox(height: 40.h),
+                  ],
+                ),
               ),
             ),
           ),

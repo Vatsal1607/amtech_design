@@ -89,11 +89,13 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                     value: 'Monthly (static)',
                     accountType: accountType,
                   ),
-                  _buildText(
-                    label: 'Timings',
-                    value:
-                        '${subsCartProvider.summaryRes?.data?.items?.first.mealSubscription?.first.timeSlot}',
-                    accountType: accountType,
+                  Consumer<SubscriptionCartProvider>(
+                    builder: (context, _, child) => _buildText(
+                      label: 'Timings',
+                      value:
+                          '${subsCartProvider.summaryRes?.data?.items?.first.mealSubscription?.first.timeSlot}',
+                      accountType: accountType,
+                    ),
                   ),
                 ],
               ),

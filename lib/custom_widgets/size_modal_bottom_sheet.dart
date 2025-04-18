@@ -91,14 +91,19 @@ void showSizeModalBottomSheet({
                               separatorBuilder: (context, index) =>
                                   SizedBox(height: 10.h),
                               itemBuilder: (context, index) {
-                                final sizeDetailsList =
-                                    accountType == 'business'
-                                        ? provider.menuSizeResponse?.data
-                                                ?.sizeDetails ??
-                                            []
-                                        : provider.menuSizeResponse?.data
-                                                ?.personalSizeDetails ??
-                                            [];
+                                final sizeDetailsList = provider
+                                        .menuSizeResponse?.data?.sizeDetails ??
+                                    [];
+
+                                //* Different sizes Business & Personal
+                                // final sizeDetailsList =
+                                //     accountType == 'business'
+                                //         ? provider.menuSizeResponse?.data
+                                //                 ?.sizeDetails ??
+                                //             []
+                                //         : provider.menuSizeResponse?.data
+                                //                 ?.personalSizeDetails ??
+                                //             [];
                                 // Find the current size in the response
                                 final matchingSize = sizeDetailsList.firstWhere(
                                   (detail) =>

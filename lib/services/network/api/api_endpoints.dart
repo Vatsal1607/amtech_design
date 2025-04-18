@@ -51,4 +51,6 @@ class ApiEndpoints {
       'subscriptions/payment/deduct';
   static const String orderPayment = 'order/payment';
   static const String subscriptionsList = 'user/subscriptions/list';
+  static const String notificationHistory = 'notifications/users/history';
+  static const String unreadNotificationCount = 'unread';
 }

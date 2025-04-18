@@ -152,38 +152,7 @@ class _RechargePageState extends State<RechargePage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 5.h),
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 8.w),
-                        //   child: Row(
-                        //     children: [
-                        //       Text(
-                        //         'Available Balance: ',
-                        //         style: GoogleFonts.publicSans(
-                        //           fontSize: 13.sp,
-                        //           color: getColorAccountType(
-                        //             accountType: accountType,
-                        //             businessColor: AppColors.primaryColor,
-                        //             personalColor: AppColors.darkGreenGrey,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //       Text(
-                        //         '₹ 11'.toUpperCase(),
-                        //         style: GoogleFonts.publicSans(
-                        //           fontSize: 13.sp,
-                        //           fontWeight: FontWeight.bold,
-                        //           color: getColorAccountType(
-                        //             accountType: accountType,
-                        //             businessColor: AppColors.primaryColor,
-                        //             personalColor: AppColors.darkGreenGrey,
-                        //           ),
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        SizedBox(height: 15.h),
+                        SizedBox(height: 20.h),
                         Text(
                           'Note:',
                           style: GoogleFonts.publicSans(

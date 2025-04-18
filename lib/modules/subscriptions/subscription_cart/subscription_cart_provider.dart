@@ -9,7 +9,8 @@ import '../../../services/network/api_service.dart';
 import '../create_subscription_plan/create_subscription_plan_provider.dart';
 
 class SubscriptionCartProvider extends ChangeNotifier {
-  num getGrandTotal(BuildContext context) {
+  //* Calculate grand total with addons
+  num getGrandTotal() {
     if (summaryRes?.data == null) return 0.0;
     num basePrice = summaryRes!.data!.price ?? 0.0;
     // Calculate add-on total
@@ -34,8 +35,15 @@ class SubscriptionCartProvider extends ChangeNotifier {
   }
 
   double gstAmount = 0.0;
-  getGST(num totalAmount) {
-    return gstAmount = totalAmount * 0.12;
+
+  //* Get only GST amount
+  double getGST(num totalAmount) {
+    return double.parse((totalAmount * 0.12).toStringAsFixed(2));
+  }
+
+  //* Get total amount with GST included
+  double getTotalWithGST(num totalAmount) {
+    return double.parse((totalAmount * 1.12).toStringAsFixed(2));
   }
 
   ApiService apiService = ApiService();

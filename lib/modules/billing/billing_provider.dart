@@ -70,7 +70,7 @@ class BillingProvider extends ChangeNotifier {
   int currentPage = 1;
   final int limit = 10;
   bool hasMore = true;
-  List<Invoices> billingList = [];
+  // List<Invoices> billingList = [];
 
   //* Get billingList with Pagination
   Future<void> getBilling({bool isRefresh = false}) async {
@@ -80,13 +80,13 @@ class BillingProvider extends ChangeNotifier {
     if (isRefresh) {
       currentPage = 1;
       hasMore = true;
-      billingList.clear();
+      // billingList.clear();
     }
     try {
       final body = {
         'page': currentPage,
         'limit': limit,
-        // 'userId': sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '', // TODO uncomment when its needed
+        'userId': sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
         'startDate': formattedStartDateForApi,
         'endDate': formattedEndDateForApi,
       };
@@ -94,11 +94,11 @@ class BillingProvider extends ChangeNotifier {
 
       if (res.success == true && res.data != null) {
         if (isRefresh) {
-          billingList = res.data!.invoices ?? [];
+          // billingList = res.data!.invoices ?? [];
         } else {
-          billingList.addAll(res.data!.invoices ?? []);
+          // billingList.addAll(res.data!.invoices ?? []);
         }
-        hasMore = res.data!.invoices!.length == limit;
+        // hasMore = res.data!.invoices!.length == limit;
         currentPage++;
       } else {
         hasMore = false;

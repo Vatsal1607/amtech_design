@@ -28,7 +28,7 @@ class CustomSearchField<T extends ChangeNotifier> extends StatelessWidget {
     this.borderColor,
     this.iconColor = AppColors.seaShell,
     this.borderWidth = 1.0,
-    this.hint = 'Search for Tea, Coffee or Snacks',
+    this.hint = 'Search for Salads and Juices',
     this.textAlignVertical = TextAlignVertical.center,
     this.readOnly = false,
     this.onChanged,

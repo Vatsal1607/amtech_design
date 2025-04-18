@@ -4,14 +4,17 @@ import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/models/location_model.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
+import 'package:amtech_design/routes.dart';
 import 'package:amtech_design/services/network/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../models/edit_location_model.dart';
 import '../../models/edit_location_request_model.dart' as request_model;
 import '../../services/local/shared_preferences_service.dart';
+import '../menu/menu_provider.dart';
 
 class GoogleMapProvider extends ChangeNotifier {
   GoogleMapController? mapController;
@@ -363,7 +366,8 @@ class GoogleMapProvider extends ChangeNotifier {
         landmarkController.clear();
         //* Emit saved address event
         savedAddressProvider.emitAndListenSavedAddress(socketProvider);
-        Navigator.pop(context);
+        Navigator.popUntil(context, ModalRoute.withName(Routes.bottomBarPage));
+        context.read<MenuProvider>().homeMenuApi(); //* API call
         log('editLocation message: ${res.message}');
       } else {
         log('${res.message}');

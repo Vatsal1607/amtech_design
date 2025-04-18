@@ -70,7 +70,7 @@ class LocationSelectionPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Choose Location',
+                    'Choose Store',
                     style: GoogleFonts.publicSans(
                       fontSize: 40.sp,
                       color: accountType != '' && accountType == 'business'

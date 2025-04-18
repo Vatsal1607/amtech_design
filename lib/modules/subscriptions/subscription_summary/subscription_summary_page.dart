@@ -60,183 +60,187 @@ class _SubscriptionSummaryPageState extends State<SubscriptionSummaryPage> {
                     personalColor: AppColors.darkGreenGrey,
                   ),
                 ),
-                SizedBox(height: 10.h),
-                SingleChildScrollView(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 20.w,
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // * Container with BG color
-                        Container(
-                          width: double.infinity,
-                          padding: EdgeInsets.all(20.w),
-                          decoration: BoxDecoration(
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
-                            borderRadius: BorderRadius.circular(30.r),
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // * Subs details Row
-                                  Row(
-                                    children: [
-                                      const SvgIcon(
-                                          icon: IconStrings.subsDetails2),
-                                      SizedBox(width: 10.w),
-                                      Text(
-                                        'Subscription Details',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 18.sp,
-                                          color: getColorAccountType(
-                                            accountType: accountType,
-                                            businessColor: AppColors.seaShell,
-                                            personalColor: AppColors.seaMist,
-                                          ),
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  CustomButtonWithIcon(
-                                    height: 25.h,
-                                    labelText: 'EDIT',
-                                    icon: IconStrings.editPen,
-                                    isWidthBetween: false,
-                                    onPressed: () {
-                                      log('Edit called');
-                                      context
-                                          .read<
-                                              CreateSubscriptionPlanProvider>()
-                                          .setUpdateSubscription(
-                                              true); // isUpadte: True
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: 20.h),
-
-                              // * Units & Price Row
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                    vertical: 10.h, horizontal: 15.w),
-                                decoration: BoxDecoration(
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.seaShell,
-                                    personalColor: AppColors.seaMist,
-                                  ),
-                                  borderRadius: BorderRadius.circular(30.r),
-                                ),
-                                child: Consumer<SubscriptionSummaryProvider>(
-                                  builder: (context, _, child) => Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '${provider.summaryRes?.data?.units ?? ''} ${provider.summaryRes?.data?.units == '1' ? 'UNIT' : 'UNITS'}',
-                                        style: GoogleFonts.publicSans(
-                                            fontSize: 18.sp,
-                                            color: getColorAccountType(
-                                              accountType: accountType,
-                                              businessColor:
-                                                  AppColors.primaryColor,
-                                              personalColor:
-                                                  AppColors.darkGreenGrey,
-                                            ),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        '₹ ${provider.summaryRes?.data?.price ?? ''}',
-                                        style: GoogleFonts.publicSans(
-                                            fontSize: 18.sp,
-                                            color: getColorAccountType(
-                                              accountType: accountType,
-                                              businessColor:
-                                                  AppColors.primaryColor,
-                                              personalColor:
-                                                  AppColors.darkGreenGrey,
-                                            ),
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(height: 10.h),
-
-                              // * DayWiseDetailsList
-                              SizedBox(
-                                height: 500.h,
-                                child: DayWiseDetailsListWidget(
-                                  provider: provider,
-                                  accountType: accountType,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10.h),
-
-                        // * Note Text
-                        Text.rich(
-                          TextSpan(
-                            text:
-                                'Note: Your Selected Time Slot And Meal Will Be Repeated ',
-                            style: GoogleFonts.publicSans(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const ClampingScrollPhysics(),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        top: 10.h,
+                        right: 20.w,
+                        left: 20.w,
+                        bottom: 120.h,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // * Container with BG color
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(20.w),
+                            decoration: BoxDecoration(
                               color: getColorAccountType(
                                 accountType: accountType,
-                                businessColor:
-                                    AppColors.primaryColor.withOpacity(.7),
-                                personalColor:
-                                    AppColors.darkGreenGrey.withOpacity(.7),
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
                               ),
+                              borderRadius: BorderRadius.circular(30.r),
                             ),
-                            children: [
-                              TextSpan(
-                                text: 'Each Week ',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.primaryColor,
-                                    personalColor: AppColors.darkGreenGrey,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    // * Subs details Row
+                                    Row(
+                                      children: [
+                                        const SvgIcon(
+                                            icon: IconStrings.subsDetails2),
+                                        SizedBox(width: 10.w),
+                                        Text(
+                                          'Subscription Details',
+                                          style: GoogleFonts.publicSans(
+                                            fontSize: 18.sp,
+                                            color: getColorAccountType(
+                                              accountType: accountType,
+                                              businessColor: AppColors.seaShell,
+                                              personalColor: AppColors.seaMist,
+                                            ),
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    CustomButtonWithIcon(
+                                      height: 25.h,
+                                      labelText: 'EDIT',
+                                      icon: IconStrings.editPen,
+                                      isWidthBetween: false,
+                                      onPressed: () {
+                                        log('Edit called');
+                                        context
+                                            .read<
+                                                CreateSubscriptionPlanProvider>()
+                                            .setUpdateSubscription(
+                                                true); // isUpadte: True
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 20.h),
+
+                                // * Units & Price Row
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10.h, horizontal: 15.w),
+                                  decoration: BoxDecoration(
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.seaShell,
+                                      personalColor: AppColors.seaMist,
+                                    ),
+                                    borderRadius: BorderRadius.circular(30.r),
+                                  ),
+                                  child: Consumer<SubscriptionSummaryProvider>(
+                                    builder: (context, _, child) => Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '${provider.summaryRes?.data?.units ?? ''} ${provider.summaryRes?.data?.units == '1' ? 'UNIT' : 'UNITS'}',
+                                          style: GoogleFonts.publicSans(
+                                              fontSize: 18.sp,
+                                              color: getColorAccountType(
+                                                accountType: accountType,
+                                                businessColor:
+                                                    AppColors.primaryColor,
+                                                personalColor:
+                                                    AppColors.darkGreenGrey,
+                                              ),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          '₹ ${provider.summaryRes?.data?.price ?? ''}',
+                                          style: GoogleFonts.publicSans(
+                                              fontSize: 18.sp,
+                                              color: getColorAccountType(
+                                                accountType: accountType,
+                                                businessColor:
+                                                    AppColors.primaryColor,
+                                                personalColor:
+                                                    AppColors.darkGreenGrey,
+                                              ),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              TextSpan(
-                                text: 'Until Your Unit Is Fully Utilized.',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w600,
-                                  color: getColorAccountType(
+                                SizedBox(height: 10.h),
+
+                                // * DayWiseDetailsList
+                                SizedBox(
+                                  height: 500.h,
+                                  child: DayWiseDetailsListWidget(
+                                    provider: provider,
                                     accountType: accountType,
-                                    businessColor:
-                                        AppColors.primaryColor.withOpacity(.7),
-                                    personalColor:
-                                        AppColors.darkGreenGrey.withOpacity(.7),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                          textAlign: TextAlign.justify,
-                        )
-                      ],
+                          SizedBox(height: 10.h),
+                          // * Note Text
+                          Text.rich(
+                            TextSpan(
+                              text:
+                                  'Note: Your Selected Time Slot And Meal Will Be Repeated ',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w600,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor:
+                                      AppColors.primaryColor.withOpacity(.7),
+                                  personalColor:
+                                      AppColors.darkGreenGrey.withOpacity(.7),
+                                ),
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: 'Each Week ',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.primaryColor,
+                                      personalColor: AppColors.darkGreenGrey,
+                                    ),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: 'Until Your Unit Is Fully Utilized.',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w600,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.primaryColor
+                                          .withOpacity(.7),
+                                      personalColor: AppColors.darkGreenGrey
+                                          .withOpacity(.7),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            textAlign: TextAlign.justify,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -99,61 +99,124 @@ Future<void> showIngredientsBottomSheeet({
                               fontWeight: FontWeight.bold,
                             ),
                           ),
+                          SizedBox(height: 10.h),
                           //* Ingredients Checkbox
                           Consumer<IngredientsBottomsheetProvider>(
-                            builder: (context, _, child) => ingredientsProvider
-                                    .isLoading
-                                ? Center(
-                                    child: CustomLoader(
-                                      backgroundColor: getColorAccountType(
-                                        accountType: accountType,
-                                        businessColor: AppColors.primaryColor,
-                                        personalColor: AppColors.darkGreenGrey,
-                                      ),
-                                    ),
-                                  )
-                                : ListView(
-                                    shrinkWrap: true,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    padding: EdgeInsets.zero,
-                                    children: ingredientsProvider
-                                        .ingredientSelections.entries
-                                        .map((entry) {
-                                      // Extracting the name and the selection status from the map
-                                      final name = entry.value.keys.first;
-                                      final isSelected =
-                                          entry.value.values.first;
+                              builder: (context, _, child) =>
+                                  ingredientsProvider.isLoading
+                                      ? Center(
+                                          child: CustomLoader(
+                                            backgroundColor:
+                                                getColorAccountType(
+                                              accountType: accountType,
+                                              businessColor:
+                                                  AppColors.primaryColor,
+                                              personalColor:
+                                                  AppColors.darkGreenGrey,
+                                            ),
+                                          ),
+                                        )
+                                      : ListView(
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.zero,
+                                          children: ingredientsProvider
+                                              .ingredientSelections.entries
+                                              .map((entry) {
+                                            // Extracting the name and the selection status from the map
+                                            final name = entry.value.keys.first;
+                                            final isSelected =
+                                                entry.value.values.first;
 
-                                      return CheckboxListTile(
-                                        dense: true,
-                                        activeColor: getColorAccountType(
-                                          accountType: accountType,
-                                          businessColor: AppColors.primaryColor,
-                                          personalColor:
-                                              AppColors.darkGreenGrey,
-                                        ),
-                                        title: Text(
-                                          name,
-                                          style: GoogleFonts.publicSans(
-                                              fontSize: 16.sp),
-                                        ),
-                                        value: isSelected,
-                                        onChanged: (value) {
-                                          ingredientsProvider.onChangedCheckBox(
-                                              value, entry.key);
-                                        },
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                        controlAffinity:
-                                            ListTileControlAffinity.leading,
-                                        visualDensity: VisualDensity.compact,
-                                        contentPadding: EdgeInsets.zero,
-                                      );
-                                    }).toList(),
-                                  ),
-                          ),
+                                            return Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                vertical: 4.h,
+                                                horizontal: 6.w,
+                                              ),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Checkbox(
+                                                    value: isSelected,
+                                                    onChanged: (value) {
+                                                      ingredientsProvider
+                                                          .onChangedCheckBox(
+                                                              value, entry.key);
+                                                    },
+                                                    activeColor:
+                                                        getColorAccountType(
+                                                      accountType: accountType,
+                                                      businessColor: AppColors
+                                                          .primaryColor,
+                                                      personalColor: AppColors
+                                                          .darkGreenGrey,
+                                                    ),
+                                                    materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                    visualDensity:
+                                                        VisualDensity.compact,
+                                                  ),
+                                                  SizedBox(width: 10.w),
+                                                  Expanded(
+                                                    child: Text(
+                                                      name,
+                                                      style: GoogleFonts
+                                                          .publicSans(
+                                                              fontSize: 16.sp),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }).toList(),
+                                        )
 
+                              //* Checkbox listtile
+                              // : ListView(
+                              //     shrinkWrap: true,
+                              //     physics:
+                              //         const NeverScrollableScrollPhysics(),
+                              //     padding: EdgeInsets.zero,
+                              //     children: ingredientsProvider
+                              //         .ingredientSelections.entries
+                              //         .map((entry) {
+                              //       // Extracting the name and the selection status from the map
+                              //       final name = entry.value.keys.first;
+                              //       final isSelected =
+                              //           entry.value.values.first;
+
+                              //       return CheckboxListTile(
+                              //         dense: true,
+                              //         activeColor: getColorAccountType(
+                              //           accountType: accountType,
+                              //           businessColor: AppColors.primaryColor,
+                              //           personalColor:
+                              //               AppColors.darkGreenGrey,
+                              //         ),
+                              //         title: Text(
+                              //           name,
+                              //           style: GoogleFonts.publicSans(
+                              //               fontSize: 16.sp),
+                              //         ),
+                              //         value: isSelected,
+                              //         onChanged: (value) {
+                              //           ingredientsProvider.onChangedCheckBox(
+                              //               value, entry.key);
+                              //         },
+                              //         materialTapTargetSize:
+                              //             MaterialTapTargetSize.shrinkWrap,
+                              //         controlAffinity:
+                              //             ListTileControlAffinity.leading,
+                              //         visualDensity: VisualDensity.compact,
+                              //         contentPadding: EdgeInsets.zero,
+                              //       );
+                              //     }).toList(),
+                              //   ),
+                              ),
+                          SizedBox(height: 10.h),
                           //* Add-Ons Checkbox
                           AddOnsSelectionWidget(
                             accountType: accountType,

@@ -82,6 +82,7 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
             CustomSearchField(
               cursorColor: Colors.white,
               provider: provider,
+              hint: 'Search for a place or address',
               onChanged: (value) {
                 provider.onSearchChanged(
                   value: value,

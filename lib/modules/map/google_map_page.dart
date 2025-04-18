@@ -201,6 +201,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       child: Container(
                         color: Colors.transparent,
                         child: CustomSearchContainer(
+                          hint: 'Search for a place or address',
                           accountType: accountType,
                           controller: searchController,
                         ),

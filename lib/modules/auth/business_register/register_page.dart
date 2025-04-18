@@ -23,16 +23,10 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    final businessSelectionProvider =
-        Provider.of<BusinessSelectionProvider>(context, listen: false);
+    // final businessSelectionProvider =
+    //     Provider.of<BusinessSelectionProvider>(context, listen: false);
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   //* Api call
-    //   businessSelectionProvider.getBusinessList(
-    //       currentPage: businessSelectionProvider.currentPage);
-    // });
-
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: getColorAccountType(
@@ -216,7 +210,7 @@ class RegisterPage extends StatelessWidget {
                                 SizedBox(height: 20.h),
                                 CustomTextField(
                                   controller: provider.businessOwnerController,
-                                  hint: 'Enter Business Owner\'s Name',
+                                  hint: 'Enter Name as per GST',
                                   prefixIcon: IconStrings.owner,
                                   validator: Validator.validateName,
                                 ),
@@ -511,54 +505,55 @@ class RegisterPage extends StatelessWidget {
                                   hint: 'GST Number',
                                   prefixIcon: IconStrings.bill,
                                   controller: provider.gstNumberController,
-                                  suffixWidget: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(right: 18.w),
-                                        child: GestureDetector(
-                                          onTap: provider.isValidGst
-                                              ? null
-                                              : () {
-                                                  if (provider
-                                                      .gstNumberController
-                                                      .text
-                                                      .isNotEmpty) {
-                                                    provider.gstVerify(context);
-                                                  }
-                                                },
-                                          child: Consumer<RegisterProvider>(
-                                            builder: (context, value, child) =>
-                                                provider.isLoadingVerifyGst
-                                                    ? const CircularProgressIndicator
-                                                        .adaptive(
-                                                        backgroundColor:
-                                                            AppColors.white,
-                                                      )
-                                                    : provider.isValidGst
-                                                        ? const SvgIcon(
-                                                            icon: IconStrings
-                                                                .selected,
-                                                            color: AppColors
-                                                                .lightGreen,
-                                                          )
-                                                        : Text(
-                                                            'VERIFY',
-                                                            style: GoogleFonts
-                                                                .publicSans(
-                                                              color: AppColors
-                                                                  .seaShell,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontSize: 14.sp,
-                                                            ),
-                                                          ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                  //* Verify text
+                                  // suffixWidget: Row(
+                                  //   mainAxisSize: MainAxisSize.min,
+                                  //   children: [
+                                  //     Padding(
+                                  //       padding: EdgeInsets.only(right: 18.w),
+                                  //       child: GestureDetector(
+                                  //         onTap: provider.isValidGst
+                                  //             ? null
+                                  //             : () {
+                                  //                 if (provider
+                                  //                     .gstNumberController
+                                  //                     .text
+                                  //                     .isNotEmpty) {
+                                  //                   provider.gstVerify(context);
+                                  //                 }
+                                  //               },
+                                  //         child: Consumer<RegisterProvider>(
+                                  //           builder: (context, value, child) =>
+                                  //               provider.isLoadingVerifyGst
+                                  //                   ? const CircularProgressIndicator
+                                  //                       .adaptive(
+                                  //                       backgroundColor:
+                                  //                           AppColors.white,
+                                  //                     )
+                                  //                   : provider.isValidGst
+                                  //                       ? const SvgIcon(
+                                  //                           icon: IconStrings
+                                  //                               .selected,
+                                  //                           color: AppColors
+                                  //                               .lightGreen,
+                                  //                         )
+                                  //                       : Text(
+                                  //                           'VERIFY',
+                                  //                           style: GoogleFonts
+                                  //                               .publicSans(
+                                  //                             color: AppColors
+                                  //                                 .seaShell,
+                                  //                             fontWeight:
+                                  //                                 FontWeight
+                                  //                                     .bold,
+                                  //                             fontSize: 14.sp,
+                                  //                           ),
+                                  //                         ),
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                 ),
 
                                 //! Adhar upload

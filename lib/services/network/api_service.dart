@@ -28,10 +28,12 @@ import '../../models/initiate_payment_model.dart';
 import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
+import '../../models/notification_history_model.dart';
 import '../../models/subs_list_model.dart';
 import '../../models/subscription_create_model.dart';
 import '../../models/subscription_create_request_model.dart';
 import '../../models/subscription_summary_model.dart';
+import '../../models/unread_notification_model.dart';
 import 'api_client.dart';
 import 'interceptor/dio_interceptor.dart';
 
@@ -382,15 +384,18 @@ class ApiService {
     return await apiClient.orderPayment(orderId, orderIdByJustpay);
   }
 
-  Future<SubsListModel> getSubsList({
-    required int page,
-    required int limit,
-    required String userId,
-  }) async {
-    return await apiClient.getSubsList(
-      page,
-      limit,
-      userId,
-    );
+  Future<SubsListModel> getSubsList(
+      {required int page, required int limit, required String userId}) async {
+    return await apiClient.getSubsList(page, limit, userId);
+  }
+
+  Future<NotificationHistoryModel> notificationHistory(
+      {required String userId, required String userType}) async {
+    return await apiClient.notificationHistory(userId, userType);
+  }
+
+  Future<UnreadNotificationModel> unreadNotificationCount(
+      {required String userId, required String userType}) async {
+    return await apiClient.unreadNotificationCount(userId, userType);
   }
 }

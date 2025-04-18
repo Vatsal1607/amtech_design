@@ -130,7 +130,7 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius ?? 100.r),
           borderSide: BorderSide(
             color: borderColor,
-            width: 2,
+            width: 2.w,
           ),
         ),
         errorBorder: (kTextfieldBorderStyle as OutlineInputBorder).copyWith(
@@ -141,7 +141,9 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         errorStyle: GoogleFonts.publicSans(
-          color: AppColors.red,
+          color: Colors.red,
+          fontSize: 14.sp,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

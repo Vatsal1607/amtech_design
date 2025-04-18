@@ -3,14 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
+import '../../../models/notification_history_model.dart';
 
 class NotificationTile extends StatelessWidget {
-  final bool isOpened;
+  final int readStatus;
   final String accountType;
+  final Notifications notification;
   const NotificationTile({
     super.key,
-    this.isOpened = false,
+    this.readStatus = 0,
     required this.accountType,
+    required this.notification,
   });
 
   @override
@@ -19,10 +22,22 @@ class NotificationTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isOpened ? 'Opened Notification Title' : 'Unread Notification Title',
+          '${notification.title}',
           style: GoogleFonts.publicSans(
             fontSize: 16.sp,
-            fontWeight: isOpened ? null : FontWeight.bold,
+            fontWeight: readStatus == 0 ? null : FontWeight.bold,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            ),
+          ),
+        ),
+        Text(
+          '${notification.body}',
+          style: GoogleFonts.publicSans(
+            fontSize: 16.sp,
+            fontWeight: readStatus == 0 ? null : FontWeight.bold,
             color: getColorAccountType(
               accountType: accountType,
               businessColor: AppColors.primaryColor,

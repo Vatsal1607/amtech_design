@@ -137,7 +137,7 @@ class _ReorderPageState extends State<ReorderPage> {
                           }
                           if (provider.reorderList.isEmpty) {
                             return Text(
-                              'No items available.',
+                              'No Orders available.',
                               style: GoogleFonts.publicSans(
                                 color: getColorAccountType(
                                   accountType: accountType,

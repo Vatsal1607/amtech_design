@@ -85,7 +85,8 @@ class IconStrings {
   static const edit = '${BaseIconPath.basePath}edit.svg';
   static const iosArrowNext = '${BaseIconPath.basePath}ios_arrow_next.svg';
   static const classic = '${BaseIconPath.basePath}classic.svg';
-  static const subscriptions = '${BaseIconPath.basePath}subscriptions.svg';
+  // static const subscriptions = '${BaseIconPath.basePath}subscriptions.svg';
+  static const subscriptions = '${BaseIconPath.basePath}subscriptions_2.svg';
   static const checkboxChecked = '${BaseIconPath.basePath}checkbox_checked.svg';
   static const checkboxUnchecked =
       '${BaseIconPath.basePath}checkbox_unchecked.svg';
@@ -150,8 +151,7 @@ class ImageStrings {
       '${BaseImagePath.basePath}subscription_banner_2.png';
   static const subscriptionBannerDoodle =
       '${BaseImagePath.basePath}subscription_banner_doodle.png';
-  static const hdfc =
-      '${BaseImagePath.basePath}hdfc.png';
+  static const hdfc = '${BaseImagePath.basePath}hdfc.png';
 }
 
 class LottieStrings {

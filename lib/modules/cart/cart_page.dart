@@ -272,7 +272,8 @@ class _CartPageState extends State<CartPage> {
                                 ),
                               ),
                               Text(
-                                '₹${provider.totalAmount} ',
+                                // '₹${provider.totalAmount} ',
+                                '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.parse(provider.totalAmount!)) : '0.00'} ',
                                 style: GoogleFonts.publicSans(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.bold,
@@ -314,20 +315,13 @@ class _CartPageState extends State<CartPage> {
                                           fontSize: 12.sp,
                                         ),
                                       ),
-                                      Builder(builder: (context) {
-                                        double totalAmount = double.tryParse(
-                                                provider.totalAmount ?? '0') ??
-                                            0.0;
-                                        double gstAmount =
-                                            provider.calculateGST(totalAmount);
-                                        return Text(
-                                          '₹ ${totalAmount - gstAmount}',
-                                          style: GoogleFonts.publicSans(
-                                            fontSize: 12.sp,
-                                            color: AppColors.seaShell,
-                                          ),
-                                        );
-                                      }),
+                                      Text(
+                                        '₹ ${provider.totalAmount}',
+                                        style: GoogleFonts.publicSans(
+                                          fontSize: 12.sp,
+                                          color: AppColors.seaShell,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   SizedBox(height: 5.h),
@@ -344,7 +338,7 @@ class _CartPageState extends State<CartPage> {
                                         ),
                                       ),
                                       Text(
-                                        '₹ ${provider.calculateGST(double.tryParse(provider.totalAmount ?? '0') ?? 0)} (5%)',
+                                        '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.parse(provider.totalAmount!))} (12%)' : '0.00'}',
                                         style: GoogleFonts.publicSans(
                                           fontSize: 12.sp,
                                           color: AppColors.seaShell,

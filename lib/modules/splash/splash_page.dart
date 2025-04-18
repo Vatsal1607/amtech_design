@@ -3,13 +3,10 @@ import 'package:amtech_design/services/local/device_info_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
-import 'package:provider/provider.dart';
-
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../services/local/shared_preferences_service.dart';
-import '../firebase/firebase_provider.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -31,7 +28,6 @@ class _SplashPageState extends State<SplashPage> {
         } else {
           Navigator.pushReplacementNamed(context, Routes.accountSelection);
         }
-        // Navigator.pushReplacementNamed(context, Routes.accountSelection);
       }
     });
   }
@@ -47,9 +43,9 @@ class _SplashPageState extends State<SplashPage> {
         children: [
           Image.asset(
             ImageStrings.splashDoodle,
-            // ImageStrings.splashScreenImg,
             height: 1.sh,
             width: 1.sw,
+            fit: BoxFit.cover,
           ),
           Positioned.fill(
             child: Lottie.asset(
@@ -62,10 +58,3 @@ class _SplashPageState extends State<SplashPage> {
     );
   }
 }
-// Center(
-          //   child: Image.asset(
-          //     width: 250.w,
-          //     height: 73.h,
-          //     ImageStrings.appLogo,
-          //   ),
-          // ),

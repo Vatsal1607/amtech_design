@@ -1,101 +1,123 @@
 class BillingModel {
-  bool? success;
-  int? statusCode;
-  String? message;
-  Data? data;
+  final bool success;
+  final int statusCode;
+  final String message;
+  final InvoiceData data;
 
-  BillingModel({this.success, this.statusCode, this.message, this.data});
+  BillingModel({
+    required this.success,
+    required this.statusCode,
+    required this.message,
+    required this.data,
+  });
 
-  BillingModel.fromJson(Map<String, dynamic> json) {
-    success = json['success'];
-    statusCode = json['statusCode'];
-    message = json['message'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  factory BillingModel.fromJson(Map<String, dynamic> json) {
+    return BillingModel(
+      success: json['success'],
+      statusCode: json['statusCode'],
+      message: json['message'],
+      data: InvoiceData.fromJson(json['data']),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['success'] = success;
-    data['statusCode'] = statusCode;
-    data['message'] = message;
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
+    return {
+      'success': success,
+      'statusCode': statusCode,
+      'message': message,
+      'data': data.toJson(),
+    };
   }
 }
 
-class Data {
-  List<Invoices>? invoices;
-  int? totalInvoices;
+class InvoiceData {
+  final List<Invoice> todayInvoices;
+  final List<Invoice> yesterdayInvoices;
+  final List<Invoice> last7DaysInvoices;
+  final List<Invoice> customInvoices;
 
-  Data({this.invoices, this.totalInvoices});
+  InvoiceData({
+    required this.todayInvoices,
+    required this.yesterdayInvoices,
+    required this.last7DaysInvoices,
+    required this.customInvoices,
+  });
 
-  Data.fromJson(Map<String, dynamic> json) {
-    if (json['invoices'] != null) {
-      invoices = <Invoices>[];
-      json['invoices'].forEach((v) {
-        invoices!.add(Invoices.fromJson(v));
-      });
-    }
-    totalInvoices = json['totalInvoices'];
+  factory InvoiceData.fromJson(Map<String, dynamic> json) {
+    return InvoiceData(
+      todayInvoices: List<Invoice>.from(
+          json['todayInvoices'].map((x) => Invoice.fromJson(x))),
+      yesterdayInvoices: List<Invoice>.from(
+          json['yesterdayInvoices'].map((x) => Invoice.fromJson(x))),
+      last7DaysInvoices: List<Invoice>.from(
+          json['last7DaysInvoices'].map((x) => Invoice.fromJson(x))),
+      customInvoices: List<Invoice>.from(
+          json['customInvoices'].map((x) => Invoice.fromJson(x))),
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (invoices != null) {
-      data['invoices'] = invoices!.map((v) => v.toJson()).toList();
-    }
-    data['totalInvoices'] = totalInvoices;
-    return data;
+    return {
+      'todayInvoices': todayInvoices.map((x) => x.toJson()).toList(),
+      'yesterdayInvoices': yesterdayInvoices.map((x) => x.toJson()).toList(),
+      'last7DaysInvoices': last7DaysInvoices.map((x) => x.toJson()).toList(),
+      'customInvoices': customInvoices.map((x) => x.toJson()).toList(),
+    };
   }
 }
 
-class Invoices {
-  String? sId;
-  String? orderId;
-  String? invoiceNumber;
-  String? userId;
-  int? totalAmount;
-  bool? isPaid;
-  int? currentValue;
-  String? generatedAt;
-  int? iV;
+class Invoice {
+  final String id;
+  final String orderId;
+  final String invoiceNumber;
+  final String userId;
+  final int totalAmount;
+  final String invoiceUrl;
+  final bool isPaid;
+  final int currentValue;
+  final DateTime generatedAt;
+  final int v;
 
-  Invoices(
-      {this.sId,
-      this.orderId,
-      this.invoiceNumber,
-      this.userId,
-      this.totalAmount,
-      this.isPaid,
-      this.currentValue,
-      this.generatedAt,
-      this.iV});
+  Invoice({
+    required this.id,
+    required this.orderId,
+    required this.invoiceNumber,
+    required this.userId,
+    required this.totalAmount,
+    required this.invoiceUrl,
+    required this.isPaid,
+    required this.currentValue,
+    required this.generatedAt,
+    required this.v,
+  });
 
-  Invoices.fromJson(Map<String, dynamic> json) {
-    sId = json['_id'];
-    orderId = json['orderId'];
-    invoiceNumber = json['invoiceNumber'];
-    userId = json['userId'];
-    totalAmount = json['totalAmount'];
-    isPaid = json['isPaid'];
-    currentValue = json['currentValue'];
-    generatedAt = json['generatedAt'];
-    iV = json['__v'];
+  factory Invoice.fromJson(Map<String, dynamic> json) {
+    return Invoice(
+      id: json['_id'],
+      orderId: json['orderId'],
+      invoiceNumber: json['invoiceNumber'],
+      userId: json['userId'],
+      totalAmount: json['totalAmount'],
+      invoiceUrl: json['invoiceUrl'],
+      isPaid: json['isPaid'],
+      currentValue: json['currentValue'],
+      generatedAt: DateTime.parse(json['generatedAt']),
+      v: json['__v'],
+    );
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['_id'] = sId;
-    data['orderId'] = orderId;
-    data['invoiceNumber'] = invoiceNumber;
-    data['userId'] = userId;
-    data['totalAmount'] = totalAmount;
-    data['isPaid'] = isPaid;
-    data['currentValue'] = currentValue;
-    data['generatedAt'] = generatedAt;
-    data['__v'] = iV;
-    return data;
+    return {
+      '_id': id,
+      'orderId': orderId,
+      'invoiceNumber': invoiceNumber,
+      'userId': userId,
+      'totalAmount': totalAmount,
+      'invoiceUrl': invoiceUrl,
+      'isPaid': isPaid,
+      'currentValue': currentValue,
+      'generatedAt': generatedAt.toIso8601String(),
+      '__v': v,
+    };
   }
 }

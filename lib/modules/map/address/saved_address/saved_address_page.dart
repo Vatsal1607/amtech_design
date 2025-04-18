@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/address/saved_address/widgets/add_location_card_widget.dart';
-import 'package:amtech_design/modules/map/address/saved_address/widgets/not_serviceable_dialog.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/recharge/widgets/center_title_with_divider.dart';
@@ -147,7 +145,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                     borderWidth: 2.w,
                     accountType: accountType,
                     controller: searchController,
-                    hint: 'Search for area, street, etc.',
+                    hint: 'Search for aera, street, etc.',
                     iconColor: getColorAccountType(
                       accountType: accountType,
                       businessColor: AppColors.primaryColor,
@@ -206,18 +204,22 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                               final savedAddress =
                                   provider.savedAddressList?[index];
                               return GestureDetector(
-                                onTap: () {
-                                  provider
+                                onTap: () async {
+                                  await provider
                                       .chooseLocation(
                                     context: context,
                                     address:
                                         '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
                                   )
-                                      .then((isSuccess) {
+                                      .then((isSuccess) async {
                                     if (isSuccess == true) {
                                       //* Update home address type
                                       menuProvider.updateHomeAddress(
-                                          HomeAddressType.remote);
+                                        HomeAddressType.remote,
+                                      );
+                                      await context
+                                          .read<MenuProvider>()
+                                          .homeMenuApi(); //* API call
                                     }
                                   });
                                 },

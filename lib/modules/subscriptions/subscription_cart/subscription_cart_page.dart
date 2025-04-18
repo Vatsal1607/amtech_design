@@ -3,21 +3,17 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_cart/widgets/subscription_cart_details_widget.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_summary/subscription_summary_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
-import '../../../core/utils/enums/enums.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import '../../../services/local/shared_preferences_service.dart';
-import '../../hdfc_payment/payment_page.dart';
 import '../create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
 import 'subscription_cart_provider.dart';
 
@@ -35,11 +31,6 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
       context
           .read<SubscriptionCartProvider>()
           .getSubscriptionDetails(context: context);
-      // final total =
-      //     context.read<SubscriptionCartProvider>().summaryRes?.data?.price ?? 0;
-      // Future.delayed(const Duration(milliseconds: 500), () {
-      //   context.read<SubscriptionCartProvider>().getGST(total);
-      // });
     });
     super.initState();
   }
@@ -231,7 +222,7 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Total",
+                                              "Payable Amount",
                                               style: GoogleFonts.publicSans(
                                                   fontSize: 18.sp,
                                                   fontWeight: FontWeight.bold,
@@ -247,10 +238,10 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                             ),
                                           ],
                                         ),
-                                        //* Grand total
+                                        //* Grand total (payable amount)
                                         Consumer<SubscriptionCartProvider>(
                                           builder: (context, _, child) => Text(
-                                            '₹ ${provider.getGrandTotal(context).toStringAsFixed(2)}',
+                                            '₹ ${provider.getTotalWithGST(provider.getGrandTotal()).toStringAsFixed(2)}',
                                             style: GoogleFonts.publicSans(
                                               fontSize: 18.sp,
                                               color: AppColors.primaryColor,
@@ -268,13 +259,22 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                           children: [
                                             Consumer<SubscriptionCartProvider>(
                                               builder: (context, _, child) =>
-                                                  _buildItemRow("Item Total",
-                                                      '${provider.summaryRes?.data?.price}'),
+                                                  _buildItemRow(
+                                                "Item Total",
+                                                '${provider.getGrandTotal()}',
+                                                // '${provider.summaryRes?.data?.price}',
+                                              ),
                                             ),
                                             Consumer<SubscriptionCartProvider>(
                                               builder: (context, _, child) =>
-                                                  _buildItemRow("GST (12%)",
-                                                      '${provider.getGST(provider.getGrandTotal(context)).toStringAsFixed(2)}'),
+                                                  _buildItemRow(
+                                                "GST (12%)",
+                                                provider
+                                                    .getGST(provider
+                                                        .getGrandTotal())
+                                                    .toStringAsFixed(2),
+                                                // '${provider.getGST(provider.getGrandTotal()).toStringAsFixed(2)}',
+                                              ),
                                             ),
                                             _buildItemRow("Delivery Fee", "0"),
                                           ],
@@ -318,10 +318,9 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                 ),
                 child: CustomSubsButtonWithArrow(
                   onTap: () {
-                    log('Payable Amount subsCartPage: ${provider.getGrandTotal(context).toString()}');
                     showProcessToPayBottomSheeet(
                       context: context,
-                      payableAmount: provider.getGrandTotal(context).toString(),
+                      payableAmount: provider.getGrandTotal().toString(),
                       accountType: accountType,
                       isSubscriptionPay: true,
                     );

@@ -34,16 +34,11 @@ class DayDropdownTile extends StatelessWidget {
           onToggle: onToggleSwitch,
           width: 70.w,
           height: 35.h,
-          activeColor: getColorAccountType(
-            accountType: accountType,
-            businessColor: AppColors.primaryColor,
-            personalColor: AppColors.darkGreenGrey,
-          ),
-          inactiveColor: getColorAccountType(
-            accountType: accountType,
-            businessColor: AppColors.disabledColor,
-            personalColor: AppColors.bayLeaf,
-          ),
+          activeColor: AppColors.lightGreen,
+          inactiveColor: AppColors.red,
+          activeText: "ON",
+          inactiveText: "OFF",
+          showOnOff: true,
         ),
         SizedBox(width: 10.w),
         Flexible(

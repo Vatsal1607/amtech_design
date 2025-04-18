@@ -71,7 +71,6 @@ class CalendarWidget extends StatelessWidget {
                       personalColor: AppColors.seaMist,
                     ),
                   ),
-                  // weekendTextStyle: GoogleFonts.publicSans(color: Colors.white),
                 ),
                 selectedDayPredicate: (day) =>
                     isSameDay(provider.selectedDay, day),
@@ -89,27 +88,21 @@ class CalendarWidget extends StatelessWidget {
                         alignment: Alignment.center,
                         child: Text(
                           '${day.day}',
-                          style: TextStyle(color: Colors.white),
+                          style: const TextStyle(color: Colors.white),
                         ),
                       );
                     }
-                    return null; // Default look
+                    return Container(
+                      decoration: const BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        '${day.day}',
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    );
                   },
-                  // defaultBuilder: (context, day, _) {
-                  // final normalizedDay = DateTime.utc(day.year, day.month, day.day);
-                  //   return Column(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Text(
-                  //         '${day.day}',
-                  //         style: GoogleFonts.publicSans(
-                  //           color: provider.customDateColors(normalizedDay),
-                  //         ),
-                  //       ),
-
-                  //     ],
-                  //   );
-                  // },
                 ),
               ),
             ),

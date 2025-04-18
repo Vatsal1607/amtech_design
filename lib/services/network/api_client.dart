@@ -2,6 +2,7 @@ import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
+import 'package:amtech_design/models/notification_history_model.dart';
 import 'package:amtech_design/models/subscription_create_request_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
@@ -32,6 +33,7 @@ import '../../models/reorder_model.dart';
 import '../../models/subs_list_model.dart';
 import '../../models/subscription_create_model.dart';
 import '../../models/subscription_summary_model.dart';
+import '../../models/unread_notification_model.dart';
 import '../../models/user_login_model.dart';
 import '../../models/user_recharge_model.dart';
 import 'api/api_constants.dart';
@@ -313,5 +315,17 @@ abstract class ApiClient {
     @Query('page') int page,
     @Query('limit') int limit,
     @Query('userId') String userId,
+  );
+
+  @GET(ApiEndpoints.notificationHistory)
+  Future<NotificationHistoryModel> notificationHistory(
+    @Field("userId") String userId,
+    @Field("userType") String userType,
+  );
+
+  @GET(ApiEndpoints.unreadNotificationCount)
+  Future<UnreadNotificationModel> unreadNotificationCount(
+    @Field("userId") String userId,
+    @Field("userType") String userType,
   );
 }

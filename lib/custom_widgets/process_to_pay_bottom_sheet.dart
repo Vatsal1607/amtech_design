@@ -64,7 +64,7 @@ void showProcessToPayBottomSheeet({
                   Consumer<CartProvider>(
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
-                      perksBalance: '',
+                      // perksBalance: '',
                       payableAmount: payableAmount,
                       onTap: () {
                         provider.updateSelectedPaymentMethod(
@@ -106,7 +106,6 @@ void showProcessToPayBottomSheeet({
                         isSubscriptionPay: isSubscriptionPay,
                         payableAmount: payableAmount,
                       );
-                      log('Horizontal Drag End');
                     },
                   ),
                 ],

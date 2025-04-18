@@ -15,7 +15,7 @@ class SelectPaymentMethodWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isSelectedMethod;
   final String payableAmount;
-  final String? perksBalance;
+  // final String? perksBalance;
   const SelectPaymentMethodWidget({
     super.key,
     required this.logoImage,
@@ -23,7 +23,7 @@ class SelectPaymentMethodWidget extends StatelessWidget {
     this.onTap,
     this.isSelectedMethod = false,
     required this.payableAmount,
-    this.perksBalance,
+    // this.perksBalance,
   });
 
   @override

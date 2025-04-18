@@ -51,7 +51,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
         personalColor: AppColors.seaMist,
       ),
       appBar: CustomAppbarWithCenterTitle(
-        title: '',
+        title: 'About Us',
         accountType: accountType,
       ),
       body: isLoading

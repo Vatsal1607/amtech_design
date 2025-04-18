@@ -141,13 +141,14 @@ class _BillingPageState extends State<BillingPage> {
                                   padding: EdgeInsets.zero,
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: provider.billingList.length,
+                                  // itemCount: provider.billingList.length,
+                                  itemCount: 5,
                                   separatorBuilder: (context, index) =>
                                       SizedBox(height: 20.h),
                                   itemBuilder: (context, index) {
                                     return BillingCardWidget(
                                       accountType: accountType,
-                                      billingList: provider.billingList,
+                                      // billingList: provider.billingList,
                                     );
                                   },
                                 ),

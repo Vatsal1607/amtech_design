@@ -1,12 +1,16 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../subscription_cart/subscription_cart_provider.dart';
 
 class DeliveryStatusCard extends StatelessWidget {
   final String accountType;
-  const DeliveryStatusCard({super.key, required this.accountType});
+  const DeliveryStatusCard({
+    super.key,
+    required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +27,27 @@ class DeliveryStatusCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildStatColumn("50", "TOTAL", Colors.grey.shade400),
-          _buildStatColumn("66", "REMAINING", Colors.white),
-          _buildStatColumn("12", "DELIVERED", Colors.green),
+          Consumer<SubscriptionCartProvider>(
+            builder: (context, provider, child) => _buildStatColumn(
+              "${provider.summaryRes?.data?.history?.totalUnits}",
+              "TOTAL",
+              Colors.grey.shade400,
+            ),
+          ),
+          Consumer<SubscriptionCartProvider>(
+            builder: (context, provider, child) => _buildStatColumn(
+              "${provider.summaryRes?.data?.history?.remainingUnits}",
+              "REMAINING",
+              Colors.white,
+            ),
+          ),
+          Consumer<SubscriptionCartProvider>(
+            builder: (context, provider, child) => _buildStatColumn(
+              "${provider.summaryRes?.data?.history?.deliveredUnits}",
+              "DELIVERED",
+              Colors.green,
+            ),
+          ),
         ],
       ),
     );

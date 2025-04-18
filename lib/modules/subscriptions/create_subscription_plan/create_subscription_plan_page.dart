@@ -135,6 +135,7 @@ class CreateSubscriptionPlanPage extends StatelessWidget {
                             itemBuilder: (context, index) {
                               return Padding(
                                 padding: EdgeInsets.only(bottom: 20.h),
+                                //* Dropdown tile
                                 child: DayDropdownTile(
                                   accountType: accountType,
                                   day: provider.days[index],

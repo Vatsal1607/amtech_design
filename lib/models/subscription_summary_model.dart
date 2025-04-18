@@ -41,7 +41,8 @@ class Data {
   String? createdAt;
   String? updatedAt;
   int? iV;
-  UserDetails? userDetails; // <-- New field
+  UserDetails? userDetails;
+  SubscriptionHistory? history;
 
   Data({
     this.sId,
@@ -58,7 +59,8 @@ class Data {
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.userDetails, // <-- New field
+    this.userDetails,
+    this.history,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -84,6 +86,9 @@ class Data {
     userDetails = json['userDetails'] != null
         ? UserDetails.fromJson(json['userDetails'])
         : null;
+    history = json['history'] != null
+        ? SubscriptionHistory.fromJson(json['history'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -107,6 +112,32 @@ class Data {
     if (userDetails != null) {
       data['userDetails'] = userDetails!.toJson();
     }
+    if (history != null) {
+      data['history'] = history!.toJson();
+    }
+    return data;
+  }
+}
+
+class SubscriptionHistory {
+  int? totalUnits;
+  int? remainingUnits;
+  int? deliveredUnits;
+
+  SubscriptionHistory(
+      {this.totalUnits, this.remainingUnits, this.deliveredUnits});
+
+  SubscriptionHistory.fromJson(Map<String, dynamic> json) {
+    totalUnits = json['totalUnits'];
+    remainingUnits = json['remainingUnits'];
+    deliveredUnits = json['deliveredUnits'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['totalUnits'] = totalUnits;
+    data['remainingUnits'] = remainingUnits;
+    data['deliveredUnits'] = deliveredUnits;
     return data;
   }
 }

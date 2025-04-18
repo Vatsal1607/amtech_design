@@ -163,7 +163,7 @@ class CartProvider extends ChangeNotifier {
                 subsId: context.read<CreateSubscriptionPlanProvider>().subsId,
                 amount: context
                     .read<SubscriptionCartProvider>()
-                    .getGrandTotal(context)
+                    .getGrandTotal()
                     .toStringAsFixed(2),
               ),
             ),
@@ -255,6 +255,7 @@ class CartProvider extends ChangeNotifier {
           Navigator.popUntil(
               context, ModalRoute.withName(Routes.bottomBarPage));
           Future.delayed(const Duration(seconds: 1), () {
+            // * Reset position
             dragPosition = 10.w;
           });
         }
@@ -288,8 +289,12 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  double calculateGST(double totalAmount) {
-    return double.parse(((5 / 100) * totalAmount).toStringAsFixed(2));
+  double getGSTCharges(double totalAmount) {
+    return double.parse((totalAmount * 0.12).toStringAsFixed(2));
+  }
+
+  double getTotalAmountWithGST(double totalAmount) {
+    return double.parse((totalAmount * 1.12).toStringAsFixed(2));
   }
 
   //* clearCart

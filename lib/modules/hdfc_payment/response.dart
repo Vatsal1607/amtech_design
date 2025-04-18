@@ -1,10 +1,10 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/appbar/custom_sliver_appbar.dart';
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/get_payment_response_model.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
+import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -252,6 +252,10 @@ class _ResponseScreenState extends State<ResponseScreen> {
       log('response.status: ${response.success}');
       if (response.success == true) {
         log('SUCCESS of handleJuspayResponse');
+        final rechargeProvider =
+            Provider.of<RechargeProvider>(context, listen: false);
+        rechargeProvider.amountController.clear();
+        rechargeProvider.getRechargeHistory(context); //* Api call
       }
       return response;
     } catch (e) {

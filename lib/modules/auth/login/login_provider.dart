@@ -149,13 +149,17 @@ class LoginProvider extends ChangeNotifier {
         log(response.message.toString());
         if (response.data != null) {
           // * Save User Token
-          sharedPrefsService.setString(
+          await sharedPrefsService.setString(
               SharedPrefsKeys.userToken, response.data!.token!);
+          // await Future.delayed(const Duration(milliseconds: 200)); // wait a bit
           // * Save User id
-          sharedPrefsService.setString(
-              SharedPrefsKeys.userId, AuthTokenHelper.getUserId().toString());
+          await sharedPrefsService.setString(
+              SharedPrefsKeys.userId, response.data?.user?.sId ?? '');
+          // await sharedPrefsService.setString(
+          //     SharedPrefsKeys.userId, AuthTokenHelper.getUserId().toString());
+          log('UserID from login: ${AuthTokenHelper.getUserId().toString()}');
           // * Save contact
-          sharedPrefsService.setString(SharedPrefsKeys.userContact,
+          await sharedPrefsService.setString(SharedPrefsKeys.userContact,
               AuthTokenHelper.getUserContact().toString());
         }
         // * send otp API call

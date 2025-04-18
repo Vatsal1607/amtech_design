@@ -1,3 +1,4 @@
+import 'package:amtech_design/modules/notification/notification_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -20,6 +21,8 @@ class CustomSliverAppbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<MenuProvider>(context, listen: false);
+    final notificationProvider =
+        Provider.of<NotificationProvider>(context, listen: false);
     return SliverAppBar(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -131,28 +134,32 @@ class CustomSliverAppbar extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: Container(
-                      height: 20.h,
-                      width: 20.h,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.red,
-                      ),
-                      child: Center(
-                        child: Text(
-                          '99+',
-                          style: GoogleFonts.publicSans(
-                            fontSize: 8.sp,
-                            fontWeight: FontWeight.bold,
-                            color: AppColors.white,
+                  if (notificationProvider.unreadCount != 0)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Container(
+                        height: 20.h,
+                        width: 20.h,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.red,
+                        ),
+                        child: Center(
+                          child: Consumer<NotificationProvider>(
+                            builder: (context, provider, child) => Text(
+                              // '99+',
+                              '${provider.unreadCount}',
+                              style: GoogleFonts.publicSans(
+                                fontSize: 8.sp,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.white,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

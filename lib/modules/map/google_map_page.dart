@@ -52,8 +52,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       log('Map Page Args: $args');
       log('Parsed Values: lat=$editAddressLat, long=$editAddressLong');
 
-      final socketProvider =
-          Provider.of<SocketProvider>(context, listen: false);
+      // final socketProvider =
+      //     Provider.of<SocketProvider>(context, listen: false);
       final googleMapProvider =
           Provider.of<GoogleMapProvider>(context, listen: false);
       Future.delayed(

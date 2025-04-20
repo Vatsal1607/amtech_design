@@ -85,7 +85,6 @@ class SavedLocationCard extends StatelessWidget {
                               'editAddressLong': savedAddress?.long,
                             });
                         log('Edit button: lat is ${savedAddress?.lat} long is ${savedAddress?.long}');
-                        log('Edit button tapped: lat=${savedAddress?.lat}, long=${savedAddress?.long}');
                         if (savedAddress?.lat == null ||
                             savedAddress?.long == null) {
                           log('Warning: Trying to navigate with null values!');

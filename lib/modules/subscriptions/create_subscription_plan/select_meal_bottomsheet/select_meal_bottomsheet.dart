@@ -14,8 +14,8 @@ import 'widgets/bottomsheet_tabbar_view_widget.dart';
 void showSelectMealBottomSheeet({
   required BuildContext context,
   required String accountType,
-  required String day,
-  required int mealIndex,
+  String? day,
+  int? mealIndex,
 }) {
   final menuProvider = Provider.of<MenuProvider>(context, listen: false);
   menuProvider.homeMenuApi(); //* Api call
@@ -69,8 +69,8 @@ void showSelectMealBottomSheeet({
                       builder: (context, _, child) => TabBarView(
                         children: (menuProvider.menuCategories ?? [])
                             .map((category) => BottomsheetTabbarViewWidget(
-                                  day: day,
-                                  mealIndex: mealIndex,
+                                  day: day ?? '',
+                                  mealIndex: mealIndex ?? 0,
                                   itemLength: category.menuItems?.length ?? 0,
                                   menuItems: category.menuItems,
                                   menuProvider: menuProvider,
@@ -79,10 +79,6 @@ void showSelectMealBottomSheeet({
                                       ? category.menuItems!.first.itemName ??
                                           'No Item'
                                       : 'No Items',
-                                  // itemName: category.menuItems
-                                  //         ?.map((item) => item.itemName ?? '')
-                                  //         .join(', ') ??
-                                  //     'No Items',
                                   provider: provider,
                                 ))
                             .toList(),
@@ -93,43 +89,44 @@ void showSelectMealBottomSheeet({
               ),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            left: 0,
-            child: Container(
-              color: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
-              ),
-              padding: EdgeInsets.only(
-                top: 8.h,
-                bottom: 20.h,
-                right: 20.h,
-                left: 20.h,
-              ),
-              child: CustomSubsButtonWithArrow(
-                bgColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.seaShell,
-                  personalColor: AppColors.seaMist,
-                ),
-                singleText: '2 Items Added (static)',
-                iconData: Icons.done,
-                iconColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.seaShell,
-                  personalColor: AppColors.seaMist,
-                ),
-                iconBgColor: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.primaryColor,
-                  personalColor: AppColors.darkGreenGrey,
-                ),
-              ),
-            ),
-          ),
+          //* Item qty details indicator
+          // Positioned(
+          //   bottom: 0,
+          //   right: 0,
+          //   left: 0,
+          //   child: Container(
+          //     color: getColorAccountType(
+          //       accountType: accountType,
+          //       businessColor: AppColors.primaryColor,
+          //       personalColor: AppColors.darkGreenGrey,
+          //     ),
+          //     padding: EdgeInsets.only(
+          //       top: 8.h,
+          //       bottom: 20.h,
+          //       right: 20.h,
+          //       left: 20.h,
+          //     ),
+          //     child: CustomSubsButtonWithArrow(
+          //       bgColor: getColorAccountType(
+          //         accountType: accountType,
+          //         businessColor: AppColors.seaShell,
+          //         personalColor: AppColors.seaMist,
+          //       ),
+          //       singleText: '2 Items Added (static)',
+          //       iconData: Icons.done,
+          //       iconColor: getColorAccountType(
+          //         accountType: accountType,
+          //         businessColor: AppColors.seaShell,
+          //         personalColor: AppColors.seaMist,
+          //       ),
+          //       iconBgColor: getColorAccountType(
+          //         accountType: accountType,
+          //         businessColor: AppColors.primaryColor,
+          //         personalColor: AppColors.darkGreenGrey,
+          //       ),
+          //     ),
+          //   ),
+          // ),
           const Positioned(
             top: -40,
             right: 0,

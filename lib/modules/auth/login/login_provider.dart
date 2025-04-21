@@ -151,13 +151,11 @@ class LoginProvider extends ChangeNotifier {
           // * Save User Token
           await sharedPrefsService.setString(
               SharedPrefsKeys.userToken, response.data!.token!);
-          // await Future.delayed(const Duration(milliseconds: 200)); // wait a bit
           // * Save User id
           await sharedPrefsService.setString(
               SharedPrefsKeys.userId, response.data?.user?.sId ?? '');
           // await sharedPrefsService.setString(
           //     SharedPrefsKeys.userId, AuthTokenHelper.getUserId().toString());
-          log('UserID from login: ${AuthTokenHelper.getUserId().toString()}');
           // * Save contact
           await sharedPrefsService.setString(SharedPrefsKeys.userContact,
               AuthTokenHelper.getUserContact().toString());
@@ -231,10 +229,18 @@ class LoginProvider extends ChangeNotifier {
         log('Success: sendotp: ${response.message.toString()}');
         customSnackBar(
           context: context,
-          message: response.message.toString(),
+          message: 'Your OTP is: ${response.data.toString()}',
+          duration: const Duration(seconds: 10),
           backgroundColor: AppColors.seaShell,
           textColor: AppColors.primaryColor,
         );
+        //Todo uncomment snackbar
+        // customSnackBar(
+        //   context: context,
+        //   message: response.message.toString(),
+        //   backgroundColor: AppColors.seaShell,
+        //   textColor: AppColors.primaryColor,
+        // );
         if (isNavigateToOtpPage) {
           Navigator.pushNamed(context, Routes.otp, arguments: {
             'mobile': phoneController.text,

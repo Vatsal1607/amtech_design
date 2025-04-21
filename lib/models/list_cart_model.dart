@@ -163,13 +163,17 @@ class MenuId {
   String? sId;
   String? itemName;
   bool? isActive;
+  List<String>? images;
 
-  MenuId({this.sId, this.itemName, this.isActive});
+  MenuId({this.sId, this.itemName, this.isActive, this.images});
 
   MenuId.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
     itemName = json['itemName'];
     isActive = json['isActive'];
+    if (json['images'] != null) {
+      images = List<String>.from(json['images']);
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -177,6 +181,7 @@ class MenuId {
     data['_id'] = sId;
     data['itemName'] = itemName;
     data['isActive'] = isActive;
+    data['images'] = images;
     return data;
   }
 }

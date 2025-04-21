@@ -21,9 +21,6 @@ class LoginPage extends StatelessWidget {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<LoginProvider>(context, listen: false);
-    // final firebaseProvider =
-    //     Provider.of<FirebaseProvider>(context, listen: false);
-    // debugPrint('FCM token is: ${firebaseProvider.fcmToken}');
     return Scaffold(
       resizeToAvoidBottomInset: false, //image did't move by the keyboard
       backgroundColor: accountType != '' && accountType == 'business'

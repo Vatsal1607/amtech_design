@@ -95,112 +95,116 @@ class _BottomBarPageState extends State<BottomBarPage> {
                 height: provider.isBottomBarVisible
                     ? kBottomNavigationBarHeight + 20.h
                     : 0,
-                // clipBehavior: Clip.hardEdge, //* Prevents overflow during shrink
+                clipBehavior: Clip.hardEdge, //* Prevents overflow during shrink
                 decoration:
                     const BoxDecoration(), //* RequiredWhile using clipBehavior
                 child: MediaQuery.removePadding(
                   context: context,
                   removeBottom: true,
-                  child: BottomNavigationBar(
-                    //* Upper Wrap widget prev
-                    type: BottomNavigationBarType.fixed,
-                    backgroundColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    currentIndex: provider.selectedIndex,
-                    onTap: (index) => provider.updateIndex(index),
-                    selectedItemColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.white,
-                      personalColor: AppColors.seaMist,
-                    ), // Color for the selected label and icon
-                    unselectedItemColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.disabledColor,
-                      personalColor: AppColors.bayLeaf,
-                    ), // Color for unselected labels and icons
-                    selectedLabelStyle: GoogleFonts.publicSans(
-                      height: 2.h, // Adds vertical padding to the label
-                      fontSize: 14.sp,
-                    ),
-                    unselectedLabelStyle: GoogleFonts.publicSans(
-                      height: 2.h, // Adds vertical padding to the label
-                      fontSize: 14.sp,
-                    ),
-                    items: [
-                      BottomNavigationBarItem(
-                        icon: SvgIcon(
-                          icon: IconStrings.menu,
-                          color: provider.selectedIndex == 0
-                              ? getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.white,
-                                  personalColor: AppColors.seaMist,
-                                )
-                              : getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.disabledColor,
-                                  personalColor: AppColors.bayLeaf,
-                                ),
+                  child: Wrap(
+                    children: [
+                      BottomNavigationBar(
+                        //* Upper Wrap widget prev
+                        type: BottomNavigationBarType.fixed,
+                        backgroundColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
                         ),
-                        label: 'MENU',
-                      ),
-                      // * Subscription Nav Item
-                      BottomNavigationBarItem(
-                        icon: SvgIcon(
-                          icon: IconStrings.subscriptions,
-                          fit: BoxFit.cover,
-                          height: 33.h,
-                          width: 33.h,
-                          color: provider.selectedIndex == 1
-                              ? getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.white,
-                                  personalColor: AppColors.seaMist,
-                                )
-                              : getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.disabledColor,
-                                  personalColor: AppColors.bayLeaf,
-                                ),
+                        currentIndex: provider.selectedIndex,
+                        onTap: (index) => provider.updateIndex(index),
+                        selectedItemColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.white,
+                          personalColor: AppColors.seaMist,
+                        ), // Color for the selected label and icon
+                        unselectedItemColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ), // Color for unselected labels and icons
+                        selectedLabelStyle: GoogleFonts.publicSans(
+                          height: 2.h, // Adds vertical padding to the label
+                          fontSize: 14.sp,
                         ),
-                        label: 'SUBSCRIPTION',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: SvgIcon(
-                          icon: IconStrings.reorder,
-                          color: provider.selectedIndex == 2
-                              ? getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.white,
-                                  personalColor: AppColors.seaMist,
-                                )
-                              : getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.disabledColor,
-                                  personalColor: AppColors.bayLeaf,
-                                ),
+                        unselectedLabelStyle: GoogleFonts.publicSans(
+                          height: 2.h, // Adds vertical padding to the label
+                          fontSize: 14.sp,
                         ),
-                        label: 'REORDER',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: SvgIcon(
-                          icon: IconStrings.billing,
-                          color: provider.selectedIndex == 3
-                              ? getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.white,
-                                  personalColor: AppColors.seaMist,
-                                )
-                              : getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.disabledColor,
-                                  personalColor: AppColors.bayLeaf,
-                                ),
-                        ),
-                        label: 'BILLING',
+                        items: [
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.menu,
+                              color: provider.selectedIndex == 0
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'MENU',
+                          ),
+                          // * Subscription Nav Item
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.subscriptions,
+                              fit: BoxFit.cover,
+                              height: 33.h,
+                              width: 33.h,
+                              color: provider.selectedIndex == 1
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'SUBSCRIPTION',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.reorder,
+                              color: provider.selectedIndex == 2
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'REORDER',
+                          ),
+                          BottomNavigationBarItem(
+                            icon: SvgIcon(
+                              icon: IconStrings.billing,
+                              color: provider.selectedIndex == 3
+                                  ? getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.white,
+                                      personalColor: AppColors.seaMist,
+                                    )
+                                  : getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                            ),
+                            label: 'BILLING',
+                          ),
+                        ],
                       ),
                     ],
                   ),

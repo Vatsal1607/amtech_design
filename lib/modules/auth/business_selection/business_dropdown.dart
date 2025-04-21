@@ -143,7 +143,7 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
                   height: 300.h, // Adjust the height as needed
                   child: ListView.builder(
                     controller: _scrollController, //  Attach ScrollController
-                    padding: EdgeInsets.only(bottom: 35.h),
+                    padding: EdgeInsets.only(bottom: 85.h),
                     shrinkWrap: true,
                     itemCount: filteredBusinesses.length +
                         (widget.provider.isLoadingMore ? 1 : 0),

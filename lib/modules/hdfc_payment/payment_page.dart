@@ -48,9 +48,6 @@ class _PaymentPageState extends State<PaymentPage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (!processCalled) {
-    //   startPayment(double.parse(amount));
-    // }
 //block:start:onBackPress
     return WillPopScope(
       onWillPop: () async {

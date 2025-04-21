@@ -85,7 +85,6 @@ class IconStrings {
   static const edit = '${BaseIconPath.basePath}edit.svg';
   static const iosArrowNext = '${BaseIconPath.basePath}ios_arrow_next.svg';
   static const classic = '${BaseIconPath.basePath}classic.svg';
-  // static const subscriptions = '${BaseIconPath.basePath}subscriptions.svg';
   static const subscriptions = '${BaseIconPath.basePath}subscriptions_2.svg';
   static const checkboxChecked = '${BaseIconPath.basePath}checkbox_checked.svg';
   static const checkboxUnchecked =
@@ -102,6 +101,7 @@ class IconStrings {
   static const subsDetails2 = '${BaseIconPath.basePath}subs_details_2.svg';
   static const editPen = '${BaseIconPath.basePath}edit_pen.svg';
   static const appFill = '${BaseIconPath.basePath}apps_fill.svg';
+  static const modify = '${BaseIconPath.basePath}modify.svg';
 }
 
 class ImageStrings {

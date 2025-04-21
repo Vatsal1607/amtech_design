@@ -6,6 +6,8 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:amtech_design/modules/recharge/widgets/center_title_with_divider.dart';
 import 'package:amtech_design/modules/subscriptions/subscription/subscription_details/widgets/calender_widget.dart';
 import 'package:amtech_design/modules/subscriptions/subscription/subscription_details/widgets/delivery_status_widget.dart';
+import 'package:amtech_design/modules/subscriptions/subscription/subscription_details/widgets/item_details.dart';
+import 'package:amtech_design/modules/subscriptions/subscription/subscription_details/widgets/timslot_dropdown_widget.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +16,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/utils.dart';
 import '../../subscription_cart/subscription_cart_provider.dart';
+import 'subscription_details_provider.dart';
 
 class SubscriptonDetailsPage extends StatefulWidget {
   const SubscriptonDetailsPage({super.key});
@@ -33,6 +36,9 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
           : null;
       context.read<SubscriptionCartProvider>().getSubscriptionDetails(
             context: context,
+            subsId: '$subsId',
+          );
+      context.read<SubscriptionDetailsProvider>().getSubsDayDetails(
             subsId: '$subsId',
           );
     });
@@ -58,7 +64,52 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
               DeliveryStatusCard(
                 accountType: accountType,
               ),
-              SizedBox(height: 20.h),
+
+              SizedBox(height: 10.h),
+
+              CenterTitleWithDivider(
+                accountType: accountType,
+                title: 'ITEMS DETAILS',
+                fontSize: 20.sp,
+              ),
+              SizedBox(height: 10.h),
+
+              ItemDetailsWidget(
+                accountType: accountType,
+              ),
+
+              SizedBox(height: 10.h),
+
+              //* Dropdown
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                    'Time Slot:',
+                    style: GoogleFonts.publicSans(
+                      fontSize: 18.sp,
+                    ),
+                  ),
+                  SelectTimeSlotDropdown(
+                    accountType: accountType,
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 10.h),
+
+              //* Customize Divider
+              CenterTitleWithDivider(
+                accountType: accountType,
+                title: 'CUSTOMIZE',
+                fontSize: 20.sp,
+              ),
+
+              SizedBox(height: 10.h),
+              //* Calendar Widget
+              CalendarWidget(
+                accountType: accountType,
+              ),
               //* Divider
               CenterTitleWithDivider(
                 accountType: accountType,
@@ -70,13 +121,15 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Consumer<SubscriptionCartProvider>(
-                    builder: (context, _, child) => _buildText(
+                      builder: (context, _, child) {
+                    log('date is: ${subsCartProvider.summaryRes?.data?.createdAt}');
+                    return _buildText(
                       label: 'Subscribed Date',
                       value: Utils.formatSubscriptionDate(
                           '${subsCartProvider.summaryRes?.data?.createdAt}'),
                       accountType: accountType,
-                    ),
-                  ),
+                    );
+                  }),
                   Consumer<SubscriptionCartProvider>(
                     builder: (context, _, child) => _buildText(
                       label: 'Unit',
@@ -99,17 +152,57 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                   ),
                 ],
               ),
-              SizedBox(height: 20.h),
-              //* Divider
-              CenterTitleWithDivider(
-                accountType: accountType,
-                title: 'CUSTOMIZE',
-                fontSize: 20.sp,
-              ),
-              SizedBox(height: 20.h),
-              //* Calendar Widget
-              CalendarWidget(
-                accountType: accountType,
+              SizedBox(height: 10.h),
+              //* Note:
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Note:',
+                    style: GoogleFonts.publicSans(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 8.h),
+                  RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.publicSans(
+                          color: Colors.black, fontSize: 16.sp),
+                      children: [
+                        const TextSpan(
+                            text:
+                                'Our delivery service operates exclusively on weekdays '),
+                        TextSpan(
+                          text: '(Monday to Saturday, 9 AM to 5 PM)',
+                          style: GoogleFonts.publicSans(
+                              fontWeight: FontWeight.bold),
+                        ),
+                        const TextSpan(
+                            text:
+                                '. We do not deliver on, Sundays, or public holidays.'),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 10.h),
+                  RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.publicSans(
+                          color: Colors.black, fontSize: 14.sp),
+                      children: const [
+                        TextSpan(
+                            text:
+                                'If you are unavailable at your delivery address on any specific weekday, you can select the date to disable the delivery. '),
+                        TextSpan(
+                          text: 'The skipped delivery will be postponed',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(
+                            text:
+                                ' as an additional day added to your subscription.'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

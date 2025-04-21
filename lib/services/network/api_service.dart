@@ -29,6 +29,7 @@ import '../../models/list_cart_model.dart';
 import '../../models/menu_details_model.dart';
 import '../../models/menu_size_model.dart';
 import '../../models/notification_history_model.dart';
+import '../../models/subs_day_details_model.dart';
 import '../../models/subs_list_model.dart';
 import '../../models/subscription_create_model.dart';
 import '../../models/subscription_create_request_model.dart';
@@ -397,5 +398,12 @@ class ApiService {
   Future<UnreadNotificationModel> unreadNotificationCount(
       {required String userId, required String userType}) async {
     return await apiClient.unreadNotificationCount(userId, userType);
+  }
+
+  Future<SubsDayDetailsModel> subsDayDetails({
+    required String subsId,
+    required String day,
+  }) async {
+    return await apiClient.subsDayDetails(subsId, day);
   }
 }

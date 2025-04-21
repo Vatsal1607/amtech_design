@@ -3,6 +3,7 @@ import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/notification_history_model.dart';
+import 'package:amtech_design/models/subs_day_details_model.dart';
 import 'package:amtech_design/models/subscription_create_request_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
@@ -327,5 +328,11 @@ abstract class ApiClient {
   Future<UnreadNotificationModel> unreadNotificationCount(
     @Field("userId") String userId,
     @Field("userType") String userType,
+  );
+
+  @GET('${ApiEndpoints.subsDayDetails}/{subsId}')
+  Future<SubsDayDetailsModel> subsDayDetails(
+    @Path("subsId") String subsId,
+    @Field("day") String day,
   );
 }

@@ -57,10 +57,9 @@ class CartWidget extends StatelessWidget {
                     ),
                   ),
                   borderRadius: BorderRadius.circular(20.r),
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      ImageStrings.masalaTea2,
-                    ),
+                  image: DecorationImage(
+                    image: NetworkImage(cartItems?.menuId?.images?.first ?? ''),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
@@ -128,6 +127,8 @@ class CartWidget extends StatelessWidget {
                 ],
               ),
               trailing: Container(
+                height: 38.h,
+                width: 100.w,
                 padding: EdgeInsets.all(4.w),
                 decoration: BoxDecoration(
                   color: getColorAccountType(
@@ -154,18 +155,7 @@ class CartWidget extends StatelessWidget {
                         sizeId: cartItems?.size?[0].sizeId ?? '',
                         callback: (isSuccess) {
                           if (isSuccess) {
-                            debugPrint('Item added to cart successfully');
                             cartProvider.getListCart();
-                            debugPrint('QTY: decr: ${cartItems?.quantity}');
-                            //* QTY- locally
-                            // cartItems?.quantity =
-                            //     (cartItems?.quantity ?? 0) - 1;
-                            debugPrint('QTY: decr (2): ${cartItems?.quantity}');
-                            // menuProvider.decrementQuantity(
-                            //   sizeName: cartItems?.size?[0].name ?? '',
-                            //   menuId: cartItems?.menuId?.sId ?? '',
-                            //   sizeId: cartItems?.size?[0].sizeId ?? '',
-                            // );
                           } else {
                             debugPrint('Error: Failed to update item to cart');
                           }
@@ -184,14 +174,6 @@ class CartWidget extends StatelessWidget {
                             debugPrint('Item added to cart successfully');
                             cartProvider.getListCart();
                             debugPrint('QTY: Incr: ${cartItems?.quantity}');
-                            //* QTY+ locally
-                            // cartItems?.quantity =
-                            //     (cartItems?.quantity ?? 0) + 1;
-                            // menuProvider.incrementQuantity(
-                            //   sizeName: cartItems?.size?[0].name ?? '',
-                            //   menuId: cartItems?.menuId?.sId ?? '',
-                            //   sizeId: cartItems?.size?[0].sizeId ?? '',
-                            // );
                           } else {
                             debugPrint('Error: Failed to add item to cart');
                           }

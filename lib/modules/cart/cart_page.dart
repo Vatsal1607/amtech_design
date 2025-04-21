@@ -242,136 +242,142 @@ class _CartPageState extends State<CartPage> {
                         borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Consumer<CartProvider>(
-                        builder: (context, _, child) => ExpansionTile(
-                          onExpansionChanged: provider.onExpansionChanged,
-                          leading: SvgIcon(
-                            icon: IconStrings.totalBill,
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.seaShell,
-                              personalColor: AppColors.seaMist,
+                        builder: (context, _, child) => Theme(
+                          data: Theme.of(context).copyWith(
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                          ),
+                          child: ExpansionTile(
+                            onExpansionChanged: provider.onExpansionChanged,
+                            leading: SvgIcon(
+                              icon: IconStrings.totalBill,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.seaShell,
+                                personalColor: AppColors.seaMist,
+                              ),
                             ),
-                          ),
-                          trailing: Icon(
-                            provider.isExpanded
-                                ? Icons.expand_less
-                                : Icons.expand_more,
-                            color: AppColors.seaShell,
-                          ),
-                          title: Row(
+                            trailing: Icon(
+                              provider.isExpanded
+                                  ? Icons.expand_less
+                                  : Icons.expand_more,
+                              color: AppColors.seaShell,
+                            ),
+                            title: Row(
+                              children: [
+                                Text(
+                                  'Total Bill ',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 12.sp,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.seaShell,
+                                      personalColor: AppColors.seaMist,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  // '₹${provider.totalAmount} ',
+                                  '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.parse(provider.totalAmount!)) : '0.00'} ',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.seaShell,
+                                      personalColor: AppColors.seaMist,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  'Incl. taxes & charges',
+                                  style: GoogleFonts.publicSans(
+                                    fontSize: 10.sp,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.seaShell,
+                                      personalColor: AppColors.seaMist,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                             children: [
-                              Text(
-                                'Total Bill ',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 12.sp,
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.seaShell,
-                                    personalColor: AppColors.seaMist,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                // '₹${provider.totalAmount} ',
-                                '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.parse(provider.totalAmount!)) : '0.00'} ',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.seaShell,
-                                    personalColor: AppColors.seaMist,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                'Incl. taxes & charges',
-                                style: GoogleFonts.publicSans(
-                                  fontSize: 10.sp,
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.seaShell,
-                                    personalColor: AppColors.seaMist,
-                                  ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 20.w, right: 20.w, bottom: 15.h),
+                                child: Column(
+                                  children: [
+                                    //* Base amount
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Base Amount',
+                                          style: GoogleFonts.publicSans(
+                                            color: AppColors.seaShell,
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                        Text(
+                                          '₹ ${provider.totalAmount}',
+                                          style: GoogleFonts.publicSans(
+                                            fontSize: 12.sp,
+                                            color: AppColors.seaShell,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    //* GST
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'GST Charges',
+                                          style: GoogleFonts.publicSans(
+                                            color: AppColors.seaShell,
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                        Text(
+                                          '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.parse(provider.totalAmount!))} (12%)' : '0.00'}',
+                                          style: GoogleFonts.publicSans(
+                                            fontSize: 12.sp,
+                                            color: AppColors.seaShell,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    //* Delivery
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Delivery Charges',
+                                          style: GoogleFonts.publicSans(
+                                            color: AppColors.seaShell,
+                                            fontSize: 12.sp,
+                                          ),
+                                        ),
+                                        Text(
+                                          'FREE',
+                                          style: GoogleFonts.publicSans(
+                                            fontSize: 12.sp,
+                                            color: AppColors.seaShell,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 20.w, right: 20.w, bottom: 15.h),
-                              child: Column(
-                                children: [
-                                  //* Base amount
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Base Amount',
-                                        style: GoogleFonts.publicSans(
-                                          color: AppColors.seaShell,
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                      Text(
-                                        '₹ ${provider.totalAmount}',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 12.sp,
-                                          color: AppColors.seaShell,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  //* GST
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'GST Charges',
-                                        style: GoogleFonts.publicSans(
-                                          color: AppColors.seaShell,
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                      Text(
-                                        '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.parse(provider.totalAmount!))} (12%)' : '0.00'}',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 12.sp,
-                                          color: AppColors.seaShell,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(height: 5.h),
-                                  //* Delivery
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'Delivery Charges',
-                                        style: GoogleFonts.publicSans(
-                                          color: AppColors.seaShell,
-                                          fontSize: 12.sp,
-                                        ),
-                                      ),
-                                      Text(
-                                        'FREE',
-                                        style: GoogleFonts.publicSans(
-                                          fontSize: 12.sp,
-                                          color: AppColors.seaShell,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ),

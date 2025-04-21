@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://node-517461825507.asia-south1.run.app/';
+    baseUrl ??= 'http://192.168.1.9:9000/';
   }
 
   final Dio _dio;
@@ -1819,6 +1819,42 @@ class _ApiClient implements ApiClient {
     late UnreadNotificationModel _value;
     try {
       _value = UnreadNotificationModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
+  @override
+  Future<SubsDayDetailsModel> subsDayDetails(
+    String subsId,
+    String day,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {'day': day};
+    final _options = _setStreamType<SubsDayDetailsModel>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'subscriptions/day/details/${subsId}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late SubsDayDetailsModel _value;
+    try {
+      _value = SubsDayDetailsModel.fromJson(_result.data!);
     } on Object catch (e, s) {
       errorLogger?.logError(e, s, _options);
       rethrow;

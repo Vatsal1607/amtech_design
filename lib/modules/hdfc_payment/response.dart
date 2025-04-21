@@ -26,15 +26,6 @@ class _ResponseScreenState extends State<ResponseScreen> {
   String? orderId;
   String? amount;
 
-  // @override
-  // void initState() {
-  // WidgetsBinding.instance.addPostFrameCallback((_) {
-  //   orderId = ModalRoute.of(context)!.settings.arguments.toString();
-  //   _paymentFuture = getPaymentResponse(orderId.toString());
-  // });
-  //   super.initState();
-  // }
-
   PaymentType? paymentType;
   String? subsId;
   String? apiResponseOrderId;
@@ -62,7 +53,6 @@ class _ResponseScreenState extends State<ResponseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final orderId = ModalRoute.of(context)!.settings.arguments;
     var screenHeight = MediaQuery.of(context).size.height;
 
     return WillPopScope(
@@ -72,9 +62,7 @@ class _ResponseScreenState extends State<ResponseScreen> {
           return true;
         },
         child: Scaffold(
-          // appBar: customAppBar(text: "Payment Status", context: context),
           body: FutureBuilder(
-            // future: getPaymentResponse(orderId.toString()),
             future: _paymentFuture, //* Use the stored future
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {

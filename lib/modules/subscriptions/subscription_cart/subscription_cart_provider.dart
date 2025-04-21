@@ -7,6 +7,7 @@ import '../../../models/subscription_summary_model.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import '../../../services/network/api_service.dart';
 import '../create_subscription_plan/create_subscription_plan_provider.dart';
+import '../subscription/subscription_details/subscription_details_provider.dart';
 
 class SubscriptionCartProvider extends ChangeNotifier {
   //* Calculate grand total with addons
@@ -76,7 +77,14 @@ class SubscriptionCartProvider extends ChangeNotifier {
         );
         if (res.success == true) {
           summaryRes = res;
-          // subsStartDate = summaryRes?.data?.createdAt;
+          final createdAtString = summaryRes?.data?.createdAt;
+          if (createdAtString != null) {
+            final createdAt = DateTime.parse(createdAtString).toLocal();
+            final subsDetailsprovider =
+                Provider.of<SubscriptionDetailsProvider>(context,
+                    listen: false);
+            subsDetailsprovider.setInitialCalendarState(createdAt);
+          }
         } else {
           log('${res.message}');
         }

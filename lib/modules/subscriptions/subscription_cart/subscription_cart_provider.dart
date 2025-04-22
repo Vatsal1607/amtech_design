@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:amtech_design/core/utils/app_globals.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/constants/keys.dart';
@@ -55,11 +54,12 @@ class SubscriptionCartProvider extends ChangeNotifier {
     required BuildContext context,
     String? subsId,
   }) async {
-    log('getSubscriptionDetails called, subsId: $subsId');
     isLoading = true;
+    notifyListeners();
     try {
       final provider =
           Provider.of<CreateSubscriptionPlanProvider>(context, listen: false);
+      //* For Subscription Cart page
       if (provider.subsId != null) {
         final res = await apiService.subscriptionsSummary(
           subsId: subsId ?? provider.subsId!,

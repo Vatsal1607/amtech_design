@@ -9,18 +9,21 @@ import 'package:provider/provider.dart';
 
 class SelectTimeSlotDropdown extends StatelessWidget {
   final String accountType;
-  const SelectTimeSlotDropdown({super.key, required this.accountType});
+  const SelectTimeSlotDropdown({
+    super.key,
+    required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final createSubsPlanProvider =
+    final subscriptionDetailsProvider =
         Provider.of<SubscriptionDetailsProvider>(context, listen: true);
 
     return Consumer<SubscriptionDetailsProvider>(
       builder: (context, _, child) => DropdownButtonHideUnderline(
         child: DropdownButton2<String>(
-          value: createSubsPlanProvider.selectedValue ??
-              createSubsPlanProvider.items.first["value"],
+          value: subscriptionDetailsProvider.selectedTimeSlotValue ??
+              subscriptionDetailsProvider.items.first["value"],
           isExpanded: true,
           menuItemStyleData: MenuItemStyleData(
             height: 40.h,
@@ -34,12 +37,24 @@ class SelectTimeSlotDropdown extends StatelessWidget {
                 businessColor: AppColors.primaryColor,
                 personalColor: AppColors.darkGreenGrey,
               ),
-              borderRadius: createSubsPlanProvider.isDropdownOpen
+              borderRadius: subscriptionDetailsProvider.isDropdownOpen
                   ? BorderRadius.zero
                   : BorderRadius.only(
                       bottomLeft: Radius.circular(30.r),
                       bottomRight: Radius.circular(30.r),
                     ),
+              boxShadow: [
+                BoxShadow(
+                  color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell.withOpacity(0.4),
+                      personalColor:
+                          AppColors.seaMist.withOpacity(0.2)), // soft shadow
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                  offset: const Offset(0, 3), // down and slight to right
+                ),
+              ],
             ),
             elevation: 0,
           ),
@@ -53,7 +68,7 @@ class SelectTimeSlotDropdown extends StatelessWidget {
                 businessColor: AppColors.primaryColor,
                 personalColor: AppColors.darkGreenGrey,
               ),
-              borderRadius: createSubsPlanProvider.isDropdownOpen
+              borderRadius: subscriptionDetailsProvider.isDropdownOpen
                   ? BorderRadius.only(
                       topLeft: Radius.circular(30.r),
                       topRight: Radius.circular(30.r),
@@ -66,12 +81,12 @@ class SelectTimeSlotDropdown extends StatelessWidget {
           ),
           style: GoogleFonts.publicSans(color: Colors.white, fontSize: 16.sp),
           onChanged: (String? newValue) {
-            createSubsPlanProvider.setSelectedValue(newValue);
+            subscriptionDetailsProvider.setSelectedValue(newValue);
           },
           onMenuStateChange: (isOpen) {
-            createSubsPlanProvider.setDropdownState(isOpen);
+            subscriptionDetailsProvider.setDropdownState(isOpen);
           },
-          items: createSubsPlanProvider.items.map((item) {
+          items: subscriptionDetailsProvider.items.map((item) {
             return DropdownMenuItem<String>(
               value: item["value"],
               child: Padding(

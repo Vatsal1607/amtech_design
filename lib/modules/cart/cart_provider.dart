@@ -244,6 +244,7 @@ class CartProvider extends ChangeNotifier {
               Navigator.pushNamed(context, Routes.orderStatus);
               Future.delayed(const Duration(seconds: 1), () {
                 dragPosition = 10.w;
+                isConfirmed = false;
               });
             },
           );

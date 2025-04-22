@@ -1,5 +1,6 @@
 import 'package:amtech_design/custom_widgets/appbar/custom_sliver_appbar.dart';
 import 'package:amtech_design/modules/subscriptions/subscription/widgets/subscription_card.dart';
+import 'package:amtech_design/modules/subscriptions/subscription/widgets/subscription_page_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -38,110 +39,116 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
           accountType: accountType,
           businessColor: AppColors.seaShell,
           personalColor: AppColors.seaMist),
-      body: CustomScrollView(
-        slivers: [
-          CustomSliverAppbar(accountType: accountType),
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.w),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(height: 10.h),
-                    CenterTitleWithDivider(
-                      accountType: accountType,
-                      title: 'Active',
-                    ),
-                    SizedBox(height: 10.h),
-                    Consumer<SubscriptionProvider>(
-                      builder: (context, provider, child) {
-                        if (provider.isLoading) {
-                          return CustomLoader(
-                            color: getColorAccountType(
+      body: Consumer<SubscriptionProvider>(
+        builder: (context, provider, child) => CustomScrollView(
+          slivers: [
+            CustomSliverAppbar(accountType: accountType),
+            SliverToBoxAdapter(
+              child: provider.isLoading
+                  ? const SubscriptionPageShimmer()
+                  : Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32.w),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            SizedBox(height: 10.h),
+                            CenterTitleWithDivider(
                               accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
+                              title: 'Active',
                             ),
-                          );
-                        } else if (provider.activeList.isEmpty) {
-                          return Center(
-                            child: Text(
-                              "No active subscriptions found",
-                              style: GoogleFonts.publicSans(
-                                fontSize: 18.sp,
-                                color: Colors.black,
-                              ),
+                            SizedBox(height: 10.h),
+                            Consumer<SubscriptionProvider>(
+                              builder: (context, provider, child) {
+                                if (provider.isLoading) {
+                                  return CustomLoader(
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.primaryColor,
+                                      personalColor: AppColors.darkGreenGrey,
+                                    ),
+                                  );
+                                } else if (provider.activeList.isEmpty) {
+                                  return Center(
+                                    child: Text(
+                                      "No active subscriptions found",
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 18.sp,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return ListView.separated(
+                                    itemCount: provider.activeList.length,
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 10.h),
+                                    itemBuilder: (context, index) {
+                                      return SubscriptionCardWidget(
+                                        item: provider.activeList[index],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
                             ),
-                          );
-                        } else {
-                          return ListView.separated(
-                            itemCount: provider.activeList.length,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 10.h),
-                            itemBuilder: (context, index) {
-                              return SubscriptionCardWidget(
-                                item: provider.activeList[index],
-                              );
-                            },
-                          );
-                        }
-                      },
-                    ),
-                    SizedBox(height: 10.h),
-                    CenterTitleWithDivider(
-                      accountType: accountType,
-                      title: 'Expired',
-                    ),
-                    SizedBox(height: 10.h),
-                    Consumer<SubscriptionProvider>(
-                      builder: (context, provider, child) {
-                        if (provider.isLoading) {
-                          return CustomLoader(
-                            color: getColorAccountType(
+                            SizedBox(height: 10.h),
+                            CenterTitleWithDivider(
                               accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
+                              title: 'Expired',
                             ),
-                          );
-                        } else if (provider.expiredList.isEmpty) {
-                          return Center(
-                            child: Text(
-                              "No expired subscriptions found",
-                              style: GoogleFonts.publicSans(
-                                fontSize: 18.sp,
-                                color: Colors.black,
-                              ),
+                            SizedBox(height: 10.h),
+                            Consumer<SubscriptionProvider>(
+                              builder: (context, provider, child) {
+                                if (provider.isLoading) {
+                                  return CustomLoader(
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.primaryColor,
+                                      personalColor: AppColors.darkGreenGrey,
+                                    ),
+                                  );
+                                } else if (provider.expiredList.isEmpty) {
+                                  return Center(
+                                    child: Text(
+                                      "No expired subscriptions found",
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 18.sp,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                  return ListView.separated(
+                                    itemCount: provider.expiredList.length,
+                                    shrinkWrap: true,
+                                    padding: EdgeInsets.zero,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    separatorBuilder: (context, index) =>
+                                        SizedBox(height: 10.h),
+                                    itemBuilder: (context, index) {
+                                      return SubscriptionCardWidget(
+                                        isExpired: true,
+                                        item: provider.expiredList[index],
+                                      );
+                                    },
+                                  );
+                                }
+                              },
                             ),
-                          );
-                        } else {
-                          return ListView.separated(
-                            itemCount: provider.expiredList.length,
-                            shrinkWrap: true,
-                            padding: EdgeInsets.zero,
-                            physics: const NeverScrollableScrollPhysics(),
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 10.h),
-                            itemBuilder: (context, index) {
-                              return SubscriptionCardWidget(
-                                isExpired: true,
-                                item: provider.expiredList[index],
-                              );
-                            },
-                          );
-                        }
-                      },
+                            SizedBox(height: 20.h),
+                          ],
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 20.h),
-                  ],
-                ),
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

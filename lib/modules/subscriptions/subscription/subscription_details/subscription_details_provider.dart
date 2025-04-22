@@ -1,9 +1,9 @@
 import 'dart:developer';
-
+import 'package:amtech_design/models/subscription_summary_model.dart';
 import 'package:amtech_design/services/network/api_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../models/subs_day_details_model.dart';
 
 class SubscriptionDetailsProvider extends ChangeNotifier {
@@ -29,25 +29,37 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
         (date.isAtSameMomentAs(lastDay) || date.isBefore(lastDay));
   }
 
-  void onDaySelected(DateTime selected, DateTime focused) {
+  //* onTap Calendar Date
+  void onDaySelected({
+    required DateTime selected,
+    required DateTime focused,
+    required String subsId,
+  }) {
     selectedDay = selected;
     focusedDay = focused;
     debugPrint('selectedDate: $selected');
     debugPrint('focusedDate: $focused');
     //* Get the day name
     String dayName = DateFormat('EEEE').format(selectedDay);
+
+    getSubsDayDetails(subsId: subsId, day: dayName);
     debugPrint('You tapped on $selectedDay, which is a $dayName');
+
     notifyListeners();
+  }
+
+  String getDayName(DateTime date) {
+    return DateFormat('EEEE').format(date);
   }
 
   DateTime normalizeDate(DateTime date) =>
       DateTime(date.year, date.month, date.day);
 
   final Map<DateTime, Color> customDateColors = {
-    DateTime.utc(2025, 4, 20): Color(0xFFB9C9DD), // Total Jars
+    DateTime.utc(2025, 4, 20): const Color(0xFFB9C9DD), // Total Jars
     DateTime.utc(2025, 4, 21): Colors.white, // Remaining
-    DateTime.utc(2025, 4, 22): Color(0xFF3B944D), // Delivered
-    DateTime.utc(2025, 4, 23): Color(0xFFE84D3F), // Postponed
+    DateTime.utc(2025, 4, 22): const Color(0xFF3B944D), // Delivered
+    DateTime.utc(2025, 4, 23): const Color(0xFFE84D3F), // Postponed
   };
 
   //* Initialize created Date for Calendar
@@ -61,7 +73,7 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
   }
 
   //* Dropdown things
-  String? selectedValue;
+  String? selectedTimeSlotValue;
   bool isDropdownOpen = false;
 
   final List<Map<String, String>> items = [
@@ -73,7 +85,8 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
   ];
 
   void setSelectedValue(String? value) {
-    selectedValue = value;
+    selectedTimeSlotValue = value;
+    log('selectedTimeSlotValue: $selectedTimeSlotValue');
     notifyListeners();
   }
 
@@ -84,27 +97,45 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
 
   ApiService apiService = ApiService();
   bool isLoading = false;
+  String? errorMsg;
   SubsDayDetails? dayDetailsRes;
 
-  //* subsDayDetails API
-  Future getSubsDayDetails({required String subsId}) async {
+  //* subs Day Details API
+  Future getSubsDayDetails({
+    required String subsId,
+    required String day,
+  }) async {
     isLoading = true;
+    dayDetailsRes = null; // clear previous data before API call
+    notifyListeners(); // notify UI about immediate clearing
     try {
       final res = await apiService.subsDayDetails(
         subsId: subsId,
-        day: 'Monday',
+        day: day, //'Monday'
       );
-      log('subsDayDetails: $res');
+      log('request body subsDayDetails: $subsId & $day');
       if (res.success == true && res.data != null) {
         dayDetailsRes = res.data!.first;
+        selectedTimeSlotValue = res.data?.first.timeSlot;
+        log('Timeslot: ${res.data?.first.timeSlot}');
       } else {
+        dayDetailsRes = null;
         log('${res.message}');
       }
-    } catch (e) {
+    } on DioException catch (e) {
+      dayDetailsRes = null;
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          errorMsg = data['message'];
+        }
+      }
       log("Error subsDayDetails: ${e.toString()}");
     } finally {
       isLoading = false;
       notifyListeners();
     }
   }
+
+  List<SubscriptionItem>? subsItem;
 }

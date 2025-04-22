@@ -93,7 +93,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 300),
                 height: provider.isBottomBarVisible
-                    ? kBottomNavigationBarHeight + 20.h
+                    ? kBottomNavigationBarHeight + 18.h
                     : 0,
                 clipBehavior: Clip.hardEdge, //* Prevents overflow during shrink
                 decoration:

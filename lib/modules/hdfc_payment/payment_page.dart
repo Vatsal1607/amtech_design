@@ -149,7 +149,7 @@ class _PaymentPageState extends State<PaymentPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ResponseScreen(),
+                builder: (context) => const ResponsePage(),
                 settings: RouteSettings(arguments: {
                   'orderId': orderId,
                   'apiResponseOrderId': widget.apiResponseOrderId,

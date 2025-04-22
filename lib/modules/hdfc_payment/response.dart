@@ -14,14 +14,14 @@ import '../../models/verify_recharge_model.dart';
 import '../../routes.dart';
 import '../../services/network/api_service.dart';
 
-class ResponseScreen extends StatefulWidget {
-  const ResponseScreen({super.key});
+class ResponsePage extends StatefulWidget {
+  const ResponsePage({super.key});
 
   @override
-  State<ResponseScreen> createState() => _ResponseScreenState();
+  State<ResponsePage> createState() => _ResponsePageState();
 }
 
-class _ResponseScreenState extends State<ResponseScreen> {
+class _ResponsePageState extends State<ResponsePage> {
   late Future<GetPaymentResponseModel?> _paymentFuture;
   String? orderId;
   String? amount;

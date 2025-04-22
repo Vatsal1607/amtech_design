@@ -29,8 +29,14 @@ class CalendarWidget extends StatelessWidget {
             padding: EdgeInsets.all(16.w),
             child: SizedBox(
               child: Consumer<SubscriptionDetailsProvider>(
+                  builder: (context, provider, child) {
+                final args = ModalRoute.of(context)?.settings.arguments
+                    as Map<String, dynamic>?;
+                String subsId = (args != null && args.containsKey('subsId'))
+                    ? args['subsId'] as String? ?? ''
+                    : '';
                 //* TableCalendar
-                builder: (context, provider, child) => TableCalendar(
+                return TableCalendar(
                   firstDay: provider.firstDay,
                   lastDay: provider.lastDay,
                   focusedDay: provider.focusedDay,
@@ -74,7 +80,13 @@ class CalendarWidget extends StatelessWidget {
                   ),
                   selectedDayPredicate: (day) =>
                       isSameDay(provider.selectedDay, day),
-                  onDaySelected: provider.onDaySelected,
+                  onDaySelected: (selectedDay, focusedDay) {
+                    provider.onDaySelected(
+                      selected: selectedDay,
+                      focused: focusedDay,
+                      subsId: subsId, //* subsId
+                    );
+                  },
                   enabledDayPredicate: (day) {
                     final normalizedDay =
                         DateTime(day.year, day.month, day.day);
@@ -95,8 +107,8 @@ class CalendarWidget extends StatelessWidget {
                           day: day, provider: provider, color: color);
                     },
                   ),
-                ),
-              ),
+                );
+              }),
             ),
           ),
           SizedBox(height: 20.h),

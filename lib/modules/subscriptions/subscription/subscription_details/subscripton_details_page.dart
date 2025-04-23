@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
@@ -16,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/utils.dart';
+import '../../create_subscription_plan/create_subscription_plan_provider.dart';
 import '../../subscription_cart/subscription_cart_provider.dart';
 import 'subscription_details_provider.dart';
 
@@ -50,8 +52,11 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
 
       final subsDetailsProvider =
           Provider.of<SubscriptionDetailsProvider>(context, listen: false);
-      subsDetailsProvider.subsItem = subsCartProvider.summaryRes?.data?.items;
-      log('subsDetailsProvider.subsItem: ${subsDetailsProvider.subsItem}');
+      //* Assign subsItems fromm subs cart (getSubscriptionDetails api)
+      subsDetailsProvider.subsItem =
+          subsCartProvider.summaryRes?.data?.items ?? [];
+      log('subsDetailsProvider.subsItem: ${jsonEncode(subsDetailsProvider.subsItem.map((e) => e.toJson()).toList())}');
+
       if (createdAtDate != null) {
         //* API call
         await subsDetailsProvider.getSubsDayDetails(
@@ -105,7 +110,6 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                                 : provider.dayDetailsRes == null
                                     ? Text(
                                         '${provider.errorMsg}',
-                                        // 'No Items Found On This Day',
                                         style: GoogleFonts.publicSans(
                                           fontSize: 18.sp,
                                           fontWeight: FontWeight.bold,
@@ -140,6 +144,24 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                                         GestureDetector(
                                           onTap: () {
                                             log('save pressed');
+                                            final subsDetailsProvider = Provider
+                                                .of<SubscriptionDetailsProvider>(
+                                                    context,
+                                                    listen: false);
+                                            context //* Api call
+                                                .read<
+                                                    CreateSubscriptionPlanProvider>()
+                                                .subscriptionUpdate(
+                                                  context: context,
+                                                  isModifySubsItem: true,
+                                                  modifySubsItem:
+                                                      subsDetailsProvider
+                                                              .subsItem
+                                                              .isNotEmpty
+                                                          ? subsDetailsProvider
+                                                              .subsItem
+                                                          : null,
+                                                );
                                           },
                                           child: Container(
                                             padding: EdgeInsets.symmetric(

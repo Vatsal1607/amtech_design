@@ -1,3 +1,6 @@
+// import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -6,6 +9,7 @@ import 'package:amtech_design/modules/subscriptions/subscription/subscription_de
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
 
@@ -36,16 +40,20 @@ class ItemDetailsWidget extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Consumer<SubscriptionDetailsProvider>(
-            builder: (context, provider, child) => _buildRichText(
-              "Add-Ons",
-              "${provider.dayDetailsRes?.quantity}x ${provider.dayDetailsRes?.addOns?.first.name}",
-            ),
+            builder: (context, provider, child) =>
+                provider.dayDetailsRes?.addOns == null
+                    ? const SizedBox()
+                    : _buildRichText(
+                        "Add-Ons",
+                        "${provider.dayDetailsRes?.quantity}x ${provider.dayDetailsRes?.addOns != null && provider.dayDetailsRes!.addOns!.isNotEmpty ? provider.dayDetailsRes!.addOns!.first.name : ''}",
+                      ),
           ),
           SizedBox(height: 8.h),
           Consumer<SubscriptionDetailsProvider>(
             builder: (context, provider, child) => _buildRichText(
               "Ingredients",
-              "${provider.dayDetailsRes?.ingredients?.first.ingreName}",
+              "${provider.dayDetailsRes?.ingredients != null && provider.dayDetailsRes!.ingredients!.isNotEmpty ? provider.dayDetailsRes!.ingredients!.first.ingreName : ''}",
+              // "${provider.dayDetailsRes?.ingredients?.first.ingreName}",
             ),
           ),
           SizedBox(height: 10.h),
@@ -60,10 +68,14 @@ class ItemDetailsWidget extends StatelessWidget {
           SizedBox(height: 5.h),
           GestureDetector(
             onTap: () {
-              // Todo Add isModify flag for future handle
+              //* Select meal bottomsheet
+              log('isModifyDayName: ${DateFormat('EEEE').format(context.read<SubscriptionDetailsProvider>().selectedDay)}');
               showSelectMealBottomSheeet(
                 context: context,
                 accountType: accountType,
+                isModify: true,
+                isModifyDayName: DateFormat('EEEE').format(
+                    context.read<SubscriptionDetailsProvider>().selectedDay),
                 // day: day,
                 // mealIndex: mealIndex,
               );

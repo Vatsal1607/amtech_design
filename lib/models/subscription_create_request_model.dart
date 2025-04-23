@@ -7,8 +7,8 @@ class SubscriptionCreateRequestModel {
   final String notes;
   final String paymentMethod;
   final bool paymentStatus;
-  final DateTime? createdAt; // newly added
-  final String? deliveryAddress; // newly added
+  final DateTime? createdAt;
+  final String? deliveryAddress;
 
   SubscriptionCreateRequestModel({
     required this.userId,
@@ -56,12 +56,8 @@ class SubscriptionItem {
     return {
       "menuIds": menuIds,
       "size": size?.toJson(),
-      "mealSubscription": mealSubscription
-          ?.map((m) => m.toJson())
-          .toList(), // Safely handle nullable list
-      "customize": customize
-          ?.map((c) => c.toJson())
-          .toList(), // Safely handle nullable list
+      "mealSubscription": mealSubscription?.map((m) => m.toJson()).toList(),
+      "customize": customize?.map((c) => c.toJson()).toList(),
     };
   }
 }

@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'dart:developer';
-import 'package:amtech_design/models/subscription_summary_model.dart';
 import 'package:amtech_design/services/network/api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../models/subs_day_details_model.dart';
+import 'package:amtech_design/models/subscription_create_request_model.dart'
+    as create;
+import 'package:amtech_design/models/subscription_summary_model.dart'
+    as summary;
 
 class SubscriptionDetailsProvider extends ChangeNotifier {
   DateTime firstDay = DateTime.utc(2000, 1, 1);
@@ -44,7 +48,6 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
 
     getSubsDayDetails(subsId: subsId, day: dayName);
     debugPrint('You tapped on $selectedDay, which is a $dayName');
-
     notifyListeners();
   }
 
@@ -84,8 +87,15 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     {"label": "04:00PM To 05:00PM", "value": "04:00PM To 05:00PM"},
   ];
 
+  //* onChanged Dropdown
   void setSelectedValue(String? value) {
     selectedTimeSlotValue = value;
+    if (selectedTimeSlotValue != null) {
+      updateOnlyTimeSlotForDay(
+        day: getDayName(selectedDay),
+        newTimeSlot: selectedTimeSlotValue!,
+      );
+    }
     log('selectedTimeSlotValue: $selectedTimeSlotValue');
     notifyListeners();
   }
@@ -137,5 +147,69 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     }
   }
 
-  List<SubscriptionItem>? subsItem;
+  List<summary.SubscriptionItem> subsItem = [];
+
+  //* Update daywise subs Item
+  void updateDayWiseSubsItem({
+    required String menuId,
+    List<summary.Size>? size,
+    List<summary.Customization>? customize,
+    List<summary.MealSubscription>? meals,
+    required String day,
+  }) {
+    log('updateSubsItem called');
+    // Find all items that match the day
+    List<int> updateIndices = [];
+    for (int i = 0; i < subsItem.length; i++) {
+      if (subsItem[i].mealSubscription?.any((meal) => meal.day == day) ??
+          false) {
+        updateIndices.add(i);
+      }
+    }
+    // Create the updated item
+    final updatedItem = summary.SubscriptionItem(
+      menuId: menuId,
+      size: size,
+      customize: customize,
+      mealSubscription: meals,
+    );
+    if (updateIndices.isNotEmpty) {
+      // Update all the items that match the day
+      for (int index in updateIndices) {
+        subsItem[index] = updatedItem;
+      }
+      log('subsItem: ${jsonEncode(subsItem.map((e) => e.toJson()).toList())}');
+    } else {
+      log('No item updated as no match for the day');
+    }
+    notifyListeners();
+  }
+
+  //* updateOnlyTimeSlotForDay
+  void updateOnlyTimeSlotForDay({
+    required String day,
+    required String newTimeSlot,
+  }) {
+    log('updateOnlyTimeSlotForDay called for day: $day with new timeSlot: $newTimeSlot');
+    bool isUpdated = false;
+    for (var item in subsItem) {
+      final mealList = item.mealSubscription;
+
+      if (mealList != null) {
+        for (var meal in mealList) {
+          if (meal.day == day) {
+            meal.timeSlot = newTimeSlot;
+            isUpdated = true;
+            log('Updated timeSlot for $day');
+          }
+        }
+      }
+    }
+    if (isUpdated) {
+      notifyListeners();
+      log('Updated subsItem: ${jsonEncode(subsItem.map((e) => e.toJson()).toList())}');
+    } else {
+      log('No matching day found to update timeSlot.');
+    }
+  }
 }

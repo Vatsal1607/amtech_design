@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/timeslot_day_model.dart';
 import '../../../routes.dart';
+import 'package:amtech_design/models/subscription_summary_model.dart'
+    as summary;
 
 class CreateSubscriptionPlanProvider extends ChangeNotifier {
   String? _selectedValue;
@@ -141,16 +143,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     log('selectedTimeSlots[day]: ${selectedTimeSlots[day]}');
     notifyListeners();
   }
-
-  // * Map to store selected time slot for each day
-  // Map<String, String?> selectedTimeslots = {
-  //   "Monday": '08:00AM To 09:00AM',
-  //   "Tuesday": '08:00AM To 09:00AM',
-  //   "Wednesday": '08:00AM To 09:00AM',
-  //   "Thursday": '08:00AM To 09:00AM',
-  //   "Friday": '08:00AM To 09:00AM',
-  //   "Saturday": '08:00AM To 09:00AM',
-  // };
 
   // Default timeslot for each day
   final String defaultTimeSlot = "08:00AM To 09:00AM";
@@ -336,7 +328,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         ),
       );
     }
-
     notifyListeners();
   }
 
@@ -373,6 +364,8 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     required BuildContext context,
     DateTime? createdAtDate,
     String? deliveryAddress,
+    bool isModifySubsItem = false,
+    List<summary.SubscriptionItem>? modifySubsItem, //* for Modify subscription
   }) async {
     isLoadingSubsUpdate = true;
     try {
@@ -382,10 +375,15 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
           sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
       final ingredientsProvider =
           Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
+
       // ! Request data
       final requestData = SubscriptionCreateRequestModel(
         userId: userId,
         userType: accountType == 'business' ? 'BusinessUser' : 'User',
+        // Todo Working: Resolve multiple model issue while update subs
+        // items: isModifySubsItem
+        //     ? modifySubsItem?.cast<summary.SubscriptionItem>() ?? []
+        //     : subsItems, //* Subscription Itemlist
         items: subsItems, //* Subscription Itemlist
         price: selectedPrice,
         units: selectedUnits,

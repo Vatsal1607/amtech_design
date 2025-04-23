@@ -6,6 +6,7 @@ import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/widgets/add_ons_selection_widget.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet_provider.dart';
+import 'package:amtech_design/modules/subscriptions/subscription/subscription_details/subscription_details_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,12 +15,15 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/models/subscription_create_request_model.dart'
     as subscription;
+import 'package:amtech_design/models/subscription_summary_model.dart'
+    as summary;
 import '../../../../models/home_menu_model.dart' as home;
 import 'ingredients_bottomsheet_provider.dart';
 import 'widgets/add_note_widget.dart';
 
 Future<void> showIngredientsBottomSheeet({
   required String day,
+  String? isModifyDayName,
   required BuildContext context,
   required String accountType,
   required String menuId,
@@ -27,6 +31,7 @@ Future<void> showIngredientsBottomSheeet({
   home.MenuItems? menuItems,
   required int mealIndex,
   required int mealItemIndex,
+  bool isModify = false,
 }) async {
   log('mealIndex is: $mealIndex');
   final ingredientsProvider =
@@ -102,120 +107,73 @@ Future<void> showIngredientsBottomSheeet({
                           SizedBox(height: 10.h),
                           //* Ingredients Checkbox
                           Consumer<IngredientsBottomsheetProvider>(
-                              builder: (context, _, child) =>
-                                  ingredientsProvider.isLoading
-                                      ? Center(
-                                          child: CustomLoader(
-                                            backgroundColor:
-                                                getColorAccountType(
-                                              accountType: accountType,
-                                              businessColor:
-                                                  AppColors.primaryColor,
-                                              personalColor:
-                                                  AppColors.darkGreenGrey,
+                            builder: (context, _, child) => ingredientsProvider
+                                    .isLoading
+                                ? Center(
+                                    child: CustomLoader(
+                                      backgroundColor: getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.primaryColor,
+                                        personalColor: AppColors.darkGreenGrey,
+                                      ),
+                                    ),
+                                  )
+                                : ListView(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    padding: EdgeInsets.zero,
+                                    children: ingredientsProvider
+                                        .ingredientSelections.entries
+                                        .map((entry) {
+                                      // Extracting the name and the selection status from the map
+                                      final name = entry.value.keys.first;
+                                      final isSelected =
+                                          entry.value.values.first;
+
+                                      return Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 4.h,
+                                          horizontal: 6.w,
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Checkbox(
+                                              value: isSelected,
+                                              onChanged: (value) {
+                                                ingredientsProvider
+                                                    .onChangedCheckBox(
+                                                        value, entry.key);
+                                              },
+                                              activeColor: getColorAccountType(
+                                                accountType: accountType,
+                                                businessColor:
+                                                    AppColors.primaryColor,
+                                                personalColor:
+                                                    AppColors.darkGreenGrey,
+                                              ),
+                                              materialTapTargetSize:
+                                                  MaterialTapTargetSize
+                                                      .shrinkWrap,
+                                              visualDensity:
+                                                  VisualDensity.compact,
                                             ),
-                                          ),
-                                        )
-                                      : ListView(
-                                          shrinkWrap: true,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          padding: EdgeInsets.zero,
-                                          children: ingredientsProvider
-                                              .ingredientSelections.entries
-                                              .map((entry) {
-                                            // Extracting the name and the selection status from the map
-                                            final name = entry.value.keys.first;
-                                            final isSelected =
-                                                entry.value.values.first;
-
-                                            return Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                vertical: 4.h,
-                                                horizontal: 6.w,
+                                            SizedBox(width: 10.w),
+                                            Expanded(
+                                              child: Text(
+                                                name,
+                                                style: GoogleFonts.publicSans(
+                                                    fontSize: 16.sp),
                                               ),
-                                              child: Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.center,
-                                                children: [
-                                                  Checkbox(
-                                                    value: isSelected,
-                                                    onChanged: (value) {
-                                                      ingredientsProvider
-                                                          .onChangedCheckBox(
-                                                              value, entry.key);
-                                                    },
-                                                    activeColor:
-                                                        getColorAccountType(
-                                                      accountType: accountType,
-                                                      businessColor: AppColors
-                                                          .primaryColor,
-                                                      personalColor: AppColors
-                                                          .darkGreenGrey,
-                                                    ),
-                                                    materialTapTargetSize:
-                                                        MaterialTapTargetSize
-                                                            .shrinkWrap,
-                                                    visualDensity:
-                                                        VisualDensity.compact,
-                                                  ),
-                                                  SizedBox(width: 10.w),
-                                                  Expanded(
-                                                    child: Text(
-                                                      name,
-                                                      style: GoogleFonts
-                                                          .publicSans(
-                                                              fontSize: 16.sp),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }).toList(),
-                                        )
-
-                              //* Checkbox listtile
-                              // : ListView(
-                              //     shrinkWrap: true,
-                              //     physics:
-                              //         const NeverScrollableScrollPhysics(),
-                              //     padding: EdgeInsets.zero,
-                              //     children: ingredientsProvider
-                              //         .ingredientSelections.entries
-                              //         .map((entry) {
-                              //       // Extracting the name and the selection status from the map
-                              //       final name = entry.value.keys.first;
-                              //       final isSelected =
-                              //           entry.value.values.first;
-
-                              //       return CheckboxListTile(
-                              //         dense: true,
-                              //         activeColor: getColorAccountType(
-                              //           accountType: accountType,
-                              //           businessColor: AppColors.primaryColor,
-                              //           personalColor:
-                              //               AppColors.darkGreenGrey,
-                              //         ),
-                              //         title: Text(
-                              //           name,
-                              //           style: GoogleFonts.publicSans(
-                              //               fontSize: 16.sp),
-                              //         ),
-                              //         value: isSelected,
-                              //         onChanged: (value) {
-                              //           ingredientsProvider.onChangedCheckBox(
-                              //               value, entry.key);
-                              //         },
-                              //         materialTapTargetSize:
-                              //             MaterialTapTargetSize.shrinkWrap,
-                              //         controlAffinity:
-                              //             ListTileControlAffinity.leading,
-                              //         visualDensity: VisualDensity.compact,
-                              //         contentPadding: EdgeInsets.zero,
-                              //       );
-                              //     }).toList(),
-                              //   ),
-                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                          ),
                           SizedBox(height: 10.h),
                           //* Add-Ons Checkbox
                           AddOnsSelectionWidget(
@@ -250,76 +208,128 @@ Future<void> showIngredientsBottomSheeet({
                 builder: (context, createSubsProvider, child) => CustomButton(
                   height: 60.h,
                   onTap: () {
-                    // DayWiseSelected ItemName
-                    createSubsProvider.addOrUpdateDayWiseSelectedItem(
-                        day, itemName);
-                    // Set Selected meal
-                    createSubsProvider.selectedMeals[day]?[mealIndex] =
-                        itemName;
-                    //! Condition of where it is Create or Update subscription
-                    if (createSubsProvider.isUpdateSubscription) {
-                      //* Subscription Update items depends on selected days
-                      createSubsProvider.updateSubsItem(
+                    //* Modify daywise item (subscription details)
+                    if (isModify) {
+                      log('Modify item daywise');
+                      final subsDetailsProvider =
+                          Provider.of<SubscriptionDetailsProvider>(context,
+                              listen: false);
+                      subsDetailsProvider.updateDayWiseSubsItem(
                         menuId: menuId,
-                        day: day,
-                        size: subscription.Size(
-                          sizeId: sizeId,
-                          name: sizeName,
-                          price: sizePrice.toDouble(),
-                        ),
+                        day: isModifyDayName ?? '',
+                        size: [
+                          summary.Size(
+                            sizeId: sizeId,
+                            sizeName: sizeName,
+                            sizePrice: sizePrice.toInt(),
+                          )
+                        ],
                         meals: [
-                          subscription.MealSubscription(
-                            day: day,
-                            timeSlot: createSubsProvider.getSelectedTimeSlot(
-                              day,
-                              mealIndex,
-                            ),
+                          summary.MealSubscription(
+                            day: isModifyDayName,
+                            timeSlot: subsDetailsProvider.selectedTimeSlotValue,
                             quantity: 1,
                           ),
                         ],
                         customize: [
-                          subscription.Customization(
-                            ingredients:
-                                ingredientsProvider.getSelectedIngredients(),
-                            addOns: ingredientsProvider.getSelectedAddOns(),
+                          summary.Customization(
+                            ingredients: ingredientsProvider
+                                .getSelectedIngredients()
+                                .map((ingredient) {
+                              return summary.Ingredients(
+                                ingredientId: ingredient.ingredientId,
+                                // add other fields if Ingredients has more
+                              );
+                            }).toList(),
+                            addOns: ingredientsProvider
+                                .getSelectedAddOns()
+                                .map((addOn) {
+                              return summary.AddOns(
+                                addOnId: addOn.addOnId,
+                                quantity: addOn.quantity,
+                              );
+                            }).toList(),
                           ),
                         ],
                       );
                     } else {
-                      //* Subscription create Add items depends on selected days
-                      createSubsProvider.addSubsItem(
-                        menuId: menuId,
-                        size: subscription.Size(
-                          sizeId: sizeId,
-                          name: sizeName,
-                          price: sizePrice.toDouble(),
-                        ),
-                        meals: [
-                          subscription.MealSubscription(
-                            day: day,
-                            timeSlot: createSubsProvider.getSelectedTimeSlot(
-                              day,
-                              mealIndex,
+                      log('Without Modify item');
+                      // DayWiseSelected ItemName
+                      createSubsProvider.addOrUpdateDayWiseSelectedItem(
+                          day, itemName);
+                      // Set Selected meal
+                      createSubsProvider.selectedMeals[day]?[mealIndex] =
+                          itemName;
+                      //! Condition of where it is Create or Update subscription
+                      if (createSubsProvider.isUpdateSubscription) {
+                        //* Subscription Update items depends on selected days
+                        createSubsProvider.updateSubsItem(
+                          menuId: menuId,
+                          day: day,
+                          size: subscription.Size(
+                            sizeId: sizeId,
+                            name: sizeName,
+                            price: sizePrice.toDouble(),
+                          ),
+                          meals: [
+                            subscription.MealSubscription(
+                              day: day,
+                              timeSlot: createSubsProvider.getSelectedTimeSlot(
+                                day,
+                                mealIndex,
+                              ),
+                              quantity: 1,
                             ),
-                            quantity: 1,
+                          ],
+                          customize: [
+                            subscription.Customization(
+                              ingredients:
+                                  ingredientsProvider.getSelectedIngredients(),
+                              addOns: ingredientsProvider.getSelectedAddOns(),
+                            ),
+                          ],
+                        );
+                      } else {
+                        //* Subscription create Add items depends on selected days
+                        createSubsProvider.addSubsItem(
+                          menuId: menuId,
+                          size: subscription.Size(
+                            sizeId: sizeId,
+                            name: sizeName,
+                            price: sizePrice.toDouble(),
                           ),
-                        ],
-                        customize: [
-                          subscription.Customization(
-                            ingredients:
-                                ingredientsProvider.getSelectedIngredients(),
-                            addOns: ingredientsProvider.getSelectedAddOns(),
-                          ),
-                        ],
-                      );
+                          meals: [
+                            subscription.MealSubscription(
+                              day: day,
+                              timeSlot: createSubsProvider.getSelectedTimeSlot(
+                                day,
+                                mealIndex,
+                              ),
+                              quantity: 1,
+                            ),
+                          ],
+                          customize: [
+                            subscription.Customization(
+                              ingredients:
+                                  ingredientsProvider.getSelectedIngredients(),
+                              addOns: ingredientsProvider.getSelectedAddOns(),
+                            ),
+                          ],
+                        );
+                      }
+                      // Reset addOnsQuantity
+                      // ingredientsProvider.addOnsQuantity = {};
+                      // Add meal item
+                      context
+                          .read<SelectMealBottomsheetProvider>()
+                          .addMealItem(day, itemName, mealItemIndex);
                     }
                     // Reset addOnsQuantity
                     ingredientsProvider.addOnsQuantity = {};
-                    // Add meal item
-                    context
-                        .read<SelectMealBottomsheetProvider>()
-                        .addMealItem(day, itemName, mealItemIndex);
-
+                    final provider = Provider.of<SelectMealBottomsheetProvider>(
+                        context,
+                        listen: false);
+                    provider.categoryQuantities = {};
                     Navigator.pop(context);
                     Navigator.pop(context);
                   },

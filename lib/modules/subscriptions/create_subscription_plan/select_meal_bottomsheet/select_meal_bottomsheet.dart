@@ -14,7 +14,9 @@ void showSelectMealBottomSheeet({
   required BuildContext context,
   required String accountType,
   String? day,
+  String? isModifyDayName,
   int? mealIndex,
+  bool isModify = false,
 }) {
   final menuProvider = Provider.of<MenuProvider>(context, listen: false);
   menuProvider.homeMenuApi(); //* Api call
@@ -68,7 +70,9 @@ void showSelectMealBottomSheeet({
                       builder: (context, _, child) => TabBarView(
                         children: (menuProvider.menuCategories ?? [])
                             .map((category) => BottomsheetTabbarViewWidget(
+                                  isModify: isModify,
                                   day: day ?? '',
+                                  isModifyDayName: isModifyDayName,
                                   mealIndex: mealIndex ?? 0,
                                   itemLength: category.menuItems?.length ?? 0,
                                   menuItems: category.menuItems,

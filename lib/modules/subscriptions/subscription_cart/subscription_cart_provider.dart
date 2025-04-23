@@ -49,6 +49,7 @@ class SubscriptionCartProvider extends ChangeNotifier {
   ApiService apiService = ApiService();
   bool isLoading = false;
   SubscriptionSummaryModel? summaryRes;
+
   // * Subscription Summary API
   Future<void> getSubscriptionDetails({
     required BuildContext context,

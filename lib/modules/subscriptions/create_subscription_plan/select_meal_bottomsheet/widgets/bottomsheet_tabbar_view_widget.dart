@@ -23,7 +23,9 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
   final int itemLength;
   final List<MenuItems>? menuItems;
   final String day;
+  final String? isModifyDayName;
   final int mealIndex;
+  final bool isModify;
   const BottomsheetTabbarViewWidget({
     super.key,
     required this.itemName,
@@ -33,6 +35,8 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
     required this.menuItems,
     required this.day,
     required this.mealIndex,
+    this.isModify = false,
+    this.isModifyDayName,
   });
 
   @override
@@ -123,6 +127,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                                   onTap: () {
                                     showIngredientsBottomSheeet(
                                       day: day,
+                                      isModifyDayName: isModifyDayName,
                                       mealIndex: mealIndex,
                                       context: context,
                                       accountType: accountType,
@@ -131,6 +136,7 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                                           menuItems?[index].itemName ?? '',
                                       menuItems: menuItems?[index],
                                       mealItemIndex: index,
+                                      isModify: isModify,
                                     );
                                     // Add meal item
                                     // provider.addMealItem(itemName, index);

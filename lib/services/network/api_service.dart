@@ -33,6 +33,7 @@ import '../../models/subs_day_details_model.dart';
 import '../../models/subs_list_model.dart';
 import '../../models/subscription_create_model.dart';
 import '../../models/subscription_create_request_model.dart';
+import '../../models/subscription_modify_request_model.dart';
 import '../../models/subscription_summary_model.dart';
 import '../../models/unread_notification_model.dart';
 import 'api_client.dart';
@@ -352,11 +353,21 @@ class ApiService {
 
   Future<ApiGlobalModel> subscriptionUpdate({
     required String subsId,
-    required SubscriptionCreateRequestModel subscriptionUpdateRequestData,
+    SubscriptionCreateRequestModel? subscriptionUpdateRequestData,
   }) async {
     return await apiClient.subscriptionUpdate(
       subsId,
       subscriptionUpdateRequestData,
+    );
+  }
+
+  Future<ApiGlobalModel> subscriptionModify({
+    required String subsId,
+    SubscriptionModifyRequestModel? subscriptionModifyRequestModel,
+  }) async {
+    return await apiClient.subscriptionModify(
+      subsId,
+      subscriptionModifyRequestModel,
     );
   }
 

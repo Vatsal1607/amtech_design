@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import '../../../../models/subs_day_details_model.dart';
 import 'package:amtech_design/models/subscription_create_request_model.dart'
     as create;
+import 'package:amtech_design/models/subscription_modify_request_model.dart'
+    as modify;
 import 'package:amtech_design/models/subscription_summary_model.dart'
     as summary;
 
@@ -147,14 +149,15 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     }
   }
 
-  List<summary.SubscriptionItem> subsItem = [];
+  // List<summary.SubscriptionItem> subsItem = [];
+  List<modify.SubscriptionItem> subsItem = [];
 
   //* Update daywise subs Item
   void updateDayWiseSubsItem({
     required String menuId,
-    List<summary.Size>? size,
-    List<summary.Customization>? customize,
-    List<summary.MealSubscription>? meals,
+    List<modify.Size>? size,
+    List<modify.Customization>? customize,
+    List<modify.MealSubscription>? meals,
     required String day,
   }) {
     log('updateSubsItem called');
@@ -167,7 +170,7 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
       }
     }
     // Create the updated item
-    final updatedItem = summary.SubscriptionItem(
+    final updatedItem = modify.SubscriptionItem(
       menuId: menuId,
       size: size,
       customize: customize,

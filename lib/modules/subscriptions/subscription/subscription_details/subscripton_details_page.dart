@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
@@ -17,6 +16,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/utils.dart';
+import '../../../../models/subscription_modify_request_model.dart' as modify;
+import 'package:amtech_design/models/subscription_summary_model.dart'
+    as summary;
 import '../../create_subscription_plan/create_subscription_plan_provider.dart';
 import '../../subscription_cart/subscription_cart_provider.dart';
 import 'subscription_details_provider.dart';
@@ -29,6 +31,7 @@ class SubscriptonDetailsPage extends StatefulWidget {
 }
 
 class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
+  String? modifySubsId;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -37,6 +40,7 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
       final subsId = args != null && args.containsKey('subsId')
           ? args['subsId'] as String?
           : null;
+      modifySubsId = subsId;
       final subsCartProvider =
           Provider.of<SubscriptionCartProvider>(context, listen: false);
       //* API call
@@ -53,9 +57,13 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
       final subsDetailsProvider =
           Provider.of<SubscriptionDetailsProvider>(context, listen: false);
       //* Assign subsItems fromm subs cart (getSubscriptionDetails api)
-      subsDetailsProvider.subsItem =
-          subsCartProvider.summaryRes?.data?.items ?? [];
-      log('subsDetailsProvider.subsItem: ${jsonEncode(subsDetailsProvider.subsItem.map((e) => e.toJson()).toList())}');
+      subsDetailsProvider.subsItem = subsCartProvider.summaryRes?.data?.items
+              ?.map((item) => modify.SubscriptionItem.fromSummary(item))
+              .toList() ??
+          [];
+      for (var item in subsDetailsProvider.subsItem) {
+        log('subsItem list(details page) ${item.toJson()}'); // If you have toJson()
+      }
 
       if (createdAtDate != null) {
         //* API call
@@ -154,6 +162,7 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                                                 .subscriptionUpdate(
                                                   context: context,
                                                   isModifySubsItem: true,
+                                                  modifySubsId: modifySubsId,
                                                   modifySubsItem:
                                                       subsDetailsProvider
                                                               .subsItem
@@ -244,6 +253,25 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                         ],
                       ),
                       SizedBox(height: 10.h),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Modify Note:',
+                              style: GoogleFonts.publicSans(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const Text(
+                              'If you select a specific product for a particular day (e.g., Monday), you will receive the same product on that day every week.',
+                              textAlign: TextAlign.justify,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 5.h),
                       //* Note:
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,8 +282,8 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          SizedBox(height: 8.h),
                           RichText(
+                            textAlign: TextAlign.justify,
                             text: TextSpan(
                               style: GoogleFonts.publicSans(
                                   color: Colors.black, fontSize: 16.sp),
@@ -276,6 +304,7 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                           ),
                           SizedBox(height: 10.h),
                           RichText(
+                            textAlign: TextAlign.justify,
                             text: TextSpan(
                               style: GoogleFonts.publicSans(
                                   color: Colors.black, fontSize: 14.sp),

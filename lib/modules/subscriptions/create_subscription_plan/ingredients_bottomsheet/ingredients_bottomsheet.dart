@@ -17,6 +17,8 @@ import 'package:amtech_design/models/subscription_create_request_model.dart'
     as subscription;
 import 'package:amtech_design/models/subscription_summary_model.dart'
     as summary;
+import 'package:amtech_design/models/subscription_modify_request_model.dart'
+    as modify;
 import '../../../../models/home_menu_model.dart' as home;
 import 'ingredients_bottomsheet_provider.dart';
 import 'widgets/add_note_widget.dart';
@@ -218,25 +220,26 @@ Future<void> showIngredientsBottomSheeet({
                         menuId: menuId,
                         day: isModifyDayName ?? '',
                         size: [
-                          summary.Size(
+                          modify.Size(
                             sizeId: sizeId,
                             sizeName: sizeName,
                             sizePrice: sizePrice.toInt(),
                           )
                         ],
                         meals: [
-                          summary.MealSubscription(
-                            day: isModifyDayName,
-                            timeSlot: subsDetailsProvider.selectedTimeSlotValue,
+                          modify.MealSubscription(
+                            day: isModifyDayName ?? '',
+                            timeSlot:
+                                subsDetailsProvider.selectedTimeSlotValue ?? '',
                             quantity: 1,
                           ),
                         ],
                         customize: [
-                          summary.Customization(
+                          modify.Customization(
                             ingredients: ingredientsProvider
                                 .getSelectedIngredients()
                                 .map((ingredient) {
-                              return summary.Ingredients(
+                              return modify.Ingredient(
                                 ingredientId: ingredient.ingredientId,
                                 // add other fields if Ingredients has more
                               );
@@ -244,7 +247,7 @@ Future<void> showIngredientsBottomSheeet({
                             addOns: ingredientsProvider
                                 .getSelectedAddOns()
                                 .map((addOn) {
-                              return summary.AddOns(
+                              return modify.AddOn(
                                 addOnId: addOn.addOnId,
                                 quantity: addOn.quantity,
                               );

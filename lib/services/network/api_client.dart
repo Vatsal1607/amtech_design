@@ -33,6 +33,7 @@ import '../../models/recharge_history_model.dart';
 import '../../models/reorder_model.dart';
 import '../../models/subs_list_model.dart';
 import '../../models/subscription_create_model.dart';
+import '../../models/subscription_modify_request_model.dart';
 import '../../models/subscription_summary_model.dart';
 import '../../models/unread_notification_model.dart';
 import '../../models/user_login_model.dart';
@@ -280,7 +281,14 @@ abstract class ApiClient {
   @PUT('${ApiEndpoints.subscriptionsUpdate}/{subs_id}')
   Future<ApiGlobalModel> subscriptionUpdate(
     @Path("subs_id") String subsId,
-    @Body() SubscriptionCreateRequestModel subscriptionCreateRequestModel,
+    @Body() SubscriptionCreateRequestModel? subscriptionCreateRequestModel,
+  );
+
+  //* Subscription Modify (also Update but different requestbody)
+  @PUT('${ApiEndpoints.subscriptionsUpdate}/{subs_id}')
+  Future<ApiGlobalModel> subscriptionModify(
+    @Path("subs_id") String subsId,
+    @Body() SubscriptionModifyRequestModel? subscriptionModifyRequestModel,
   );
 
   @GET(ApiEndpoints.rechargeHistory)

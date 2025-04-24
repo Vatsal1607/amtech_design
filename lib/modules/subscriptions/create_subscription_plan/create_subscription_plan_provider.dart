@@ -7,6 +7,7 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:amtech_design/services/network/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../models/subscription_modify_request_model.dart' as modify;
 import '../../../models/timeslot_day_model.dart';
 import '../../../routes.dart';
 import 'package:amtech_design/models/subscription_summary_model.dart'
@@ -365,7 +366,8 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     DateTime? createdAtDate,
     String? deliveryAddress,
     bool isModifySubsItem = false,
-    List<summary.SubscriptionItem>? modifySubsItem, //* for Modify subscription
+    List<modify.SubscriptionItem>? modifySubsItem, //* for Modify subscription
+    String? modifySubsId,
   }) async {
     isLoadingSubsUpdate = true;
     try {
@@ -376,15 +378,14 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
       final ingredientsProvider =
           Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
 
-      // ! Request data
+      // ! Request data (SubscriptionCreateRequestModel)
       final requestData = SubscriptionCreateRequestModel(
         userId: userId,
         userType: accountType == 'business' ? 'BusinessUser' : 'User',
-        // Todo Working: Resolve multiple model issue while update subs
         // items: isModifySubsItem
         //     ? modifySubsItem?.cast<summary.SubscriptionItem>() ?? []
         //     : subsItems, //* Subscription Itemlist
-        items: subsItems, //* Subscription Itemlist
+        items: subsItems,
         price: selectedPrice,
         units: selectedUnits,
         notes: ingredientsProvider.noteController.text,
@@ -393,10 +394,28 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         createdAt: createdAtDate,
         deliveryAddress: deliveryAddress,
       );
-      final res = await apiService.subscriptionUpdate(
-        subsId: subsId ?? '',
-        subscriptionUpdateRequestData: requestData,
+      // ! Request data (SubscriptionModifyRequestModel)
+      final requestModifyData = modify.SubscriptionModifyRequestModel(
+        userId: userId,
+        userType: accountType == 'business' ? 'BusinessUser' : 'User',
+        items: modifySubsItem,
+        price: selectedPrice,
+        units: selectedUnits,
+        notes: ingredientsProvider.noteController.text,
+        paymentMethod: 'paymentMethod',
+        paymentStatus: true,
+        createdAt: createdAtDate,
+        deliveryAddress: deliveryAddress,
       );
+      final res = isModifySubsItem
+          ? await apiService.subscriptionModify(
+              subsId: modifySubsId ?? '',
+              subscriptionModifyRequestModel: requestModifyData,
+            )
+          : await apiService.subscriptionUpdate(
+              subsId: subsId ?? '',
+              subscriptionUpdateRequestData: requestData,
+            );
       if (res.success == true) {
         if (createdAtDate == null && deliveryAddress == null) {
           context

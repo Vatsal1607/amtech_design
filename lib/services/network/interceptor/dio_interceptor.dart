@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -30,34 +31,90 @@ class DioInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     ApiGlobalModel apiError;
+
     if (err.response != null) {
-      apiError = ApiGlobalModel.fromJson(err.response!.data);
+      dynamic responseData = err.response!.data;
+
+      // Try decoding if responseData is a String
+      if (responseData is String) {
+        try {
+          responseData = jsonDecode(responseData);
+        } catch (e) {
+          log('Failed to decode JSON: $e');
+          responseData = null;
+        }
+      }
+
+      // Now parse safely
+      if (responseData is Map<String, dynamic>) {
+        apiError = ApiGlobalModel.fromJson(responseData);
+      } else {
+        apiError = ApiGlobalModel(
+          message: 'Unexpected error format',
+          statusCode: err.response?.statusCode,
+        );
+      }
+
       // Check if token is invalid or expired
       final isUnauthorized = err.response?.statusCode == 401 ||
           apiError.message?.toLowerCase().contains('expired token') == true;
+
       if (isUnauthorized) {
         log('Token expired. Logging out...');
-        Future.delayed(
-          Duration.zero,
-          () async {
-            final context = navigatorKey.currentContext;
-            if (context != null) {
-              final profileProvider =
-                  Provider.of<ProfileProvider>(context, listen: false);
-              await profileProvider.logout(isTokenExpired: true);
-            } else {
-              log('Context is null. Could not access ProfileProvider.');
-            }
-          },
-        );
+        Future.delayed(Duration.zero, () async {
+          final context = navigatorKey.currentContext;
+          if (context != null) {
+            final profileProvider =
+                Provider.of<ProfileProvider>(context, listen: false);
+            await profileProvider.logout(isTokenExpired: true);
+          } else {
+            log('Context is null. Could not access ProfileProvider.');
+          }
+        });
       }
     } else {
+      // Handle network or unknown errors
       apiError = ApiGlobalModel(
         message: err.message ?? 'Network error occurred',
         statusCode: err.response?.statusCode,
       );
     }
+
     log('Error occurred: ${apiError.message}');
-    handler.next(err); // Continue passing the error
+    handler.next(err); // Pass the error to the next interceptor/handler
   }
+
+  // @override
+  // void onError(DioException err, ErrorInterceptorHandler handler) async {
+  //   ApiGlobalModel apiError;
+  //   if (err.response != null) {
+  //     apiError = ApiGlobalModel.fromJson(err.response!.data);
+  //     // Check if token is invalid or expired
+  //     final isUnauthorized = err.response?.statusCode == 401 ||
+  //         apiError.message?.toLowerCase().contains('expired token') == true;
+  //     if (isUnauthorized) {
+  //       log('Token expired. Logging out...');
+  //       Future.delayed(
+  //         Duration.zero,
+  //         () async {
+  //           final context = navigatorKey.currentContext;
+  //           if (context != null) {
+  //             final profileProvider =
+  //                 Provider.of<ProfileProvider>(context, listen: false);
+  //             await profileProvider.logout(isTokenExpired: true);
+  //           } else {
+  //             log('Context is null. Could not access ProfileProvider.');
+  //           }
+  //         },
+  //       );
+  //     }
+  //   } else {
+  //     apiError = ApiGlobalModel(
+  //       message: err.message ?? 'Network error occurred',
+  //       statusCode: err.response?.statusCode,
+  //     );
+  //   }
+  //   log('Error occurred: ${apiError.message}');
+  //   handler.next(err); // Continue passing the error
+  // }
 }

@@ -382,9 +382,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
       final requestData = SubscriptionCreateRequestModel(
         userId: userId,
         userType: accountType == 'business' ? 'BusinessUser' : 'User',
-        // items: isModifySubsItem
-        //     ? modifySubsItem?.cast<summary.SubscriptionItem>() ?? []
-        //     : subsItems, //* Subscription Itemlist
         items: subsItems,
         price: selectedPrice,
         units: selectedUnits,
@@ -417,11 +414,15 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
               subscriptionUpdateRequestData: requestData,
             );
       if (res.success == true) {
-        if (createdAtDate == null && deliveryAddress == null) {
-          context
-              .read<CreateSubscriptionPlanProvider>()
-              .setUpdateSubscription(false); // isUpadte: False
-          Navigator.pushNamed(context, Routes.subscriptionSummary);
+        if (isModifySubsItem) {
+          customSnackBar(context: context, message: '${res.message}');
+        } else {
+          if (createdAtDate == null && deliveryAddress == null) {
+            context
+                .read<CreateSubscriptionPlanProvider>()
+                .setUpdateSubscription(false); // isUpadte: False
+            Navigator.pushNamed(context, Routes.subscriptionSummary);
+          }
         }
         return true; // * success
       } else {

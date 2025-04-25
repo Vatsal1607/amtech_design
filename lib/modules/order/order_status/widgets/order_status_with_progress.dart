@@ -1,7 +1,9 @@
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/modules/order/order_status/order_status_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/strings.dart';
 import 'order_status_icon_widget.dart';
@@ -46,6 +48,7 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
               OrderStatusIconWidget(
                 accountType: accountType,
                 icon: IconStrings.orderStatus2,
+                // isActive: true, // Todo add condition
               ),
 
               // * Progress line 2
@@ -57,17 +60,21 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
               OrderStatusIconWidget(
                 accountType: accountType,
                 icon: IconStrings.orderStatus3,
+                // isActive: true, // Todo add condition
               ),
 
               // * Progress line 3
               const ProgressLineWidget(
-                value: 0.0,
+                value: 0,
               ),
 
               // * Status Icon widget
-              OrderStatusIconWidget(
-                accountType: accountType,
-                icon: IconStrings.orderStatus4,
+              Consumer<OrderStatusProvider>(
+                builder: (context, provider, child) => OrderStatusIconWidget(
+                  accountType: accountType,
+                  icon: IconStrings.orderStatus4,
+                  // isActive: true, // Todo add condition
+                ),
               ),
             ],
           ),
@@ -89,15 +96,19 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
           SizedBox(height: 4.h),
           Align(
             alignment: Alignment.centerLeft,
-            child: Text(
-              "Placed Successfully!",
-              style: GoogleFonts.publicSans(
-                fontWeight: FontWeight.bold,
-                fontSize: 20.sp,
-                color: getColorAccountType(
-                  accountType: accountType,
-                  businessColor: AppColors.primaryColor,
-                  personalColor: AppColors.darkGreenGrey,
+            child: Consumer<OrderStatusProvider>(
+              builder: (context, provider, child) => Text(
+                // "Placed Successfully!",
+                provider.getOrderStatusText(
+                    accountType, provider.orderStatusEnum),
+                style: GoogleFonts.publicSans(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.sp,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
             ),

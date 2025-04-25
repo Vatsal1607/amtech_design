@@ -241,7 +241,11 @@ class CartProvider extends ChangeNotifier {
               isConfirmed = true;
               //* clear cart API
               await clearCart();
-              Navigator.pushNamed(context, Routes.orderStatus);
+              Navigator.pushNamed(
+                context,
+                Routes.orderStatus,
+                arguments: {'orderId': orderId},
+              );
               Future.delayed(const Duration(seconds: 1), () {
                 dragPosition = 10.w;
                 isConfirmed = false;

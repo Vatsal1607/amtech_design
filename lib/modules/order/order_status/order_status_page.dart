@@ -1,5 +1,4 @@
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
@@ -15,15 +14,32 @@ import '../../../services/local/shared_preferences_service.dart';
 import 'order_status_provider.dart';
 import 'widgets/order_status_with_progress.dart';
 
-class OrderStatusPage extends StatelessWidget {
+class OrderStatusPage extends StatefulWidget {
   const OrderStatusPage({super.key});
+
+  @override
+  State<OrderStatusPage> createState() => _OrderStatusPageState();
+}
+
+class _OrderStatusPageState extends State<OrderStatusPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<OrderStatusProvider>(context, listen: false);
+      final socketProvider =
+          Provider.of<SocketProvider>(context, listen: false);
+      final args =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+      String orderId = args?['orderId'] ?? '';
+      provider.emitAndListenOrderStatus(socketProvider, orderId);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    // final provider = Provider.of<OrderStatusProvider>(context, listen: false);
-    // final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -33,6 +49,7 @@ class OrderStatusPage extends StatelessWidget {
       appBar: CustomAppbarWithCenterTitle(
         accountType: accountType,
         title: 'Order',
+        isBack: false,
       ),
       body: Stack(
         children: [
@@ -47,10 +64,48 @@ class OrderStatusPage extends StatelessWidget {
                     // * Lottie file
                     SizedBox(
                       height: 340.h,
-                      child: Lottie.asset(
-                        accountType == 'business'
-                            ? LottieStrings.orderPlaced
-                            : LottieStrings.orderPlacedPersonal,
+                      child: Consumer<OrderStatusProvider>(
+                        builder: (context, provider, child) => Lottie.asset(
+                          provider.getLottieFile(
+                              accountType, provider.orderStatusEnum),
+                          // accountType == 'business'
+                          //     ? provider.orderStatusEnum == OrderStatus.placed
+                          //         ? LottieStrings.orderPlaced
+                          //         : provider.orderStatusEnum ==
+                          //                 OrderStatus.confirmed
+                          //             ? LottieStrings.orderConfirm
+                          //             : provider.orderStatusEnum ==
+                          //                     OrderStatus.prepared
+                          //                 ? LottieStrings.orderPreparation
+                          //                 : provider.orderStatusEnum ==
+                          //                         OrderStatus.outForDelivery
+                          //                     ? LottieStrings
+                          //                         .orderOutForDelivery
+                          //                     : provider.orderStatusEnum ==
+                          //                             OrderStatus.delivered
+                          //                         ? LottieStrings
+                          //                             .orderDelivered
+                          //                         : LottieStrings.orderPlaced
+                          //     : provider.orderStatusEnum == OrderStatus.placed
+                          //         ? LottieStrings.orderPlacedPersonal
+                          //         : provider.orderStatusEnum ==
+                          //                 OrderStatus.confirmed
+                          //             ? LottieStrings.orderConfirmPersonal
+                          //             : provider.orderStatusEnum ==
+                          //                     OrderStatus.prepared
+                          //                 ? LottieStrings
+                          //                     .orderPreparationPersonal
+                          //                 : provider.orderStatusEnum ==
+                          //                         OrderStatus.outForDelivery
+                          //                     ? LottieStrings
+                          //                         .orderOutForDeliveryPersonal
+                          //                     : provider.orderStatusEnum ==
+                          //                             OrderStatus.delivered
+                          //                         ? LottieStrings
+                          //                             .orderDeliveredPersonal
+                          //                         : LottieStrings
+                          //                             .orderPlacedPersonal // fallback
+                        ),
                       ),
                     ),
                     Text(
@@ -66,15 +121,19 @@ class OrderStatusPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 8.h),
-                    Text(
-                      "Placed Successfully!",
-                      style: GoogleFonts.publicSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30.sp,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.disabledColor,
-                          personalColor: AppColors.bayLeaf,
+                    Consumer<OrderStatusProvider>(
+                      builder: (context, provider, child) => Text(
+                        // "Placed Successfully!",
+                        provider.getOrderStatusText(
+                            accountType, provider.orderStatusEnum),
+                        style: GoogleFonts.publicSans(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30.sp,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.disabledColor,
+                            personalColor: AppColors.bayLeaf,
+                          ),
                         ),
                       ),
                     ),

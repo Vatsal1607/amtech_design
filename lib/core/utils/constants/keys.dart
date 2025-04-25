@@ -27,8 +27,8 @@ class SharedPrefsKeys {
 class SocketEvents {
   static const String orderCreate = 'order-create';
   static const String orderReceive = 'order-receive';
-  static const String getOrderStatus = 'get-order-status';
-  static const String orderStatusResponse = 'order-status-response';
+  static const String getOrderStatusEmit = 'get-order-status';
+  static const String orderStatusResponseListen = 'order-status-response';
   static const String userLocation = 'user-location';
   static const String realTimeLocationUpdate = 'real-time-location-update';
   static const String userConnected = 'user-connected';

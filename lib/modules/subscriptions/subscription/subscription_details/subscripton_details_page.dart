@@ -13,6 +13,7 @@ import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/utils.dart';
@@ -130,70 +131,81 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
 
                       //* Timeslot Dropdown
                       Consumer<SubscriptionDetailsProvider>(
-                        builder: (context, provider, child) =>
-                            provider.dayDetailsRes == null
-                                ? Container()
-                                : Padding(
-                                    padding: EdgeInsets.only(top: 10.h),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'TimeSlot:',
+                        builder: (context, provider, child) => provider
+                                    .dayDetailsRes ==
+                                null
+                            ? Container()
+                            : Padding(
+                                padding: EdgeInsets.only(top: 10.h),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'TimeSlot:',
+                                      style: GoogleFonts.publicSans(
+                                        fontSize: 17.sp,
+                                      ),
+                                    ),
+                                    //* Dropdown
+                                    SelectTimeSlotDropdown(
+                                      accountType: accountType,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        log('save pressed');
+                                        final subsDetailsProvider = Provider.of<
+                                                SubscriptionDetailsProvider>(
+                                            context,
+                                            listen: false);
+                                        context //* Api call
+                                            .read<
+                                                CreateSubscriptionPlanProvider>()
+                                            .subscriptionUpdate(
+                                              context: context,
+                                              isModifySubsItem: true,
+                                              modifySubsId: modifySubsId,
+                                              modifySubsItem:
+                                                  subsDetailsProvider
+                                                          .subsItem.isNotEmpty
+                                                      ? subsDetailsProvider
+                                                          .subsItem
+                                                      : null,
+                                            )
+                                            .then(
+                                          (isSuccess) {
+                                            if (isSuccess) {
+                                              provider.getSubsDayDetails(
+                                                subsId: modifySubsId ?? '',
+                                                day: DateFormat('EEEE').format(
+                                                    provider.selectedDay),
+                                              );
+                                            }
+                                          },
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 5.w,
+                                          vertical: 7.h,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: AppColors.lightGreen,
+                                          borderRadius:
+                                              BorderRadius.circular(15.r),
+                                        ),
+                                        child: Text(
+                                          'SAVE',
                                           style: GoogleFonts.publicSans(
                                             fontSize: 17.sp,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                        //* Dropdown
-                                        SelectTimeSlotDropdown(
-                                          accountType: accountType,
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            log('save pressed');
-                                            final subsDetailsProvider = Provider
-                                                .of<SubscriptionDetailsProvider>(
-                                                    context,
-                                                    listen: false);
-                                            context //* Api call
-                                                .read<
-                                                    CreateSubscriptionPlanProvider>()
-                                                .subscriptionUpdate(
-                                                  context: context,
-                                                  isModifySubsItem: true,
-                                                  modifySubsId: modifySubsId,
-                                                  modifySubsItem:
-                                                      subsDetailsProvider
-                                                              .subsItem
-                                                              .isNotEmpty
-                                                          ? subsDetailsProvider
-                                                              .subsItem
-                                                          : null,
-                                                );
-                                          },
-                                          child: Container(
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 5.w,
-                                              vertical: 7.h,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.lightGreen,
-                                              borderRadius:
-                                                  BorderRadius.circular(15.r),
-                                            ),
-                                            child: Text(
-                                              'SAVE',
-                                              style: GoogleFonts.publicSans(
-                                                fontSize: 17.sp,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
+                                  ],
+                                ),
+                              ),
                       ),
 
                       SizedBox(height: 10.h),

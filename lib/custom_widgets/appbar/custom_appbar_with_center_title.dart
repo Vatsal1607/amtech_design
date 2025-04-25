@@ -17,6 +17,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
   final String actionIcon;
   final Color actionIconColor;
   final String accountType;
+  final bool isBack;
   const CustomAppbarWithCenterTitle({
     super.key,
     required this.title,
@@ -28,6 +29,7 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
     this.actionIcon = IconStrings.info,
     this.actionIconColor = AppColors.disabledColor,
     required this.accountType,
+    this.isBack = true,
   });
 
   @override
@@ -37,74 +39,78 @@ class CustomAppbarWithCenterTitle extends StatelessWidget
       elevation: 0.0,
       backgroundColor: backgroundColor,
       automaticallyImplyLeading: false,
-      title: Stack(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: GestureDetector(
-              onTap: onBackButtonPressed ?? () => Navigator.pop(context),
-              child: Container(
-                height: 48.h,
-                width: 48.w,
-                margin: EdgeInsets.only(left: 20.w),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                ),
-                child: SvgIcon(
-                  icon: IconStrings.arrowBack,
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.seaShell,
-                    personalColor: AppColors.seaMist,
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Positioned.fill(
-            left: leftPadTitle,
-            child: Align(
-              alignment: Alignment.center,
-              child: title != ''
-                  ? Text(
-                      title, // * title
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.publicSans(
-                        fontSize: 24.sp,
-                        fontWeight: FontWeight.w700,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
+      title: SizedBox(
+        height: kToolbarHeight,
+        child: Stack(
+          children: [
+            if (isBack)
+              Align(
+                alignment: Alignment.centerLeft,
+                child: GestureDetector(
+                  onTap: onBackButtonPressed ?? () => Navigator.pop(context),
+                  child: Container(
+                    height: 48.h,
+                    width: 48.w,
+                    margin: EdgeInsets.only(left: 20.w),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
                       ),
-                    )
-                  : Image.asset(
-                      width: 80.w,
-                      ImageStrings.perksLogo,
                     ),
-            ),
-          ),
-          if (isAction)
-            Positioned.fill(
-              right: 15.w,
-              child: GestureDetector(
-                onTap: onTapAction,
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: SvgIcon(
-                    icon: actionIcon,
-                    color: actionIconColor,
+                    child: SvgIcon(
+                      icon: IconStrings.arrowBack,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.seaShell,
+                        personalColor: AppColors.seaMist,
+                      ),
+                    ),
                   ),
                 ),
               ),
+            Positioned.fill(
+              left: leftPadTitle,
+              child: Align(
+                alignment: Alignment.center,
+                child: title != ''
+                    ? Text(
+                        title, // * title
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.publicSans(
+                          fontSize: 24.sp,
+                          fontWeight: FontWeight.w700,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                        ),
+                      )
+                    : Image.asset(
+                        width: 80.w,
+                        ImageStrings.perksLogo,
+                      ),
+              ),
             ),
-        ],
+            if (isAction)
+              Positioned.fill(
+                right: 15.w,
+                child: GestureDetector(
+                  onTap: onTapAction,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: SvgIcon(
+                      icon: actionIcon,
+                      color: actionIconColor,
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

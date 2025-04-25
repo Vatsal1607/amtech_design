@@ -42,9 +42,9 @@ class SubscriptionModifyRequestModel {
   }
 }
 
-// NEW
 class SubscriptionItem {
-  String? menuId;
+  // String? menuId;
+  String? menuIds; // Changed from menuId to menuIds
   String? itemName;
   List<Size>? size;
   List<Customization>? customize;
@@ -52,7 +52,8 @@ class SubscriptionItem {
   String? sId;
 
   SubscriptionItem({
-    this.menuId,
+    // this.menuId,
+    this.menuIds, // Updated constructor
     this.itemName,
     this.size,
     this.customize,
@@ -60,20 +61,11 @@ class SubscriptionItem {
     this.sId,
   });
 
-  // factory SubscriptionItem.fromSummary(summary.SubscriptionItem item) {
-  //   return SubscriptionItem(
-  //     menuId: item.menuId,
-  //     size: item.size,
-  //     mealSubscription: item.mealSubscription,
-  //     // meals: item.meals,
-  //     sId: item.sId,
-  //     itemName: item.itemName,
-  //     customize: item.customize,
-  //   );
-  // }
   factory SubscriptionItem.fromSummary(summary.SubscriptionItem item) {
     return SubscriptionItem(
-      menuId: item.menuId,
+      // menuId: item.menuId,
+      menuIds: item
+          .menuId, // Keep this as item.menuId if summary class still uses menuId
       itemName: item.itemName,
       sId: item.sId,
       size: item.size
@@ -110,7 +102,8 @@ class SubscriptionItem {
   }
 
   SubscriptionItem.fromJson(Map<String, dynamic> json) {
-    menuId = json['menuId'];
+    // menuId = json['menuId'];
+    menuIds = json['menuIds']; // updated from 'menuId'
     itemName = json['itemName'];
     if (json['size'] != null) {
       size = <Size>[];
@@ -135,7 +128,8 @@ class SubscriptionItem {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['menuId'] = menuId;
+    // data['menuId'] = menuId;
+    data['menuIds'] = menuIds; // updated from 'menuId'
     data['itemName'] = itemName;
     if (size != null) {
       data['size'] = size!.map((v) => v.toJson()).toList();
@@ -152,7 +146,6 @@ class SubscriptionItem {
   }
 }
 
-//NEW
 class Size {
   String? sizeId;
   String? sizeName;
@@ -178,7 +171,6 @@ class Size {
   }
 }
 
-//NEW
 class MealSubscription {
   final String day;
   String timeSlot;
@@ -204,7 +196,6 @@ class MealSubscription {
   }
 }
 
-// NEW
 class Customization {
   final List<Ingredient> ingredients;
   final List<AddOn> addOns;
@@ -231,7 +222,6 @@ class Customization {
   }
 }
 
-// NEW
 class Ingredient {
   final String ingredientId;
 

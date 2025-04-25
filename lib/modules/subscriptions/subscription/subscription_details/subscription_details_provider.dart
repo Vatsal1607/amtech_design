@@ -47,8 +47,7 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     debugPrint('focusedDate: $focused');
     //* Get the day name
     String dayName = DateFormat('EEEE').format(selectedDay);
-
-    getSubsDayDetails(subsId: subsId, day: dayName);
+    getSubsDayDetails(subsId: subsId, day: dayName); //* API call
     debugPrint('You tapped on $selectedDay, which is a $dayName');
     notifyListeners();
   }
@@ -171,7 +170,8 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     }
     // Create the updated item
     final updatedItem = modify.SubscriptionItem(
-      menuId: menuId,
+      // menuId: menuId,
+      menuIds: menuId,
       size: size,
       customize: customize,
       mealSubscription: meals,

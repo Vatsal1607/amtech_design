@@ -265,97 +265,260 @@ class RegisterPage extends StatelessWidget {
                                   ),
                                   child: Row(
                                     children: [
-                                      // Leading Icon (Outside the Dropdown)
-                                      const Padding(
-                                        padding: EdgeInsets.only(left: 15.0),
-                                        child: SvgIcon(
-                                          icon: IconStrings.property,
-                                        ),
-                                      ),
                                       Expanded(
                                         child: Consumer<RegisterProvider>(
-                                          builder: (context, value, child) =>
-                                              DropdownButton2<String>(
-                                            dropdownStyleData:
-                                                DropdownStyleData(
-                                              decoration: BoxDecoration(
-                                                color: AppColors.seaShell,
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        10), // Rounded corners
-                                                border: Border.all(
-                                                  color: Colors
-                                                      .grey, // Border color
-                                                  width: 1, // Border width
-                                                ),
-                                              ),
-                                            ),
-                                            value:
-                                                provider.selectedBusinessType,
-                                            isExpanded: true,
-                                            style: GoogleFonts.publicSans(
-                                              fontSize: 14.sp,
-                                              color: AppColors.white,
-                                            ),
-                                            hint: Text(
-                                              'Business Type',
-                                              style: GoogleFonts.publicSans(
-                                                fontSize: 14.sp,
-                                                color: AppColors.white,
-                                              ),
-                                            ),
-                                            items: provider.businessTypeItems
-                                                .map<DropdownMenuItem<String>>(
-                                                    (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(
-                                                  value,
-                                                  style: GoogleFonts.publicSans(
-                                                    fontSize: 14.sp,
-                                                    fontWeight: FontWeight.bold,
-                                                    color:
+                                          builder: (context, provider, child) =>
+                                              DropdownButtonHideUnderline(
+                                            child: DropdownButton2<String>(
+                                              value: provider
+                                                      .selectedBusinessType ??
+                                                  provider
+                                                      .businessTypeItems.first,
+                                              isExpanded: true,
+                                              customButton: Container(
+                                                height: 50.h,
+                                                width: 220.w,
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 15.w),
+                                                decoration: BoxDecoration(
+                                                  color: getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor:
                                                         AppColors.primaryColor,
+                                                    personalColor:
+                                                        AppColors.darkGreenGrey,
                                                   ),
+                                                  borderRadius: provider
+                                                          .isDropdownOpen
+                                                      ? BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  30.r),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  30.r),
+                                                        )
+                                                      : BorderRadius.circular(
+                                                          30.r),
                                                 ),
-                                              );
-                                            }).toList(),
-                                            underline: const SizedBox.shrink(),
-                                            onChanged:
-                                                provider.onChangeBusinessType,
-                                            iconStyleData: IconStyleData(
-                                              icon: Padding(
-                                                padding: EdgeInsets.only(
-                                                    right: 20.w),
-                                                child: const SvgIcon(
-                                                  icon: IconStrings.dropdown,
+                                                child: Row(
+                                                  children: [
+                                                    const SvgIcon(
+                                                      icon: IconStrings
+                                                          .property, // <-- Your leading icon here
+                                                    ),
+                                                    SizedBox(width: 10.w),
+                                                    Expanded(
+                                                      child: Text(
+                                                        provider.selectedBusinessType ??
+                                                            'Business Type',
+                                                        style: GoogleFonts
+                                                            .publicSans(
+                                                          color: Colors.white,
+                                                          fontSize: 16.sp,
+                                                        ),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                    ),
+                                                    const Icon(
+                                                      Icons.keyboard_arrow_down,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
-                                            selectedItemBuilder:
-                                                (BuildContext context) {
-                                              return provider.businessTypeItems
-                                                  .map<Widget>((String value) {
-                                                return Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    value,
-                                                    style:
-                                                        GoogleFonts.publicSans(
-                                                      fontSize: 14,
-                                                      color: Colors
-                                                          .white, // Style for the selected item
+                                              items: provider.businessTypeItems
+                                                  .map((String value) {
+                                                return DropdownMenuItem<String>(
+                                                  value: value,
+                                                  child: Padding(
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 8.h),
+                                                    child: Text(
+                                                      value,
+                                                      style: GoogleFonts
+                                                          .publicSans(
+                                                              color:
+                                                                  Colors.white),
                                                     ),
                                                   ),
                                                 );
-                                              }).toList();
-                                            },
+                                              }).toList(),
+                                              dropdownStyleData:
+                                                  DropdownStyleData(
+                                                maxHeight: 300.h,
+                                                // width: provider.isDropdownOpen
+                                                //     ? MediaQuery.of(context)
+                                                //             .size
+                                                //             .width *
+                                                //         0.9
+                                                //     : 220.w,
+                                                decoration: BoxDecoration(
+                                                  color: getColorAccountType(
+                                                    accountType: accountType,
+                                                    businessColor:
+                                                        AppColors.primaryColor,
+                                                    personalColor:
+                                                        AppColors.darkGreenGrey,
+                                                  ),
+                                                  borderRadius: provider
+                                                          .isDropdownOpen
+                                                      ? BorderRadius.circular(
+                                                          20.r)
+                                                      : BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  30.r),
+                                                          bottomRight:
+                                                              Radius.circular(
+                                                                  30.r),
+                                                        ),
+                                                ),
+                                                elevation: 0,
+                                                padding: EdgeInsets.zero,
+                                              ),
+                                              menuItemStyleData:
+                                                  MenuItemStyleData(
+                                                height: 40.h,
+                                              ),
+                                              onChanged: (String? newValue) {
+                                                provider
+                                                    .setSelectedBusinessType(
+                                                        newValue);
+                                              },
+                                              onMenuStateChange: (isOpen) {
+                                                provider
+                                                    .setDropdownState(isOpen);
+                                              },
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ],
                                   ),
+                                  // child: Row(
+                                  //   children: [
+                                  // Leading Icon (Outside the Dropdown)
+                                  // const Padding(
+                                  //   padding: EdgeInsets.only(left: 15.0),
+                                  //   child: SvgIcon(
+                                  //     icon: IconStrings.property,
+                                  //   ),
+                                  // ),
+                                  //     Expanded(
+                                  //       child: Consumer<RegisterProvider>(
+                                  //         builder: (context, value, child) =>
+                                  //             DropdownButtonHideUnderline(
+                                  //           child: DropdownButton2<String>(
+                                  //             value: provider
+                                  //                     .selectedBusinessType ??
+                                  //                 provider
+                                  //                     .businessTypeItems.first,
+                                  //             isExpanded: true,
+                                  //             menuItemStyleData:
+                                  //                 MenuItemStyleData(
+                                  //               height: 40.h,
+                                  //             ),
+                                  //             dropdownStyleData:
+                                  //                 DropdownStyleData(
+                                  //               maxHeight: 300.h,
+                                  //               decoration: BoxDecoration(
+                                  //                 color: getColorAccountType(
+                                  //                   accountType: accountType,
+                                  //                   businessColor:
+                                  //                       AppColors.primaryColor,
+                                  //                   personalColor:
+                                  //                       AppColors.darkGreenGrey,
+                                  //                 ),
+                                  //                 borderRadius: provider
+                                  //                         .isDropdownOpen
+                                  //                     ? BorderRadius.circular(
+                                  //                         20.r)
+                                  //                     : BorderRadius.only(
+                                  //                         bottomLeft:
+                                  //                             Radius.circular(
+                                  //                                 30.r),
+                                  //                         bottomRight:
+                                  //                             Radius.circular(
+                                  //                                 30.r),
+                                  //                       ),
+                                  //               ),
+                                  //               elevation: 0,
+                                  //               padding: EdgeInsets.zero,
+                                  //             ),
+                                  //             buttonStyleData: ButtonStyleData(
+                                  //               height: 50.h,
+                                  //               width: 220.w,
+                                  //               padding: EdgeInsets.symmetric(
+                                  //                   horizontal: 15.w),
+                                  //               decoration: BoxDecoration(
+                                  //                 color: getColorAccountType(
+                                  //                   accountType: accountType,
+                                  //                   businessColor:
+                                  //                       AppColors.primaryColor,
+                                  //                   personalColor:
+                                  //                       AppColors.darkGreenGrey,
+                                  //                 ),
+                                  //                 borderRadius: provider
+                                  //                         .isDropdownOpen
+                                  //                     ? BorderRadius.only(
+                                  //                         topLeft:
+                                  //                             Radius.circular(
+                                  //                                 30.r),
+                                  //                         topRight:
+                                  //                             Radius.circular(
+                                  //                                 30.r),
+                                  //                       )
+                                  //                     : BorderRadius.circular(
+                                  //                         30.r),
+                                  //               ),
+                                  //             ),
+                                  //             iconStyleData:
+                                  //                 const IconStyleData(
+                                  //               icon: Icon(
+                                  //                   Icons.keyboard_arrow_down,
+                                  //                   color: Colors.white),
+                                  //             ),
+                                  //             style: GoogleFonts.publicSans(
+                                  //               color: Colors.white,
+                                  //               fontSize: 16.sp,
+                                  //             ),
+                                  //             onChanged: (String? newValue) {
+                                  //               provider
+                                  //                   .setSelectedBusinessType(
+                                  //                       newValue);
+                                  //             },
+                                  //             onMenuStateChange: (isOpen) {
+                                  //               provider
+                                  //                   .setDropdownState(isOpen);
+                                  //             },
+                                  //             items: provider.businessTypeItems
+                                  //                 .map((String value) {
+                                  //               return DropdownMenuItem<String>(
+                                  //                 value: value,
+                                  //                 child: Padding(
+                                  //                   padding:
+                                  //                       EdgeInsets.symmetric(
+                                  //                           vertical: 8.h),
+                                  //                   child: Text(
+                                  //                     value,
+                                  //                     style: GoogleFonts
+                                  //                         .publicSans(
+                                  //                             color:
+                                  //                                 Colors.white),
+                                  //                   ),
+                                  //                 ),
+                                  //               );
+                                  //             }).toList(),
+                                  //           ),
+                                  //         ),
+
+                                  //       ),
+                                  //     ),
+                                  //   ],
+                                  // ),
                                 ),
 
                                 //* Dropdown of Business property status
@@ -633,3 +796,82 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
+
+//* OLD businesstype
+                                          //     DropdownButton2<String>(
+                                          //   dropdownStyleData:
+                                          //       DropdownStyleData(
+                                          //     decoration: BoxDecoration(
+                                          //       color: AppColors.seaShell,
+                                          //       borderRadius:
+                                          //           BorderRadius.circular(
+                                          //               10), // Rounded corners
+                                          //       border: Border.all(
+                                          //         color: Colors
+                                          //             .grey, // Border color
+                                          //         width: 1, // Border width
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          //   value:
+                                          //       provider.selectedBusinessType,
+                                          //   isExpanded: true,
+                                          //   style: GoogleFonts.publicSans(
+                                          //     fontSize: 14.sp,
+                                          //     color: AppColors.white,
+                                          //   ),
+                                          //   hint: Text(
+                                          //     'Business Type',
+                                          //     style: GoogleFonts.publicSans(
+                                          //       fontSize: 14.sp,
+                                          //       color: AppColors.white,
+                                          //     ),
+                                          //   ),
+                                          //   items: provider.businessTypeItems
+                                          //       .map<DropdownMenuItem<String>>(
+                                          //           (String value) {
+                                          //     return DropdownMenuItem<String>(
+                                          //       value: value,
+                                          //       child: Text(
+                                          //         value,
+                                          //         style: GoogleFonts.publicSans(
+                                          //           fontSize: 14.sp,
+                                          //           fontWeight: FontWeight.bold,
+                                          //           color:
+                                          //               AppColors.primaryColor,
+                                          //         ),
+                                          //       ),
+                                          //     );
+                                          //   }).toList(),
+                                          //   underline: const SizedBox.shrink(),
+                                          //   onChanged:
+                                          //       provider.onChangeBusinessType,
+                                          //   iconStyleData: IconStyleData(
+                                          //     icon: Padding(
+                                          //       padding: EdgeInsets.only(
+                                          //           right: 20.w),
+                                          //       child: const SvgIcon(
+                                          //         icon: IconStrings.dropdown,
+                                          //       ),
+                                          //     ),
+                                          //   ),
+                                          //   selectedItemBuilder:
+                                          //       (BuildContext context) {
+                                          //     return provider.businessTypeItems
+                                          //         .map<Widget>((String value) {
+                                          //       return Align(
+                                          //         alignment:
+                                          //             Alignment.centerLeft,
+                                          //         child: Text(
+                                          //           value,
+                                          //           style:
+                                          //               GoogleFonts.publicSans(
+                                          //             fontSize: 14,
+                                          //             color: Colors
+                                          //                 .white, // Style for the selected item
+                                          //           ),
+                                          //         ),
+                                          //       );
+                                          //     }).toList();
+                                          //   },
+                                          // ),

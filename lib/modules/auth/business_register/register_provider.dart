@@ -53,17 +53,40 @@ class RegisterProvider extends ChangeNotifier {
   }
 
   String? selectedBusinessType;
-  List<String> businessTypeItems = [
-    'Sole Proprietorship',
-    '⁠Partnership',
-    '⁠Limited Liability Partnership (LLP)',
-    '⁠Limited Liability Company (LLC)',
-    '⁠Private Limited Company',
-  ];
+  // List<String> businessTypeItems = [
+  //   'Sole Proprietorship',
+  //   '⁠Partnership',
+  //   '⁠Limited Liability Partnership (LLP)',
+  //   '⁠Limited Liability Company (LLC)',
+  //   '⁠Private Limited Company',
+  // ];
   onChangeBusinessType(String? newValue) {
     selectedBusinessType = newValue;
     notifyListeners();
   }
+
+  // Business type start
+  List<String> businessTypeItems = [
+    'Sole Proprietorship',
+    'Partnership',
+    'Limited Liability Partnership (LLP)',
+    'Limited Liability Company (LLC)',
+    'Private Limited Company',
+  ];
+
+  bool isDropdownOpen = false;
+
+  void setSelectedBusinessType(String? value) {
+    selectedBusinessType = value;
+    notifyListeners();
+  }
+
+  void setDropdownState(bool isOpen) {
+    isDropdownOpen = isOpen;
+    notifyListeners();
+  }
+
+  // Business type end
 
   String? businessMobileErrorText;
   String? businessAddressErrorText;

@@ -1,4 +1,4 @@
-package com.example.amtech_design
+package com.nexora.app.degrees135
 
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugins.GeneratedPluginRegistrant

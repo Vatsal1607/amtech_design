@@ -29,6 +29,10 @@ class SocketEvents {
   static const String orderReceive = 'order-receive';
   static const String getOrderStatusEmit = 'get-order-status';
   static const String orderStatusResponseListen = 'order-status-response';
+  static const String getAllOrderStatusesEmit = 'get-all-order-statuses';
+  static const String allOrderStatusesResponseListen =
+      'all-order-statuses-response';
+  //
   static const String userLocation = 'user-location';
   static const String realTimeLocationUpdate = 'real-time-location-update';
   static const String userConnected = 'user-connected';

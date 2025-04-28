@@ -44,7 +44,7 @@ class ApiService {
 
   ApiService() {
     final dio = Dio();
-    dio.interceptors.add(DioInterceptor());
+    dio.interceptors.add(DioInterceptor(dio));
     apiClient = ApiClient(dio);
   }
 

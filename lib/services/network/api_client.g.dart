@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://node-517461825507.asia-south1.run.app/';
+    baseUrl ??= 'http://192.168.1.9:9000/';
   }
 
   final Dio _dio;

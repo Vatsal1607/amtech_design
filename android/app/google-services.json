@@ -23,6 +23,44 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768156680566:android:71e6edbbf2ded885cfba57",
+        "android_client_info": {
+          "package_name": "com.amtechdesign.degrees_runners"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeJ3r_1CHjAc6IC8EhQeb2PKJjd9InpVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:768156680566:android:817e3a9c9ac1b467cfba57",
+        "android_client_info": {
+          "package_name": "com.nexora.app.degrees135"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeJ3r_1CHjAc6IC8EhQeb2PKJjd9InpVA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"

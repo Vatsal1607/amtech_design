@@ -32,10 +32,6 @@ class OrderStatusProvider extends ChangeNotifier {
                 data['data'] == 'Accepted by DeliveryBoy'
             ? data['data']
             : data['currentStatus'] ?? data['data'];
-
-        // final statusFromApi = data.containsKey('currentStatus')
-        //     ? data['currentStatus']
-        //     : data['data'];
         // final statusFromApi = data['data'];
         orderStatusEnum = OrderStatusExtension.fromString(statusFromApi);
         // debugPrint(
@@ -70,6 +66,13 @@ class OrderStatusProvider extends ChangeNotifier {
         log('Error parsing socket data OrderStatus: $e');
       }
     });
+  }
+
+  bool isBack = false;
+
+  void setIsBack(bool value) {
+    isBack = value;
+    notifyListeners();
   }
 
   @override

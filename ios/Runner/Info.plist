@@ -39,36 +39,36 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSApplicationCategoryType</key>
-	<string></string>
-	<key>LSRequiresIPhoneOS</key>
-	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera to allow you to take pictures of documents for user verification.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library to allow you to upload documents for user verification.</string>
-	<key>NSDeviceInfoUsageDescription</key>
-	<string>Required to access device information for push notifications and personalized messaging.</string>
-	<key>IOAppUsageDescription</key>
-	<string>This app requires access to your location to provide delivery services.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location to show nearby products and deliver them to you.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>We need your location to ensure accurate delivery tracking even when the app is in the background.</string>
 	<key>GoogleMapsAPIKey</key>
 	<string>AIzaSyAB3k8_wpskZUUB3sxRBrIZW07tQ8lSgZI</string>
 	<key>IOAppKeys</key>
 	<dict>
-	<key>GMSApiKey</key>
-	<string>AIzaSyAB3k8_wpskZUUB3sxRBrIZW07tQ8lSgZI</string>
+		<key>GMSApiKey</key>
+		<string>AIzaSyAB3k8_wpskZUUB3sxRBrIZW07tQ8lSgZI</string>
 	</dict>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<key>IOAppUsageDescription</key>
+	<string>This app requires access to your location to provide delivery services.</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
+	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to your camera to allow you to take pictures of documents for user verification.</string>
+	<key>NSDeviceInfoUsageDescription</key>
+	<string>Required to access device information for push notifications and personalized messaging.</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to ensure accurate delivery tracking even when the app is in the background.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show nearby products and deliver them to you.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We need access to your photo library to allow you to upload documents for user verification.</string>
+	<key>UIApplicationSupportsIndirectInputEvents</key>
+	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

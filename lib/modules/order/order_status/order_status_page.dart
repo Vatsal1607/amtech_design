@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
@@ -22,6 +24,7 @@ class OrderStatusPage extends StatefulWidget {
 }
 
 class _OrderStatusPageState extends State<OrderStatusPage> {
+  // bool isBack = false;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -31,6 +34,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
       final args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       String orderId = args?['orderId'] ?? '';
+      provider.setIsBack(args?['isBack'] ?? false);
       provider.emitAndListenOrderStatus(socketProvider, orderId);
     });
     super.initState();
@@ -40,6 +44,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    final isBack = context.watch<OrderStatusProvider>().isBack;
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -49,7 +54,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
       appBar: CustomAppbarWithCenterTitle(
         accountType: accountType,
         title: 'Order',
-        isBack: false,
+        isBack: isBack,
       ),
       body: Stack(
         children: [

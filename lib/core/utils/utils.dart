@@ -6,7 +6,6 @@ class Utils {
     try {
       // Parse the DateTime string
       DateTime dateTime = DateTime.parse(dateTimeString).toLocal();
-
       // Format the time as hh:mm a
       return DateFormat('h:mm a').format(dateTime);
     } catch (e) {

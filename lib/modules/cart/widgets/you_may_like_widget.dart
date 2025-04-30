@@ -19,7 +19,7 @@ class YouMayLikeWidget extends StatelessWidget {
       width: 100.w,
       decoration: BoxDecoration(
         border: Border.all(
-            width: 2,
+            width: 2.w,
             color: getColorAccountType(
               accountType: accountType,
               businessColor: AppColors.primaryColor,
@@ -77,34 +77,35 @@ class YouMayLikeWidget extends StatelessWidget {
                       ),
                     ),
                   ),
-                  SizedBox(height: 4.h),
-                  Container(
-                    height: 20.h,
-                    width: 72.0,
-                    margin: EdgeInsets.only(bottom: 6.h),
-                    decoration: BoxDecoration(
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.disabledColor,
-                        personalColor: AppColors.bayLeaf,
-                      ),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'ADD +',
-                        style: GoogleFonts.publicSans(
-                          fontSize: 10.sp,
-                          fontWeight: FontWeight.bold,
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.primaryColor,
-                            personalColor: AppColors.darkGreenGrey,
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
+                  SizedBox(height: 14.h),
+                  //* Add button UI
+                  // Container(
+                  //   height: 20.h,
+                  //   width: 72.0,
+                  //   margin: EdgeInsets.only(bottom: 6.h),
+                  //   decoration: BoxDecoration(
+                  //     color: getColorAccountType(
+                  //       accountType: accountType,
+                  //       businessColor: AppColors.disabledColor,
+                  //       personalColor: AppColors.bayLeaf,
+                  //     ),
+                  //     borderRadius: BorderRadius.circular(10.r),
+                  //   ),
+                  //   child: Center(
+                  //     child: Text(
+                  //       'ADD +',
+                  //       style: GoogleFonts.publicSans(
+                  //         fontSize: 10.sp,
+                  //         fontWeight: FontWeight.bold,
+                  //         color: getColorAccountType(
+                  //           accountType: accountType,
+                  //           businessColor: AppColors.primaryColor,
+                  //           personalColor: AppColors.darkGreenGrey,
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
             ),

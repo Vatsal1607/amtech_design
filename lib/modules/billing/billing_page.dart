@@ -9,9 +9,10 @@ import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
 import '../../custom_widgets/bottom_blur_on_page.dart';
 import '../../custom_widgets/select_order_date.dart';
+import '../../models/billing_model.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'billing_provider.dart';
-import 'widgets/billing_card_widgets.dart';
+import 'widgets/billing_card_widget.dart';
 
 class BillingPage extends StatefulWidget {
   final ScrollController scrollController;
@@ -56,7 +57,7 @@ class _BillingPageState extends State<BillingPage> {
                       EdgeInsets.symmetric(vertical: 20.h, horizontal: 32.w),
                   child: Column(
                     children: [
-                      //* Select Billing Date ROW
+                      //* Select Date Range ROW
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -108,6 +109,7 @@ class _BillingPageState extends State<BillingPage> {
                             ),
                           ),
                           SizedBox(width: 10.w),
+                          //* Reset button (DateRange)
                           GestureDetector(
                             onTap: provider.resetSelectedDates,
                             child: Container(
@@ -122,7 +124,13 @@ class _BillingPageState extends State<BillingPage> {
                       // * Billing card widget
                       Consumer<BillingProvider>(
                         builder: (context, _, child) => provider.isLoading
-                            ? const CustomLoader()
+                            ? CustomLoader(
+                                backgroundColor: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                              )
                             : NotificationListener(
                                 onNotification:
                                     (ScrollNotification scrollInfo) {
@@ -137,21 +145,41 @@ class _BillingPageState extends State<BillingPage> {
                                   }
                                   return false;
                                 },
-                                child: ListView.separated(
-                                  padding: EdgeInsets.zero,
+                                //* ListView
+                                child: ListView(
+                                  physics: const ClampingScrollPhysics(),
                                   shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  // itemCount: provider.billingList.length,
-                                  itemCount: 5,
-                                  separatorBuilder: (context, index) =>
-                                      SizedBox(height: 20.h),
-                                  itemBuilder: (context, index) {
+                                  padding: EdgeInsets.zero,
+                                  children: provider.groupedBillingList.entries
+                                      .where((entry) => entry.value
+                                          .isNotEmpty) // Skip empty groups
+                                      .map((entry) {
+                                    final String period = entry.key;
+                                    final List<Invoice> invoices = entry.value;
+
                                     return BillingCardWidget(
                                       accountType: accountType,
-                                      // billingList: provider.billingList,
+                                      period: period,
+                                      invoices: invoices,
                                     );
-                                  },
+                                  }).toList(),
                                 ),
+
+                                // OLD
+                                // child: ListView.separated(
+                                //   padding: EdgeInsets.zero,
+                                //   shrinkWrap: true,
+                                //   physics: const NeverScrollableScrollPhysics(),
+                                //   itemCount: provider.billingList.length,
+                                //   separatorBuilder: (context, index) =>
+                                //       SizedBox(height: 20.h),
+                                //   itemBuilder: (context, index) {
+                                //     return BillingCardWidget(
+                                //       accountType: accountType,
+                                //       billingList: provider.billingList,
+                                //     );
+                                //   },
+                                // ),
                               ),
                       ),
                     ],

@@ -182,7 +182,11 @@ abstract class ApiClient {
 
   @GET(ApiEndpoints.billingList)
   Future<BillingModel> billingList(
-    @Body() Map<String, dynamic> body,
+    @Query("page") int? currentPage,
+    @Query("limit") int? limit,
+    @Query("userId") String userId,
+    @Query("startDate") String? startDate,
+    @Query("endDate") String? endDate,
   );
 
   @GET('${ApiEndpoints.businessDetails}/{userId}')

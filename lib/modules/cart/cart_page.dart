@@ -4,7 +4,6 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
-import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
@@ -107,11 +106,6 @@ class _CartPageState extends State<CartPage> {
                           // Keep popping until the condition is met
                           return route.settings.name == Routes.bottomBarPage;
                         });
-                        showCartSnackbar(
-                          context: context,
-                          message: 'This is the msg',
-                          items: 'items',
-                        );
                       },
                       child: Container(
                         margin: EdgeInsets.symmetric(horizontal: 32.w),
@@ -211,19 +205,23 @@ class _CartPageState extends State<CartPage> {
                           SizedBox(height: 15.h),
                           SizedBox(
                             height: 100.h,
-                            child: ListView.separated(
-                              itemCount: 4,
-                              shrinkWrap: true,
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.symmetric(horizontal: 21.w),
-                              separatorBuilder: (context, index) {
-                                return SizedBox(width: 21.w);
-                              },
-                              itemBuilder: (context, index) {
-                                return YouMayLikeWidget(
-                                  accountType: accountType,
-                                );
-                              },
+                            child: Consumer<MenuProvider>(
+                              builder: (context, provider, child) =>
+                                  ListView.separated(
+                                // itemCount: provider.menuCategories.length,
+                                itemCount: 3,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(horizontal: 21.w),
+                                separatorBuilder: (context, index) {
+                                  return SizedBox(width: 21.w);
+                                },
+                                itemBuilder: (context, index) {
+                                  return YouMayLikeWidget(
+                                    accountType: accountType,
+                                  );
+                                },
+                              ),
                             ),
                           )
                         ],
@@ -245,7 +243,7 @@ class _CartPageState extends State<CartPage> {
                         builder: (context, _, child) => Theme(
                           data: Theme.of(context).copyWith(
                             splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
+                            dividerColor: Colors.transparent,
                           ),
                           child: ExpansionTile(
                             onExpansionChanged: provider.onExpansionChanged,

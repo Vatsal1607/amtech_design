@@ -242,8 +242,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
           sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
       String accountType =
           sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-      final ingredientsProvider =
-          Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
       // ! Request data
       final requestData = SubscriptionCreateRequestModel(
         userId: userId,
@@ -251,7 +249,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         items: subsItems, //* Subscription itemList
         price: selectedPrice,
         units: selectedUnits,
-        notes: ingredientsProvider.noteController.text,
         paymentMethod: 'paymentMethod',
         paymentStatus: true,
       );
@@ -284,6 +281,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     Size? size,
     List<MealSubscription>? meals,
     List<Customization>? customize,
+    String? notes,
   }) {
     log('addSubsItem called');
     subsItems.add(
@@ -292,6 +290,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         size: size,
         mealSubscription: meals,
         customize: customize,
+        notes: notes,
       ),
     );
     notifyListeners();
@@ -303,9 +302,8 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     List<MealSubscription>? meals,
     List<Customization>? customize,
     required String day,
+    String? notes,
   }) {
-    log('updateSubsItem called');
-
     // Find the index of the item to update based on the day
     int updateIndex = subsItems.indexWhere((item) =>
         item.mealSubscription?.any((meal) => meal.day == day) ?? false);
@@ -317,6 +315,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         size: size,
         mealSubscription: meals,
         customize: customize,
+        notes: notes,
       );
     } else {
       // Add a new item if no matching day is found
@@ -385,7 +384,7 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         items: subsItems,
         price: selectedPrice,
         units: selectedUnits,
-        notes: ingredientsProvider.noteController.text,
+        // notes: ingredientsProvider.noteController.text,
         paymentMethod: 'paymentMethod',
         paymentStatus: true,
         createdAt: createdAtDate,

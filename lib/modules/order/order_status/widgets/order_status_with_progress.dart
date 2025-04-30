@@ -147,42 +147,56 @@ class OrderStatusWithProgressWidget extends StatelessWidget {
             ),
             thickness: 2,
           ),
-          Theme(
-            data: Theme.of(context).copyWith(
-              dividerColor: Colors.transparent,
-            ),
-            child: ExpansionTile(
-              minTileHeight: 20.h,
-              title: Text(
-                'View Order Details',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.publicSans(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.bold,
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
+          Consumer<OrderStatusProvider>(
+            builder: (context, provider, child) => Theme(
+              data: Theme.of(context).copyWith(
+                dividerColor: Colors.transparent,
+              ),
+              child: ExpansionTile(
+                minTileHeight: 20.h,
+                title: Text(
+                  'View Order Details',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.publicSans(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
+                iconColor: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+                collapsedIconColor: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+                children: provider.orderResponse?.items.map((item) {
+                      final itemName = item.itemName;
+                      final quantity = item.quantity;
+                      return Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.w, vertical: 4.h),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            '$quantity x $itemName',
+                            style: GoogleFonts.publicSans(
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      );
+                    }).toList() ??
+                    [],
               ),
-              iconColor: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
-              ),
-              collapsedIconColor: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
-              ),
-              children: const [
-                Text('data 1'),
-                Text('data 2'),
-              ],
             ),
           ),
-          // SizedBox(height: 50.h),
         ],
       ),
     );

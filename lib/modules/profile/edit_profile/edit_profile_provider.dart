@@ -16,16 +16,9 @@ class EditProfileProvider extends ChangeNotifier {
 
   TextEditingController personalFirstNameController = TextEditingController();
   TextEditingController personalLastNameController = TextEditingController();
-  // TextEditingController personalMobileController = TextEditingController();
-  // TextEditingController personalAddressController = TextEditingController();
 
   final ApiService apiService = ApiService();
   bool isDetailsLoading = false;
-
-  // EditProfileProvider() {
-  //   getBusinessDetails(); //* API
-  //   getPersonalDetails(); //* API
-  // }
 
   GetBusinessDetailsModel? detailsResponse;
   GetPersonalDetailsModel? personalDetailsResponse;

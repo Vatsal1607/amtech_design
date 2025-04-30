@@ -24,6 +24,25 @@ class Utils {
     }
   }
 
+  // Dynamic above format
+  String convertIsoToFormattedDateDynamic(dynamic isoDate) {
+    try {
+      DateTime dateTime;
+
+      if (isoDate is DateTime) {
+        dateTime = isoDate.toLocal();
+      } else if (isoDate is String) {
+        dateTime = DateTime.parse(isoDate).toLocal();
+      } else {
+        return "Invalid date";
+      }
+
+      return DateFormat("M/d/yyyy hh:mma").format(dateTime).toLowerCase();
+    } catch (e) {
+      return "Invalid date";
+    }
+  }
+
   // DateFormat: dd/MM/yyyy
   static String formatDate(DateTime? date) {
     if (date == null) return '';

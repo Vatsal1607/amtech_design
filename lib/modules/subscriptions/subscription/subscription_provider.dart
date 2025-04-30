@@ -18,6 +18,7 @@ class SubscriptionProvider extends ChangeNotifier {
   // *  GetSubsList API
   Future<void> getSubsList(BuildContext context) async {
     isLoading = true;
+    notifyListeners();
     try {
       String userId =
           sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';

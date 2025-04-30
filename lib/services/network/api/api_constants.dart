@@ -1,6 +1,8 @@
 class BaseUrl {
-  static const String apiBaseUrl = 'http://192.168.1.9:9000/';
-  static const String socketBaseUrl = 'http://192.168.1.9:3000/';
+  static const String apiBaseUrl = 'http://192.168.127.67:9000/'; //* personal
+  static const String socketBaseUrl = 'http://192.168.127.67:3000/';
+  // static const String apiBaseUrl = 'http://192.168.1.9:9000/'; //* local
+  // static const String socketBaseUrl = 'http://192.168.1.9:3000/';
   // static const String apiBaseUrl =
   //     'https://node-517461825507.asia-south1.run.app/'; // Dev server
   // static const String socketBaseUrl =

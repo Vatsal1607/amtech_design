@@ -15,8 +15,6 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/models/subscription_create_request_model.dart'
     as subscription;
-import 'package:amtech_design/models/subscription_summary_model.dart'
-    as summary;
 import 'package:amtech_design/models/subscription_modify_request_model.dart'
     as modify;
 import '../../../../models/home_menu_model.dart' as home;
@@ -291,6 +289,7 @@ Future<void> showIngredientsBottomSheeet({
                               addOns: ingredientsProvider.getSelectedAddOns(),
                             ),
                           ],
+                          notes: ingredientsProvider.noteController.text,
                         );
                       } else {
                         //* Subscription create Add items depends on selected days
@@ -318,6 +317,7 @@ Future<void> showIngredientsBottomSheeet({
                               addOns: ingredientsProvider.getSelectedAddOns(),
                             ),
                           ],
+                          notes: ingredientsProvider.noteController.text,
                         );
                       }
                       // Reset addOnsQuantity
@@ -329,6 +329,7 @@ Future<void> showIngredientsBottomSheeet({
                     }
                     // Reset addOnsQuantity
                     ingredientsProvider.addOnsQuantity = {};
+                    ingredientsProvider.noteController.clear(); //* Clear note
                     final provider = Provider.of<SelectMealBottomsheetProvider>(
                         context,
                         listen: false);

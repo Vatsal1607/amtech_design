@@ -4,7 +4,7 @@ class SubscriptionCreateRequestModel {
   final List<SubscriptionItem> items;
   final double price;
   final String units;
-  final String notes;
+  // final String notes; // replaced with particular item note
   final String paymentMethod;
   final bool paymentStatus;
   final DateTime? createdAt;
@@ -16,7 +16,7 @@ class SubscriptionCreateRequestModel {
     required this.items,
     required this.price,
     required this.units,
-    required this.notes,
+    // required this.notes,
     required this.paymentMethod,
     required this.paymentStatus,
     this.createdAt,
@@ -30,7 +30,7 @@ class SubscriptionCreateRequestModel {
       "items": items.map((item) => item.toJson()).toList(),
       "price": price,
       "units": units,
-      "notes": notes,
+      // "notes": notes,
       "paymentMethod": paymentMethod,
       "paymentStatus": paymentStatus,
       "createdAt": createdAt?.toIso8601String(),
@@ -44,12 +44,14 @@ class SubscriptionItem {
   final Size? size;
   final List<MealSubscription>? mealSubscription;
   final List<Customization>? customize;
+  final String? notes; // ✅ newly added here
 
   SubscriptionItem({
     required this.menuIds,
     this.size,
     this.mealSubscription,
     this.customize,
+    this.notes,
   });
 
   Map<String, dynamic> toJson() {
@@ -58,6 +60,7 @@ class SubscriptionItem {
       "size": size?.toJson(),
       "mealSubscription": mealSubscription?.map((m) => m.toJson()).toList(),
       "customize": customize?.map((c) => c.toJson()).toList(),
+      "notes": notes,
     };
   }
 }

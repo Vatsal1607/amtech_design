@@ -66,7 +66,7 @@ class OrderListStatusWidget extends StatelessWidget {
                   OrderStatus currentStatusEnum =
                       provider.getOrderStatusFromString(currentStatus);
                   return ProgressLineWidget(
-                    value: currentStatusEnum.index >= OrderStatus.prepared.index
+                    value: currentStatusEnum.index > OrderStatus.prepared.index
                         ? 1.0
                         : 0.0,
                   );
@@ -82,7 +82,7 @@ class OrderListStatusWidget extends StatelessWidget {
                     accountType: accountType,
                     icon: IconStrings.orderStatus2,
                     isActive:
-                        currentStatusEnum.index >= OrderStatus.prepared.index,
+                        currentStatusEnum.index > OrderStatus.prepared.index,
                   );
                 },
               ),

@@ -111,25 +111,26 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
         'currentLocation long ${gMapProvider.currentLocation?.longitude}',
         wrapWidth: 1024);
     return Scaffold(
-      appBar: CustomAppbarWithCenterTitle(
+      appBar: const CustomAppbarWithCenterTitle(
         title: 'Change Location',
         accountType: accountType,
         //! TEMP action icon
-        isAction: true,
-        actionIcon: IconStrings.info,
-        onTapAction: () {
-          showCustomInfoDialog(
-            context: context,
-            accountType: accountType,
-            message:
-                "Sorry, We Are Currently Not Available To Your Selected Location.",
-          );
-        },
+        // isAction: true,
+        // actionIcon: IconStrings.info,
+        // onTapAction: () {
+        //   showCustomInfoDialog(
+        //     context: context,
+        //     accountType: accountType,
+        //     message:
+        //         "Sorry, We Are Currently Not Available To Your Selected Location.",
+        //   );
+        // },
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(
-          vertical: 20.h,
-          horizontal: 32.w,
+        padding: EdgeInsets.only(
+          top: 20.h,
+          left: 32.w,
+          right: 32.w,
         ),
         child: SingleChildScrollView(
           child: Column(

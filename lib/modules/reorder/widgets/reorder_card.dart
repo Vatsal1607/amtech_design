@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:developer' as dev;
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -17,10 +18,12 @@ import '../../../routes.dart';
 class ReorderCardWidget extends StatelessWidget {
   final String accountType;
   final ReOrders reorder;
+  final int index;
   const ReorderCardWidget({
     super.key,
     required this.accountType,
     required this.reorder,
+    required this.index,
   });
 
   @override
@@ -131,7 +134,7 @@ class ReorderCardWidget extends StatelessWidget {
           bottom: 25.h,
           // * Reorder Button
           child: GestureDetector(
-            onTap: () {
+            onTap: () async {
               List<RequestItems>? requestItemsList = reorder.items
                   ?.map((item) => RequestItems(
                         menuId: item.menuId,
@@ -149,10 +152,14 @@ class ReorderCardWidget extends StatelessWidget {
                     menuId: '',
                     sizeId: '',
                     size: '',
+                    index: index,
                     items: requestItemsList,
                     callback: (isSuccess) {
-                      debugPrint('$isSuccess');
-                      Navigator.pushNamed(context, Routes.cart);
+                      if (isSuccess) {
+                        Navigator.pushNamed(context, Routes.cart);
+                      } else {
+                        dev.log('isSuccess: $isSuccess');
+                      }
                     },
                   );
             },
@@ -168,38 +175,44 @@ class ReorderCardWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30.r),
               ),
               child: Consumer<MenuProvider>(
-                builder: (context, menuProvider, child) =>
-                    menuProvider.isLoadingAddToCart
-                        ? const CustomLoader(
+                  builder: (context, menuProvider, child) {
+                final isIndexLoading = menuProvider.isIndexLoading(index);
+                return isIndexLoading
+                    ? Center(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 3.h),
+                          child: const CustomLoader(
                             backgroundColor: AppColors.primaryColor,
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgIcon(
-                                icon: IconStrings.reorderBtn,
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                              ),
-                              SizedBox(width: 4.w),
-                              Text(
-                                'REORDER',
-                                style: GoogleFonts.publicSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 12.sp,
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.primaryColor,
-                                    personalColor: AppColors.darkGreenGrey,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
-              ),
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgIcon(
+                            icon: IconStrings.reorderBtn,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          Text(
+                            'REORDER',
+                            style: GoogleFonts.publicSans(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.sp,
+                              color: getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+              }),
             ),
           ),
         ),

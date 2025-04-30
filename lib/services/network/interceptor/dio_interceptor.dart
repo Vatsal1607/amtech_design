@@ -12,18 +12,18 @@ import '../../../models/api_global_model.dart';
 import '../../../modules/profile/profile_provider.dart';
 
 class DioInterceptor extends Interceptor {
-  //* Todo remove proxy unaware
+  // Todo remove proxy unaware
   // proxy unaware apk start
-  Dio dio;
-  DioInterceptor(this.dio);
+  // Dio dio;
+  // DioInterceptor(this.dio);
   // Initialize dio to accept all certificates (proxy-unaware)
-  void _setupDio() {
-    dio.httpClientAdapter = DefaultHttpClientAdapter()
-      ..onHttpClientCreate = (client) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-      };
-  }
+  // void _setupDio() {
+  //   dio.httpClientAdapter = DefaultHttpClientAdapter()
+  //     ..onHttpClientCreate = (client) {
+  //       client.badCertificateCallback =
+  //           (X509Certificate cert, String host, int port) => true;
+  //     };
+  // }
   // proxy unaware apk end
 
   @override
@@ -36,7 +36,7 @@ class DioInterceptor extends Interceptor {
           'Bearer ${sharedPrefsService.getString(SharedPrefsKeys.userToken)}',
     });
     // Ensure the Dio client is set up for proxy interception
-    _setupDio();
+    // _setupDio(); //! Unaware proxy
     handler.next(options);
   }
 

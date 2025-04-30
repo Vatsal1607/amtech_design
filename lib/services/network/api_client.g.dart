@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://192.168.1.9:9000/';
+    baseUrl ??= 'http://192.168.127.67:9000/';
   }
 
   final Dio _dio;
@@ -905,12 +905,24 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<BillingModel> billingList(Map<String, dynamic> body) async {
+  Future<BillingModel> billingList(
+    int? currentPage,
+    int? limit,
+    String userId,
+    String? startDate,
+    String? endDate,
+  ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'page': currentPage,
+      r'limit': limit,
+      r'userId': userId,
+      r'startDate': startDate,
+      r'endDate': endDate,
+    };
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<BillingModel>(Options(
       method: 'GET',
       headers: _headers,

@@ -1,7 +1,6 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/utils.dart';
-import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +44,7 @@ class _SubscriptionCartDetailsWidgetState
         children: [
           Consumer<SubscriptionCartProvider>(
             builder: (context, provider, child) => _buildDetailRow(
+              accountType: widget.accountType,
               icon: Icons.calendar_today,
               onTapChange: () {
                 provider.pickStartDate(context);
@@ -54,6 +54,7 @@ class _SubscriptionCartDetailsWidgetState
             ),
           ),
           _buildDetailRow(
+            accountType: widget.accountType,
             isChange: false,
             icon: Icons.phone,
             title: '${sharedPrefsService.getString(SharedPrefsKeys.userName)}',
@@ -62,6 +63,7 @@ class _SubscriptionCartDetailsWidgetState
           ),
           Consumer<SubscriptionCartProvider>(
             builder: (context, provider, child) => _buildDetailRow(
+              accountType: widget.accountType,
               onTapChange: () async {
                 await Navigator.pushNamed(context, Routes.googleMapPage);
                 await widget.provider.loadAddress();
@@ -87,8 +89,8 @@ class _SubscriptionCartDetailsWidgetState
               fontWeight: FontWeight.bold,
               color: getColorAccountType(
                 accountType: widget.accountType,
-                businessColor: AppColors.disabledColor,
-                personalColor: AppColors.bayLeaf,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
               ),
             ),
           ),
@@ -99,8 +101,8 @@ class _SubscriptionCartDetailsWidgetState
               fontSize: 14.sp,
               color: getColorAccountType(
                 accountType: widget.accountType,
-                businessColor: AppColors.disabledColor,
-                personalColor: AppColors.bayLeaf,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
               ),
             ),
           ),
@@ -117,13 +119,22 @@ class _SubscriptionCartDetailsWidgetState
     String? highlightText,
     bool isChange = true,
     VoidCallback? onTapChange,
+    required String accountType,
   }) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, size: 22, color: AppColors.disabledColor),
+          Icon(
+            icon,
+            size: 22,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            ),
+          ),
           SizedBox(width: 10.w),
           Expanded(
             child: Column(
@@ -140,7 +151,11 @@ class _SubscriptionCartDetailsWidgetState
                       TextSpan(
                           text: title,
                           style: GoogleFonts.publicSans(
-                            color: AppColors.disabledColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                           )),
                       if (highlightText != null)
                         TextSpan(
@@ -155,7 +170,13 @@ class _SubscriptionCartDetailsWidgetState
                 Text(
                   subtitle,
                   style: GoogleFonts.publicSans(
-                      fontSize: 14.sp, color: AppColors.disabledColor),
+                    fontSize: 14.sp,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -167,7 +188,11 @@ class _SubscriptionCartDetailsWidgetState
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 12.h, vertical: 6.h),
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                   borderRadius: BorderRadius.circular(20.r),
                 ),
                 child: Text(

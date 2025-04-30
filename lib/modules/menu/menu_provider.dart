@@ -66,11 +66,6 @@ class MenuProvider extends ChangeNotifier {
     return true;
   }
 
-  // final List<String> banners = [
-  //   ImageStrings.healthFirstBanner,
-  //   ImageStrings.healthFirstBanner,
-  // ];
-
   List<String> banners = [];
   List<BannersData> bannersData = [];
 
@@ -98,6 +93,11 @@ class MenuProvider extends ChangeNotifier {
     } else {
       return "Good Evening,";
     }
+  }
+
+  Future<void> handleRefresh() async {
+    await homeMenuApi();
+    await getBanner();
   }
 
   String? selectedValue;
@@ -213,6 +213,7 @@ class MenuProvider extends ChangeNotifier {
   List<MenuCategories> filteredCategories = []; // List for filtered categories
   HomeMenuModel? homeMenuResponse;
   List<MenuCategories>? menuCategories;
+
   // * HomeMenu API
   Future homeMenuApi({
     String? search,
@@ -371,15 +372,27 @@ class MenuProvider extends ChangeNotifier {
     "REGULAR": false,
   };
   bool getIsLoadingStates(String size) => loadingStates[size] ?? false;
-  void setLoading(String size, bool isLoading) {
-    loadingStates[size] = isLoading;
-    notifyListeners();
-  }
+  // void setLoading(String size, bool isLoading) {
+  //   loadingStates[size] = isLoading;
+  //   notifyListeners();
+  // }
 
   int cartSnackbarTotalItems = 0;
   String cartSnackbarItemText = '';
   final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
+
+  Set<int> _indexLoaders = {};
+
+  bool isIndexLoading(int index) => _indexLoaders.contains(index);
+
+  void setIndexLoading(int index, bool loading) {
+    if (loading) {
+      _indexLoaders.add(index);
+    } else {
+      _indexLoaders.remove(index);
+    }
+  }
 
   // * addToCart API
   Future<void> addToCart({
@@ -389,9 +402,14 @@ class MenuProvider extends ChangeNotifier {
     required String size,
     List<RequestItems>? items,
     BuildContext? context,
+    int? index, // for reorder
   }) async {
-    isLoadingAddToCart = true;
-    setLoading(size, true);
+    if (index != null) {
+      setIndexLoading(index, true); // New function
+    } else {
+      isLoadingAddToCart = true;
+    }
+    // setLoading(size, true); // sizewise loader
     notifyListeners();
     try {
       final requestBody = AddToCartRequestModel(
@@ -442,8 +460,6 @@ class MenuProvider extends ChangeNotifier {
         // } else {
         //   debugPrint('context is null');
         // }
-
-        debugPrint('callback called');
       } else {
         log('${res.message}');
         callback(false); // Notify failure
@@ -452,8 +468,13 @@ class MenuProvider extends ChangeNotifier {
       callback(false); // Notify failure on exception
       debugPrint("Error addToCart: ${e.toString()}");
     } finally {
-      isLoadingAddToCart = false;
-      setLoading(size, false);
+      if (index != null) {
+        setIndexLoading(index, false);
+      } else {
+        isLoadingAddToCart = false;
+      }
+
+      // setLoading(size, false); // sizewise loader
       notifyListeners();
     }
   }
@@ -467,7 +488,7 @@ class MenuProvider extends ChangeNotifier {
     required String size,
   }) async {
     isLoadingUpdateCart = true;
-    setLoading(size, true);
+    // setLoading(size, true); // sizewise loader
     notifyListeners();
     try {
       final requestBody = AddToCartRequestModel(
@@ -491,18 +512,16 @@ class MenuProvider extends ChangeNotifier {
       log('updateCart: ${res.data}');
       if (res.success == true) {
         callback(true);
-        AddToCartModel updateCartResponse = res;
-        // log(updateCartResponse.data.toString());
       } else {
-        callback(false);
         log('${res.message}');
+        callback(false);
       }
     } catch (e) {
       callback(false);
       debugPrint("Error UpdateCart: ${e.toString()}");
     } finally {
       isLoadingUpdateCart = false;
-      setLoading(size, false);
+      // setLoading(size, false); // sizewise loader
       notifyListeners();
     }
   }

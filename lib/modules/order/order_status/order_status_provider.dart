@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'package:amtech_design/models/order_status_model.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:flutter/material.dart';
 import '../../../core/utils/constants/keys.dart';
@@ -11,9 +12,11 @@ class OrderStatusProvider extends ChangeNotifier {
 
   OrderStatus orderStatusEnum = OrderStatus.placed;
   Timer? orderStatusTimer;
+  OrderStatusModel? orderResponse;
 
   void emitAndListenOrderStatus(SocketProvider socketProvider, String orderId) {
     isLoading = true;
+    notifyListeners();
     orderStatusTimer?.cancel(); // Just in case it was running already
     //* Timer to emit the event every second
     orderStatusTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -27,16 +30,23 @@ class OrderStatusProvider extends ChangeNotifier {
         (data) {
       try {
         log('Raw socket OrderStatus data: $data');
+        orderResponse = OrderStatusModel.fromJson(data);
         //* Uses example
-        final statusFromApi = data.containsKey('data') &&
-                data['data'] == 'Accepted by DeliveryBoy'
-            ? data['data']
-            : data['currentStatus'] ?? data['data'];
-        // final statusFromApi = data['data'];
-        orderStatusEnum = OrderStatusExtension.fromString(statusFromApi);
-        // debugPrint(
-        //     'orderStatusEnum: ${orderStatusEnum}'); // OrderStatus.prepared
-        log('orderStatusEnum.value: ${orderStatusEnum.value}'); // Prepared
+        if (orderResponse != null) {
+          final statusFromApi = orderResponse?.data == 'Accepted by DeliveryBoy'
+              ? orderResponse?.data
+              : orderResponse?.currentStatus ?? orderResponse?.data;
+          orderStatusEnum =
+              OrderStatusExtension.fromString(statusFromApi ?? '');
+        }
+        log('orderStatusEnum.value: ${orderStatusEnum.value}');
+        // You can now use `orderResponse.items` as a strongly typed list.
+        // if (orderResponse?.items != null) {
+        //   for (var item in orderResponse!.items) {
+        //     log("Item: ${item.itemName}, Quantity: ${item.quantity}");
+        //   }
+        // }
+
         //* Switch case handle on order status
         switch (orderStatusEnum) {
           case OrderStatus.placed:

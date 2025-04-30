@@ -18,23 +18,34 @@ import '../../../services/local/shared_preferences_service.dart';
 import 'edit_profile_provider.dart';
 import 'widgets/edit_icon_widget.dart';
 
-class EditProfilePage extends StatelessWidget {
+class EditProfilePage extends StatefulWidget {
   const EditProfilePage({super.key});
+
+  @override
+  State<EditProfilePage> createState() => _EditProfilePageState();
+}
+
+class _EditProfilePageState extends State<EditProfilePage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String accountType =
+          sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+      final provider = Provider.of<EditProfileProvider>(context, listen: false);
+      if (accountType == 'business') {
+        provider.getBusinessDetails(); //* API call
+      } else {
+        provider.getPersonalDetails(); //* API call
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<EditProfileProvider>(context, listen: false);
-    log('first name: ${provider.personalFirstNameController.text.toString()}');
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (accountType == 'business') {
-        provider.getBusinessDetails(); //* API
-      } else {
-        provider.getPersonalDetails(); //* API
-      }
-    });
-
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,

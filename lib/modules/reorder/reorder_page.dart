@@ -57,7 +57,7 @@ class _ReorderPageState extends State<ReorderPage> {
                       EdgeInsets.symmetric(vertical: 20.h, horizontal: 32.w),
                   child: Column(
                     children: [
-                      //* Select Reorder Date ROW
+                      //* Select Reorder Date Range ROW
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -167,53 +167,17 @@ class _ReorderPageState extends State<ReorderPage> {
                                   SizedBox(height: 15.h),
                               itemBuilder: (context, index) {
                                 final reorder = provider.reorderList[index];
+                                //* Widget
                                 return ReorderCardWidget(
                                   accountType: accountType,
                                   reorder: reorder,
+                                  index: index,
                                 );
                               },
                             ),
                           );
                         },
                       ),
-
-                      // Consumer<ReorderProvider>(
-                      //   builder: (context, _, child) => provider.isLoading
-                      //       ? const Center(
-                      //           child: CustomLoader(
-                      //             backgroundColor: AppColors.darkGreenGrey,
-                      //           ),
-                      //         )
-                      //       : NotificationListener(
-                      //           onNotification:
-                      //               (ScrollNotification scrollInfo) {
-                      //             if (scrollInfo.metrics.pixels >=
-                      //                 scrollInfo.metrics.maxScrollExtent *
-                      //                     0.9) {
-                      //               // When the user scrolls to 90% of the list, load more
-                      //               WidgetsBinding.instance
-                      //                   .addPostFrameCallback((_) {
-                      //                 provider.getReorder(); //* API call
-                      //               });
-                      //             }
-                      //             return false;
-                      //           },
-                      //           child: ListView.separated(
-                      //             padding: EdgeInsets.zero,
-                      //             shrinkWrap: true,
-                      //             itemCount: provider.reorderList.length,
-                      //             separatorBuilder: (context, index) =>
-                      //                 SizedBox(height: 15.h),
-                      //             itemBuilder: (context, index) {
-                      //               final reorder = provider.reorderList[index];
-                      //               return ReorderCardWidget(
-                      //                 accountType: accountType,
-                      //                 reorder: reorder,
-                      //               );
-                      //             },
-                      //           ),
-                      //         ),
-                      // ),
                     ],
                   ),
                 ),

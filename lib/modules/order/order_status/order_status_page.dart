@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
+import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -24,7 +25,6 @@ class OrderStatusPage extends StatefulWidget {
 }
 
 class _OrderStatusPageState extends State<OrderStatusPage> {
-  // bool isBack = false;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -34,6 +34,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
       final args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       String orderId = args?['orderId'] ?? '';
+      log('orderID is: $orderId');
       provider.setIsBack(args?['isBack'] ?? false);
       provider.emitAndListenOrderStatus(socketProvider, orderId);
     });
@@ -56,129 +57,144 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
         title: 'Order',
         isBack: isBack,
       ),
-      body: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 80.h),
-            child: SingleChildScrollView(
-              physics: const ClampingScrollPhysics(),
-              child: Padding(
-                padding: EdgeInsets.only(left: 32.w, right: 32.w, bottom: 50.h),
-                child: Column(
-                  children: [
-                    // * Lottie file
-                    SizedBox(
-                      height: 340.h,
-                      child: Consumer<OrderStatusProvider>(
-                        builder: (context, provider, child) => Lottie.asset(
-                          provider.getLottieFile(
-                              accountType, provider.orderStatusEnum),
-                          // accountType == 'business'
-                          //     ? provider.orderStatusEnum == OrderStatus.placed
-                          //         ? LottieStrings.orderPlaced
-                          //         : provider.orderStatusEnum ==
-                          //                 OrderStatus.confirmed
-                          //             ? LottieStrings.orderConfirm
-                          //             : provider.orderStatusEnum ==
-                          //                     OrderStatus.prepared
-                          //                 ? LottieStrings.orderPreparation
-                          //                 : provider.orderStatusEnum ==
-                          //                         OrderStatus.outForDelivery
-                          //                     ? LottieStrings
-                          //                         .orderOutForDelivery
-                          //                     : provider.orderStatusEnum ==
-                          //                             OrderStatus.delivered
-                          //                         ? LottieStrings
-                          //                             .orderDelivered
-                          //                         : LottieStrings.orderPlaced
-                          //     : provider.orderStatusEnum == OrderStatus.placed
-                          //         ? LottieStrings.orderPlacedPersonal
-                          //         : provider.orderStatusEnum ==
-                          //                 OrderStatus.confirmed
-                          //             ? LottieStrings.orderConfirmPersonal
-                          //             : provider.orderStatusEnum ==
-                          //                     OrderStatus.prepared
-                          //                 ? LottieStrings
-                          //                     .orderPreparationPersonal
-                          //                 : provider.orderStatusEnum ==
-                          //                         OrderStatus.outForDelivery
-                          //                     ? LottieStrings
-                          //                         .orderOutForDeliveryPersonal
-                          //                     : provider.orderStatusEnum ==
-                          //                             OrderStatus.delivered
-                          //                         ? LottieStrings
-                          //                             .orderDeliveredPersonal
-                          //                         : LottieStrings
-                          //                             .orderPlacedPersonal // fallback
-                        ),
-                      ),
-                    ),
-                    Text(
-                      "Your Order Has Been",
-                      style: GoogleFonts.publicSans(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.sp,
-                        color: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 8.h),
-                    Consumer<OrderStatusProvider>(
-                      builder: (context, provider, child) => Text(
-                        // "Placed Successfully!",
-                        provider.getOrderStatusText(
-                            accountType, provider.orderStatusEnum),
-                        style: GoogleFonts.publicSans(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 30.sp,
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.disabledColor,
-                            personalColor: AppColors.bayLeaf,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 40.h),
-                    // * Order status with progress indicator
-                    OrderStatusWithProgressWidget(
-                      accountType: accountType,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: EdgeInsets.only(left: 32.w, right: 32.w, bottom: 48.h),
-                child: CustomButton(
-                  height: 55.h,
-                  bgColor: getColorAccountType(
+      body: Consumer<OrderStatusProvider>(
+        builder: (context, provider, child) => provider.isLoading
+            ? Center(
+                child: CustomLoader(
+                  backgroundColor: getColorAccountType(
                     accountType: accountType,
                     businessColor: AppColors.primaryColor,
                     personalColor: AppColors.darkGreenGrey,
                   ),
-                  onTap: () {
-                    Navigator.popUntil(
-                        context, ModalRoute.withName(Routes.bottomBarPage));
-                  },
-                  text: 'GO TO HOME',
-                  textColor: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.seaShell,
-                    personalColor: AppColors.seaMist,
-                  ),
                 ),
+              )
+            : Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 80.h),
+                    child: SingleChildScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 32.w, right: 32.w, bottom: 50.h),
+                        child: Column(
+                          children: [
+                            // * Lottie file
+                            SizedBox(
+                              height: 340.h,
+                              child: Consumer<OrderStatusProvider>(
+                                builder: (context, provider, child) =>
+                                    Lottie.asset(
+                                  provider.getLottieFile(
+                                      accountType, provider.orderStatusEnum),
+                                  // accountType == 'business'
+                                  //     ? provider.orderStatusEnum == OrderStatus.placed
+                                  //         ? LottieStrings.orderPlaced
+                                  //         : provider.orderStatusEnum ==
+                                  //                 OrderStatus.confirmed
+                                  //             ? LottieStrings.orderConfirm
+                                  //             : provider.orderStatusEnum ==
+                                  //                     OrderStatus.prepared
+                                  //                 ? LottieStrings.orderPreparation
+                                  //                 : provider.orderStatusEnum ==
+                                  //                         OrderStatus.outForDelivery
+                                  //                     ? LottieStrings
+                                  //                         .orderOutForDelivery
+                                  //                     : provider.orderStatusEnum ==
+                                  //                             OrderStatus.delivered
+                                  //                         ? LottieStrings
+                                  //                             .orderDelivered
+                                  //                         : LottieStrings.orderPlaced
+                                  //     : provider.orderStatusEnum == OrderStatus.placed
+                                  //         ? LottieStrings.orderPlacedPersonal
+                                  //         : provider.orderStatusEnum ==
+                                  //                 OrderStatus.confirmed
+                                  //             ? LottieStrings.orderConfirmPersonal
+                                  //             : provider.orderStatusEnum ==
+                                  //                     OrderStatus.prepared
+                                  //                 ? LottieStrings
+                                  //                     .orderPreparationPersonal
+                                  //                 : provider.orderStatusEnum ==
+                                  //                         OrderStatus.outForDelivery
+                                  //                     ? LottieStrings
+                                  //                         .orderOutForDeliveryPersonal
+                                  //                     : provider.orderStatusEnum ==
+                                  //                             OrderStatus.delivered
+                                  //                         ? LottieStrings
+                                  //                             .orderDeliveredPersonal
+                                  //                         : LottieStrings
+                                  //                             .orderPlacedPersonal // fallback
+                                ),
+                              ),
+                            ),
+                            Text(
+                              "Your Order Has Been",
+                              style: GoogleFonts.publicSans(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.sp,
+                                color: getColorAccountType(
+                                  accountType: accountType,
+                                  businessColor: AppColors.primaryColor,
+                                  personalColor: AppColors.darkGreenGrey,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 8.h),
+                            Consumer<OrderStatusProvider>(
+                              builder: (context, provider, child) => Text(
+                                // "Placed Successfully!",
+                                provider.getOrderStatusText(
+                                    accountType, provider.orderStatusEnum),
+                                style: GoogleFonts.publicSans(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30.sp,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.disabledColor,
+                                    personalColor: AppColors.bayLeaf,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 40.h),
+                            // * Order status with progress indicator
+                            OrderStatusWithProgressWidget(
+                              accountType: accountType,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            left: 32.w, right: 32.w, bottom: 48.h),
+                        child: CustomButton(
+                          height: 55.h,
+                          bgColor: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
+                          onTap: () {
+                            Navigator.popUntil(context,
+                                ModalRoute.withName(Routes.bottomBarPage));
+                          },
+                          text: 'GO TO HOME',
+                          textColor: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
-            ),
-          )
-        ],
       ),
     );
   }

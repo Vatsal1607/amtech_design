@@ -44,7 +44,8 @@ class ApiService {
 
   ApiService() {
     final dio = Dio();
-    dio.interceptors.add(DioInterceptor(dio));
+    dio.interceptors.add(DioInterceptor());
+    // dio.interceptors.add(DioInterceptor(dio));
     apiClient = ApiClient(dio);
   }
 
@@ -224,9 +225,14 @@ class ApiService {
   }
 
   Future<BillingModel> getBillingList({
-    required Map<String, dynamic> body,
+    int? currentPage,
+    int? limit,
+    required String userId,
+    String? startDate,
+    String? endDate,
   }) async {
-    return await apiClient.billingList(body);
+    return await apiClient.billingList(
+        currentPage, limit, userId, startDate, endDate);
   }
 
   Future<GetBusinessDetailsModel> getBusinessDetails({

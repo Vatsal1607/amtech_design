@@ -143,6 +143,7 @@ class RechargeProvider extends ChangeNotifier {
   // * Recharge History API
   Future<void> getRechargeHistory(BuildContext context) async {
     isLoadingRechargeHistory = true;
+    notifyListeners();
     try {
       String userId =
           sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';

@@ -9,6 +9,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/enums/enums.dart';
+import '../../models/home_menu_model.dart';
 import '../../routes.dart';
 import '../../services/network/api_service.dart';
 import '../hdfc_payment/payment_page.dart';
@@ -305,7 +306,7 @@ class CartProvider extends ChangeNotifier {
   //* clearCart
   Future<void> clearCart() async {
     // isLoading = true;
-    notifyListeners();
+    // notifyListeners();
     try {
       final res = await apiService.clearCart(
         cartId: listCartResponse?.data?.carts?[0].sId ?? '',
@@ -322,4 +323,23 @@ class CartProvider extends ChangeNotifier {
       // notifyListeners();
     }
   }
+
+  //Todo Working for You may like products
+  // List<MenuItems> getMixedItemsFromCategories(List<Category> categories,
+  //     {int perCategory = 2}) {
+  //   final List<Item> mixedItems = [];
+
+  //   for (final category in categories) {
+  //     // Copy and shuffle items from this category
+  //     final items = List<Item>.from(category.items)..shuffle();
+
+  //     // Take a few items (if available)
+  //     final selected = items.take(perCategory);
+  //     mixedItems.addAll(selected);
+  //   }
+
+  //   // Optionally shuffle the final list to mix items from different categories
+  //   mixedItems.shuffle();
+  //   return mixedItems;
+  // }
 }

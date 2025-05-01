@@ -34,17 +34,21 @@ class BottomsheetContent extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                // 'Masala Tea',
-                '${menuDetails?.data?.itemName}',
-                style: GoogleFonts.publicSans(
-                    color: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold),
+              // * item name
+              SizedBox(
+                width: 310.w,
+                child: Text(
+                  '${menuDetails?.data?.itemName}',
+                  overflow: TextOverflow.visible,
+                  style: GoogleFonts.publicSans(
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold),
+                ),
               ),
               Container(
                 padding: EdgeInsets.all(5.w),

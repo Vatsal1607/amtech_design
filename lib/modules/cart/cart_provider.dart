@@ -324,22 +324,46 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  //Todo Working for You may like products
-  // List<MenuItems> getMixedItemsFromCategories(List<Category> categories,
-  //     {int perCategory = 2}) {
-  //   final List<Item> mixedItems = [];
+  //* You may like products
+  List<MenuItems> getMixedItemsFromCategories(List<MenuCategories> categories,
+      {int perCategory = 2}) {
+    final List<MenuItems> mixedItems = [];
 
-  //   for (final category in categories) {
-  //     // Copy and shuffle items from this category
-  //     final items = List<Item>.from(category.items)..shuffle();
+    for (final category in categories) {
+      // Copy and shuffle items from this category
+      final items = List<MenuItems>.from(category.menuItems ?? [])..shuffle();
 
-  //     // Take a few items (if available)
-  //     final selected = items.take(perCategory);
-  //     mixedItems.addAll(selected);
-  //   }
+      // Take a few items (if available)
+      final selected = items.take(perCategory);
+      mixedItems.addAll(selected);
+    }
 
-  //   // Optionally shuffle the final list to mix items from different categories
-  //   mixedItems.shuffle();
-  //   return mixedItems;
-  // }
+    // Optionally shuffle the final list to mix items from different categories
+    mixedItems.shuffle();
+    return mixedItems;
+  }
 }
+
+//* Uses you may like
+// final randomMixedItems = getMixedItemsFromCategories(allCategories, perCategory: 2);
+
+// SizedBox(
+//   height: 180,
+//   child: ListView.builder(
+//     scrollDirection: Axis.horizontal,
+//     itemCount: randomMixedItems.length,
+//     itemBuilder: (context, index) {
+//       final item = randomMixedItems[index];
+//       return Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           children: [
+//             // Replace with your actual UI
+//             Text(item.name),
+//             Text("Category: ${item.categoryId}"),
+//           ],
+//         ),
+//       );
+//     },
+//   ),
+// )

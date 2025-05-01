@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://192.168.127.67:9000/';
+    baseUrl ??= 'http://192.168.1.14:9000/';
   }
 
   final Dio _dio;
@@ -986,17 +986,57 @@ class _ApiClient implements ApiClient {
   @override
   Future<EditProfileModel> editProfile(
     String userId,
-    Map<String, dynamic> body,
+    String ownerName,
+    String contact,
+    String address,
+    String businessName,
+    String email,
+    String buninessType,
+    File? profileImage,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'ownerName',
+      ownerName,
+    ));
+    _data.fields.add(MapEntry(
+      'contact',
+      contact,
+    ));
+    _data.fields.add(MapEntry(
+      'address',
+      address,
+    ));
+    _data.fields.add(MapEntry(
+      'businessName',
+      businessName,
+    ));
+    _data.fields.add(MapEntry(
+      'email',
+      email,
+    ));
+    _data.fields.add(MapEntry(
+      'buninessType',
+      buninessType,
+    ));
+    if (profileImage != null) {
+      _data.files.add(MapEntry(
+        'profileImage',
+        MultipartFile.fromFileSync(
+          profileImage.path,
+          filename: profileImage.path.split(Platform.pathSeparator).last,
+        ),
+      ));
+    }
     final _options = _setStreamType<EditProfileModel>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,

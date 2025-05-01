@@ -100,8 +100,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   Positioned(
                                     right: 0,
                                     bottom: 0,
-                                    child: EditIconWidget(
-                                      accountType: accountType,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        //Todo set dynamic accountType (business & personal)
+                                        provider.pickBusinessImage();
+                                      },
+                                      child: EditIconWidget(
+                                        accountType: accountType,
+                                      ),
                                     ),
                                   ),
                                 ],

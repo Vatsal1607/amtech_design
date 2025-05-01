@@ -3,13 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
-import '../../../core/utils/strings.dart';
+import '../../../models/home_menu_model.dart';
 
 class YouMayLikeWidget extends StatelessWidget {
   final String accountType;
+  final MenuItems item;
   const YouMayLikeWidget({
     super.key,
     required this.accountType,
+    required this.item,
   });
 
   @override
@@ -26,8 +28,9 @@ class YouMayLikeWidget extends StatelessWidget {
               personalColor: AppColors.darkGreenGrey,
             )),
         borderRadius: BorderRadius.circular(20.r),
-        image: const DecorationImage(
-          image: AssetImage(ImageStrings.masalaTea2),
+        image: DecorationImage(
+          image: NetworkImage(item.images?[0] ?? ''),
+          fit: BoxFit.cover,
         ),
       ),
       // * Note: this is reference for gradient blur of image
@@ -61,52 +64,23 @@ class YouMayLikeWidget extends StatelessWidget {
             ),
             // * Foreground Content
             Align(
-              alignment: Alignment.center,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text(
-                    'Masala Tea',
-                    style: GoogleFonts.publicSans(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.bold,
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.seaShell,
-                        personalColor: AppColors.seaMist,
-                      ),
+              alignment: Alignment.bottomCenter,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 10.h, left: 1.w, right: 1.w),
+                child: Text(
+                  '${item.itemName}',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.publicSans(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.bold,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell,
+                      personalColor: AppColors.seaMist,
                     ),
                   ),
-                  SizedBox(height: 14.h),
-                  //* Add button UI
-                  // Container(
-                  //   height: 20.h,
-                  //   width: 72.0,
-                  //   margin: EdgeInsets.only(bottom: 6.h),
-                  //   decoration: BoxDecoration(
-                  //     color: getColorAccountType(
-                  //       accountType: accountType,
-                  //       businessColor: AppColors.disabledColor,
-                  //       personalColor: AppColors.bayLeaf,
-                  //     ),
-                  //     borderRadius: BorderRadius.circular(10.r),
-                  //   ),
-                  //   child: Center(
-                  //     child: Text(
-                  //       'ADD +',
-                  //       style: GoogleFonts.publicSans(
-                  //         fontSize: 10.sp,
-                  //         fontWeight: FontWeight.bold,
-                  //         color: getColorAccountType(
-                  //           accountType: accountType,
-                  //           businessColor: AppColors.primaryColor,
-                  //           personalColor: AppColors.darkGreenGrey,
-                  //         ),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // )
-                ],
+                ),
               ),
             ),
           ],
@@ -115,3 +89,32 @@ class YouMayLikeWidget extends StatelessWidget {
     );
   }
 }
+
+//* Add button UI (below of itemName)
+// Container(
+//   height: 20.h,
+//   width: 72.0,
+//   margin: EdgeInsets.only(bottom: 6.h),
+//   decoration: BoxDecoration(
+//     color: getColorAccountType(
+//       accountType: accountType,
+//       businessColor: AppColors.disabledColor,
+//       personalColor: AppColors.bayLeaf,
+//     ),
+//     borderRadius: BorderRadius.circular(10.r),
+//   ),
+//   child: Center(
+//     child: Text(
+//       'ADD +',
+//       style: GoogleFonts.publicSans(
+//         fontSize: 10.sp,
+//         fontWeight: FontWeight.bold,
+//         color: getColorAccountType(
+//           accountType: accountType,
+//           businessColor: AppColors.primaryColor,
+//           personalColor: AppColors.darkGreenGrey,
+//         ),
+//       ),
+//     ),
+//   ),
+// )`

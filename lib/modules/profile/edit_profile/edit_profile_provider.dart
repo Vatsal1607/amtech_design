@@ -1,7 +1,11 @@
+import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/get_personal_details_model.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../models/get_business_details_model.dart';
 import '../../../services/local/shared_preferences_service.dart';
@@ -52,7 +56,6 @@ class EditProfileProvider extends ChangeNotifier {
         mobileController.text = detailsResponse?.data?.contact.toString() ?? '';
         businessEmailController.text = detailsResponse?.data?.email ?? '';
         selectedBusinessType = detailsResponse?.data?.buninessType ?? '';
-        // log(getBusinessDetails.data.toString());
       } else {
         log('${res.message}');
       }
@@ -95,7 +98,34 @@ class EditProfileProvider extends ChangeNotifier {
     }
   }
 
+  Future<String> imageToBase64(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    return base64Encode(bytes);
+  }
+
+  //* Picked business profile image
+  File? pickedBusinessImage;
+
+  Future<File?> pickBusinessImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      pickedBusinessImage = File(pickedFile.path);
+      return pickedBusinessImage;
+    }
+    return null;
+  }
+
+  // Future<MultipartFile> fileToMultipart(File file) async {
+  //   return MultipartFile.fromFile(
+  //     file.path,
+  //     filename: file.path.split('/').last,
+  //     // contentType: MediaType('image', 'jpeg'),
+  //   );
+  // }
+
   bool isEditProfileLoading = false;
+
   //* editProfile API
   Future<void> editProfile(
     BuildContext context,
@@ -103,20 +133,27 @@ class EditProfileProvider extends ChangeNotifier {
     isEditProfileLoading = true;
     notifyListeners();
     try {
-      final body = {
-        'ownerName': businessOwnerController.text,
-        'contact': mobileController.text,
-        'address': addressController.text,
-        // 'profileImage': '',
-        'businessName': businessNameController.text,
-        'email': businessEmailController.text,
-        'buninessType': selectedBusinessType,
-      };
+      // dynamic multipartImage;
+      final multipartFile = await MultipartFile.fromFile(
+        pickedBusinessImage?.path ?? '',
+        filename: pickedBusinessImage?.path.split('/').last,
+      );
+      // if (pickedBusinessImage != null) {
+      // multipartImage = await fileToMultipart(pickedBusinessImage!);
+      // log('multipartImage: ${multipartImage.toString()}');
+      // }
       final res = await apiService.editProfile(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
-        body: body,
+        ownerName: businessOwnerController.text,
+        address: addressController.text,
+        buninessType: selectedBusinessType ?? '',
+        businessName: businessNameController.text,
+        contact: mobileController.text,
+        email: businessEmailController.text,
+        //! Working 
+        // profileImage: multipartFile,
+        // profileImage: multipartImage,
       );
-      log('editProfile res: ${res.data}');
       if (res.success == true) {
         log('editProfile message: ${res.message.toString()}');
         Navigator.pop(context);

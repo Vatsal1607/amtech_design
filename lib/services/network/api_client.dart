@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
@@ -194,10 +196,25 @@ abstract class ApiClient {
     @Path('userId') String userId,
   );
 
+  //* Edit profile
+  // @PUT('${ApiEndpoints.editProfile}/{userId}')
+  // Future<EditProfileModel> editProfile(
+  //   @Path('userId') String userId,
+  //   @Body() Map<String, dynamic> body,
+  // );
+
   @PUT('${ApiEndpoints.editProfile}/{userId}')
+  @MultiPart()
   Future<EditProfileModel> editProfile(
     @Path('userId') String userId,
-    @Body() Map<String, dynamic> body,
+    @Part(name: 'ownerName') String ownerName,
+    @Part(name: 'contact') String contact,
+    @Part(name: 'address') String address,
+    @Part(name: 'businessName') String businessName,
+    @Part(name: 'email') String email,
+    @Part(name: 'buninessType') String buninessType,
+    @Part(name: "profileImage") File? profileImage, // or MultipartFile
+    // @Part(name: 'profileImage') MultipartFile? profileImage,
   );
 
   @GET('${ApiEndpoints.getPersonalDetails}/{userId}')

@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
+import '../../core/utils/enums/enums.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
@@ -206,23 +207,40 @@ class _CartPageState extends State<CartPage> {
                           SizedBox(
                             height: 100.h,
                             child: Consumer<MenuProvider>(
-                              builder: (context, provider, child) =>
-                                  ListView.separated(
-                                // itemCount: provider.menuCategories.length,
-                                itemCount: 3,
-                                shrinkWrap: true,
+                                builder: (context, provider, child) {
+                              final randomMixedItems = context
+                                  .read<CartProvider>()
+                                  .getMixedItemsFromCategories(
+                                      provider.menuCategories ?? [],
+                                      perCategory: 2);
+                              return ListView.separated(
                                 scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(horizontal: 21.w),
-                                separatorBuilder: (context, index) {
-                                  return SizedBox(width: 21.w);
-                                },
+                                itemCount: randomMixedItems.length,
+                                padding: EdgeInsets.only(left: 15.w),
+                                separatorBuilder: (context, index) =>
+                                    SizedBox(width: 15.w),
                                 itemBuilder: (context, index) {
-                                  return YouMayLikeWidget(
-                                    accountType: accountType,
+                                  final item = randomMixedItems[index];
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.productDetails,
+                                        arguments: {
+                                          'menuId': item.menuId,
+                                          'detailsType':
+                                              DetailsType.details.name,
+                                        },
+                                      );
+                                    },
+                                    child: YouMayLikeWidget(
+                                      accountType: accountType,
+                                      item: item,
+                                    ),
                                   );
                                 },
-                              ),
-                            ),
+                              );
+                            }),
                           )
                         ],
                       ),

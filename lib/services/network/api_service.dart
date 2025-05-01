@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/billing_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
@@ -45,7 +47,6 @@ class ApiService {
   ApiService() {
     final dio = Dio();
     dio.interceptors.add(DioInterceptor());
-    // dio.interceptors.add(DioInterceptor(dio));
     apiClient = ApiClient(dio);
   }
 
@@ -243,9 +244,24 @@ class ApiService {
 
   Future<EditProfileModel> editProfile({
     required String userId,
-    required Map<String, dynamic> body,
+    required String ownerName,
+    required String contact,
+    required String address,
+    required String businessName,
+    required String email,
+    required String buninessType,
+    File? profileImage,
   }) async {
-    return await apiClient.editProfile(userId, body);
+    return await apiClient.editProfile(
+      userId,
+      ownerName,
+      contact,
+      address,
+      businessName,
+      email,
+      buninessType,
+      profileImage,
+    );
   }
 
   Future<GetPersonalDetailsModel> getPersonalDetails({

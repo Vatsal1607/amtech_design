@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:amtech_design/core/utils/constant.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/modules/billing/billing_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/utils.dart';
@@ -145,10 +145,23 @@ class BillingCardWidget extends StatelessWidget {
                                   final invoiceUrl = invoice.invoiceUrl;
                                   final fileName =
                                       'Invoice_${invoice.invoiceNumber}.pdf';
-                                  await provider.downloadInvoiceToDownloads(
-                                      invoiceUrl, fileName);
-                                  await provider.downloadInvoiceToDownloads(
-                                      invoiceUrl, fileName);
+                                  // await provider.downloadInvoiceToDownloads(
+                                  //     invoiceUrl, fileName);
+                                  final filePath =
+                                      await provider.downloadInvoiceToDownloads(
+                                          invoiceUrl, fileName);
+                                  if (filePath != null) {
+                                    // Show snackbar with file path
+                                    customSnackBar(
+                                        context: context,
+                                        message:
+                                            'Invoice downloaded to $filePath');
+                                  } else {
+                                    customSnackBar(
+                                      context: context,
+                                      message: 'Failed to download invoice',
+                                    );
+                                  }
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(right: 8.w),

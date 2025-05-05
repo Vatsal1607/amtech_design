@@ -136,7 +136,7 @@ class RegisterProvider extends ChangeNotifier {
       _personalRegisterModel = await apiService.personalRegister({
         'firstName': firstNameController.text,
         'lastName': lastNameController.text,
-        'contact': personalMobileController.text,
+        'contact': '91${personalMobileController.text}',
         'address': personalAddressController.text,
       });
       debugPrint('Personal Register log: $_personalRegisterModel');

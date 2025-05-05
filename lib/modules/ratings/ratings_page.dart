@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/ratings/ratings_provider.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
+import '../../services/local/shared_preferences_service.dart';
 
 // * Dialog
 class RatingsPage extends StatelessWidget {
@@ -17,8 +20,8 @@ class RatingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business';
-    // sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<RatingsProvider>(context);
     return Dialog(
       backgroundColor: Colors.transparent,
@@ -30,7 +33,11 @@ class RatingsPage extends StatelessWidget {
             child: Container(
               height: 1.sh,
               width: 1.sw,
-              color: AppColors.seaShell.withOpacity(0.3),
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.seaShell.withOpacity(0.3),
+                personalColor: AppColors.seaMist.withOpacity(0.3),
+              ),
             ),
           ),
           Padding(
@@ -48,7 +55,11 @@ class RatingsPage extends StatelessWidget {
                         style: GoogleFonts.publicSans(
                           fontSize: 24.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.seaShell,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                         ),
                       ),
                       GestureDetector(
@@ -60,11 +71,19 @@ class RatingsPage extends StatelessWidget {
                           width: 48.h,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: AppColors.seaShell.withOpacity(.5),
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell.withOpacity(.5),
+                              personalColor: AppColors.seaMist.withOpacity(.5),
+                            ),
                           ),
-                          child: const SvgIcon(
+                          child: SvgIcon(
                             icon: IconStrings.close,
-                            color: AppColors.seaShell,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ),
                           ),
                         ),
                       )
@@ -114,13 +133,21 @@ class RatingsPage extends StatelessWidget {
                                       child: Container(
                                         decoration: BoxDecoration(
                                           gradient: LinearGradient(
-                                            colors: [
-                                              AppColors.primaryColor
-                                                  .withOpacity(0.0),
-                                              AppColors.primaryColor
-                                                  .withOpacity(0.7),
-                                              AppColors.primaryColor,
-                                            ],
+                                            colors: accountType == 'business'
+                                                ? [
+                                                    AppColors.primaryColor
+                                                        .withOpacity(0.0),
+                                                    AppColors.primaryColor
+                                                        .withOpacity(0.7),
+                                                    AppColors.primaryColor,
+                                                  ]
+                                                : [
+                                                    AppColors.darkGreenGrey
+                                                        .withOpacity(0.0),
+                                                    AppColors.darkGreenGrey
+                                                        .withOpacity(0.7),
+                                                    AppColors.darkGreenGrey,
+                                                  ],
                                             begin: Alignment.topCenter,
                                             end: Alignment.bottomCenter,
                                           ),
@@ -209,11 +236,19 @@ class RatingsPage extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 32.w),
                   child: CustomButton(
-                    bgColor: AppColors.seaShell.withOpacity(.5),
+                    bgColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell.withOpacity(.5),
+                      personalColor: AppColors.seaMist.withOpacity(.5),
+                    ),
                     onTap: () {},
                     height: 55.h,
                     text: 'SUBMIT',
-                    textColor: AppColors.seaShell,
+                    textColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.seaShell,
+                      personalColor: AppColors.seaMist,
+                    ),
                   ),
                 )
               ],

@@ -38,20 +38,23 @@ class Data {
   num? usedPerks;
   String? address;
   num? remainingAmount;
+  bool? hasRunningOrder;
 
-  Data(
-      {this.sId,
-      this.businessName,
-      this.ownerName,
-      this.firstName,
-      this.lastName,
-      this.menuCategories,
-      this.rechargeAmount,
-      this.usedAmount,
-      this.totalPerks,
-      this.usedPerks,
-      this.address,
-      this.remainingAmount});
+  Data({
+    this.sId,
+    this.businessName,
+    this.ownerName,
+    this.firstName,
+    this.lastName,
+    this.menuCategories,
+    this.rechargeAmount,
+    this.usedAmount,
+    this.totalPerks,
+    this.usedPerks,
+    this.address,
+    this.remainingAmount,
+    this.hasRunningOrder,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -71,6 +74,7 @@ class Data {
     usedPerks = json['usedPerks'];
     address = json['address'];
     remainingAmount = json['remainingAmount'];
+    hasRunningOrder = json['hasRunningOrder'];
   }
 
   Map<String, dynamic> toJson() {
@@ -88,6 +92,7 @@ class Data {
     data['totalPerks'] = totalPerks;
     data['usedPerks'] = usedPerks;
     data['address'] = address;
+    data['hasRunningOrder'] = hasRunningOrder;
     return data;
   }
 }

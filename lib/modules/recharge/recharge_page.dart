@@ -123,7 +123,11 @@ class _RechargePageState extends State<RechargePage> {
                         Consumer<RechargeProvider>(
                           builder: (context, _, child) => CustomTextField(
                             hint: 'Enter Amount',
-                            cursorColor: AppColors.primaryColor,
+                            cursorColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                             validator: Validator.rechargeAmountValidator,
                             textColor: getColorAccountType(
                               accountType: accountType,

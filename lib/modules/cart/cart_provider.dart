@@ -30,6 +30,10 @@ class CartProvider extends ChangeNotifier {
 
   String selectedPaymentMethod = SelectedPaymentMethod.perks.name;
 
+  bool isAddressSelected(String? address) {
+    return address != null && address.isNotEmpty;
+  }
+
   updateSelectedPaymentMethod(value) {
     selectedPaymentMethod = value;
     log('selectedPaymentMethod: $selectedPaymentMethod');

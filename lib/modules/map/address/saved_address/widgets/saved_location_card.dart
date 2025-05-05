@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -37,7 +36,11 @@ class SavedLocationCard extends StatelessWidget {
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
         borderRadius: BorderRadius.circular(30.r),
       ),
       padding: EdgeInsets.all(20.w),
@@ -53,7 +56,11 @@ class SavedLocationCard extends StatelessWidget {
                     icon: isNearBy
                         ? IconStrings.locationMarker
                         : IconStrings.business,
-                    color: AppColors.disabledColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
+                    ),
                   ),
                   SizedBox(width: 10.w),
                   SizedBox(
@@ -66,7 +73,11 @@ class SavedLocationCard extends StatelessWidget {
                       style: GoogleFonts.publicSans(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.seaShell,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.seaShell,
+                          personalColor: AppColors.seaMist,
+                        ),
                       ),
                     ),
                   ),
@@ -134,8 +145,12 @@ class SavedLocationCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: 15.h),
-          const Divider(
-            color: AppColors.disabledColor,
+          Divider(
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.disabledColor,
+              personalColor: AppColors.bayLeaf,
+            ),
             thickness: 1,
           ),
           SizedBox(height: 15.h),
@@ -153,7 +168,11 @@ class SavedLocationCard extends StatelessWidget {
                           : '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
                       style: GoogleFonts.publicSans(
                         fontSize: 12.sp,
-                        color: AppColors.seaShell,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.seaShell,
+                          personalColor: AppColors.seaMist,
+                        ),
                       ),
                     ),
                     SizedBox(height: 5.h),
@@ -164,7 +183,11 @@ class SavedLocationCard extends StatelessWidget {
                           : provider.formatDistance(
                               provider.parseDouble(savedAddress?.distance)),
                       style: GoogleFonts.publicSans(
-                        color: AppColors.disabledColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                         fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                       ),

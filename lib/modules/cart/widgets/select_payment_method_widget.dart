@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,7 @@ import '../../../services/local/shared_preferences_service.dart';
 
 class SelectPaymentMethodWidget extends StatelessWidget {
   final String logoImage;
+  final String accountType;
   final bool isPerks;
   final VoidCallback? onTap;
   final bool isSelectedMethod;
@@ -23,6 +25,7 @@ class SelectPaymentMethodWidget extends StatelessWidget {
     this.onTap,
     this.isSelectedMethod = false,
     required this.payableAmount,
+    required this.accountType,
     // this.perksBalance,
   });
 
@@ -35,11 +38,14 @@ class SelectPaymentMethodWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 32.w),
         padding: EdgeInsets.symmetric(horizontal: 22.w),
         decoration: BoxDecoration(
-          color: AppColors.seaShell,
+          color: getColorAccountType(
+            accountType: accountType,
+            businessColor: AppColors.seaShell,
+            personalColor: AppColors.seaMist,
+          ),
           borderRadius: BorderRadius.circular(40.r),
         ),
         child: Row(
-          // mainAxisAlignment: MainAxisAlignment.spaceAround,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
@@ -48,24 +54,34 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                   'Pay ',
                   style: GoogleFonts.publicSans(
                     fontSize: 16.sp,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 Text(
-                  // '₹ $payableAmount ',
                   '₹ ${double.parse(payableAmount).toInt()} ',
-
                   style: GoogleFonts.publicSans(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 Text(
                   'With',
                   style: GoogleFonts.publicSans(
                     fontSize: 16.sp,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 SizedBox(width: 3.w),
@@ -83,28 +99,36 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                 width: 78.w,
                 padding: EdgeInsets.all(3.w),
                 decoration: BoxDecoration(
-                  color: AppColors.disabledColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.disabledColor,
+                    personalColor: AppColors.bayLeaf,
+                  ),
                   borderRadius: BorderRadius.circular(100.r),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SvgIcon(
+                    SvgIcon(
                       icon: IconStrings.rupee,
-                      color: AppColors.primaryColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                     ),
-                    SizedBox(
-                      width: 3.w,
-                    ),
+                    SizedBox(width: 3.w),
                     //* Perks remaining amount
                     Text(
-                      '${sharedPrefsService.getString(
-                        SharedPrefsKeys.remainingPerksAmount,
-                      )}',
+                      '${sharedPrefsService.getString(SharedPrefsKeys.remainingPerksAmount)?.isEmpty ?? true ? '0' : sharedPrefsService.getString(SharedPrefsKeys.remainingPerksAmount)}',
                       style: GoogleFonts.publicSans(
                         fontSize: 11.sp,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       ),
                     ),
                   ],
@@ -115,7 +139,11 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                 icon: isSelectedMethod
                     ? IconStrings.selected
                     : IconStrings.unselected,
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
           ],

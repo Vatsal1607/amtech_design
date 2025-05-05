@@ -680,47 +680,49 @@ class _MenuPageState extends State<MenuPage> {
                         ),
                       ],
                     ),
-                    Consumer<MenuProvider>(
-                      builder: (context, _, child) => Positioned(
-                        left: 32.w,
-                        bottom: provider.isSnackBarVisible
-                            ? provider.viewOrderBottomPadding + 60
-                            : provider.viewOrderBottomPadding,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, Routes.orderList);
-                            },
-                            child: Container(
-                              height: 50.h,
-                              width: 142.w,
-                              decoration: BoxDecoration(
-                                  color: AppColors.lightGreen,
-                                  boxShadow: kDropShadow,
-                                  borderRadius: BorderRadius.circular(30.r)),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const SvgIcon(
-                                    icon: IconStrings.viewOrder,
-                                  ),
-                                  SizedBox(width: 8.w),
-                                  Text(
-                                    'VIEW ORDER',
-                                    style: GoogleFonts.publicSans(
-                                      color: AppColors.seaShell,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.bold,
+                    if (provider.homeMenuResponse?.data?.hasRunningOrder ==
+                        true)
+                      Consumer<MenuProvider>(
+                        builder: (context, _, child) => Positioned(
+                          left: 32.w,
+                          bottom: provider.isSnackBarVisible
+                              ? provider.viewOrderBottomPadding + 60
+                              : provider.viewOrderBottomPadding,
+                          child: Align(
+                            alignment: Alignment.bottomLeft,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, Routes.orderList);
+                              },
+                              child: Container(
+                                height: 50.h,
+                                width: 142.w,
+                                decoration: BoxDecoration(
+                                    color: AppColors.lightGreen,
+                                    boxShadow: kDropShadow,
+                                    borderRadius: BorderRadius.circular(30.r)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const SvgIcon(
+                                      icon: IconStrings.viewOrder,
                                     ),
-                                  ),
-                                ],
+                                    SizedBox(width: 8.w),
+                                    Text(
+                                      'VIEW ORDER',
+                                      style: GoogleFonts.publicSans(
+                                        color: AppColors.seaShell,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    )
+                      )
                   ],
                 ),
               ),

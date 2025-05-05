@@ -94,6 +94,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
                 duration: const Duration(milliseconds: 300),
                 height: provider.isBottomBarVisible
                     ? kBottomNavigationBarHeight + 18.h
+                    // ? kBottomNavigationBarHeight + 0.h
                     : 0,
                 clipBehavior: Clip.hardEdge, //* Prevents overflow during shrink
                 decoration:

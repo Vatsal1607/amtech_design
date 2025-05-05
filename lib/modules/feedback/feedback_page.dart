@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/modules/feedback/feedback_provider.dart';
@@ -6,14 +7,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
+import '../../core/utils/constants/keys.dart';
+import '../../services/local/shared_preferences_service.dart';
 
 class FeedbackPage extends StatelessWidget {
   const FeedbackPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    String accountType = 'business'; // Todo imp set dynamic
-    // String accountType = sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<FeedbackProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
@@ -31,7 +34,11 @@ class FeedbackPage extends StatelessWidget {
                   textAlign: TextAlign.justify,
                   style: GoogleFonts.publicSans(
                     fontSize: 12.sp,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
                 SizedBox(height: 20.h),
@@ -40,7 +47,11 @@ class FeedbackPage extends StatelessWidget {
                   maxLines: 7,
                   style: GoogleFonts.publicSans(
                     fontSize: 15.sp,
-                    color: AppColors.primaryColor.withOpacity(.5),
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor.withOpacity(.5),
+                      personalColor: AppColors.darkGreenGrey.withOpacity(.5),
+                    ),
                   ),
                   decoration: InputDecoration(
                     hintText: 'Enter Your Feedback Here...',
@@ -49,14 +60,22 @@ class FeedbackPage extends StatelessWidget {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                         width: 2.w,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.r),
                       borderSide: BorderSide(
-                        color: AppColors.primaryColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                         width: 2.w,
                       ),
                     ),
@@ -73,7 +92,11 @@ class FeedbackPage extends StatelessWidget {
               height: 55.h,
               onTap: () {},
               text: 'submit',
-              bgColor: AppColors.primaryColor,
+              bgColor: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
             ),
           ),
         ],

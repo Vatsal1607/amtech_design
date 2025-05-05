@@ -13,12 +13,17 @@ void customSnackBar({
   Color textColor = Colors.white,
   IconData? icon,
   Duration duration = const Duration(seconds: 4),
+  bool? isTop,
 }) {
   final snackBar = SnackBar(
     behavior: SnackBarBehavior.floating,
     backgroundColor: backgroundColor,
     duration: duration,
-    margin: EdgeInsets.only(left: 32.w, right: 32.w, bottom: 100.h),
+    margin: EdgeInsets.only(
+      left: 32.w,
+      right: 32.w,
+      bottom: isTop == null ? 100.h : 1.sh * 8,
+    ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(12.r),
     ),

@@ -1,5 +1,6 @@
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -17,10 +18,17 @@ class CustomSlidableButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cartProvider = Provider.of<CartProvider>(context, listen: false);
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     return Consumer<CartProvider>(builder: (context, provider, child) {
       // * New Slidable button
+      // * Note: Button is disabled while address is not selected
       return GestureDetector(
-        onHorizontalDragUpdate: provider.onHorizontalDragUpdate,
+        onHorizontalDragUpdate: cartProvider.isAddressSelected(
+          menuProvider.homeMenuResponse?.data?.address,
+        )
+            ? provider.onHorizontalDragUpdate
+            : null,
         //* onHorizontalDragEnd
         onHorizontalDragEnd: onHorizontalDragEnd,
         child: Stack(
@@ -149,7 +157,7 @@ class CustomSlidableButton extends StatelessWidget {
                             businessColor: AppColors.seaShell,
                             personalColor: AppColors.seaMist,
                           )),
-                      child: Icon(Icons.check, color: Colors.green),
+                      child: const Icon(Icons.check, color: Colors.green),
                     ),
                 ],
               ),

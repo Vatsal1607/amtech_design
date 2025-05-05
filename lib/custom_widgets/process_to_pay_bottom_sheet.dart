@@ -1,7 +1,10 @@
 import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,6 +21,7 @@ const double maxDrag = 250.0; // Maximum drag length
 
 void showProcessToPayBottomSheeet({
   required BuildContext context,
+  required BuildContext scaffoldContext,
   required String accountType,
   Map<String, dynamic>? orderCreateData,
   bool isSubscriptionPay = false,
@@ -33,6 +37,7 @@ void showProcessToPayBottomSheeet({
     // isScrollControlled: true,
     builder: (context) {
       final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      final menuProvider = Provider.of<MenuProvider>(context, listen: false);
       final socketProvider =
           Provider.of<SocketProvider>(context, listen: false);
 
@@ -64,7 +69,7 @@ void showProcessToPayBottomSheeet({
                   Consumer<CartProvider>(
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
-                      // perksBalance: '',
+                      accountType: accountType,
                       payableAmount: payableAmount,
                       onTap: () {
                         provider.updateSelectedPaymentMethod(
@@ -81,6 +86,7 @@ void showProcessToPayBottomSheeet({
                   Consumer<CartProvider>(
                     builder: (context, provider, child) =>
                         SelectPaymentMethodWidget(
+                      accountType: accountType,
                       payableAmount: payableAmount,
                       onTap: () {
                         provider.updateSelectedPaymentMethod(
@@ -92,21 +98,44 @@ void showProcessToPayBottomSheeet({
                     ),
                   ),
 
-                  SizedBox(height: 10.h),
+                  SizedBox(height: 4.h),
+
+                  cartProvider.isAddressSelected(
+                    menuProvider.homeMenuResponse?.data?.address,
+                  )
+                      ? const SizedBox()
+                      : Text(
+                          'Please select an address first',
+                          style: GoogleFonts.publicSans(
+                            color: AppColors.white,
+                          ),
+                        ),
+                  SizedBox(height: 4.h),
 
                   CustomSlidableButton(
                     accountType: accountType,
                     //! On Horizontal Drag End
-                    onHorizontalDragEnd: (details) async {
-                      cartProvider.onHorizontalDragEnd(
-                        details: details,
-                        context: context,
-                        socketProvider: socketProvider,
-                        orderCreateData: orderCreateData,
-                        isSubscriptionPay: isSubscriptionPay,
-                        payableAmount: payableAmount,
-                      );
-                    },
+                    onHorizontalDragEnd: cartProvider.isAddressSelected(
+                            menuProvider.homeMenuResponse?.data?.address)
+                        ? (details) async {
+                            final address =
+                                menuProvider.homeMenuResponse?.data?.address;
+                            if (address == null || address.isEmpty) {
+                              //* Reset position
+                              cartProvider.dragPosition = 10.w;
+                              cartProvider.isConfirmed = false;
+                              return;
+                            }
+                            cartProvider.onHorizontalDragEnd(
+                              details: details,
+                              context: context,
+                              socketProvider: socketProvider,
+                              orderCreateData: orderCreateData,
+                              isSubscriptionPay: isSubscriptionPay,
+                              payableAmount: payableAmount,
+                            );
+                          }
+                        : null,
                   ),
                 ],
               ),

@@ -439,6 +439,7 @@ class _CartPageState extends State<CartPage> {
                             provider.isConfirmed = false;
                             showProcessToPayBottomSheeet(
                               context: context,
+                              scaffoldContext: context,
                               payableAmount: provider.totalAmount ?? '0',
                               accountType: accountType,
                               //! Emit order-create

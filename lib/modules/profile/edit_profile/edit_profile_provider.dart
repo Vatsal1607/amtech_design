@@ -106,23 +106,25 @@ class EditProfileProvider extends ChangeNotifier {
   //* Picked business profile image
   File? pickedBusinessImage;
 
-  Future<File?> pickBusinessImage() async {
+  // Future<File?> pickBusinessImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //   if (pickedFile != null) {
+  //     pickedBusinessImage = File(pickedFile.path);
+  //     return pickedBusinessImage;
+  //   }
+  //   return null;
+  // }
+
+  File? _selectedImage;
+  Future<void> pickBusinessImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      pickedBusinessImage = File(pickedFile.path);
-      return pickedBusinessImage;
-    }
-    return null;
-  }
 
-  // Future<MultipartFile> fileToMultipart(File file) async {
-  //   return MultipartFile.fromFile(
-  //     file.path,
-  //     filename: file.path.split('/').last,
-  //     // contentType: MediaType('image', 'jpeg'),
-  //   );
-  // }
+    if (pickedFile != null) {
+      _selectedImage = File(pickedFile.path);
+    }
+  }
 
   bool isEditProfileLoading = false;
 
@@ -138,10 +140,6 @@ class EditProfileProvider extends ChangeNotifier {
         pickedBusinessImage?.path ?? '',
         filename: pickedBusinessImage?.path.split('/').last,
       );
-      // if (pickedBusinessImage != null) {
-      // multipartImage = await fileToMultipart(pickedBusinessImage!);
-      // log('multipartImage: ${multipartImage.toString()}');
-      // }
       final res = await apiService.editProfile(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
         ownerName: businessOwnerController.text,
@@ -150,8 +148,7 @@ class EditProfileProvider extends ChangeNotifier {
         businessName: businessNameController.text,
         contact: mobileController.text,
         email: businessEmailController.text,
-        //! Working 
-        // profileImage: multipartFile,
+        profileImage: _selectedImage != null ? _selectedImage : null,
         // profileImage: multipartImage,
       );
       if (res.success == true) {

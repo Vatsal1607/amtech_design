@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
-import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/item_quantity_widget.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import '../../menu/menu_provider.dart';

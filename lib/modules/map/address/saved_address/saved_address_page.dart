@@ -14,9 +14,7 @@ import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constants/keys.dart';
 import '../../../../core/utils/enums/enums.dart';
-import '../../../../core/utils/strings.dart';
 import '../../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
-import '../../../../custom_widgets/dialog/custom_info_dialog.dart';
 import '../../../../custom_widgets/textfield/custom_search_container.dart';
 import '../../../../services/local/shared_preferences_service.dart';
 import '../../../provider/socket_provider.dart';
@@ -100,7 +98,8 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
 
   @override
   Widget build(BuildContext context) {
-    const String accountType = 'business'; //Todo set dynamic
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<SavedAddressProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     final gMapProvider = Provider.of<GoogleMapProvider>(context, listen: false);
@@ -111,7 +110,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
         'currentLocation long ${gMapProvider.currentLocation?.longitude}',
         wrapWidth: 1024);
     return Scaffold(
-      appBar: const CustomAppbarWithCenterTitle(
+      appBar: CustomAppbarWithCenterTitle(
         title: 'Change Location',
         accountType: accountType,
         //! TEMP action icon
@@ -169,7 +168,9 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
               SizedBox(height: 20.h),
 
               //* Add new location card:
-              const AddLocationCard(),
+              AddLocationCard(
+                accountType: accountType,
+              ),
 
               SizedBox(height: 20.h),
               CenterTitleWithDivider(
@@ -182,8 +183,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
               //* Saved address card
               Consumer<SavedAddressProvider>(
                 builder: (context, _, child) => provider.isLoadingSavedAddress
-                    ? const CustomLoader(
-                        backgroundColor: AppColors.primaryColor,
+                    ? CustomLoader(
+                        backgroundColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       )
                     : provider.savedAddressList?.length == 0
                         ? Text(
@@ -245,8 +250,12 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
               Consumer<SavedAddressProvider>(builder: (context, _, child) {
                 log('nearByAddressList length: ${provider.nearByAddressList?.length}');
                 return provider.isLoadingNearBy
-                    ? const CustomLoader(
-                        backgroundColor: AppColors.primaryColor,
+                    ? CustomLoader(
+                        backgroundColor: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.primaryColor,
+                          personalColor: AppColors.darkGreenGrey,
+                        ),
                       )
                     : (provider.nearByAddressList == null ||
                             provider.nearByAddressList!.isEmpty)

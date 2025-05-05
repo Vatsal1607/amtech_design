@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/textfield/custom_searchfield.dart';
@@ -104,8 +103,12 @@ class _SearchBottomSheetState extends State<SearchBottomSheet> {
                       child: SizedBox(
                         height: 30.h,
                         width: 30.w,
-                        child: const CustomLoader(
-                          backgroundColor: AppColors.primaryColor,
+                        child: CustomLoader(
+                          backgroundColor: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                       ),
                     )

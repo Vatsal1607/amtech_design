@@ -369,6 +369,7 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                           onTap: () {
                             showProcessToPayBottomSheeet(
                               context: context,
+                              scaffoldContext: context,
                               payableAmount:
                                   provider.getGrandTotal().toString(),
                               accountType: accountType,

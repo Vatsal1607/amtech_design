@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
@@ -18,6 +17,7 @@ import 'suffix_address_widget.dart';
 
 Widget _buildCheckbox({
   required String title,
+  required String accountType,
   required bool value,
   void Function(bool?)? onChanged,
 }) {
@@ -31,7 +31,11 @@ Widget _buildCheckbox({
           icon: value
               ? IconStrings.checkboxChecked
               : IconStrings.checkboxUnchecked,
-          color: AppColors.disabledColor,
+          color: getColorAccountType(
+            accountType: accountType,
+            businessColor: AppColors.disabledColor,
+            personalColor: AppColors.bayLeaf,
+          ),
         ),
         const SizedBox(width: 8),
         Text(
@@ -39,7 +43,11 @@ Widget _buildCheckbox({
           style: GoogleFonts.publicSans(
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
-            color: AppColors.seaShell,
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.seaShell,
+              personalColor: AppColors.seaMist,
+            ),
           ),
         ),
       ],
@@ -101,7 +109,11 @@ void editAddressBottomSheeet({
                       'SAVE ADDRESS AS',
                       style: GoogleFonts.publicSans(
                         fontSize: 16.sp,
-                        color: AppColors.disabledColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                       ),
                     ),
                     SizedBox(height: 5.h),
@@ -110,6 +122,7 @@ void editAddressBottomSheeet({
                       children: [
                         Consumer<GoogleMapProvider>(
                           builder: (context, provider, child) => _buildCheckbox(
+                            accountType: accountType,
                             title: 'HOME',
                             value: provider.isCheckedHome,
                             onChanged: provider.onChangedHome,
@@ -118,6 +131,7 @@ void editAddressBottomSheeet({
                         SizedBox(width: 10.h),
                         Consumer<GoogleMapProvider>(
                           builder: (context, provider, child) => _buildCheckbox(
+                              accountType: accountType,
                               title: 'WORK',
                               value: provider.isCheckedWork,
                               onChanged: provider.onChangedWork),
@@ -125,6 +139,7 @@ void editAddressBottomSheeet({
                         SizedBox(width: 10.h),
                         Consumer<GoogleMapProvider>(
                           builder: (context, provider, child) => _buildCheckbox(
+                            accountType: accountType,
                             title: 'OTHER',
                             value: provider.isCheckedOther,
                             onChanged: provider.onChangedOther,
@@ -149,7 +164,11 @@ void editAddressBottomSheeet({
                     Text(
                       'ADDED BASED ON YOUR MAP PIN YOU SELECTED',
                       style: GoogleFonts.publicSans(
-                        color: AppColors.disabledColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                         fontSize: 12.sp,
                       ),
                     ),

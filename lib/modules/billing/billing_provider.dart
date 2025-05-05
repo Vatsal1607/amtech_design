@@ -137,7 +137,7 @@ class BillingProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> downloadInvoiceToDownloads(String url, String fileName) async {
+  Future downloadInvoiceToDownloads(String url, String fileName) async {
     try {
       // Request permission (required for Android versions < 11)
       if (Platform.isAndroid) {
@@ -161,31 +161,13 @@ class BillingProvider extends ChangeNotifier {
       }
 
       final filePath = path.join(downloadDir.path, fileName);
-
       final dio = Dio();
       await dio.download(url, filePath);
-
       debugPrint("Invoice downloaded to $filePath");
+      return filePath; //* Return File path for show snackbar
     } catch (e) {
       debugPrint("Download failed: $e");
+      return null;
     }
   }
-
-  // Future<void> downloadInvoice(String url, String fileName) async {
-  //   try {
-  //     final dir = await getApplicationDocumentsDirectory();
-  //     final filePath = "${dir.path}/$fileName";
-
-  //     final dio = Dio();
-  //     await dio.download(url, filePath);
-
-  //     debugPrint("Downloaded to $filePath");
-
-  //     // Optional: open the file
-  //     // import 'package:open_file/open_file.dart';
-  //     // await OpenFile.open(filePath);
-  //   } catch (e) {
-  //     debugPrint("Download error: $e");
-  //   }
-  // }
 }

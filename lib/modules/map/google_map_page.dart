@@ -106,9 +106,13 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       ),
       body: Consumer<GoogleMapProvider>(
         builder: (context, _, child) => provider.currentLocation == null
-            ? const Center(
+            ? Center(
                 child: CustomLoader(
-                color: AppColors.primaryColor,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ))
             : Stack(
                 clipBehavior: Clip.none,
@@ -169,7 +173,11 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                       // width: 40.w,
                       fit: BoxFit.cover,
                       icon: IconStrings.locationMarker,
-                      color: AppColors.primaryColor,
+                      color: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                     ),
                   ),
                   //* Custom Location Button FAB
@@ -178,16 +186,24 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     right: 20.w,
                     child: FloatingActionButton(
                       shape: const CircleBorder(),
-                      backgroundColor: AppColors.primaryColor,
+                      backgroundColor: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
                       onPressed: () {
                         provider.getCurrentLocation(
                           context: context,
                           socketProvider: socketProvider,
                         );
                       },
-                      child: const Icon(
+                      child: Icon(
                         Icons.my_location,
-                        color: AppColors.seaShell,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.seaShell,
+                          personalColor: AppColors.seaMist,
+                        ),
                       ),
                     ),
                   ),
@@ -217,7 +233,11 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     child: Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        color: AppColors.seaShell,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.seaShell,
+                          personalColor: AppColors.seaMist,
+                        ),
                         padding: EdgeInsets.symmetric(
                             horizontal: 32.w, vertical: 40.h),
                         child: Column(

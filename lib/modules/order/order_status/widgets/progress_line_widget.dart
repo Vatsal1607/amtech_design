@@ -1,6 +1,9 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/utils/app_colors.dart';
+import '../../../../core/utils/constants/keys.dart';
+import '../../../../services/local/shared_preferences_service.dart';
 
 class ProgressLineWidget extends StatelessWidget {
   final double? value;
@@ -11,6 +14,8 @@ class ProgressLineWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Expanded(
       child: Container(
         height: 5.h,
@@ -18,8 +23,12 @@ class ProgressLineWidget extends StatelessWidget {
         child: LinearProgressIndicator(
           value: value,
           backgroundColor: AppColors.primaryColor.withOpacity(.3),
-          valueColor: const AlwaysStoppedAnimation<Color>(
-            AppColors.primaryColor,
+          valueColor: AlwaysStoppedAnimation<Color>(
+            getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.primaryColor,
+              personalColor: AppColors.darkGreenGrey,
+            ),
           ),
         ),
       ),

@@ -87,43 +87,6 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
                                     Lottie.asset(
                                   provider.getLottieFile(
                                       accountType, provider.orderStatusEnum),
-                                  // accountType == 'business'
-                                  //     ? provider.orderStatusEnum == OrderStatus.placed
-                                  //         ? LottieStrings.orderPlaced
-                                  //         : provider.orderStatusEnum ==
-                                  //                 OrderStatus.confirmed
-                                  //             ? LottieStrings.orderConfirm
-                                  //             : provider.orderStatusEnum ==
-                                  //                     OrderStatus.prepared
-                                  //                 ? LottieStrings.orderPreparation
-                                  //                 : provider.orderStatusEnum ==
-                                  //                         OrderStatus.outForDelivery
-                                  //                     ? LottieStrings
-                                  //                         .orderOutForDelivery
-                                  //                     : provider.orderStatusEnum ==
-                                  //                             OrderStatus.delivered
-                                  //                         ? LottieStrings
-                                  //                             .orderDelivered
-                                  //                         : LottieStrings.orderPlaced
-                                  //     : provider.orderStatusEnum == OrderStatus.placed
-                                  //         ? LottieStrings.orderPlacedPersonal
-                                  //         : provider.orderStatusEnum ==
-                                  //                 OrderStatus.confirmed
-                                  //             ? LottieStrings.orderConfirmPersonal
-                                  //             : provider.orderStatusEnum ==
-                                  //                     OrderStatus.prepared
-                                  //                 ? LottieStrings
-                                  //                     .orderPreparationPersonal
-                                  //                 : provider.orderStatusEnum ==
-                                  //                         OrderStatus.outForDelivery
-                                  //                     ? LottieStrings
-                                  //                         .orderOutForDeliveryPersonal
-                                  //                     : provider.orderStatusEnum ==
-                                  //                             OrderStatus.delivered
-                                  //                         ? LottieStrings
-                                  //                             .orderDeliveredPersonal
-                                  //                         : LottieStrings
-                                  //                             .orderPlacedPersonal // fallback
                                 ),
                               ),
                             ),

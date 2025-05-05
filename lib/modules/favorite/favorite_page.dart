@@ -1,3 +1,4 @@
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/bottom_blur_on_page.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
@@ -21,7 +22,6 @@ class FavoritePage extends StatefulWidget {
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -42,15 +42,23 @@ class _FavoritePageState extends State<FavoritePage> {
         accountType: accountType,
         isAction: true,
         actionIcon: IconStrings.more,
-        actionIconColor: AppColors.primaryColor,
+        actionIconColor: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
       ),
       body: Stack(
         children: [
           Consumer<FavoritesProvider>(
             builder: (context, _, child) => provider.isLoading
-                ? const Center(
+                ? Center(
                     child: CustomLoader(
-                    backgroundColor: AppColors.primaryColor,
+                    backgroundColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ))
                 : provider.favoriteList != null &&
                         provider.favoriteList!.isNotEmpty
@@ -93,7 +101,11 @@ class _FavoritePageState extends State<FavoritePage> {
                           'No favorite items found!',
                           style: GoogleFonts.publicSans(
                             fontSize: 20.sp,
-                            color: AppColors.primaryColor,
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
                           ),
                         ),
                       ),

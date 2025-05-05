@@ -5,17 +5,26 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/utils/app_colors.dart';
+import '../../../../../core/utils/constant.dart';
 import '../../../../../core/utils/strings.dart';
 import '../../../../../routes.dart';
 
 class AddLocationCard extends StatelessWidget {
-  const AddLocationCard({super.key});
+  final String accountType;
+  const AddLocationCard({
+    super.key,
+    required this.accountType,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primaryColor,
+        color: getColorAccountType(
+          accountType: accountType,
+          businessColor: AppColors.primaryColor,
+          personalColor: AppColors.darkGreenGrey,
+        ),
         borderRadius: BorderRadius.circular(30.r),
       ),
       padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.w),
@@ -39,9 +48,13 @@ class AddLocationCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      const SvgIcon(
+                      SvgIcon(
                         icon: IconStrings.addLocation,
-                        color: AppColors.disabledColor,
+                        color: getColorAccountType(
+                          accountType: accountType,
+                          businessColor: AppColors.disabledColor,
+                          personalColor: AppColors.bayLeaf,
+                        ),
                       ),
                       SizedBox(width: 10.w),
                       Text(
@@ -49,7 +62,11 @@ class AddLocationCard extends StatelessWidget {
                         style: GoogleFonts.publicSans(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.bold,
-                          color: AppColors.seaShell,
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                         ),
                       ),
                     ],
@@ -61,8 +78,12 @@ class AddLocationCard extends StatelessWidget {
             ),
           ),
           SizedBox(height: 5.h),
-          const Divider(
-            color: AppColors.disabledColor,
+          Divider(
+            color: getColorAccountType(
+              accountType: accountType,
+              businessColor: AppColors.disabledColor,
+              personalColor: AppColors.bayLeaf,
+            ),
             thickness: 1,
           ),
           SizedBox(height: 15.h),
@@ -75,9 +96,13 @@ class AddLocationCard extends StatelessWidget {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SvgIcon(
+                SvgIcon(
                   icon: IconStrings.useCurrentLocation,
-                  color: AppColors.disabledColor,
+                  color: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.disabledColor,
+                    personalColor: AppColors.bayLeaf,
+                  ),
                 ),
                 SizedBox(width: 10.w),
                 Expanded(

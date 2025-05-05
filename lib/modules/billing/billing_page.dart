@@ -164,22 +164,6 @@ class _BillingPageState extends State<BillingPage> {
                                     );
                                   }).toList(),
                                 ),
-
-                                // OLD
-                                // child: ListView.separated(
-                                //   padding: EdgeInsets.zero,
-                                //   shrinkWrap: true,
-                                //   physics: const NeverScrollableScrollPhysics(),
-                                //   itemCount: provider.billingList.length,
-                                //   separatorBuilder: (context, index) =>
-                                //       SizedBox(height: 20.h),
-                                //   itemBuilder: (context, index) {
-                                //     return BillingCardWidget(
-                                //       accountType: accountType,
-                                //       billingList: provider.billingList,
-                                //     );
-                                //   },
-                                // ),
                               ),
                       ),
                     ],

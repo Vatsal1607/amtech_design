@@ -1,4 +1,5 @@
 import 'package:amtech_design/modules/notification/notification_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -36,7 +37,9 @@ class CustomSliverAppbar extends StatelessWidget {
           //! leading icon
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, Routes.profile),
-            onLongPress: provider.onVerticalDragDownLeading,
+            //Todo Uncoment (implement)
+            //* IMP: Account switch logic
+            // onLongPress: provider.onVerticalDragDownLeading,
             child: Container(
               height: 48.h,
               width: 48.w,
@@ -50,10 +53,35 @@ class CustomSliverAppbar extends StatelessWidget {
                 ),
               ),
               child: ClipOval(
-                child: Image.asset(
-                  ImageStrings.logo,
-                  fit: BoxFit.cover,
-                ),
+                child: Consumer<MenuProvider>(builder: (context, _, child) {
+                  final imageUrl =
+                      provider.homeMenuResponse?.data?.profileImage;
+                  return (imageUrl == null || imageUrl.isEmpty)
+                      ? SizedBox.expand(
+                          child: Icon(
+                            Icons.account_circle,
+                            color: Colors.grey,
+                            size: 44,
+                          ),
+                        )
+                      : CachedNetworkImage(
+                          imageUrl: imageUrl,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => 
+                              CircularProgressIndicator(
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => const Icon(
+                            Icons.account_circle,
+                            size: 80,
+                            color: Colors.grey,
+                          ),
+                        );
+                }),
               ),
             ),
           ),

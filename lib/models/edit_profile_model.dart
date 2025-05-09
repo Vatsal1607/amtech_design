@@ -41,6 +41,7 @@ class Data {
   int? iV;
   String? otp;
   String? gst;
+  String? profileImage;
 
   Data({
     this.sId,
@@ -58,6 +59,7 @@ class Data {
     this.iV,
     this.otp,
     this.gst,
+    this.profileImage,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -76,6 +78,7 @@ class Data {
     iV = json['__v'];
     otp = json['otp'];
     gst = json['gst'];
+    profileImage = json['profileImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -95,6 +98,7 @@ class Data {
     data['__v'] = iV;
     data['otp'] = otp;
     data['gst'] = gst;
+    data['profileImage'] = profileImage;
     return data;
   }
 }

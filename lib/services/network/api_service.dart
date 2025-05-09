@@ -272,9 +272,20 @@ class ApiService {
 
   Future<EditProfileModel> editPersonalProfile({
     required String userId,
-    required Map<String, dynamic> body,
+    required String firstName,
+    required String lastName,
+    required String contact,
+    required String address,
+    File? profileImage,
   }) async {
-    return await apiClient.editPersonalProfile(userId, body);
+    return await apiClient.editPersonalProfile(
+      userId,
+      firstName,
+      lastName,
+      contact,
+      address,
+      profileImage,
+    );
   }
 
   Future<EditLocationModel> editLocation({

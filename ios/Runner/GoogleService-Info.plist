@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.nexora.app.degrees135</string>
+	<string>com.nexora.degrees135</string>
 	<key>PROJECT_ID</key>
 	<string>degrees-1c40e</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:768156680566:ios:2fd7d1d276df210acfba57</string>
+	<string>1:768156680566:ios:b4c724bccdcca241cfba57</string>
 </dict>
 </plist>

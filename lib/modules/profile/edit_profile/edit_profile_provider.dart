@@ -1,15 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/get_personal_details_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../models/get_business_details_model.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import '../../../services/network/api_service.dart';
+import '../../menu/menu_provider.dart';
 
 class EditProfileProvider extends ChangeNotifier {
   TextEditingController businessNameController = TextEditingController();
@@ -39,6 +43,9 @@ class EditProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  String? businessProfileImage;
+  String? personalProfileImage;
+
   //* getBusinessDetails API
   Future<void> getBusinessDetails() async {
     isDetailsLoading = true;
@@ -49,13 +56,16 @@ class EditProfileProvider extends ChangeNotifier {
       );
       log('getBusinessDetails: ${res.data}');
       if (res.success == true) {
+        selectedBusinessImage = null; // Clear preview after upload
         detailsResponse = res;
-        businessNameController.text = detailsResponse?.data?.businessName ?? '';
-        businessOwnerController.text = detailsResponse?.data?.ownerName ?? '';
-        addressController.text = detailsResponse?.data?.address ?? '';
-        mobileController.text = detailsResponse?.data?.contact.toString() ?? '';
-        businessEmailController.text = detailsResponse?.data?.email ?? '';
-        selectedBusinessType = detailsResponse?.data?.buninessType ?? '';
+        final data = detailsResponse?.data;
+        businessNameController.text = data?.businessName ?? '';
+        businessOwnerController.text = data?.ownerName ?? '';
+        addressController.text = data?.address ?? '';
+        mobileController.text = data?.contact?.toString() ?? '';
+        businessEmailController.text = data?.email ?? '';
+        selectedBusinessType = data?.buninessType ?? '';
+        businessProfileImage = data?.profileImage;
       } else {
         log('${res.message}');
       }
@@ -77,16 +87,14 @@ class EditProfileProvider extends ChangeNotifier {
       );
       log('personalDetailsResponse: ${res.data}');
       if (res.success == true) {
+        selectedPersonalImage = null; // Clear preview after upload
         personalDetailsResponse = res;
-        personalFirstNameController.text =
-            personalDetailsResponse?.data?.firstName ?? 'null';
-        personalLastNameController.text =
-            personalDetailsResponse?.data?.lastName ?? 'null';
-        addressController.text =
-            personalDetailsResponse?.data?.address ?? 'null';
-        mobileController.text =
-            personalDetailsResponse?.data?.contact.toString() ?? 'null';
-        log('personalDetailsResponse: ${personalDetailsResponse?.data?.firstName}');
+        final personal = personalDetailsResponse?.data;
+        personalFirstNameController.text = personal?.firstName ?? 'null';
+        personalLastNameController.text = personal?.lastName ?? 'null';
+        addressController.text = personal?.address ?? 'null';
+        mobileController.text = personal?.contact?.toString() ?? 'null';
+        personalProfileImage = personal?.profileImage;
       } else {
         log('${res.message}');
       }
@@ -98,61 +106,83 @@ class EditProfileProvider extends ChangeNotifier {
     }
   }
 
-  Future<String> imageToBase64(File imageFile) async {
-    final bytes = await imageFile.readAsBytes();
-    return base64Encode(bytes);
-  }
-
   //* Picked business profile image
   File? pickedBusinessImage;
+  File? pickedPersonalImage;
 
-  // Future<File?> pickBusinessImage() async {
-  //   final picker = ImagePicker();
-  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-  //   if (pickedFile != null) {
-  //     pickedBusinessImage = File(pickedFile.path);
-  //     return pickedBusinessImage;
-  //   }
-  //   return null;
-  // }
+  File? selectedBusinessImage;
+  File? selectedPersonalImage;
 
-  File? _selectedImage;
+  //* Pick Business image
   Future<void> pickBusinessImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
-      _selectedImage = File(pickedFile.path);
+      selectedBusinessImage = File(pickedFile.path);
+      notifyListeners();
+    }
+  }
+
+  //* Pick Personal image
+  Future<void> pickPersonalImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      selectedPersonalImage = File(pickedFile.path);
+      notifyListeners();
+    }
+  }
+
+  ImageProvider getBusinessProfileImage() {
+    if (selectedBusinessImage != null) {
+      // Show picked image as preview before uploading
+      return FileImage(selectedBusinessImage!);
+    } else if (businessProfileImage?.isNotEmpty == true) {
+      // Show image from server after upload
+      return CachedNetworkImageProvider(businessProfileImage!);
+    } else {
+      // Fallback
+      return const AssetImage(ImageStrings.defaultAvatar);
+    }
+  }
+
+  ImageProvider getPersonalProfileImage() {
+    if (selectedPersonalImage != null) {
+      // Show picked image as preview before uploading
+      return FileImage(selectedPersonalImage!);
+    } else if (personalProfileImage?.isNotEmpty == true) {
+      // Show image from server after upload
+      return CachedNetworkImageProvider(personalProfileImage!);
+    } else {
+      // Fallback
+      return const AssetImage(ImageStrings.defaultAvatar);
     }
   }
 
   bool isEditProfileLoading = false;
 
-  //* editProfile API
-  Future<void> editProfile(
+  //* EditProfile API
+  Future<void> editBusinessProfile(
     BuildContext context,
   ) async {
     isEditProfileLoading = true;
     notifyListeners();
     try {
-      // dynamic multipartImage;
-      final multipartFile = await MultipartFile.fromFile(
-        pickedBusinessImage?.path ?? '',
-        filename: pickedBusinessImage?.path.split('/').last,
-      );
       final res = await apiService.editProfile(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
-        ownerName: businessOwnerController.text,
-        address: addressController.text,
+        ownerName: businessOwnerController.text.trim(),
+        address: addressController.text.trim(),
         buninessType: selectedBusinessType ?? '',
-        businessName: businessNameController.text,
-        contact: mobileController.text,
-        email: businessEmailController.text,
-        profileImage: _selectedImage != null ? _selectedImage : null,
-        // profileImage: multipartImage,
+        businessName: businessNameController.text.trim(),
+        contact: mobileController.text.trim(),
+        email: businessEmailController.text.trim(),
+        profileImage: selectedBusinessImage,
       );
       if (res.success == true) {
-        log('editProfile message: ${res.message.toString()}');
+        selectedBusinessImage = null; // Clear preview after upload
+        context.read<MenuProvider>().homeMenuApi(); //* API call
         Navigator.pop(context);
         customSnackBar(context: context, message: '${res.message}');
       } else {
@@ -173,20 +203,18 @@ class EditProfileProvider extends ChangeNotifier {
     isEditProfileLoading = true;
     notifyListeners();
     try {
-      final body = {
-        'firstName': personalFirstNameController.text,
-        'lastName': personalLastNameController.text,
-        'contact': mobileController.text,
-        'address': addressController.text,
-        // 'profileImage': '',
-      };
       final res = await apiService.editPersonalProfile(
         userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
-        body: body,
+        firstName: personalFirstNameController.text.trim(),
+        lastName: personalLastNameController.text.trim(),
+        contact: mobileController.text.trim(),
+        address: addressController.text.trim(),
+        profileImage: selectedPersonalImage,
       );
       log('editProfile res: ${res.data}');
       if (res.success == true) {
-        log('editProfile message: ${res.message.toString()}');
+        selectedPersonalImage = null; // Clear preview after upload
+        context.read<MenuProvider>().homeMenuApi(); //* API call
         Navigator.pop(context);
         customSnackBar(context: context, message: '${res.message}');
       } else {

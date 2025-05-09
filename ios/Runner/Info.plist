@@ -39,6 +39,20 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>upi</string>
+		<string>tez</string>
+		<string>gpay</string>
+		<string>paytm</string>
+		<string>phonepe</string>
+		<string>bhim</string>
+		<string>amazon</string>
+		<string>myairtel</string>
+		<string>credpay</string>
+	</array>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<true/>
 	<key>GoogleMapsAPIKey</key>
 	<string>AIzaSyAB3k8_wpskZUUB3sxRBrIZW07tQ8lSgZI</string>
 	<key>IOAppKeys</key>
@@ -65,12 +79,15 @@
 	<string>We need your location to ensure accurate delivery tracking even when the app is in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to show nearby products and deliver them to you.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location to ensure accurate tracking at all times, even in the background.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to allow you to upload documents for user verification.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>location</string>
 		<string>remote-notification</string>
 		<string>fetch</string>
 	</array>

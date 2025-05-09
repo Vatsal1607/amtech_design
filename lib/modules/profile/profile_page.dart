@@ -7,6 +7,7 @@ import 'package:amtech_design/modules/auth/login/login_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/profile/profile_provider.dart';
 import 'package:amtech_design/modules/profile/widgets/profile_tile.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -121,9 +122,26 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                     child: ClipOval(
-                      child: Image.asset(
-                        ImageStrings.logo,
-                        fit: BoxFit.cover,
+                      child: Consumer<MenuProvider>(
+                        builder: (context, menuProvider, child) =>
+                            CachedNetworkImage(
+                          imageUrl: menuProvider
+                                  .homeMenuResponse?.data?.profileImage ??
+                              '',
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                          ),
+                          errorWidget: (context, url, error) => const Icon(
+                            Icons.account_circle,
+                            size: 80,
+                          ),
+                        ),
                       ),
                     ),
                   ),

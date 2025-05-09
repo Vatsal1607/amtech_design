@@ -300,9 +300,10 @@ class _MenuPageState extends State<MenuPage> {
                                           child: Column(
                                             children: [
                                               // * Banner View
-                                              BannerView(
-                                                accountType: accountType,
-                                              ),
+                                              if (provider.banners.isNotEmpty)
+                                                BannerView(
+                                                  accountType: accountType,
+                                                ),
                                               SizedBox(height: 20.h),
                                               // * Subscriptions Banner
                                               const SubscriptionBannerWidget(),

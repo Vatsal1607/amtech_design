@@ -42,23 +42,26 @@ class Data {
   int? iV;
   String? otp;
   String? gst;
+  String? profileImage;
 
-  Data(
-      {this.sId,
-      this.businessName,
-      this.ownerName,
-      this.contact,
-      this.email,
-      this.address,
-      this.buninessType,
-      this.role,
-      this.isActive,
-      this.isDelete,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.otp,
-      this.gst});
+  Data({
+    this.sId,
+    this.businessName,
+    this.ownerName,
+    this.contact,
+    this.email,
+    this.address,
+    this.buninessType,
+    this.role,
+    this.isActive,
+    this.isDelete,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.otp,
+    this.gst,
+    this.profileImage,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -76,6 +79,7 @@ class Data {
     iV = json['__v'];
     otp = json['otp'];
     gst = json['gst'];
+    profileImage = json['profileImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -95,6 +99,7 @@ class Data {
     data['__v'] = iV;
     data['otp'] = otp;
     data['gst'] = gst;
+    data['profileImage'] = profileImage;
     return data;
   }
 }

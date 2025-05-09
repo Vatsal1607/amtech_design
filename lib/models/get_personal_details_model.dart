@@ -39,20 +39,23 @@ class Data {
   String? updatedAt;
   int? iV;
   String? otp;
+  String? profileImage;
 
-  Data(
-      {this.sId,
-      this.firstName,
-      this.lastName,
-      this.address,
-      this.contact,
-      this.role,
-      this.isActive,
-      this.isDelete,
-      this.createdAt,
-      this.updatedAt,
-      this.iV,
-      this.otp});
+  Data({
+    this.sId,
+    this.firstName,
+    this.lastName,
+    this.address,
+    this.contact,
+    this.role,
+    this.isActive,
+    this.isDelete,
+    this.createdAt,
+    this.updatedAt,
+    this.iV,
+    this.otp,
+    this.profileImage,
+  });
 
   Data.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -67,6 +70,7 @@ class Data {
     updatedAt = json['updatedAt'];
     iV = json['__v'];
     otp = json['otp'];
+    profileImage = json['profileImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -83,6 +87,7 @@ class Data {
     data['updatedAt'] = updatedAt;
     data['__v'] = iV;
     data['otp'] = otp;
+    data['profileImage'] = profileImage;
     return data;
   }
 }

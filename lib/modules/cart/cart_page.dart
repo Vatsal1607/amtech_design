@@ -213,32 +213,39 @@ class _CartPageState extends State<CartPage> {
                                   .getMixedItemsFromCategories(
                                       provider.menuCategories ?? [],
                                       perCategory: 2);
-                              return ListView.separated(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: randomMixedItems.length,
-                                padding: EdgeInsets.only(left: 15.w),
-                                separatorBuilder: (context, index) =>
-                                    SizedBox(width: 15.w),
-                                itemBuilder: (context, index) {
-                                  final item = randomMixedItems[index];
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(
-                                        context,
-                                        Routes.productDetails,
-                                        arguments: {
-                                          'menuId': item.menuId,
-                                          'detailsType':
-                                              DetailsType.details.name,
-                                        },
-                                      );
-                                    },
-                                    child: YouMayLikeWidget(
-                                      accountType: accountType,
-                                      item: item,
-                                    ),
-                                  );
-                                },
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: ListView.separated(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: randomMixedItems.length,
+                                  padding: EdgeInsets.only(
+                                    left: 15.w,
+                                    right: 15.w,
+                                  ),
+                                  separatorBuilder: (context, index) =>
+                                      SizedBox(width: 15.w),
+                                  itemBuilder: (context, index) {
+                                    final item = randomMixedItems[index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                          context,
+                                          Routes.productDetails,
+                                          arguments: {
+                                            'menuId': item.menuId,
+                                            'detailsType':
+                                                DetailsType.details.name,
+                                          },
+                                        );
+                                      },
+                                      child: YouMayLikeWidget(
+                                        accountType: accountType,
+                                        item: item,
+                                      ),
+                                    );
+                                  },
+                                ),
                               );
                             }),
                           )
@@ -293,8 +300,8 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                 ),
                                 Text(
-                                  // '₹${provider.totalAmount} ',
-                                  '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.parse(provider.totalAmount!)) : '0.00'} ',
+                                  // '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.parse(provider.totalAmount!)) : '0.00'} ',
+                                  '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.tryParse(provider.totalAmount!) ?? 0.0) : '0.00'}',
                                   style: GoogleFonts.publicSans(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.bold,
@@ -359,7 +366,9 @@ class _CartPageState extends State<CartPage> {
                                           ),
                                         ),
                                         Text(
-                                          '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.parse(provider.totalAmount!))} (12%)' : '0.00'}',
+                                          // '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.parse(provider.totalAmount!))} (12%)' : '0.00'}',
+                                          '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.tryParse(provider.totalAmount!) ?? 0.0)} (12%)' : '0.00'}',
+
                                           style: GoogleFonts.publicSans(
                                             fontSize: 12.sp,
                                             color: AppColors.seaShell,

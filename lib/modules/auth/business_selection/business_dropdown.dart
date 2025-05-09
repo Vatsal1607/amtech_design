@@ -122,7 +122,13 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
               ),
             ],
             suggestionsBuilder: (context, controller) {
-              if (widget.provider.filteredBusinessList.isEmpty) {
+              final query = controller.text.toLowerCase();
+              final filteredBusinesses = widget.provider.filteredBusinessList
+                  .where((business) =>
+                      business.businessName!.toLowerCase().contains(query))
+                  .toList();
+              // if (widget.provider.filteredBusinessList.isEmpty) {
+              if (widget.provider.isLoading) {
                 return const [
                   Center(
                     child: CustomLoader(
@@ -132,11 +138,28 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
                 ];
               }
 
-              final query = controller.text.toLowerCase();
-              final filteredBusinesses = widget.provider.filteredBusinessList
-                  .where((business) =>
-                      business.businessName!.toLowerCase().contains(query))
-                  .toList();
+              //* Message While Business records not found
+              // && query.isNotEmpty
+              if (filteredBusinesses.isEmpty) {
+                return [
+                  SizedBox(
+                    height: 150.h, // Same height as your ListView container
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          'No Business Records Found, Please Register',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.publicSans(
+                            color: AppColors.primaryColor,
+                            fontSize: 18.sp,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ];
+              }
 
               return [
                 SizedBox(
@@ -165,7 +188,6 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
                           business.businessName!,
                           style: GoogleFonts.publicSans(
                             fontSize: 18.sp,
-                            // fontWeight: FontWeight.bold,
                             color: AppColors.primaryColor,
                           ),
                         ),

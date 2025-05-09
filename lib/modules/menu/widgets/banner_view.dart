@@ -19,6 +19,7 @@ class BannerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('${context.read<MenuProvider>().banners.length}');
     return Column(
       children: [
         SizedBox(

@@ -1096,17 +1096,47 @@ class _ApiClient implements ApiClient {
   @override
   Future<EditProfileModel> editPersonalProfile(
     String userId,
-    Map<String, dynamic> body,
+    String firstName,
+    String lastName,
+    String contact,
+    String address,
+    File? profileImage,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(body);
+    final _data = FormData();
+    _data.fields.add(MapEntry(
+      'firstName',
+      firstName,
+    ));
+    _data.fields.add(MapEntry(
+      'lastName',
+      lastName,
+    ));
+    _data.fields.add(MapEntry(
+      'contact',
+      contact,
+    ));
+    _data.fields.add(MapEntry(
+      'address',
+      address,
+    ));
+    if (profileImage != null) {
+      _data.files.add(MapEntry(
+        'profileImage',
+        MultipartFile.fromFileSync(
+          profileImage.path,
+          filename: profileImage.path.split(Platform.pathSeparator).last,
+        ),
+      ));
+    }
     final _options = _setStreamType<EditProfileModel>(Options(
       method: 'PUT',
       headers: _headers,
       extra: _extra,
+      contentType: 'multipart/form-data',
     )
         .compose(
           _dio.options,

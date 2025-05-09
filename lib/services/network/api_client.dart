@@ -196,13 +196,7 @@ abstract class ApiClient {
     @Path('userId') String userId,
   );
 
-  //* Edit profile
-  // @PUT('${ApiEndpoints.editProfile}/{userId}')
-  // Future<EditProfileModel> editProfile(
-  //   @Path('userId') String userId,
-  //   @Body() Map<String, dynamic> body,
-  // );
-
+  //* Edit Business profile
   @PUT('${ApiEndpoints.editProfile}/{userId}')
   @MultiPart()
   Future<EditProfileModel> editProfile(
@@ -213,8 +207,7 @@ abstract class ApiClient {
     @Part(name: 'businessName') String businessName,
     @Part(name: 'email') String email,
     @Part(name: 'buninessType') String buninessType,
-    @Part(name: "profileImage") File? profileImage, // or MultipartFile
-    // @Part(name: 'profileImage') MultipartFile? profileImage,
+    @Part(name: "profileImage") File? profileImage,
   );
 
   @GET('${ApiEndpoints.getPersonalDetails}/{userId}')
@@ -222,10 +215,16 @@ abstract class ApiClient {
     @Path('userId') String userId,
   );
 
+  //* Edit Personal profile
   @PUT('${ApiEndpoints.editPersonalProfile}/{userId}')
+  @MultiPart()
   Future<EditProfileModel> editPersonalProfile(
     @Path('userId') String userId,
-    @Body() Map<String, dynamic> body,
+    @Part(name: 'firstName') String firstName,
+    @Part(name: 'lastName') String lastName,
+    @Part(name: 'contact') String contact,
+    @Part(name: 'address') String address,
+    @Part(name: "profileImage") File? profileImage,
   );
 
   @POST('${ApiEndpoints.location}/{userId}')
@@ -238,7 +237,7 @@ abstract class ApiClient {
   @PUT('${ApiEndpoints.chooseLocation}/{userId}')
   Future<ApiGlobalModel> chooseLocation(
     @Path('userId') String userId,
-    @Field() String address,
+    @Field() String address, // field () is empty
   );
 
   // edit-address

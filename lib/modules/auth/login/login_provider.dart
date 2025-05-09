@@ -104,8 +104,8 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
     } else {
       mobileErrorText = null;
-      notifyListeners();
       mobilenumberFocusNode.unfocus();
+      notifyListeners();
     }
   }
 

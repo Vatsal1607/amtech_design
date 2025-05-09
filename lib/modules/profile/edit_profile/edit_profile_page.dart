@@ -3,6 +3,7 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -89,10 +90,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       ),
                                     ),
                                     child: ClipOval(
-                                      child: Image.asset(
-                                        ImageStrings.logo,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      //* Profile image
+                                      child: Consumer<EditProfileProvider>(
+                                          builder: (context, provider, child) {
+                                        return CircleAvatar(
+                                          backgroundColor: Colors.grey,
+                                          radius: 50,
+                                          backgroundImage: accountType ==
+                                                  'business'
+                                              ? provider
+                                                  .getBusinessProfileImage()
+                                              : provider
+                                                  .getPersonalProfileImage(),
+                                        );
+                                        // CachedNetworkImage(
+                                        //   imageUrl: accountType == 'business'
+                                        //       ? '${provider.businessProfileImage}'
+                                        //       : '${provider.personalProfileImage}',
+                                        //   fit: BoxFit.cover,
+                                        //   placeholder: (context, url) =>
+                                        //       CircularProgressIndicator(
+                                        //     color: getColorAccountType(
+                                        //       accountType: accountType,
+                                        //       businessColor:
+                                        //           AppColors.primaryColor,
+                                        //       personalColor:
+                                        //           AppColors.darkGreenGrey,
+                                        //     ),
+                                        //   ),
+                                        //   errorWidget: (context, url, error) =>
+                                        //       const Icon(
+                                        //     Icons.account_circle,
+                                        //     size: 80,
+                                        //   ),
+                                        // );
+                                      }),
                                     ),
                                   ),
                                   Positioned(
@@ -100,8 +132,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     bottom: 0,
                                     child: GestureDetector(
                                       onTap: () {
-                                        //Todo set dynamic accountType (business & personal)
-                                        provider.pickBusinessImage();
+                                        if (accountType == 'business') {
+                                          provider
+                                              .pickBusinessImage(); //* API call
+                                        } else {
+                                          provider
+                                              .pickPersonalImage(); //* API call
+                                        }
+                                        // provider.pickBusinessImage();
                                       },
                                       child: EditIconWidget(
                                         accountType: accountType,
@@ -465,7 +503,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   height: 55.h,
                   onTap: () {
                     if (accountType == 'business') {
-                      provider.editProfile(context);
+                      provider.editBusinessProfile(context);
                     } else if (accountType == 'personal') {
                       provider.editPersonalProfile(context);
                     }

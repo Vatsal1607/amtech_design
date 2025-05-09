@@ -39,6 +39,7 @@ class Data {
   String? address;
   num? remainingAmount;
   bool? hasRunningOrder;
+  String? profileImage;
 
   Data({
     this.sId,
@@ -54,6 +55,7 @@ class Data {
     this.address,
     this.remainingAmount,
     this.hasRunningOrder,
+    this.profileImage,
   });
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -75,6 +77,7 @@ class Data {
     address = json['address'];
     remainingAmount = json['remainingAmount'];
     hasRunningOrder = json['hasRunningOrder'];
+    profileImage = json['profileImage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -93,6 +96,7 @@ class Data {
     data['usedPerks'] = usedPerks;
     data['address'] = address;
     data['hasRunningOrder'] = hasRunningOrder;
+    data['profileImage'] = profileImage;
     return data;
   }
 }

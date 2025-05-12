@@ -15,6 +15,7 @@ class CustomButtonWithIcon extends StatelessWidget {
   final double? height;
   final double? width;
   final bool isWidthBetween;
+  final double fontSize;
   const CustomButtonWithIcon({
     super.key,
     required this.labelText,
@@ -23,6 +24,7 @@ class CustomButtonWithIcon extends StatelessWidget {
     this.height,
     this.width,
     this.isWidthBetween = true,
+    this.fontSize = 12,
   });
 
   @override
@@ -59,13 +61,14 @@ class CustomButtonWithIcon extends StatelessWidget {
             Text(
               labelText,
               style: GoogleFonts.publicSans(
-                  fontWeight: FontWeight.bold,
-                  color: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
-                  ),
-                  fontSize: 12.sp),
+                fontWeight: FontWeight.bold,
+                color: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
+                fontSize: fontSize.sp,
+              ),
             ),
           ],
         ),

@@ -17,7 +17,7 @@ class AddressWidgetHomePage extends StatelessWidget {
     super.key,
     required this.accountType,
     required this.provider,
-  });  
+  });
 
   final String accountType;
   final MenuProvider provider;

@@ -14,9 +14,11 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:shimmer/shimmer.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../custom_widgets/buttons/small_edit_button.dart';
 import '../../custom_widgets/svg_icon.dart';
+import '../../services/local/shared_preferences_service.dart';
 import '../provider/socket_provider.dart';
 import 'google_map_provider.dart';
 import 'widgets/show_search_address_bottomsheet.dart';
@@ -66,11 +68,41 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   }
 
   //* check location permission & emit event:
+  // Future<void> checkLocationPermissionAndEmitEvent(
+  //   GoogleMapProvider googleMapProvider,
+  // ) async {
+  //   PermissionStatus status = await Permission.location.request();
+
+  //   if (status.isGranted) {
+  //     log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
+  //     googleMapProvider.emitAndListenGetLocation(
+  //       socketProvider: context.read<SocketProvider>(),
+  //       editLat: editAddressLat,
+  //       editLong: editAddressLong,
+  //     );
+  //   } else if (status.isDenied) {
+  //     // Retry once or ask again
+  //     debugPrint("Permission denied. Retrying...");
+  //     status = await Permission.location.request();
+  //     if (status.isGranted) {
+  //       googleMapProvider.emitAndListenGetLocation(
+  //         socketProvider: context.read<SocketProvider>(),
+  //         editLat: editAddressLat,
+  //         editLong: editAddressLong,
+  //       );
+  //     } else {
+  //       debugPrint("Location permission denied again.");
+  //       // Optionally show a dialog to inform the user
+  //     }
+  //   } else if (status.isPermanentlyDenied) {
+  //     debugPrint("Location permission permanently denied.");
+  //     openAppSettings(); // Prompt user to open settings
+  //   }
+  // }
   Future<void> checkLocationPermissionAndEmitEvent(
     GoogleMapProvider googleMapProvider,
   ) async {
     final status = await Permission.location.request();
-
     if (status.isGranted) {
       log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
       googleMapProvider.emitAndListenGetLocation(
@@ -97,10 +129,11 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     final savedAddressProvider =
         Provider.of<SavedAddressProvider>(context, listen: false);
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
-    const String accountType = 'business';
+    String accountType =
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
 
     return Scaffold(
-      appBar: const CustomAppbarWithCenterTitle(
+      appBar: CustomAppbarWithCenterTitle(
         title: 'Change Location',
         accountType: accountType,
       ),

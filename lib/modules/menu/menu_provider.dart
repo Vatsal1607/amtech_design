@@ -527,7 +527,8 @@ class MenuProvider extends ChangeNotifier {
   }
 
   HomeAddressType? selectedAddressType; // HomeAddressType.remote
-  void updateHomeAddress(HomeAddressType type) {
+
+  updateHomeAddress(HomeAddressType type) {
     selectedAddressType = type;
     //* store locally
     sharedPrefsService.setString(

@@ -2,7 +2,6 @@ import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/validator.dart';
 import 'package:amtech_design/custom_widgets/appbar/appbar_with_back_button.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
-import 'package:amtech_design/modules/auth/business_selection/business_selection_provider.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

@@ -25,8 +25,10 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      widget.provider.getBusinessList(currentPage: 1); //* API call
+    });
     _scrollController = ScrollController();
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
               _scrollController.position.maxScrollExtent - 50 &&
@@ -34,10 +36,6 @@ class _BusinessDropdownState extends State<BusinessDropdown> {
           widget.provider.hasMoreData) {
         widget.provider.loadMoreBusinesses(); // Trigger pagination
       }
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.provider.getBusinessList(currentPage: 1); //* API call
     });
   }
 

@@ -37,6 +37,7 @@ class DayDropdownTile extends StatelessWidget {
           inactiveColor: AppColors.red,
           activeText: "ON",
           inactiveText: "OFF",
+          valueFontSize: 14.sp,
           showOnOff: true,
         ),
         SizedBox(width: 10.w),
@@ -48,6 +49,7 @@ class DayDropdownTile extends StatelessWidget {
                 opacity: isSwitched ? 1.0 : 0.5,
                 child: IgnorePointer(
                   ignoring: !isSwitched,
+                  //* DaySelectionDropdown
                   child: DaySelectionDropdown(day: day),
                 ),
               ),

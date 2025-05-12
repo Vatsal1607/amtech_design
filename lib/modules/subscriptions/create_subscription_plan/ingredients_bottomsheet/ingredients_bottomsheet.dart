@@ -339,7 +339,11 @@ Future<void> showIngredientsBottomSheeet({
                   },
                   text: 'DONE',
                   fontSize: 20.sp,
-                  bgColor: AppColors.primaryColor,
+                  bgColor: getColorAccountType(
+                    accountType: accountType,
+                    businessColor: AppColors.primaryColor,
+                    personalColor: AppColors.darkGreenGrey,
+                  ),
                 ),
               ),
             ),

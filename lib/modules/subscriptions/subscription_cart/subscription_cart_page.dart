@@ -53,8 +53,12 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                   Positioned.fill(
                     child: Column(
                       children: [
-                        const Divider(
-                          color: AppColors.primaryColor,
+                        Divider(
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                         ),
                         Expanded(
                           child: SingleChildScrollView(
@@ -71,7 +75,11 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                     width: double.infinity,
                                     padding: EdgeInsets.all(20.w),
                                     decoration: BoxDecoration(
-                                      color: AppColors.primaryColor,
+                                      color: getColorAccountType(
+                                        accountType: accountType,
+                                        businessColor: AppColors.primaryColor,
+                                        personalColor: AppColors.darkGreenGrey,
+                                      ),
                                       borderRadius: BorderRadius.circular(30.r),
                                     ),
                                     child: Column(
@@ -84,7 +92,13 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                             Text(
                                               'Total Bill',
                                               style: GoogleFonts.publicSans(
-                                                color: AppColors.seaShell,
+                                                color: getColorAccountType(
+                                                  accountType: accountType,
+                                                  businessColor:
+                                                      AppColors.seaShell,
+                                                  personalColor:
+                                                      AppColors.seaMist,
+                                                ),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
@@ -97,7 +111,11 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 16.w, vertical: 10.h),
                                           decoration: BoxDecoration(
-                                            color: AppColors.seaShell,
+                                            color: getColorAccountType(
+                                              accountType: accountType,
+                                              businessColor: AppColors.seaShell,
+                                              personalColor: AppColors.seaMist,
+                                            ),
                                             borderRadius:
                                                 BorderRadius.circular(20.r),
                                           ),
@@ -118,8 +136,15 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                       fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: AppColors
-                                                          .disabledColor,
+                                                      color:
+                                                          getColorAccountType(
+                                                        accountType:
+                                                            accountType,
+                                                        businessColor: AppColors
+                                                            .disabledColor,
+                                                        personalColor:
+                                                            AppColors.bayLeaf,
+                                                      ),
                                                     ),
                                                   ),
                                                   Text(
@@ -129,8 +154,15 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                       fontSize: 16.sp,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: AppColors
-                                                          .disabledColor,
+                                                      color:
+                                                          getColorAccountType(
+                                                        accountType:
+                                                            accountType,
+                                                        businessColor: AppColors
+                                                            .disabledColor,
+                                                        personalColor:
+                                                            AppColors.bayLeaf,
+                                                      ),
                                                     ),
                                                   ),
                                                 ],
@@ -143,6 +175,7 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                     _buildItemRow(
                                                   "${provider.summaryRes?.data?.units} ${provider.summaryRes?.data?.units == '1' ? 'UNIT' : 'UNITS'}",
                                                   '${provider.summaryRes?.data?.price}',
+                                                  accountType,
                                                 ),
                                               ),
 
@@ -197,9 +230,10 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
 
                                                       itemWidgets.add(
                                                         _buildItemRow(
-                                                            title,
-                                                            totalPrice
-                                                                .toString()),
+                                                          title,
+                                                          totalPrice.toString(),
+                                                          accountType,
+                                                        ),
                                                       );
                                                     }
 
@@ -252,8 +286,17 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                         fontSize: 18.sp,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: AppColors
-                                                            .primaryColor,
+                                                        color:
+                                                            getColorAccountType(
+                                                          accountType:
+                                                              accountType,
+                                                          businessColor:
+                                                              AppColors
+                                                                  .primaryColor,
+                                                          personalColor:
+                                                              AppColors
+                                                                  .darkGreenGrey,
+                                                        ),
                                                       ),
                                                     ),
                                                     Text(
@@ -286,8 +329,15 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                     style:
                                                         GoogleFonts.publicSans(
                                                       fontSize: 18.sp,
-                                                      color: AppColors
-                                                          .primaryColor,
+                                                      color:
+                                                          getColorAccountType(
+                                                        accountType:
+                                                            accountType,
+                                                        businessColor: AppColors
+                                                            .primaryColor,
+                                                        personalColor: AppColors
+                                                            .darkGreenGrey,
+                                                      ),
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
@@ -308,6 +358,7 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                               _buildItemRow(
                                                         "Item Total",
                                                         '${provider.getGrandTotal()}',
+                                                        accountType,
                                                         // '${provider.summaryRes?.data?.price}',
                                                       ),
                                                     ),
@@ -321,11 +372,15 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                             .getGST(provider
                                                                 .getGrandTotal())
                                                             .toStringAsFixed(2),
+                                                        accountType,
                                                         // '${provider.getGST(provider.getGrandTotal()).toStringAsFixed(2)}',
                                                       ),
                                                     ),
                                                     _buildItemRow(
-                                                        "Delivery Fee", "0"),
+                                                      "Delivery Fee",
+                                                      "0",
+                                                      accountType,
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -362,8 +417,12 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                       child: Container(
                         padding: EdgeInsets.only(
                             left: 22.w, right: 22.w, bottom: 40.h, top: 10.h),
-                        decoration: const BoxDecoration(
-                          color: AppColors.seaShell,
+                        decoration: BoxDecoration(
+                          color: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                         ),
                         child: CustomSubsButtonWithArrow(
                           onTap: () {
@@ -403,7 +462,11 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
   }
 
   // Helper method to build item rows
-  Widget _buildItemRow(String title, String price) {
+  Widget _buildItemRow(
+    String title,
+    String price,
+    String accountType,
+  ) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 4.w),
       child: Row(
@@ -413,7 +476,11 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
             title,
             style: GoogleFonts.publicSans(
               fontSize: 16.sp,
-              color: AppColors.primaryColor,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -422,7 +489,11 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
             style: GoogleFonts.publicSans(
               fontSize: 16.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.primaryColor,
+                personalColor: AppColors.darkGreenGrey,
+              ),
             ),
           ),
         ],

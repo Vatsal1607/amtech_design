@@ -80,11 +80,12 @@ class FabMenuButton extends StatelessWidget {
             PopupMenuItem(
               enabled: false,
               child: SizedBox(
-                width: 200.w, //* Box size
+                width: 130.w, //* Box size
                 height: 250.h,
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: provider.menuCategories != null &&
                             provider.menuCategories!.isNotEmpty
                         ? provider.menuCategories!.map(
@@ -95,7 +96,6 @@ class FabMenuButton extends StatelessWidget {
                                   width: double.infinity,
                                   padding: EdgeInsets.symmetric(
                                     vertical: 15.h,
-                                    horizontal: 23.w,
                                   ),
                                   decoration: BoxDecoration(
                                     color: provider.selectedValue ==

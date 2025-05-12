@@ -57,17 +57,20 @@ class CustomSliverAppbar extends StatelessWidget {
                   final imageUrl =
                       provider.homeMenuResponse?.data?.profileImage;
                   return (imageUrl == null || imageUrl.isEmpty)
-                      ? SizedBox.expand(
+                      // true
+                      ? SizedBox(
+                          height: 48.h,
+                          width: 48.w,
                           child: Icon(
                             Icons.account_circle,
                             color: Colors.grey,
-                            size: 44,
+                            // fill: ,
                           ),
                         )
                       : CachedNetworkImage(
-                          imageUrl: imageUrl,
+                          imageUrl: imageUrl ?? '',
                           fit: BoxFit.cover,
-                          placeholder: (context, url) => 
+                          placeholder: (context, url) =>
                               CircularProgressIndicator(
                             color: getColorAccountType(
                               accountType: accountType,

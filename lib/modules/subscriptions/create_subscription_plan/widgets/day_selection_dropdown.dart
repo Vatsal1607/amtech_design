@@ -111,19 +111,24 @@ class DaySelectionDropdown extends StatelessWidget {
                         children: [
                           //* Meal Selection List
                           ListView.builder(
+                            padding: EdgeInsets.zero,
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: provider.selectedMeals[day]?.length ?? 0,
                             itemBuilder: (context, index) {
                               return Column(
+                                // mainAxisAlignment: MainAxisAlignment.start,
+                                // mainAxisSize: MainAxisSize.min,
                                 children: [
                                   //* Time Slot Dropdown
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
-                                        'Select Time Slot',
+                                        'Select Time Slot:',
                                         style: GoogleFonts.publicSans(
                                           color: getColorAccountType(
                                             accountType: accountType,
@@ -147,14 +152,14 @@ class DaySelectionDropdown extends StatelessWidget {
                                   ),
 
                                   SizedBox(height: 20.h),
-
                                   // * Meal Selection (Non-Selectable)
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                  Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Select Meal",
+                                        "Select Meal:",
                                         style: GoogleFonts.publicSans(
                                           color: getColorAccountType(
                                             accountType: accountType,
@@ -162,95 +167,85 @@ class DaySelectionDropdown extends StatelessWidget {
                                                 AppColors.disabledColor,
                                             personalColor: AppColors.bayLeaf,
                                           ),
-                                          fontSize: 14.sp,
+                                          fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(width: 25.w),
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            showSelectMealBottomSheeet(
-                                              context: context,
+                                      SizedBox(height: 10.w),
+                                      GestureDetector(
+                                        onTap: () {
+                                          showSelectMealBottomSheeet(
+                                            context: context,
+                                            accountType: accountType,
+                                            day: day,
+                                            mealIndex: index,
+                                          );
+                                        },
+                                        child: Container(
+                                          height: 30.h,
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6.w),
+                                          decoration: BoxDecoration(
+                                            color: getColorAccountType(
                                               accountType: accountType,
-                                              day: day,
-                                              mealIndex: index,
-                                            );
-                                          },
-                                          child: Container(
-                                            height: 30.h,
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 6.w),
-                                            decoration: BoxDecoration(
-                                              color: getColorAccountType(
-                                                accountType: accountType,
-                                                businessColor:
-                                                    AppColors.seaShell,
-                                                personalColor:
-                                                    AppColors.seaMist,
-                                              ),
-                                              borderRadius:
-                                                  BorderRadius.circular(30.r),
+                                              businessColor: AppColors.seaShell,
+                                              personalColor: AppColors.seaMist,
                                             ),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                SizedBox(
-                                                  width: 100.w,
-                                                  child: Text(
-                                                    provider.selectedMeals[day]
-                                                            ?[index] ??
-                                                        "No Meal Selected",
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style:
-                                                        GoogleFonts.publicSans(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 14.sp,
-                                                    ),
+                                            borderRadius:
+                                                BorderRadius.circular(30.r),
+                                          ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              SizedBox(
+                                                width: 100.w,
+                                                child: Text(
+                                                  provider.selectedMeals[day]
+                                                          ?[index] ??
+                                                      "No Meal Selected",
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: GoogleFonts.publicSans(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 14.sp,
                                                   ),
                                                 ),
-                                                Row(
-                                                  children: [
-                                                    SvgIcon(
-                                                      icon:
-                                                          IconStrings.arrowNext,
-                                                      color:
-                                                          getColorAccountType(
-                                                        accountType:
-                                                            accountType,
-                                                        businessColor: AppColors
-                                                            .primaryColor,
-                                                        personalColor: AppColors
-                                                            .darkGreenGrey,
-                                                      ),
-                                                      height: 12.h,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  SvgIcon(
+                                                    icon: IconStrings.arrowNext,
+                                                    color: getColorAccountType(
+                                                      accountType: accountType,
+                                                      businessColor: AppColors
+                                                          .primaryColor,
+                                                      personalColor: AppColors
+                                                          .darkGreenGrey,
                                                     ),
-                                                    SizedBox(width: 8.w),
-                                                    // * Remove Meal Button
-                                                    if (provider
-                                                            .selectedMeals[day]!
-                                                            .length >
-                                                        1)
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          provider.removeMeal(
-                                                              day, index);
-                                                        },
-                                                        child: Icon(
-                                                          Icons.remove_circle,
-                                                          color: Colors.red,
-                                                          size: 25.sp,
-                                                        ),
+                                                    height: 12.h,
+                                                  ),
+                                                  SizedBox(width: 8.w),
+                                                  // * Remove Meal Button
+                                                  if (provider
+                                                          .selectedMeals[day]!
+                                                          .length >
+                                                      1)
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        provider.removeMeal(
+                                                            day, index);
+                                                      },
+                                                      child: Icon(
+                                                        Icons.remove_circle,
+                                                        color: Colors.red,
+                                                        size: 25.sp,
                                                       ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -263,17 +258,19 @@ class DaySelectionDropdown extends StatelessWidget {
                           ),
 
                           const Divider(color: Colors.white, thickness: 1),
-                          SizedBox(height: 10.h),
+                          SizedBox(height: 8.h),
                           // * Add New Meal Button
                           Align(
                             alignment: Alignment.centerLeft,
                             child: CustomButtonWithIcon(
                               labelText: "ADD NEW MEAL",
+                              fontSize: 14.sp,
                               onPressed: () {
                                 provider.addMeal(day);
                               },
                             ),
                           ),
+                          SizedBox(height: 8.h),
                         ],
                       ),
                     ),

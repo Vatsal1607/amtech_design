@@ -29,6 +29,8 @@ class TimeSlotSelectorWidget extends StatelessWidget {
               provider.timeSlots.first;
 
           return ListView.builder(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
             scrollDirection: Axis.horizontal,
             itemCount: provider.timeSlots.length,
             itemBuilder: (context, index) {

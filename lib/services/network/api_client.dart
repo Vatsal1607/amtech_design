@@ -53,10 +53,8 @@ abstract class ApiClient {
   );
 
   @POST(ApiEndpoints.businessRegister)
-  // @MultiPart()
   Future<ApiGlobalModel> businessRegister(
     @Body() Map<String, dynamic> body,
-    // @Part(name: 'images') List<MultipartFile> images,
   );
 
   @GET(ApiEndpoints.businessList)

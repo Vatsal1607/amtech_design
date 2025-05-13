@@ -31,7 +31,10 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            Navigator.pop(context);
+            provider.phoneController.clear();
+          },
           child: const SvgIcon(
             icon: IconStrings.arrowBack,
           ),
@@ -39,7 +42,10 @@ class LoginPage extends StatelessWidget {
         centerTitle: false,
         titleSpacing: 0, // Removes extra space
         title: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            Navigator.pop(context);
+            provider.phoneController.clear();
+          },
           child: Text(
             'back'.toUpperCase(),
             style: GoogleFonts.publicSans(

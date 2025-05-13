@@ -44,10 +44,8 @@ class _MenuPageState extends State<MenuPage> {
       //* Connect to socket if disconnected
       final socketProvider =
           Provider.of<SocketProvider>(context, listen: false);
-      if (!socketProvider.isConnected) {
-        socketProvider.connectToSocket();
-        log('Sokcet was disconnected & connected: ${socketProvider.isConnected}');
-      }
+      socketProvider.ensureConnected();
+
       context.read<GoogleMapProvider>().getCurrentLocation();
       context.read<MenuProvider>().homeMenuApi(); //* API call
       context.read<MenuProvider>().getBanner(); //* API call
@@ -78,7 +76,7 @@ class _MenuPageState extends State<MenuPage> {
     log('selected Addresstype: ${provider.selectedAddressType}');
 
     //! Note: variable is not used but by initialize this socket connect
-    final socketProvider = Provider.of<SocketProvider>(context, listen: false);
+    // final socketProvider = Provider.of<SocketProvider>(context, listen: false);
 
     //* Show cart snackbar
     // WidgetsBinding.instance.addPostFrameCallback((_) {

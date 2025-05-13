@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
@@ -25,19 +26,6 @@ class GoogleMapProvider extends ChangeNotifier {
   onCameraMove(position) {
     selectedLocation = position.target; //* Update marker position dynamically
     notifyListeners();
-  }
-
-  Future<void> moveCameraToLocation(LatLng location) async {
-    if (mapController != null) {
-      await mapController?.animateCamera(
-        CameraUpdate.newCameraPosition(
-          CameraPosition(
-            target: location,
-            zoom: 14,
-          ),
-        ),
-      );
-    }
   }
 
   //* show Selected Location in map
@@ -129,7 +117,9 @@ class GoogleMapProvider extends ChangeNotifier {
               title: 'Location Required',
               subTitle:
                   'Location services are disabled. Please enable them in settings.',
-              accountType: 'business', //Todo set dynamic accountType
+              accountType:
+                  sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
+                      '',
               yesBtnText: 'Open Settings',
               onTapYes: () async {
                 Navigator.pop(context);
@@ -212,27 +202,11 @@ class GoogleMapProvider extends ChangeNotifier {
     );
   }
 
+  final Completer<GoogleMapController> mapControllerCompleter = Completer();
+
   //* move Camera
   Future<void> moveCamera(LatLng position) async {
     log('move camera latlong: ${position.latitude} ${position.longitude}');
-    // if (mapController == null) {
-    //   log("MapController is not ready yet, retrying...");
-    //   await Future.delayed(const Duration(milliseconds: 200));
-    //   return moveCamera(position);
-    // }
-    // try {
-    //   await mapController?.animateCamera(
-    //     CameraUpdate.newCameraPosition(
-    //       CameraPosition(
-    //         target: position,
-    //         zoom: 14,
-    //       ),
-    //     ),
-    //   );
-    // } catch (e) {
-    //   log("Error moving camera: $e");
-    // }
-
     Future.delayed(const Duration(milliseconds: 100), () async {
       if (mapController != null) {
         await mapController?.animateCamera(
@@ -249,7 +223,7 @@ class GoogleMapProvider extends ChangeNotifier {
 
   Future<void> checkLocationOnResume(BuildContext context) async {
     if (await Geolocator.isLocationServiceEnabled()) {
-      getCurrentLocation(
+      await getCurrentLocation(
         context: context,
         editAddressLatLng: null,
       );

@@ -38,7 +38,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   @override
   void initState() {
     super.initState();
-    log('initstate called from map page');
     WidgetsBinding.instance.addPostFrameCallback((_) {
       args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
@@ -53,9 +52,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
       }
       log('Map Page Args: $args');
       log('Parsed Values: lat=$editAddressLat, long=$editAddressLong');
-
-      // final socketProvider =
-      //     Provider.of<SocketProvider>(context, listen: false);
       final googleMapProvider =
           Provider.of<GoogleMapProvider>(context, listen: false);
       Future.delayed(
@@ -68,41 +64,11 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   }
 
   //* check location permission & emit event:
-  // Future<void> checkLocationPermissionAndEmitEvent(
-  //   GoogleMapProvider googleMapProvider,
-  // ) async {
-  //   PermissionStatus status = await Permission.location.request();
-
-  //   if (status.isGranted) {
-  //     log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
-  //     googleMapProvider.emitAndListenGetLocation(
-  //       socketProvider: context.read<SocketProvider>(),
-  //       editLat: editAddressLat,
-  //       editLong: editAddressLong,
-  //     );
-  //   } else if (status.isDenied) {
-  //     // Retry once or ask again
-  //     debugPrint("Permission denied. Retrying...");
-  //     status = await Permission.location.request();
-  //     if (status.isGranted) {
-  //       googleMapProvider.emitAndListenGetLocation(
-  //         socketProvider: context.read<SocketProvider>(),
-  //         editLat: editAddressLat,
-  //         editLong: editAddressLong,
-  //       );
-  //     } else {
-  //       debugPrint("Location permission denied again.");
-  //       // Optionally show a dialog to inform the user
-  //     }
-  //   } else if (status.isPermanentlyDenied) {
-  //     debugPrint("Location permission permanently denied.");
-  //     openAppSettings(); // Prompt user to open settings
-  //   }
-  // }
   Future<void> checkLocationPermissionAndEmitEvent(
     GoogleMapProvider googleMapProvider,
   ) async {
-    final status = await Permission.location.request();
+    var status = await Permission.location.status;
+
     if (status.isGranted) {
       log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
       googleMapProvider.emitAndListenGetLocation(
@@ -110,14 +76,37 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         editLat: editAddressLat,
         editLong: editAddressLong,
       );
+    } else if (status.isDenied) {
+      // Request permission
+      final newStatus = await Permission.location.request();
+      if (newStatus.isGranted) {
+        log("Edit Address Latitude: $editAddressLat, Longitude: $editAddressLong");
+        googleMapProvider.emitAndListenGetLocation(
+          socketProvider: context.read<SocketProvider>(),
+          editLat: editAddressLat,
+          editLong: editAddressLong,
+        );
+      } else {
+        debugPrint("Location permission denied after request");
+        // googleMapProvider.emitAndListenGetLocation(
+        //   socketProvider: context.read<SocketProvider>(),
+        //   editLat: editAddressLat,
+        //   editLong: editAddressLong,
+        // );
+      }
+    } else if (status.isPermanentlyDenied) {
+      debugPrint("Location permission permanently denied. Opening settings...");
+      await openAppSettings();
     } else {
-      debugPrint("Location permission denied on map page.");
+      debugPrint("Unhandled permission status: $status");
     }
   }
 
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      context.read<GoogleMapProvider>().checkLocationOnResume(context);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        context.read<GoogleMapProvider>().checkLocationOnResume(context);
+      });
     }
   }
 
@@ -152,20 +141,25 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                 children: [
                   GoogleMap(
                     onMapCreated: (controller) {
-                      if (provider.mapController == null) {
-                        provider.mapController = controller;
-                        provider.getCurrentLocation(
-                          context: context,
-                          socketProvider: socketProvider,
-                          editAddressLatLng:
-                              editAddressLat != null && editAddressLong != null
-                                  ? LatLng(
-                                      editAddressLat!,
-                                      editAddressLong!,
-                                    )
-                                  : null,
-                        );
+                      //* Always reassign mapController in onMapCreated
+                      provider.mapController = controller;
+                      if (!provider.mapControllerCompleter.isCompleted) {
+                        provider.mapControllerCompleter.complete(controller);
                       }
+                      // if (provider.mapController == null) {
+                      // provider.mapController = controller;
+                      provider.getCurrentLocation(
+                        context: context,
+                        socketProvider: socketProvider,
+                        editAddressLatLng:
+                            editAddressLat != null && editAddressLong != null
+                                ? LatLng(
+                                    editAddressLat!,
+                                    editAddressLong!,
+                                  )
+                                : null,
+                      );
+                      // }
                     },
                     initialCameraPosition: CameraPosition(
                       target: editAddressLat != null && editAddressLong != null
@@ -314,19 +308,25 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                             Consumer<GoogleMapProvider>(
                               builder: (context, _, child) => provider.isLoading
                                   ? Shimmer.fromColors(
-                                      baseColor: Colors.grey[300]!,
-                                      highlightColor: Colors.grey[300]!,
+                                      baseColor: Colors.grey.shade300,
+                                      highlightColor: Colors.grey.shade100,
                                       child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            width: double.infinity,
-                                            height: 20.h,
+                                            height: 16,
+                                            width: 260,
                                             color: Colors.white,
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 4),
                                           ),
                                           Container(
-                                            width: double.infinity / 2,
-                                            height: 20.h,
+                                            height: 16.h,
+                                            width: double.infinity,
                                             color: Colors.white,
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 4),
                                           ),
                                         ],
                                       ),

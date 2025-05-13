@@ -53,15 +53,29 @@ class DioInterceptor extends Interceptor {
     if (err.response != null) {
       dynamic responseData = err.response!.data;
 
-      // Try decoding if responseData is a String
+      // Check if response is String and likely HTML
       if (responseData is String) {
-        try {
-          responseData = jsonDecode(responseData);
-        } catch (e) {
-          log('Failed to decode JSON: $e');
+        if (responseData.trimLeft().startsWith('<!DOCTYPE html')) {
+          log('❌ HTML error page received instead of JSON.');
           responseData = null;
+        } else {
+          try {
+            responseData = jsonDecode(responseData);
+          } catch (e) {
+            log('❌ Failed to decode JSON: $e');
+            responseData = null;
+          }
         }
       }
+      // Try decoding if responseData is a String
+      // if (responseData is String) {
+      //   try {
+      //     responseData = jsonDecode(responseData);
+      //   } catch (e) {
+      //     log('Failed to decode JSON: $e');
+      //     responseData = null;
+      //   }
+      // }
 
       // Now parse safely
       if (responseData is Map<String, dynamic>) {

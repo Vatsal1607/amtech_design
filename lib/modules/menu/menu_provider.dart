@@ -317,7 +317,6 @@ class MenuProvider extends ChangeNotifier {
   bool isLoadingGetBanner = false;
   // * getBanner API
   Future<void> getBanner() async {
-    log('Get banner called');
     isLoadingGetBanner = true;
     notifyListeners();
     try {

@@ -19,6 +19,26 @@ class SocketProvider with ChangeNotifier {
     log('Constructor of socket provider is called');
   }
 
+  void ensureConnected() {
+    log('ensureConnected called');
+    if (!_socket.connected) {
+      log('Socket not connected. Attempting reconnection...');
+      _socket.connect();
+
+      _socket.once('connect', (_) {
+        log('Socket reconnected successfully.');
+        _isConnected = true;
+        notifyListeners();
+      });
+
+      _socket.once('connect_error', (error) {
+        log('Failed to reconnect: $error');
+      });
+    } else {
+      log('Socket is already connected.');
+    }
+  }
+
   void connectToSocket() {
     _socket = IO.io(
       BaseUrl.socketBaseUrl,
@@ -58,13 +78,6 @@ class SocketProvider with ChangeNotifier {
     });
   }
 
-  // void emitEvent(String event, dynamic data) {
-  //   if (_socket.connected) {
-  //     _socket.emit(event, data);
-  //   } else {
-  //     throw Exception("Socket is not connected!");
-  //   }
-  // }
   void emitEvent(String event, dynamic data) {
     if (_socket.connected) {
       _socket.emit(event, data);
@@ -77,8 +90,6 @@ class SocketProvider with ChangeNotifier {
         log("Reconnected. Emitting event: $event");
         _socket.emit(event, data);
       });
-      // Optional: Add timeout or retry limit
-      // You can also queue multiple emit events using a List if needed
     }
   }
 

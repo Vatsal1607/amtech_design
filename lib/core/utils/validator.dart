@@ -14,11 +14,12 @@ class Validator {
   static String? validateAddress(String? value) {
     if (value == null || value.isEmpty) {
       return "Please enter your Address";
-    } else if (!RegExp(r'Titanium City Center', caseSensitive: false)
-        .hasMatch(value)) {
-      return "We're delivering only in 'Titanium City Center'";
-      // * Changed by AJAY PANCHAL by Backend dev.
     }
+    // else if (!RegExp(r'Titanium City Center', caseSensitive: false)
+    //     .hasMatch(value)) {
+    //   return "We're delivering only in 'Titanium City Center'";
+    // * Changed by AJAY PANCHAL by Backend dev.
+    // }
     return null;
   }
 

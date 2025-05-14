@@ -38,22 +38,17 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
           Provider.of<SocketProvider>(context, listen: false);
       final provider =
           Provider.of<SavedAddressProvider>(context, listen: false);
-      final googleMapProvider =
-          Provider.of<GoogleMapProvider>(context, listen: false);
-      //* get current location
-      // googleMapProvider.getCurrentLocation(
-      //   context: context,
+      provider.emitAndListenSavedAddress(socketProvider);
+      // final googleMapProvider =
+      //     Provider.of<GoogleMapProvider>(context, listen: false);
+      // Future.delayed(const Duration(milliseconds: 200), () {
+      // provider.emitAndListenSavedAddress(socketProvider);
+      // provider.emitAndListenNearBy( //* Emit nearby
       //   socketProvider: socketProvider,
-      //   editAddressLatLng: null,
+      //   lat: googleMapProvider.currentLocation?.latitude,
+      //   long: googleMapProvider.currentLocation?.longitude,
       // );
-      Future.delayed(const Duration(milliseconds: 200), () {
-        provider.emitAndListenSavedAddress(socketProvider);
-        provider.emitAndListenNearBy(
-          socketProvider: socketProvider,
-          lat: googleMapProvider.currentLocation?.latitude,
-          long: googleMapProvider.currentLocation?.longitude,
-        );
-      });
+      // });
       // checkLocationPermissionAndEmitEvent();
     });
     super.initState();
@@ -136,36 +131,36 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
             children: [
               SizedBox(height: 10.h),
               //* SearchField
-              GestureDetector(
-                onTap: () => showSearchBottomSheet(context),
-                child: Container(
-                  color: Colors.transparent,
-                  child: CustomSearchContainer(
-                    height: 55.h,
-                    borderWidth: 2.w,
-                    accountType: accountType,
-                    controller: searchController,
-                    hint: 'Search for aera, street, etc.',
-                    iconColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    borderColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    fillColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.seaShell,
-                      personalColor: AppColors.seaMist,
-                    ),
-                  ),
-                ),
-              ),
+              // GestureDetector(
+              //   onTap: () => showSearchBottomSheet(context),
+              //   child: Container(
+              //     color: Colors.transparent,
+              //     child: CustomSearchContainer(
+              //       height: 55.h,
+              //       borderWidth: 2.w,
+              //       accountType: accountType,
+              //       controller: searchController,
+              //       hint: 'Search for aera, street, etc.',
+              //       iconColor: getColorAccountType(
+              //         accountType: accountType,
+              //         businessColor: AppColors.primaryColor,
+              //         personalColor: AppColors.darkGreenGrey,
+              //       ),
+              //       borderColor: getColorAccountType(
+              //         accountType: accountType,
+              //         businessColor: AppColors.primaryColor,
+              //         personalColor: AppColors.darkGreenGrey,
+              //       ),
+              //       fillColor: getColorAccountType(
+              //         accountType: accountType,
+              //         businessColor: AppColors.seaShell,
+              //         personalColor: AppColors.seaMist,
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
-              SizedBox(height: 20.h),
+              // SizedBox(height: 20.h),
 
               //* Add new location card:
               AddLocationCard(
@@ -182,137 +177,199 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
 
               //* Saved address card
               Consumer<SavedAddressProvider>(
-                builder: (context, _, child) => provider.isLoadingSavedAddress
-                    ? CustomLoader(
-                        backgroundColor: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      )
-                    : provider.savedAddressList?.length == 0
-                        ? Text(
-                            'No Saved Address'.toUpperCase(),
-                            style: GoogleFonts.publicSans(
-                              fontSize: 20.sp,
-                              color: AppColors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        : ListView.separated(
-                            shrinkWrap: true,
-                            itemCount: provider.savedAddressList?.length ?? 0,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 10.h),
-                            itemBuilder: (context, index) {
-                              final savedAddress =
-                                  provider.savedAddressList?[index];
-                              return GestureDetector(
-                                onTap: () async {
-                                  await provider
-                                      .chooseLocation(
-                                    context: context,
-                                    address:
-                                        '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
-                                  )
-                                      .then((isSuccess) async {
-                                    if (isSuccess == true) {
-                                      //* Update home address type
-                                      menuProvider.updateHomeAddress(
-                                        HomeAddressType.remote,
-                                      );
-                                      await context
-                                          .read<MenuProvider>()
-                                          .homeMenuApi(); //* API call
-                                    }
-                                  });
-                                },
-                                child: SavedLocationCard(
-                                  savedAddress: savedAddress,
-                                  provider: provider,
-                                ),
-                              );
-                            },
+                builder: (context, provider, child) {
+                  final list = provider.savedAddressList;
+
+                  return provider.isLoadingSavedAddress
+                      ? CustomLoader(
+                          backgroundColor: getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
                           ),
-              ),
-
-              SizedBox(height: 20.h),
-              CenterTitleWithDivider(
-                accountType: accountType,
-                title: 'NEARBY LOCATIONS',
-                fontSize: 15.sp,
-              ),
-              SizedBox(height: 20.h),
-
-              //* NearBy address card
-              Consumer<SavedAddressProvider>(builder: (context, _, child) {
-                log('nearByAddressList length: ${provider.nearByAddressList?.length}');
-                return provider.isLoadingNearBy
-                    ? CustomLoader(
-                        backgroundColor: getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                      )
-                    : (provider.nearByAddressList == null ||
-                            provider.nearByAddressList!.isEmpty)
-                        ? const Text('No nearby addresses found.')
-                        : ListView.separated(
-                            itemCount: provider.nearByAddressList?.length ?? 0,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: EdgeInsets.zero,
-                            itemBuilder: (context, index) {
-                              final nearByAddress =
-                                  provider.nearByAddressList?[index];
-                              return GestureDetector(
-                                onTap: () async {
-                                  // Choose location
-                                  // provider
-                                  //     .chooseLocation(.
-                                  //   context: context,
-                                  //   address:
-                                  //       '${nearByAddress?.propertyNumber} ${nearByAddress?.residentialAddress} ${nearByAddress?.nearLandmark} ${nearByAddress?.suggestAddress ?? ''}',
-                                  // )
-                                  //     .then((isSuccess) {
-                                  //   if (isSuccess == true) {
-                                  //     //* Update home address type
-                                  //     menuProvider.updateHomeAddress(
-                                  //         HomeAddressType.remote);
-                                  //   }
-                                  // });
-                                  //
-                                  gMapProvider.showSelectedLocationAddressCard(
-                                    context: context,
-                                    isNavigateHome: true,
-                                    latitude: nearByAddress?.lat ?? 0,
-                                    longitude: nearByAddress?.lng ?? 0,
-                                  );
-                                  //* store address locally
-                                  await sharedPrefsService.setString(
-                                    SharedPrefsKeys.selectedAddress,
-                                    nearByAddress?.address ?? '',
-                                  );
-                                  //* Update home address type
-                                  menuProvider.updateHomeAddress(
-                                    HomeAddressType.local,
-                                  );
-                                  log('nearby  pressed-----');
-                                },
-                                child: SavedLocationCard(
-                                  isNearBy: true,
-                                  nearByAddress: nearByAddress,
-                                  provider: provider,
+                        )
+                      : (list == null || list.isEmpty)
+                          ? Center(
+                              child: Text(
+                                'No Saved Address'.toUpperCase(),
+                                style: GoogleFonts.publicSans(
+                                  fontSize: 18.sp,
+                                  color: AppColors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              );
-                            },
-                            separatorBuilder: (context, index) =>
-                                SizedBox(height: 10.h),
-                          );
-              }),
+                              ),
+                            )
+                          : ListView.separated(
+                              shrinkWrap: true,
+                              itemCount: list.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              padding: EdgeInsets.zero,
+                              separatorBuilder: (context, index) =>
+                                  SizedBox(height: 10.h),
+                              itemBuilder: (context, index) {
+                                final savedAddress = list[index];
+                                return GestureDetector(
+                                  onTap: () async {
+                                    await provider
+                                        .chooseLocation(
+                                      context: context,
+                                      address:
+                                          '${savedAddress.propertyNumber} ${savedAddress.residentialAddress} ${savedAddress.nearLandmark} ${savedAddress.suggestAddress ?? ''}',
+                                    )
+                                        .then((isSuccess) async {
+                                      if (isSuccess == true) {
+                                        menuProvider.updateHomeAddress(
+                                            HomeAddressType.remote);
+                                        await context
+                                            .read<MenuProvider>()
+                                            .homeMenuApi();
+                                      }
+                                    });
+                                  },
+                                  child: SavedLocationCard(
+                                    savedAddress: savedAddress,
+                                    provider: provider,
+                                  ),
+                                );
+                              },
+                            );
+                },
+              ),
+
+              // OLD
+              // Consumer<SavedAddressProvider>(
+              //   builder: (context, _, child) => provider.isLoadingSavedAddress
+              //       ? CustomLoader(
+              //           backgroundColor: getColorAccountType(
+              //             accountType: accountType,
+              //             businessColor: AppColors.primaryColor,
+              //             personalColor: AppColors.darkGreenGrey,
+              //           ),
+              //         )
+              //       // : provider.savedAddressList?.length == 0
+              //       : provider.savedAddressList == null ||
+              //               provider.savedAddressList!.isEmpty
+              //           ? Text(
+              //               'No Saved Address'.toUpperCase(),
+              //               style: GoogleFonts.publicSans(
+              //                 fontSize: 20.sp,
+              //                 color: AppColors.black,
+              //                 fontWeight: FontWeight.bold,
+              //               ),
+              //             )
+              //           : ListView.separated(
+              //               shrinkWrap: true,
+              //               itemCount: provider.savedAddressList?.length ?? 0,
+              //               physics: const NeverScrollableScrollPhysics(),
+              //               padding: EdgeInsets.zero,
+              //               separatorBuilder: (context, index) =>
+              //                   SizedBox(height: 10.h),
+              //               itemBuilder: (context, index) {
+              //                 final savedAddress =
+              //                     provider.savedAddressList?[index];
+              //                 return GestureDetector(
+              //                   onTap: () async {
+              //                     await provider
+              //                         .chooseLocation(
+              //                       context: context,
+              //                       address:
+              //                           '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
+              //                     )
+              //                         .then((isSuccess) async {
+              //                       if (isSuccess == true) {
+              //                         //* Update home address type
+              //                         menuProvider.updateHomeAddress(
+              //                           HomeAddressType.remote,
+              //                         );
+              //                         await context
+              //                             .read<MenuProvider>()
+              //                             .homeMenuApi(); //* API call
+              //                       }
+              //                     });
+              //                   },
+              //                   child: SavedLocationCard(
+              //                     savedAddress: savedAddress,
+              //                     provider: provider,
+              //                   ),
+              //                 );
+              //               },
+              //             ),
+              // ),
+
+              // SizedBox(height: 20.h),
+              // CenterTitleWithDivider(
+              //   accountType: accountType,
+              //   title: 'NEARBY LOCATIONS',
+              //   fontSize: 15.sp,
+              // ),
+              // SizedBox(height: 20.h),
+              //* NearBy address card
+              // Consumer<SavedAddressProvider>(builder: (context, _, child) {
+              //   log('nearByAddressList length: ${provider.nearByAddressList?.length}');
+              //   return provider.isLoadingNearBy
+              //       ? CustomLoader(
+              //           backgroundColor: getColorAccountType(
+              //             accountType: accountType,
+              //             businessColor: AppColors.primaryColor,
+              //             personalColor: AppColors.darkGreenGrey,
+              //           ),
+              //         )
+              //       : (provider.nearByAddressList == null ||
+              //               provider.nearByAddressList!.isEmpty)
+              //           ? const Text('No nearby addresses found.')
+              //           : ListView.separated(
+              //               itemCount: provider.nearByAddressList?.length ?? 0,
+              //               shrinkWrap: true,
+              //               physics: const NeverScrollableScrollPhysics(),
+              //               padding: EdgeInsets.zero,
+              //               itemBuilder: (context, index) {
+              //                 final nearByAddress =
+              //                     provider.nearByAddressList?[index];
+              //                 return GestureDetector(
+              //                   onTap: () async {
+              //                     // Choose location
+              //                     // provider
+              //                     //     .chooseLocation(.
+              //                     //   context: context,
+              //                     //   address:
+              //                     //       '${nearByAddress?.propertyNumber} ${nearByAddress?.residentialAddress} ${nearByAddress?.nearLandmark} ${nearByAddress?.suggestAddress ?? ''}',
+              //                     // )
+              //                     //     .then((isSuccess) {
+              //                     //   if (isSuccess == true) {
+              //                     //     //* Update home address type
+              //                     //     menuProvider.updateHomeAddress(
+              //                     //         HomeAddressType.remote);
+              //                     //   }
+              //                     // });
+              //                     //
+              //                     gMapProvider.showSelectedLocationAddressCard(
+              //                       context: context,
+              //                       isNavigateHome: true,
+              //                       latitude: nearByAddress?.lat ?? 0,
+              //                       longitude: nearByAddress?.lng ?? 0,
+              //                     );
+              //                     //* store address locally
+              //                     await sharedPrefsService.setString(
+              //                       SharedPrefsKeys.selectedAddress,
+              //                       nearByAddress?.address ?? '',
+              //                     );
+              //                     //* Update home address type
+              //                     menuProvider.updateHomeAddress(
+              //                       HomeAddressType.local,
+              //                     );
+              //                     log('nearby  pressed-----');
+              //                   },
+              //                   child: SavedLocationCard(
+              //                     isNearBy: true,
+              //                     nearByAddress: nearByAddress,
+              //                     provider: provider,
+              //                   ),
+              //                 );
+              //               },
+              //               separatorBuilder: (context, index) =>
+              //                   SizedBox(height: 10.h),
+              //             );
+              // }),
             ],
           ),
         ),

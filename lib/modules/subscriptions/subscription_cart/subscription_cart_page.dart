@@ -38,8 +38,8 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
   Widget build(BuildContext context) {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    final provider =
-        Provider.of<SubscriptionCartProvider>(context, listen: false);
+    // final provider =
+    //     Provider.of<SubscriptionCartProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
         title: 'Cart',

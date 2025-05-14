@@ -96,6 +96,7 @@ class MenuProvider extends ChangeNotifier {
   }
 
   Future<void> handleRefresh() async {
+    searchController.clear();
     await homeMenuApi();
     await getBanner();
   }

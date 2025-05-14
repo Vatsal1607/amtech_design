@@ -122,8 +122,12 @@ class _BillingPageState extends State<BillingPage> {
 
                       SizedBox(height: 20.h),
                       // * Billing card widget
-                      Consumer<BillingProvider>(
-                        builder: (context, _, child) => provider.isLoading
+                      Consumer<BillingProvider>(builder: (context, _, child) {
+                        final hasData = provider.groupedBillingList.entries
+                            .any((entry) => entry.value.isNotEmpty);
+
+                        return provider.isLoading
+                            // false
                             ? CustomLoader(
                                 backgroundColor: getColorAccountType(
                                   accountType: accountType,
@@ -131,41 +135,54 @@ class _BillingPageState extends State<BillingPage> {
                                   personalColor: AppColors.darkGreenGrey,
                                 ),
                               )
-                            : NotificationListener(
-                                onNotification:
-                                    (ScrollNotification scrollInfo) {
-                                  if (scrollInfo.metrics.pixels >=
-                                      scrollInfo.metrics.maxScrollExtent *
-                                          0.9) {
-                                    // When the user scrolls to 90% of the list, load more
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback((_) {
-                                      provider.getBilling(); //* API call
-                                    });
-                                  }
-                                  return false;
-                                },
-                                //* ListView
-                                child: ListView(
-                                  physics: const ClampingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  children: provider.groupedBillingList.entries
-                                      .where((entry) => entry.value
-                                          .isNotEmpty) // Skip empty groups
-                                      .map((entry) {
-                                    final String period = entry.key;
-                                    final List<Invoice> invoices = entry.value;
+                            : !hasData
+                                ? Center(
+                                    child: Text(
+                                      'Please select a date range to view invoices for custom dates. By default, invoices from the last 7 days will be displayed.',
+                                      textAlign: TextAlign.justify,
+                                      style: TextStyle(
+                                        fontSize: 16.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )
+                                : NotificationListener(
+                                    onNotification:
+                                        (ScrollNotification scrollInfo) {
+                                      if (scrollInfo.metrics.pixels >=
+                                          scrollInfo.metrics.maxScrollExtent *
+                                              0.9) {
+                                        // When the user scrolls to 90% of the list, load more
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback((_) {
+                                          provider.getBilling(); //* API call
+                                        });
+                                      }
+                                      return false;
+                                    },
+                                    //* ListView
+                                    child: ListView(
+                                      physics: const ClampingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.zero,
+                                      children: provider
+                                          .groupedBillingList.entries
+                                          .where((entry) => entry.value
+                                              .isNotEmpty) // Skip empty groups
+                                          .map((entry) {
+                                        final String period = entry.key;
+                                        final List<Invoice> invoices =
+                                            entry.value;
 
-                                    return BillingCardWidget(
-                                      accountType: accountType,
-                                      period: period,
-                                      invoices: invoices,
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                      ),
+                                        return BillingCardWidget(
+                                          accountType: accountType,
+                                          period: period,
+                                          invoices: invoices,
+                                        );
+                                      }).toList(),
+                                    ),
+                                  );
+                      }),
                     ],
                   ),
                 ),

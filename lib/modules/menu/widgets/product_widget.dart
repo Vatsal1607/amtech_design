@@ -1,4 +1,5 @@
 import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -33,14 +34,11 @@ class ProductWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        //* NEW cached network image
         Container(
           height: 150.h,
           width: 120.w,
           decoration: BoxDecoration(
-            image: DecorationImage(
-              image: NetworkImage(image),
-              fit: BoxFit.cover,
-            ),
             borderRadius: BorderRadius.circular(30.r),
             border: Border.all(
               color:
@@ -48,67 +46,164 @@ class ProductWidget extends StatelessWidget {
               width: 2.w,
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  // * Gradient Overlay at the Bottom
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      // height: 55.h,
-                      height: 58.h,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: isHealthFirst
-                              ? [
-                                  AppColors.teaGreen.withOpacity(0.0),
-                                  AppColors.teaGreen.withOpacity(0.8),
-                                  AppColors.teaGreen,
-                                ]
-                              : [
-                                  AppColors.seaShell.withOpacity(0.0),
-                                  AppColors.seaShell.withOpacity(0.8),
-                                  AppColors.seaShell,
-                                ],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          stops: const [0.0, 0.5, 1.0],
-                        ),
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30.r),
-                          bottomRight: Radius.circular(30.r),
-                        ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.r),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                // * Cached Background Image
+                CachedNetworkImage(
+                  imageUrl: image,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => Container(
+                    color: Colors.grey[300],
+                    child: const Center(
+                      child: CircularProgressIndicator(strokeWidth: 2),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Container(
+                    color: Colors.grey[200],
+                    child: const Center(
+                      child: Icon(Icons.broken_image, color: Colors.grey),
+                    ),
+                  ),
+                ),
+
+                // * Bottom Gradient Overlay
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 58.h,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: isHealthFirst
+                            ? [
+                                AppColors.teaGreen.withOpacity(0.0),
+                                AppColors.teaGreen.withOpacity(0.8),
+                                AppColors.teaGreen,
+                              ]
+                            : [
+                                AppColors.seaShell.withOpacity(0.0),
+                                AppColors.seaShell.withOpacity(0.8),
+                                AppColors.seaShell,
+                              ],
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        stops: const [0.0, 0.5, 1.0],
+                      ),
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(30.r),
+                        bottomRight: Radius.circular(30.r),
                       ),
                     ),
                   ),
-                  // * Foreground Content
-                  Text(
-                    capitalizeEachWord(name),
-                    maxLines: 1,
-                    overflow: TextOverflow.visible,
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.publicSans(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12.sp,
-                      color: isHealthFirst
-                          ? AppColors.deepGreen
-                          : getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
+                ),
+
+                // * Foreground Content
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: 18.h),
+                    child: Text(
+                      capitalizeEachWord(name),
+                      maxLines: 1,
+                      overflow: TextOverflow.visible,
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.publicSans(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12.sp,
+                        color: isHealthFirst
+                            ? AppColors.deepGreen
+                            : getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
+                      ),
                     ),
                   ),
-                ],
-              ),
-              // SizedBox(height: 8.h),
-            ],
+                ),
+              ],
+            ),
           ),
         ),
+
+        //* Old Network image widget
+        // Container(
+        //   height: 150.h,
+        //   width: 120.w,
+        //   decoration: BoxDecoration(
+        //     image: DecorationImage(
+        //       image: NetworkImage(image),
+        //       fit: BoxFit.cover,
+        //     ),
+        //     borderRadius: BorderRadius.circular(30.r),
+        //     border: Border.all(
+        //       color:
+        //           isHealthFirst ? AppColors.deepGreen : AppColors.primaryColor,
+        //       width: 2.w,
+        //     ),
+        //   ),
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.end,
+        //     children: [
+        //       Stack(
+        //         clipBehavior: Clip.none,
+        //         alignment: Alignment.center,
+        //         children: [
+        //           // * Gradient Overlay at the Bottom
+        //           Align(
+        //             alignment: Alignment.bottomCenter,
+        //             child: Container(
+        //               // height: 55.h,
+        //               height: 58.h,
+        //               decoration: BoxDecoration(
+        //                 gradient: LinearGradient(
+        //                   colors: isHealthFirst
+        //                       ? [
+        //                           AppColors.teaGreen.withOpacity(0.0),
+        //                           AppColors.teaGreen.withOpacity(0.8),
+        //                           AppColors.teaGreen,
+        //                         ]
+        //                       : [
+        //                           AppColors.seaShell.withOpacity(0.0),
+        //                           AppColors.seaShell.withOpacity(0.8),
+        //                           AppColors.seaShell,
+        //                         ],
+        //                   begin: Alignment.topCenter,
+        //                   end: Alignment.bottomCenter,
+        //                   stops: const [0.0, 0.5, 1.0],
+        //                 ),
+        //                 borderRadius: BorderRadius.only(
+        //                   bottomLeft: Radius.circular(30.r),
+        //                   bottomRight: Radius.circular(30.r),
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //           // * Foreground Content
+        //           Text(
+        //             capitalizeEachWord(name),
+        //             maxLines: 1,
+        //             overflow: TextOverflow.visible,
+        //             textAlign: TextAlign.center,
+        //             style: GoogleFonts.publicSans(
+        //               fontWeight: FontWeight.bold,
+        //               fontSize: 12.sp,
+        //               color: isHealthFirst
+        //                   ? AppColors.deepGreen
+        //                   : getColorAccountType(
+        //                       accountType: accountType,
+        //                       businessColor: AppColors.primaryColor,
+        //                       personalColor: AppColors.darkGreenGrey,
+        //                     ),
+        //             ),
+        //           ),
+        //         ],
+        //       ),
+        //     ],
+        //   ),
+        // ),
         Positioned(
           bottom: 0,
           left: 0,

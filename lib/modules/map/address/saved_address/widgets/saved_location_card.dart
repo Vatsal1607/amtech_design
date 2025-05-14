@@ -87,35 +87,35 @@ class SavedLocationCard extends StatelessWidget {
               if (!isNearBy)
                 Row(
                   children: [
-                    SmallEditButton(
-                      onTap: () {
-                        //* Navigate to map page
-                        Navigator.pushNamed(context, Routes.googleMapPage,
-                            arguments: {
-                              'editAddressLat': savedAddress?.lat,
-                              'editAddressLong': savedAddress?.long,
-                            });
-                        log('Edit button: lat is ${savedAddress?.lat} long is ${savedAddress?.long}');
-                        if (savedAddress?.lat == null ||
-                            savedAddress?.long == null) {
-                          log('Warning: Trying to navigate with null values!');
-                        }
-                      },
-                      accountType: accountType,
-                      width: 64.h,
-                      height: 26.h,
-                      textColor: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.primaryColor,
-                        personalColor: AppColors.darkGreenGrey,
-                      ),
-                      bgColor: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.seaShell,
-                        personalColor: AppColors.seaMist,
-                      ),
-                    ),
-                    SizedBox(width: 10.w),
+                    // SmallEditButton(
+                    //   onTap: () {
+                    //     //* Navigate to map page
+                    //     Navigator.pushNamed(context, Routes.googleMapPage,
+                    //         arguments: {
+                    //           'editAddressLat': savedAddress?.lat,
+                    //           'editAddressLong': savedAddress?.long,
+                    //         });
+                    //     log('Edit button: lat is ${savedAddress?.lat} long is ${savedAddress?.long}');
+                    //     if (savedAddress?.lat == null ||
+                    //         savedAddress?.long == null) {
+                    //       log('Warning: Trying to navigate with null values!');
+                    //     }
+                    //   },
+                    //   accountType: accountType,
+                    //   width: 64.h,
+                    //   height: 26.h,
+                    //   textColor: getColorAccountType(
+                    //     accountType: accountType,
+                    //     businessColor: AppColors.primaryColor,
+                    //     personalColor: AppColors.darkGreenGrey,
+                    //   ),
+                    //   bgColor: getColorAccountType(
+                    //     accountType: accountType,
+                    //     businessColor: AppColors.seaShell,
+                    //     personalColor: AppColors.seaMist,
+                    //   ),
+                    // ),
+                    // SizedBox(width: 10.w),
                     GestureDetector(
                       onTap: () {
                         log('Delete pressed');

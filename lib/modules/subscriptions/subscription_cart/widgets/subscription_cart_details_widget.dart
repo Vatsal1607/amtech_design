@@ -65,7 +65,10 @@ class _SubscriptionCartDetailsWidgetState
             builder: (context, provider, child) => _buildDetailRow(
               accountType: widget.accountType,
               onTapChange: () async {
-                await Navigator.pushNamed(context, Routes.googleMapPage);
+                await Navigator.pushNamed(
+                  context,
+                  Routes.googleMapPage,
+                );
                 await widget.provider.loadAddress();
                 context //* Api call
                     .read<CreateSubscriptionPlanProvider>()

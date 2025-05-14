@@ -14,10 +14,13 @@ class SavedAddressProvider extends ChangeNotifier {
 
   bool isLoadingSavedAddress = false;
   bool isFirstCall = true;
-  List<SavedAddressList>? savedAddressList;
+  // List<SavedAddressList>? savedAddressList;
+  List<SavedAddressList> savedAddressList = []; // Not nullable
 
   //* Emit & Listen Saved Address
   void emitAndListenSavedAddress(SocketProvider socketProvider) async {
+    log('emitAndListenSavedAddress called');
+    log('isSocketConnected: ${socketProvider.isConnected}');
     isLoadingSavedAddress = true;
     notifyListeners();
     final userId = sharedPrefsService.getString(SharedPrefsKeys.userId);
@@ -33,31 +36,49 @@ class SavedAddressProvider extends ChangeNotifier {
       data["longitude"] = long;
       data["isFirst"] = true;
       data["role"] = accountType == 'business' ? 0 : 1;
+      data["deviceId"] = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
+      data["socketId"] = socketProvider.socket.id;
       isFirstCall = false; //* Set to false after first call
     }
-    // log('userLocation data is:--- $data');
     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
-
-    log('emitAndListenSavedAddress called');
-
     socketProvider.listenToEvent(SocketEvents.searchSavedLocationListen,
         (data) {
       log('Raw data socket SavedAddress: $data');
       try {
         if (data is Map<String, dynamic>) {
           SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
-          savedAddressList = savedAddress.data;
+          savedAddressList = savedAddress.data ?? [];
           log('savedAddressList $savedAddressList');
-          isLoadingSavedAddress = false;
-          notifyListeners();
         } else {
           log('Received unexpected data format SavedAddress');
+          savedAddressList = []; // Set explicitly if format is wrong
         }
       } catch (e) {
         log('Error parsing socket data SavedAddressModel: $e');
+        savedAddressList = []; // Also clear in case of error
+      } finally {
         isLoadingSavedAddress = false;
         notifyListeners();
       }
+      // OLD
+      // try {
+      //   if (data is Map<String, dynamic>) {
+      //     SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
+      //     savedAddressList = savedAddress.data;
+      //     log('savedAddressList $savedAddressList');
+      //     isLoadingSavedAddress = false;
+      //     notifyListeners();
+      //   } else {
+      //     // savedAddressList = [];
+      //     isLoadingSavedAddress = false;
+      //     log('Received unexpected data format SavedAddress');
+      //   }
+      // } catch (e) {
+      //   log('Error parsing socket data SavedAddressModel: $e');
+      //   isLoadingSavedAddress = false;
+      // }
+      isLoadingSavedAddress = false;
+      notifyListeners();
     });
   }
 
@@ -65,6 +86,7 @@ class SavedAddressProvider extends ChangeNotifier {
   List<NearByAddressList>? nearByAddressList;
 
   //* Emit & Listen Nearby Address
+  //! Currently not used
   void emitAndListenNearBy({
     required SocketProvider socketProvider,
     double? lat,

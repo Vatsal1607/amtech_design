@@ -31,9 +31,6 @@ class LocationSelectionProvider extends ChangeNotifier {
 
   final List<String> locations = [
     'Titanium City Center',
-    'Arista Business Hub',
-    'Silp Corporate Park',
-    '323 Corporate Park',
   ];
 
   SearchController searchController = SearchController();

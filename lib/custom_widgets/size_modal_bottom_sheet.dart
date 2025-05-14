@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -150,9 +151,11 @@ void showSizeModalBottomSheet({
                         return CustomButtonWithArrow(
                           totalQty: '$totalQty',
                           onTap: () {
-                            Navigator.pop(context);
                             // provider.quantities = {}; //* Reset quantity
-                            Navigator.pushNamed(context, Routes.cart);
+                            if (provider.quantities.isNotEmpty) {
+                              Navigator.pop(context);
+                              Navigator.pushNamed(context, Routes.cart);
+                            }
                           },
                           accountType: accountType,
                         );

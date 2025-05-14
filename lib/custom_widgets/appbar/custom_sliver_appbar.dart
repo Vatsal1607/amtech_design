@@ -57,14 +57,13 @@ class CustomSliverAppbar extends StatelessWidget {
                   final imageUrl =
                       provider.homeMenuResponse?.data?.profileImage;
                   return (imageUrl == null || imageUrl.isEmpty)
-                      // true
                       ? SizedBox(
-                          height: 48.h,
-                          width: 48.w,
-                          child: Icon(
-                            Icons.account_circle,
-                            color: Colors.grey,
-                            // fill: ,
+                          height: 30.h,
+                          width: 30.w,
+                          child: Image.asset(
+                            ImageStrings.defaultAvatar,
+                            color: AppColors.white,
+                            fit: BoxFit.contain,
                           ),
                         )
                       : CachedNetworkImage(
@@ -80,7 +79,7 @@ class CustomSliverAppbar extends StatelessWidget {
                           ),
                           errorWidget: (context, url, error) => const Icon(
                             Icons.account_circle,
-                            size: 80,
+                            size: 48,
                             color: Colors.grey,
                           ),
                         );

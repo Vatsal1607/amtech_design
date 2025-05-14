@@ -16,7 +16,6 @@ import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
-import '../../custom_widgets/buttons/small_edit_button.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../../services/local/shared_preferences_service.dart';
 import '../provider/socket_provider.dart';
@@ -147,7 +146,7 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                         provider.mapControllerCompleter.complete(controller);
                       }
                       // if (provider.mapController == null) {
-                      // provider.mapController = controller;
+                      // provider.mapController = controller;\
                       provider.getCurrentLocation(
                         context: context,
                         socketProvider: socketProvider,
@@ -235,23 +234,22 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                     ),
                   ),
                   //* SearchField
-                  Positioned(
-                    top: 38.w,
-                    left: 32.w,
-                    right: 32.w,
-                    child: GestureDetector(
-                      onTap: () => showSearchBottomSheet(context),
-                      child: Container(
-                        color: Colors.transparent,
-                        child: CustomSearchContainer(
-                          hint: 'Search for a place or address',
-                          accountType: accountType,
-                          controller: searchController,
-                        ),
-                      ),
-                    ),
-                  ),
-
+                  // Positioned(
+                  //   top: 38.w,
+                  //   left: 32.w,
+                  //   right: 32.w,
+                  //   child: GestureDetector(
+                  //     onTap: () => showSearchBottomSheet(context),
+                  //     child: Container(
+                  //       color: Colors.transparent,
+                  //       child: CustomSearchContainer(
+                  //         hint: 'Search for a place or address',
+                  //         accountType: accountType,
+                  //         controller: searchController,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   //* Address bottom widget
                   Positioned(
                     bottom: 0,
@@ -298,10 +296,10 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
                                     ),
                                   ],
                                 ),
-                                SmallEditButton(
-                                  onTap: () {},
-                                  accountType: accountType,
-                                ),
+                                // SmallEditButton(
+                                //   onTap: () {},
+                                //   accountType: accountType,
+                                // ),
                               ],
                             ),
                             SizedBox(height: 5.h),

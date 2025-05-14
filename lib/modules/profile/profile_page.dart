@@ -123,26 +123,38 @@ class ProfilePage extends StatelessWidget {
                     ),
                     child: ClipOval(
                       child: Consumer<MenuProvider>(
-                        builder: (context, menuProvider, child) =>
-                            CachedNetworkImage(
-                          imageUrl: menuProvider
-                                  .homeMenuResponse?.data?.profileImage ??
-                              '',
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              CircularProgressIndicator(
-                            color: getColorAccountType(
-                              accountType: accountType,
-                              businessColor: AppColors.primaryColor,
-                              personalColor: AppColors.darkGreenGrey,
-                            ),
-                          ),
-                          errorWidget: (context, url, error) => const Icon(
-                            Icons.account_circle,
-                            size: 80,
-                          ),
-                        ),
-                      ),
+                          builder: (context, menuProvider, child) {
+                        final imageUrl =
+                            menuProvider.homeMenuResponse?.data?.profileImage;
+                        return (imageUrl == null || imageUrl.isEmpty)
+                            ? SizedBox(
+                                height: 30.h,
+                                width: 30.w,
+                                child: Image.asset(
+                                  ImageStrings.defaultAvatar,
+                                  color: AppColors.white,
+                                  fit: BoxFit.contain,
+                                ),
+                              )
+                            : CachedNetworkImage(
+                                imageUrl: imageUrl ?? '',
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(
+                                  Icons.account_circle,
+                                  size: 48,
+                                  color: Colors.grey,
+                                ),
+                              );
+                      }),
                     ),
                   ),
                   SizedBox(width: 24.w),

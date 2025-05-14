@@ -83,8 +83,7 @@ class LocationSelectionPage extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   Text(
-                    'SELECT YOUR complex, business park or working space.'
-                        .toUpperCase(),
+                    'SELECT YOUR NEAREST 135 DEGREES STORE.',
                     style: GoogleFonts.publicSans(
                       fontSize: 15.sp,
                       color: accountType != '' && accountType == 'business'

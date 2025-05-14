@@ -97,12 +97,12 @@ class SocketProvider with ChangeNotifier {
     _socket.on(event, callback);
   }
 
-  @override
-  void dispose() {
-    disconnect();
-    log('SocketProvider Dispose called');
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   disconnect();
+  //   log('SocketProvider Dispose called');
+  //   super.dispose();
+  // }
 
   void disconnect() {
     _socket.dispose();

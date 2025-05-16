@@ -51,7 +51,7 @@ class RazorpayService {
     final int amount = int.tryParse(cleanValue) ?? 0;
 
     final options = {
-      'key': RazorPayKeys.testKey,
+      'key': RazorPayKeys.liveKey,
       'amount': amount * 100, // Razorpay expects amount in paise
       'currency': 'INR',
       'order_id': orderId,

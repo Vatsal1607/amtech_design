@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
@@ -8,11 +9,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import '../../../services/local/shared_preferences_service.dart';
+import '../../../services/razorpay/razorpay_service.dart';
 import '../create_subscription_plan/widgets/custom_subsbutton_with_arrow.dart';
 import 'subscription_cart_provider.dart';
 
@@ -25,11 +28,30 @@ class SubscriptionCartPage extends StatefulWidget {
 
 class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
   @override
+  void dispose() {
+    //* Must clear because razorpay init used on cartpage & recharge page
+    RazorpayService().clear();
+    log('Dispose called (razorpay subs cart page)');
+    super.dispose();
+  }
+
+  @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context
-          .read<SubscriptionCartProvider>()
-          .getSubscriptionDetails(context: context);
+      final provider =
+          Provider.of<SubscriptionCartProvider>(context, listen: false);
+      provider.getSubscriptionDetails(context: context);
+      RazorpayService().init(
+        onSuccess: (PaymentSuccessResponse response) {
+          provider.handlePaymentSuccess(context, response);
+        },
+        onError: (PaymentFailureResponse response) {
+          provider.handlePaymentError(context, response);
+        },
+        onExternalWallet: (ExternalWalletResponse response) {
+          provider.handleExternalWallet(context, response);
+        },
+      );
     });
     super.initState();
   }
@@ -429,8 +451,9 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                             showProcessToPayBottomSheeet(
                               context: context,
                               scaffoldContext: context,
-                              payableAmount:
-                                  provider.getGrandTotal().toString(),
+                              payableAmount: provider
+                                  .getTotalWithGST(provider.getGrandTotal())
+                                  .toStringAsFixed(2),
                               accountType: accountType,
                               isSubscriptionPay: true,
                             );

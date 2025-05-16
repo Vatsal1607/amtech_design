@@ -14,7 +14,7 @@ class _ApiClient implements ApiClient {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'https://node-517461825507.asia-south1.run.app/';
+    baseUrl ??= 'http://192.168.1.14:9000/';
   }
 
   final Dio _dio;
@@ -283,7 +283,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          'recharge/verify',
+          'recharge/verifyPayment',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -1691,15 +1691,18 @@ class _ApiClient implements ApiClient {
 
   @override
   Future<ApiGlobalModel> subscriptionsPayment(
-    String orderId,
-    String subsId,
+    String subscriptionId,
+    String razorpayOrderId,
+    String razorpayPaymentId,
+    String paymentMethod,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = {
-      'orderId': orderId,
-      'subscriptionId': subsId,
+      'razorpayOrderId': razorpayOrderId,
+      'razorpayPaymentId': razorpayPaymentId,
+      'paymentMethod': paymentMethod,
     };
     final _options = _setStreamType<ApiGlobalModel>(Options(
       method: 'PUT',
@@ -1708,7 +1711,7 @@ class _ApiClient implements ApiClient {
     )
         .compose(
           _dio.options,
-          'subscriptions/payment',
+          'subscription/payment/${subscriptionId}',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -1729,11 +1732,18 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiGlobalModel> orderPaymentDeduct(String orderId) async {
+  Future<ApiGlobalModel> orderPaymentDeduct(
+    String orderId,
+    String paymentMethod,
+    String paymentStatus,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = {
+      'paymentMethod': paymentMethod,
+      'paymentStatus': paymentStatus,
+    };
     final _options = _setStreamType<ApiGlobalModel>(Options(
       method: 'PUT',
       headers: _headers,
@@ -1762,11 +1772,18 @@ class _ApiClient implements ApiClient {
   }
 
   @override
-  Future<ApiGlobalModel> subscriptionsPaymentDeduct(String subsId) async {
+  Future<ApiGlobalModel> subscriptionsPaymentDeduct(
+    String subsId,
+    String paymentMethod,
+    bool paymentStatus,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    const Map<String, dynamic>? _data = null;
+    final _data = {
+      'paymentMethod': paymentMethod,
+      'paymentStatus': paymentStatus,
+    };
     final _options = _setStreamType<ApiGlobalModel>(Options(
       method: 'PUT',
       headers: _headers,
@@ -1797,12 +1814,18 @@ class _ApiClient implements ApiClient {
   @override
   Future<ApiGlobalModel> orderPayment(
     String orderId,
-    String orderIdByJustpay,
+    String razorpayOrderId,
+    String razorpayPaymentId,
+    String paymentMethod,
   ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = {'orderIdByJustpay': orderIdByJustpay};
+    final _data = {
+      'razorpayOrderId': razorpayOrderId,
+      'razorpayPaymentId': razorpayPaymentId,
+      'paymentMethod': paymentMethod,
+    };
     final _options = _setStreamType<ApiGlobalModel>(Options(
       method: 'PUT',
       headers: _headers,
@@ -1955,9 +1978,9 @@ class _ApiClient implements ApiClient {
     String day,
   ) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'day': day};
     final _headers = <String, dynamic>{};
-    final _data = {'day': day};
+    const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<SubsDayDetailsModel>(Options(
       method: 'GET',
       headers: _headers,

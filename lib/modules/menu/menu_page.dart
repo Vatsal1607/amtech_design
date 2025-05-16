@@ -44,6 +44,9 @@ class _MenuPageState extends State<MenuPage> {
       //* Connect to socket if disconnected
       final socketProvider =
           Provider.of<SocketProvider>(context, listen: false);
+      if (!socketProvider.isConnected) {
+        socketProvider.connectToSocket();
+      }
       socketProvider.ensureConnected();
 
       context.read<GoogleMapProvider>().getCurrentLocation();

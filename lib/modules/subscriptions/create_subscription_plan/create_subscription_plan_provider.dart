@@ -242,15 +242,15 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
           sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
       String accountType =
           sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-      // ! Request data
+      // * Request data
       final requestData = SubscriptionCreateRequestModel(
         userId: userId,
         userType: accountType == 'business' ? 'BusinessUser' : 'User',
         items: subsItems, //* Subscription itemList
         price: selectedPrice,
         units: selectedUnits,
-        paymentMethod: 'paymentMethod',
-        paymentStatus: true,
+        // paymentMethod: 'paymentMethod',
+        paymentStatus: false,
       );
 
       log('requestData: $requestData');
@@ -384,9 +384,8 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         items: subsItems,
         price: selectedPrice,
         units: selectedUnits,
-        // notes: ingredientsProvider.noteController.text,
-        paymentMethod: 'paymentMethod',
-        paymentStatus: true,
+        // paymentMethod: 'paymentMethod',
+        paymentStatus: false,
         createdAt: createdAtDate,
         deliveryAddress: deliveryAddress,
       );

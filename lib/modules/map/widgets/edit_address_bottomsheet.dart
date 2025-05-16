@@ -205,6 +205,10 @@ void editAddressBottomSheeet({
                               context: context,
                               socketProvider: socketProvider,
                               savedAddressProvider: savedAddressProvider,
+                              fromSubscart: context
+                                      .read<GoogleMapProvider>()
+                                      .fromSubscart ??
+                                  false,
                             );
                           } else {
                             log('textfields is empty');

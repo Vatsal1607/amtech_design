@@ -120,11 +120,11 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     dayDetailsRes = null; // clear previous data before API call
     notifyListeners(); // notify UI about immediate clearing
     try {
+      log('request body subsDayDetails: $subsId & $day');
       final res = await apiService.subsDayDetails(
         subsId: subsId,
         day: day, //'Monday'
       );
-      log('request body subsDayDetails: $subsId & $day');
       if (res.success == true && res.data != null) {
         dayDetailsRes = res.data!.first;
         selectedTimeSlotValue = res.data?.first.timeSlot;

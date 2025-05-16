@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
-import 'package:amtech_design/custom_widgets/textfield/custom_search_container.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/widgets/edit_address_bottomsheet.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +19,6 @@ import '../../custom_widgets/svg_icon.dart';
 import '../../services/local/shared_preferences_service.dart';
 import '../provider/socket_provider.dart';
 import 'google_map_provider.dart';
-import 'widgets/show_search_address_bottomsheet.dart';
 
 class GoogleMapPage extends StatefulWidget {
   const GoogleMapPage({super.key});
@@ -35,6 +33,33 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
   double? editAddressLong;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    log('didChangeDependencies called (map page)');
+    if (args != null && args.isEmpty) {
+      args =
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+              {};
+      editAddressLat = args['editAddressLat'] != null
+          ? double.tryParse(args['editAddressLat'].toString())
+          : null;
+      editAddressLong = args['editAddressLong'] != null
+          ? double.tryParse(args['editAddressLong'].toString())
+          : null;
+
+      final googleMapProvider =
+          Provider.of<GoogleMapProvider>(context, listen: false);
+      // log('fromSubsCart (args): ${args?['fromSubscart']}');
+      // googleMapProvider.fromSubscart = args?['fromSubscart'];
+
+      // Delay slightly to ensure proper disposal of previous map view
+      Future.delayed(const Duration(milliseconds: 200), () {
+        checkLocationPermissionAndEmitEvent(googleMapProvider);
+      });
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -42,15 +67,17 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
               {};
       if (args.isNotEmpty) {
-        editAddressLat = args['editAddressLat'] != null
-            ? double.tryParse(args['editAddressLat'].toString())
-            : null;
-        editAddressLong = args['editAddressLong'] != null
-            ? double.tryParse(args['editAddressLong'].toString())
-            : null;
+        log('fromSubsCart (args): ${args?['fromSubscart']}');
+        final mapProvider =
+            Provider.of<GoogleMapProvider>(context, listen: false);
+        mapProvider.fromSubscart = args?['fromSubscart'];
+        //   editAddressLat = args['editAddressLat'] != null
+        //       ? double.tryParse(args['editAddressLat'].toString())
+        //       : null;
+        //   editAddressLong = args['editAddressLong'] != null
+        //       ? double.tryParse(args['editAddressLong'].toString())
+        //       : null;
       }
-      log('Map Page Args: $args');
-      log('Parsed Values: lat=$editAddressLat, long=$editAddressLong');
       final googleMapProvider =
           Provider.of<GoogleMapProvider>(context, listen: false);
       Future.delayed(

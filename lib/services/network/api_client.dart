@@ -314,27 +314,37 @@ abstract class ApiClient {
     @Query("userId") String userId,
   );
 
-  @PUT(ApiEndpoints.subscriptionsPayment)
+  @PUT('${ApiEndpoints.subscriptionsPayment}/{subscriptionId}')
   Future<ApiGlobalModel> subscriptionsPayment(
-    @Field("orderId") String orderId,
-    @Field("subscriptionId") String subsId,
+    @Path("subscriptionId") String subscriptionId,
+    @Field("razorpayOrderId") String razorpayOrderId,
+    @Field("razorpayPaymentId") String razorpayPaymentId,
+    @Field("paymentMethod") String paymentMethod,
   );
 
   // Payment complete normal order deduct
   @PUT('${ApiEndpoints.orderPaymentDeduct}/{order_id}')
   Future<ApiGlobalModel> orderPaymentDeduct(
     @Path("order_id") String orderId,
+    @Field("paymentMethod") String paymentMethod,
+    //* String for normal order.
+    @Field("paymentStatus") String paymentStatus,
   );
 
   @PUT('${ApiEndpoints.subscriptionsPaymentDeduct}/{subs_id}')
   Future<ApiGlobalModel> subscriptionsPaymentDeduct(
     @Path("subs_id") String subsId,
+    @Field("paymentMethod") String paymentMethod,
+    // Bool for Subs order.
+    @Field("paymentStatus") bool paymentStatus,
   );
 
   @PUT('${ApiEndpoints.orderPayment}/{order_id}')
   Future<ApiGlobalModel> orderPayment(
     @Path("order_id") String orderId,
-    @Field("orderIdByJustpay") String orderIdByJustpay,
+    @Field("razorpayOrderId") String razorpayOrderId,
+    @Field("razorpayPaymentId") String razorpayPaymentId,
+    @Field("paymentMethod") String paymentMethod,
   );
 
   @GET(ApiEndpoints.subscriptionsList)
@@ -359,6 +369,6 @@ abstract class ApiClient {
   @GET('${ApiEndpoints.subsDayDetails}/{subsId}')
   Future<SubsDayDetailsModel> subsDayDetails(
     @Path("subsId") String subsId,
-    @Field("day") String day,
+    @Query("day") String day,
   );
 }

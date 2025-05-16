@@ -38,7 +38,23 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
           Provider.of<SocketProvider>(context, listen: false);
       final provider =
           Provider.of<SavedAddressProvider>(context, listen: false);
+      if (!socketProvider.isConnected) {
+        socketProvider.connectToSocket();
+      }
+      // Remove existing listener if any
+      // socketProvider.offEvent(SocketEvents.searchSavedLocationListen);
+      // Emit and listen again
       provider.emitAndListenSavedAddress(socketProvider);
+
+      // final socketProvider =
+      //     Provider.of<SocketProvider>(context, listen: false);
+      // final provider =
+      //     Provider.of<SavedAddressProvider>(context, listen: false);
+      // if (!socketProvider.isConnected) {
+      //   socketProvider.connectToSocket();
+      // }
+      // provider.emitAndListenSavedAddress(socketProvider);
+      //
       // final googleMapProvider =
       //     Provider.of<GoogleMapProvider>(context, listen: false);
       // Future.delayed(const Duration(milliseconds: 200), () {
@@ -93,9 +109,10 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
 
   @override
   Widget build(BuildContext context) {
+    // log('is socket Connected: ${socketProvider.isConnected}');
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    final provider = Provider.of<SavedAddressProvider>(context, listen: false);
+    // final provider = Provider.of<SavedAddressProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     final gMapProvider = Provider.of<GoogleMapProvider>(context, listen: false);
     log('current Address ${gMapProvider.address}');
@@ -188,7 +205,7 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                             personalColor: AppColors.darkGreenGrey,
                           ),
                         )
-                      : (list == null || list.isEmpty)
+                      : (list.isEmpty)
                           ? Center(
                               child: Text(
                                 'No Saved Address'.toUpperCase(),
@@ -235,66 +252,6 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                             );
                 },
               ),
-
-              // OLD
-              // Consumer<SavedAddressProvider>(
-              //   builder: (context, _, child) => provider.isLoadingSavedAddress
-              //       ? CustomLoader(
-              //           backgroundColor: getColorAccountType(
-              //             accountType: accountType,
-              //             businessColor: AppColors.primaryColor,
-              //             personalColor: AppColors.darkGreenGrey,
-              //           ),
-              //         )
-              //       // : provider.savedAddressList?.length == 0
-              //       : provider.savedAddressList == null ||
-              //               provider.savedAddressList!.isEmpty
-              //           ? Text(
-              //               'No Saved Address'.toUpperCase(),
-              //               style: GoogleFonts.publicSans(
-              //                 fontSize: 20.sp,
-              //                 color: AppColors.black,
-              //                 fontWeight: FontWeight.bold,
-              //               ),
-              //             )
-              //           : ListView.separated(
-              //               shrinkWrap: true,
-              //               itemCount: provider.savedAddressList?.length ?? 0,
-              //               physics: const NeverScrollableScrollPhysics(),
-              //               padding: EdgeInsets.zero,
-              //               separatorBuilder: (context, index) =>
-              //                   SizedBox(height: 10.h),
-              //               itemBuilder: (context, index) {
-              //                 final savedAddress =
-              //                     provider.savedAddressList?[index];
-              //                 return GestureDetector(
-              //                   onTap: () async {
-              //                     await provider
-              //                         .chooseLocation(
-              //                       context: context,
-              //                       address:
-              //                           '${savedAddress?.propertyNumber} ${savedAddress?.residentialAddress} ${savedAddress?.nearLandmark} ${savedAddress?.suggestAddress ?? ''}',
-              //                     )
-              //                         .then((isSuccess) async {
-              //                       if (isSuccess == true) {
-              //                         //* Update home address type
-              //                         menuProvider.updateHomeAddress(
-              //                           HomeAddressType.remote,
-              //                         );
-              //                         await context
-              //                             .read<MenuProvider>()
-              //                             .homeMenuApi(); //* API call
-              //                       }
-              //                     });
-              //                   },
-              //                   child: SavedLocationCard(
-              //                     savedAddress: savedAddress,
-              //                     provider: provider,
-              //                   ),
-              //                 );
-              //               },
-              //             ),
-              // ),
 
               // SizedBox(height: 20.h),
               // CenterTitleWithDivider(

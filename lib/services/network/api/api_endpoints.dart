@@ -6,7 +6,7 @@ class ApiEndpoints {
   static const String sendOtp = 'send-otp';
   static const String verifyOtp = 'verify-otp';
   static const String userRecharge = 'user/recharge';
-  static const String verifyRecharge = 'recharge/verify';
+  static const String verifyRecharge = 'recharge/verifyPayment';
   static const String gstVerify =
       'http://sheet.gstincheck.co.in/check/fd1cc5bfb2f97a038994093a67489392';
   static const String logout = 'logout';
@@ -45,11 +45,10 @@ class ApiEndpoints {
   static const String subscriptionsDetails = 'subscriptions/details';
   static const String subscriptionsUpdate = 'subscriptions/update';
   static const String rechargeHistory = 'recharge/history';
-  static const String subscriptionsPayment = 'subscriptions/payment';
-  static const String orderPaymentDeduct =
-      'order/payment/deduct'; //Todo pass:paymentMethod
+  static const String subscriptionsPayment = 'subscription/payment';
+  static const String orderPaymentDeduct = 'order/payment/deduct';
   static const String subscriptionsPaymentDeduct =
-      'subscriptions/payment/deduct'; //Todo pass:paymentMethod
+      'subscriptions/payment/deduct';
   static const String orderPayment = 'order/payment';
   static const String subscriptionsList = 'user/subscriptions/list';
   static const String notificationHistory = 'notifications/users/history';

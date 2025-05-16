@@ -1,7 +1,12 @@
 import 'dart:developer';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
+import 'package:amtech_design/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../../core/utils/constants/keys.dart';
+import '../../../models/api_global_model.dart';
 import '../../../models/subscription_summary_model.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import '../../../services/network/api_service.dart';
@@ -134,10 +139,15 @@ class SubscriptionCartProvider extends ChangeNotifier {
   }
 
   //* Subscription payment deduct (payment complete)
-  Future subscriptionsPaymentDeduct(BuildContext context) async {
+  Future subscriptionsPaymentDeduct(
+    BuildContext context,
+    String selectedPaymentMethod,
+  ) async {
     try {
       final response = await apiService.subscriptionsPaymentDeduct(
         subsId: context.read<CreateSubscriptionPlanProvider>().subsId ?? '',
+        paymentMethod: selectedPaymentMethod,
+        paymentStatus: true,
       );
       log('subscriptionsPaymentDeduct: $response');
       if (response.success == true) {
@@ -147,5 +157,97 @@ class SubscriptionCartProvider extends ChangeNotifier {
     } catch (e) {
       throw Exception('API call failed: $e');
     }
+  }
+
+  // ! Razorpay
+  void handlePaymentSuccess(
+    BuildContext context,
+    PaymentSuccessResponse response,
+  ) {
+    log('Payment-Success: ${response.data}');
+    if (response.paymentId != null) {
+      //* Reset position
+      final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      cartProvider.dragPosition = 10.w;
+      cartProvider.isConfirmed = false;
+      //* Subscription Normal order payment success API
+      final subsId =
+          context.read<CreateSubscriptionPlanProvider>().subsId ?? '';
+      subscriptionsPayment(
+        subscriptionId: subsId,
+        orderId: response.orderId ?? '',
+        razorpayPaymentId: response.paymentId ?? '',
+        paymentMethod: context.read<CartProvider>().selectedPaymentMethod,
+        context: context,
+      );
+    }
+  }
+
+  Future<ApiGlobalModel> subscriptionsPayment({
+    required String subscriptionId,
+    required String orderId,
+    required String razorpayPaymentId,
+    required String paymentMethod,
+    required BuildContext context,
+  }) async {
+    try {
+      final response = await apiService.subscriptionsPayment(
+        subscriptionId: subscriptionId,
+        razorpayOrderId: orderId,
+        razorpayPaymentId: razorpayPaymentId,
+        paymentMethod: paymentMethod,
+      );
+      log('rechargeHandleJuspayResponse: $response');
+      log('response.status: ${response.success}');
+      if (response.success == true) {
+        Navigator.popUntil(context, (route) {
+          // Keep popping until the condition is met
+          return route.settings.name == Routes.bottomBarPage;
+        });
+        log('SUCCESS of handleJuspayResponse');
+      }
+      return response;
+    } catch (e) {
+      throw Exception('API call failed: $e');
+    }
+  }
+
+  void handlePaymentError(
+      BuildContext context, PaymentFailureResponse response) {
+    log('Payment-Failure: ${response.toString()}');
+    // Payment failure callback
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Payment Failed"),
+        content: Text(
+            "Error Code: ${response.code}\nError Message: ${response.message}"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Retry"),
+          )
+        ],
+      ),
+    );
+  }
+
+  void handleExternalWallet(
+      BuildContext context, ExternalWalletResponse response) {
+    log('Payment-External wallet: ${response.toString()}');
+    // External wallet callback
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("External Wallet Selected"),
+        content: Text("Wallet Name: ${response.walletName}"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          )
+        ],
+      ),
+    );
   }
 }

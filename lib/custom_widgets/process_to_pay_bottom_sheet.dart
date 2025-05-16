@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
-import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +91,7 @@ void showProcessToPayBottomSheeet({
                       },
                       isSelectedMethod: provider.selectedPaymentMethod ==
                           SelectedPaymentMethod.upi.name,
-                      logoImage: ImageStrings.hdfc,
+                      logoImage: ImageStrings.razorpayLogo,
                     ),
                   ),
 

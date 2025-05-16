@@ -93,7 +93,9 @@ class _ResponsePageState extends State<ResponsePage> {
                                 .read<CartProvider>()
                                 .clearCart(); //* Api call
                             Navigator.pushReplacementNamed(
-                                context, Routes.orderStatus);
+                                //* pass orderID in args if data not get
+                                context,
+                                Routes.orderStatus);
                           } else if (paymentType == PaymentType.subscription) {
                             Navigator.popUntil(context,
                                 ModalRoute.withName(Routes.bottomBarPage));
@@ -203,17 +205,17 @@ class _ResponsePageState extends State<ResponsePage> {
             break;
           case PaymentType.subscription:
             //* API call
-            await subscriptionHandleJuspayResponse(
-              orderId: orderId,
-              subsId: subsId ?? '',
-            );
+            // await subscriptionHandleJuspayResponse(
+            //   orderId: orderId,
+            //   subsId: subsId ?? '',
+            // );
             break;
           case PaymentType.order:
-            //* API call
-            await orderPayment(
-              orderId: apiResponseOrderId ?? '', // apiResponseOrderId
-              orderIdByJustpay: orderId,
-            );
+          //* API call
+          // await orderPayment(
+          //   orderId: apiResponseOrderId ?? '', // apiResponseOrderId
+          //   orderIdByJustpay: orderId,
+          // );
           default:
             break;
         }
@@ -252,40 +254,42 @@ class _ResponsePageState extends State<ResponsePage> {
   }
 
   // subscriptionHandleJuspayResponse
-  Future<ApiGlobalModel> subscriptionHandleJuspayResponse(
-      {required String orderId, required String subsId}) async {
-    try {
-      final response = await apiService.subscriptionsPayment(
-        orderId: orderId,
-        subsId: subsId,
-      );
-      log('rechargeHandleJuspayResponse: $response');
-      log('response.status: ${response.success}');
-      if (response.success == true) {
-        log('SUCCESS of handleJuspayResponse');
-      }
-      return response;
-    } catch (e) {
-      throw Exception('API call failed: $e');
-    }
-  }
+  // Future<ApiGlobalModel> subscriptionHandleJuspayResponse(
+  //     {required String orderId, required String subsId}) async {
+  //   try {
+  //     final response = await apiService.subscriptionsPayment(
+  //       subscriptionId: subscriptionId,
+  //       razorpayOrderId: razorpayOrderId,
+  //       razorpayPaymentId: razorpayPaymentId,
+  //       paymentMethod: paymentMethod,
+  //     );
+  //     log('rechargeHandleJuspayResponse: $response');
+  //     log('response.status: ${response.success}');
+  //     if (response.success == true) {
+  //       log('SUCCESS of handleJuspayResponse');
+  //     }
+  //     return response;
+  //   } catch (e) {
+  //     throw Exception('API call failed: $e');
+  //   }
+  // }
 
   // orderPayment
-  Future<ApiGlobalModel> orderPayment({
-    required String orderId,
-    required String orderIdByJustpay,
-  }) async {
-    try {
-      final response = await apiService.orderPayment(
-        orderId: orderId,
-        orderIdByJustpay: orderIdByJustpay,
-      );
-      if (response.success == true) {
-        log('SUCCESS of orderPayment');
-      }
-      return response;
-    } catch (e) {
-      throw Exception('API call failed: $e');
-    }
-  }
+  // Future<ApiGlobalModel> orderPayment({
+  //   required String orderId,
+  //   required String orderIdByJustpay,
+  // }) async {
+  //   try {
+  //     final response = await apiService.orderPayment(
+  //       orderId: orderId,
+  //       orderIdByJustpay: orderIdByJustpay,
+  //     );
+  //     if (response.success == true) {
+  //       log('SUCCESS of orderPayment');
+  //     }
+  //     return response;
+  //   } catch (e) {
+  //     throw Exception('API call failed: $e');
+  //   }
+  // }
 }

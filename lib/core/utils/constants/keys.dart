@@ -1,8 +1,8 @@
-// class RazorPayKeys {
-//   // static const String testKey = "rzp_test_gvsZVEPcujnlQ5"; // * Test key
-//   static const String testKey = "rzp_test_c8K63lGAcqMeS7"; // * Test key
-//   // static const String liveKey = 'rzp_live_YbWaocbWfEYdCO'; // * Live key Amtech
-// }
+class RazorPayKeys {
+  // static const String testKey = "rzp_test_gvsZVEPcujnlQ5"; // * Test key
+  static const String testKey = "rzp_test_BMJsOprMezADK7"; // * Test key
+  static const String liveKey = 'rzp_live_Tfjwk5e3xTb5vA'; // * Live key Amtech
+}
 
 class SharedPrefsKeys {
   static const String userToken = 'user_token';

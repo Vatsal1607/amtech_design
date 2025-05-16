@@ -2,18 +2,19 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/list_cart_model.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
+import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_cart/subscription_cart_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/enums/enums.dart';
+import '../../models/api_global_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../routes.dart';
 import '../../services/network/api_service.dart';
-import '../hdfc_payment/payment_page.dart';
-import '../subscriptions/create_subscription_plan/create_subscription_plan_provider.dart';
+import '../../services/razorpay/razorpay_service.dart';
 
 class CartProvider extends ChangeNotifier {
   bool isExpanded = false;
@@ -88,8 +89,11 @@ class CartProvider extends ChangeNotifier {
                     final order = data['order'];
                     if (order != null && order['_id'] != null) {
                       orderId = order['_id'];
+                      //* API call
                       await orderPaymentDeduct(
-                          orderId: orderId ?? ''); //* API call
+                        orderId: orderId ?? '',
+                        paymentMethod: selectedPaymentMethod,
+                      );
                     } else {
                       log('Order or _id not found in received data.');
                     }
@@ -116,21 +120,51 @@ class CartProvider extends ChangeNotifier {
               if (order != null && order['_id'] != null) {
                 orderId = order['_id'];
                 log('ApiResponseOrderId is: $orderId');
-                // * Handle API call Normal Order UPI
-                HyperSDK hyperSDK = HyperSDK();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PaymentPage(
-                      apiResponseOrderId: orderId,
-                      paymentType: PaymentType.order,
-                      hyperSDK: hyperSDK,
-                      subsId:
-                          context.read<CreateSubscriptionPlanProvider>().subsId,
-                      amount: totalAmount ?? '',
-                    ),
-                  ),
-                );
+                //* User Recharge API (payment initiate)
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  final rechargeProvider =
+                      Provider.of<RechargeProvider>(context, listen: false);
+                  //* API call
+                  rechargeProvider
+                      .userRecharge(
+                    context: context,
+                    amount: getTotalAmountWithGST(
+                            double.tryParse(totalAmount ?? '') ?? 0.0)
+                        .round(),
+                  )
+                      .then((isSuccess) {
+                    if (isSuccess) {
+                      //! Open razorpay
+                      RazorpayService().openRazorpayCheckout(
+                        amountText: getTotalAmountWithGST(
+                                double.tryParse(totalAmount ?? '') ?? 0.0)
+                            .toStringAsFixed(2),
+                        orderId: rechargeProvider.razorpayOrderId ?? '',
+                        description: '',
+                        name: '',
+                      );
+                      // openRazorpay(context: context);
+                      debugPrint('isSuccess callback api-——: $isSuccess');
+                    } else {
+                      debugPrint('isSuccess callback api-——: $isSuccess');
+                    }
+                  });
+                });
+                // * Handle API call Normal Order UPI (HDFC)
+                // HyperSDK hyperSDK = HyperSDK();
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => PaymentPage(
+                //       apiResponseOrderId: orderId,
+                //       paymentType: PaymentType.order,
+                //       hyperSDK: hyperSDK,
+                //       subsId:
+                //           context.read<CreateSubscriptionPlanProvider>().subsId,
+                //       amount: totalAmount ?? '',
+                //     ),
+                //   ),
+                // );
               } else {
                 log('Order or _id not found in received data.');
               }
@@ -147,9 +181,16 @@ class CartProvider extends ChangeNotifier {
           ).then(
             (isSuccess) {
               if (isSuccess == true) {
-                context
-                    .read<SubscriptionCartProvider>()
-                    .subscriptionsPaymentDeduct(context); //* API call
+                final subsCartprovider = Provider.of<SubscriptionCartProvider>(
+                    context,
+                    listen: false);
+                subsCartprovider.subscriptionsPaymentDeduct(
+                  context,
+                  selectedPaymentMethod,
+                ); //* API call
+                //* Reset position
+                dragPosition = 10.w;
+                isConfirmed = false;
               } else if (isSuccess == false) {
                 //* Reset position
                 dragPosition = 10.w;
@@ -158,21 +199,55 @@ class CartProvider extends ChangeNotifier {
             },
           );
         } else if (selectedPaymentMethod == SelectedPaymentMethod.upi.name) {
-          HyperSDK hyperSDK = HyperSDK();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => PaymentPage(
-                paymentType: PaymentType.subscription,
-                hyperSDK: hyperSDK,
-                subsId: context.read<CreateSubscriptionPlanProvider>().subsId,
-                amount: context
-                    .read<SubscriptionCartProvider>()
-                    .getGrandTotal()
+          final rechargeProvider =
+              Provider.of<RechargeProvider>(context, listen: false);
+          //* API call Subscription payment
+          final subscriptionCartProvider =
+              Provider.of<SubscriptionCartProvider>(context, listen: false);
+          subscriptionCartProvider
+              .getTotalWithGST(subscriptionCartProvider.getGrandTotal())
+              .toStringAsFixed(2);
+          log('Amount (subs cart): ${subscriptionCartProvider.getTotalWithGST(subscriptionCartProvider.getGrandTotal()).toStringAsFixed(2)}');
+          log('Amount totalAmount (subs cart): ${subscriptionCartProvider.getGrandTotal()}');
+          await rechargeProvider
+              .userRecharge(
+            context: context,
+            amount: subscriptionCartProvider
+                .getTotalWithGST(subscriptionCartProvider.getGrandTotal())
+                .round(),
+          )
+              .then((isSuccess) {
+            if (isSuccess) {
+              //! Open razorpay
+              RazorpayService().openRazorpayCheckout(
+                amountText: subscriptionCartProvider
+                    .getTotalWithGST(subscriptionCartProvider.getGrandTotal())
                     .toStringAsFixed(2),
-              ),
-            ),
-          );
+                orderId: rechargeProvider.razorpayOrderId ?? '',
+                description: '',
+                name: '',
+              );
+              debugPrint('isSuccess callback api-——: $isSuccess');
+            } else {
+              debugPrint('isSuccess callback api-——: $isSuccess');
+            }
+          });
+          //* HDFC
+          // HyperSDK hyperSDK = HyperSDK();
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => PaymentPage(
+          //       paymentType: PaymentType.subscription,
+          //       hyperSDK: hyperSDK,
+          //       subsId: context.read<CreateSubscriptionPlanProvider>().subsId,
+          //       amount: context
+          //           .read<SubscriptionCartProvider>()
+          //           .getGrandTotal()
+          //           .toStringAsFixed(2),
+          //     ),
+          //   ),
+          // );
         }
       } else {
         log('No payment handler found');
@@ -183,6 +258,98 @@ class CartProvider extends ChangeNotifier {
       isConfirmed = false;
     }
     notifyListeners();
+  }
+
+  // ! Razorpay
+  void handlePaymentSuccess(
+    BuildContext context,
+    PaymentSuccessResponse response,
+  ) {
+    log('Payment-Success: ${response.data}');
+    if (response.paymentId != null) {
+      //* Reset position
+      dragPosition = 10.w;
+      isConfirmed = false;
+      //* Normal order payment success API
+      orderPayment(
+        orderId: orderId ?? '',
+        razorpayOrderId: response.orderId,
+        razorpayPaymentId: response.paymentId,
+        paymentMethod: selectedPaymentMethod,
+        context: context,
+      );
+    }
+  }
+
+  Future<ApiGlobalModel> orderPayment({
+    required String orderId,
+    razorpayOrderId,
+    razorpayPaymentId,
+    paymentMethod,
+    required BuildContext context,
+  }) async {
+    try {
+      final response = await apiService.orderPayment(
+        orderId: orderId,
+        razorpayOrderId: razorpayOrderId,
+        razorpayPaymentId: razorpayPaymentId,
+        paymentMethod: paymentMethod,
+      );
+      if (response.success == true) {
+        log('SUCCESS of orderPayment');
+        await clearCart(); //* API
+        Navigator.pushNamed(
+          context,
+          Routes.orderStatus,
+          arguments: {
+            'orderId': orderId,
+            'isBack': false,
+          },
+        );
+      }
+      return response;
+    } catch (e) {
+      throw Exception('API call failed: $e');
+    }
+  }
+
+  void handlePaymentError(
+      BuildContext context, PaymentFailureResponse response) {
+    log('Payment-Failure: ${response.toString()}');
+    // Payment failure callback
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Payment Failed"),
+        content: Text(
+            "Error Code: ${response.code}\nError Message: ${response.message}"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Retry"),
+          )
+        ],
+      ),
+    );
+  }
+
+  void handleExternalWallet(
+      BuildContext context, ExternalWalletResponse response) {
+    log('Payment-External wallet: ${response.toString()}');
+    // External wallet callback
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("External Wallet Selected"),
+        content: Text("Wallet Name: ${response.walletName}"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("OK"),
+          )
+        ],
+      ),
+    );
   }
 
   bool isLoading = false;
@@ -267,6 +434,7 @@ class CartProvider extends ChangeNotifier {
           Future.delayed(const Duration(seconds: 1), () {
             // * Reset position
             dragPosition = 10.w;
+            isConfirmed = false;
           });
         }
         return true; //* success
@@ -284,10 +452,15 @@ class CartProvider extends ChangeNotifier {
   }
 
   //* Order payment deduct (payment complete)
-  Future orderPaymentDeduct({required String orderId}) async {
+  Future orderPaymentDeduct({
+    required String orderId,
+    required String paymentMethod,
+  }) async {
     try {
       final response = await apiService.orderPaymentDeduct(
         orderId: orderId,
+        paymentMethod: paymentMethod,
+        paymentStatus: 'Completed',
       );
       log('orderPaymentDeduct: $response');
       if (response.success == true) {
@@ -347,27 +520,3 @@ class CartProvider extends ChangeNotifier {
     return mixedItems;
   }
 }
-
-//* Uses you may like
-// final randomMixedItems = getMixedItemsFromCategories(allCategories, perCategory: 2);
-
-// SizedBox(
-//   height: 180,
-//   child: ListView.builder(
-//     scrollDirection: Axis.horizontal,
-//     itemCount: randomMixedItems.length,
-//     itemBuilder: (context, index) {
-//       final item = randomMixedItems[index];
-//       return Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           children: [
-//             // Replace with your actual UI
-//             Text(item.name),
-//             Text("Category: ${item.categoryId}"),
-//           ],
-//         ),
-//       );
-//     },
-//   ),
-// )

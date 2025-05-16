@@ -11,16 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hypersdkflutter/hypersdkflutter.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constants/keys.dart';
-import '../../core/utils/enums/enums.dart';
 import '../../core/utils/strings.dart';
 import '../../core/utils/validator.dart';
 import '../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import '../../services/local/shared_preferences_service.dart';
-import '../hdfc_payment/payment_page.dart';
+import '../../services/razorpay/razorpay_service.dart';
 import 'widgets/center_title_with_divider.dart';
 
 class RechargePage extends StatefulWidget {
@@ -32,27 +31,14 @@ class RechargePage extends StatefulWidget {
 
 class _RechargePageState extends State<RechargePage> {
   late RechargeProvider provider;
-  // late Razorpay razorpay;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   provider = Provider.of<RechargeProvider>(context, listen: false);
-  //   razorpay = Razorpay();
-  //   provider.amountController.addListener(() {
-  //     provider.formatIndianNumber(provider.amountController.text);
-  //   });
-
-  //   razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (response) {
-  //     provider.handlePaymentSuccess(context, response);
-  //   });
-  //   razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, (response) {
-  //     provider.handlePaymentError(context, response);
-  //   });
-  //   razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, (response) {
-  //     provider.handleExternalWallet(context, response);
-  //   });
-  // }
+  @override
+  void dispose() {
+    //* Must clear because razorpay init used on cartpage & subscartpage & recharge page
+    RazorpayService().clear();
+    log('Dispose called (razorpay cart page)');
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -61,6 +47,22 @@ class _RechargePageState extends State<RechargePage> {
       provider.amountController.clear();
       context.read<RechargeProvider>().getRechargeHistory(context);
     });
+    provider = Provider.of<RechargeProvider>(context, listen: false);
+    provider.amountController.addListener(() {
+      provider.formatIndianNumber(provider.amountController.text);
+    });
+
+    RazorpayService().init(
+      onSuccess: (PaymentSuccessResponse response) {
+        provider.handlePaymentSuccess(context, response);
+      },
+      onError: (PaymentFailureResponse response) {
+        provider.handlePaymentError(context, response);
+      },
+      onExternalWallet: (ExternalWalletResponse response) {
+        provider.handleExternalWallet(context, response);
+      },
+    );
     super.initState();
   }
 
@@ -217,27 +219,38 @@ class _RechargePageState extends State<RechargePage> {
                                 final cleanValue = provider
                                     .amountController.text
                                     .replaceAll(',', '');
-                                HyperSDK hyperSDK = HyperSDK();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PaymentPage(
-                                      hyperSDK: hyperSDK,
-                                      amount: cleanValue,
-                                      paymentType: PaymentType.recharge,
-                                    ),
-                                  ),
-                                );
+                                // * HDFC
+                                // HyperSDK hyperSDK = HyperSDK();
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(
+                                //     builder: (context) => PaymentPage(
+                                //       hyperSDK: hyperSDK,
+                                //       amount: cleanValue,
+                                //       paymentType: PaymentType.recharge,
+                                //     ),
+                                //   ),
+                                // );
+
                                 // * userRecharge API * open Razorpay on success
-                                // provider.userRecharge(context).then((isSuccess) {
-                                //   if (isSuccess != null && isSuccess) {
-                                //     /// openRazorpay();
-                                //     ///
-                                //     debugPrint('isSuccess callback api-——: $isSuccess');
-                                //   } else {
-                                //     debugPrint('isSuccess callback api-——: $isSuccess');
-                                //   }
-                                // });
+                                provider
+                                    .userRecharge(context: context)
+                                    .then((isSuccess) {
+                                  if (isSuccess != null && isSuccess) {
+                                    //! Open razorpay
+                                    RazorpayService().openRazorpayCheckout(
+                                      amountText:
+                                          provider.amountController.text,
+                                      orderId: provider.razorpayOrderId ?? '',
+                                      description: '',
+                                      name: '',
+                                    );
+                                    // provider.openRazorpay();
+                                  } else {
+                                    debugPrint(
+                                        'isSuccess callback api-——: $isSuccess');
+                                  }
+                                });
                               } else {
                                 log('INVALID Amount');
                               }

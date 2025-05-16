@@ -68,6 +68,9 @@ class _SubscriptionCartDetailsWidgetState
                 await Navigator.pushNamed(
                   context,
                   Routes.googleMapPage,
+                  arguments: {
+                    'fromSubscart': true,
+                  },
                 );
                 await widget.provider.loadAddress();
                 context //* Api call

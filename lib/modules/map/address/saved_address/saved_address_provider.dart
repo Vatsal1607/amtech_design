@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/saved_address_model.dart';
@@ -14,10 +15,67 @@ class SavedAddressProvider extends ChangeNotifier {
 
   bool isLoadingSavedAddress = false;
   bool isFirstCall = true;
-  // List<SavedAddressList>? savedAddressList;
   List<SavedAddressList> savedAddressList = []; // Not nullable
 
+  Timer? _periodicEmitter;
+
   //* Emit & Listen Saved Address
+  // Future<void> emitAndListenSavedAddress(SocketProvider socketProvider) async {
+  //   log('emitAndListenSavedAddress called');
+  //   isLoadingSavedAddress = true;
+  //   notifyListeners();
+  //   final userId = sharedPrefsService.getString(SharedPrefsKeys.userId);
+  //   final lat = sharedPrefsService.getString(SharedPrefsKeys.currentLat);
+  //   final long = sharedPrefsService.getString(SharedPrefsKeys.currentLong);
+  //   final accountType =
+  //       sharedPrefsService.getString(SharedPrefsKeys.accountType);
+
+  //   Map<String, dynamic> data = {
+  //     "userId": userId,
+  //   };
+  //   if (isFirstCall) {
+  //     data["latitude"] = lat;
+  //     data["longitude"] = long;
+  //     data["isFirst"] = true;
+  //     data["role"] = accountType == 'business' ? 0 : 1;
+  //     data["deviceId"] = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
+  //     data["socketId"] = socketProvider.socket.id;
+  //     isFirstCall = false;
+  //   }
+
+  //   /// Remove old listener to avoid duplication
+  //   socketProvider.offEvent(SocketEvents.searchSavedLocationListen);
+  //   // Cancel previous emitter if already running
+  //   _periodicEmitter?.cancel();
+  //   _periodicEmitter = Timer.periodic(const Duration(seconds: 1), (_) {
+  //     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
+  //   });
+  //   // Optional retry
+  //   Future.delayed(const Duration(seconds: 3), () {
+  //     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
+  //   });
+
+  //   socketProvider.listenToEvent(SocketEvents.searchSavedLocationListen,
+  //       (data) {
+  //     log('Raw data socket SavedAddress: $data');
+  //     try {
+  //       if (data is Map<String, dynamic>) {
+  //         SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
+  //         savedAddressList = savedAddress.data ?? [];
+  //       } else {
+  //         log('Unexpected data format');
+  //         // savedAddressList = [];
+  //       }
+  //     } catch (e) {
+  //       log('Error parsing saved address: $e');
+  //       // savedAddressList = [];
+  //     } finally {
+  //       isLoadingSavedAddress = false;
+  //       notifyListeners();
+  //     }
+  //   });
+  // }
+  //OLD
   void emitAndListenSavedAddress(SocketProvider socketProvider) async {
     log('emitAndListenSavedAddress called');
     log('isSocketConnected: ${socketProvider.isConnected}');
@@ -60,23 +118,6 @@ class SavedAddressProvider extends ChangeNotifier {
         isLoadingSavedAddress = false;
         notifyListeners();
       }
-      // OLD
-      // try {
-      //   if (data is Map<String, dynamic>) {
-      //     SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
-      //     savedAddressList = savedAddress.data;
-      //     log('savedAddressList $savedAddressList');
-      //     isLoadingSavedAddress = false;
-      //     notifyListeners();
-      //   } else {
-      //     // savedAddressList = [];
-      //     isLoadingSavedAddress = false;
-      //     log('Received unexpected data format SavedAddress');
-      //   }
-      // } catch (e) {
-      //   log('Error parsing socket data SavedAddressModel: $e');
-      //   isLoadingSavedAddress = false;
-      // }
       isLoadingSavedAddress = false;
       notifyListeners();
     });

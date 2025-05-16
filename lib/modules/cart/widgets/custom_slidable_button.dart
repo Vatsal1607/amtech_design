@@ -165,63 +165,6 @@ class CustomSlidableButton extends StatelessWidget {
           ],
         ),
       );
-    }
-
-        // * OLD slidable button (Keep)
-        //     GestureDetector(
-        //   onHorizontalDragUpdate: provider.onHorizontalDragUpdate,
-        //   onHorizontalDragEnd: provider.onHorizontalDragEnd,
-        //   child: Stack(
-        //     children: [
-        //       // Background with dynamic text
-        //       Container(
-        //         height: 79.h,
-        //         width: double.infinity,
-        //         // width: provider.maxDrag,
-        //         margin: EdgeInsets.symmetric(horizontal: 32.w),
-        //         decoration: BoxDecoration(
-        //           color: AppColors.disabledColor,
-        //           borderRadius: BorderRadius.circular(100.r),
-        //         ),
-        //         alignment: Alignment.center,
-        //         child: Text(
-        //           provider.dragPosition >= provider.maxDrag * 0.8
-        //               ? 'Release to Confirm'.toUpperCase() // almost At the end
-        //               : 'Slide to Place Order'.toUpperCase(), // Initial text
-        //           style: GoogleFonts.publicSans(
-        //             color: AppColors.primaryColor,
-        //             fontWeight: FontWeight.bold,
-        //             fontSize: 15.sp,
-        //           ),
-        //         ),
-        //       ),
-        //       // Slidable Button
-        //       Positioned(
-        //         left: provider.dragPosition,
-        //         top: 79.h / 2 - 30.5.h, // Center vertically
-        //         child: Container(
-        //           width: 61.h,
-        //           height: 61.h,
-        //           margin: EdgeInsets.symmetric(horizontal: 32.w),
-        //           decoration: BoxDecoration(
-        //             color: AppColors.primaryColor,
-        //             borderRadius: BorderRadius.circular(30.r),
-        //             boxShadow: [
-        //               BoxShadow(
-        //                 color: Colors.black.withOpacity(0.2),
-        //                 blurRadius: 5.0,
-        //               ),
-        //             ],
-        //           ),
-        //           child: const Icon(
-        //             Icons.arrow_forward_ios,
-        //             color: AppColors.seaShell,
-        //           ),
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        );
+    });
   }
 }

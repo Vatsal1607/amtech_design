@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
@@ -17,6 +18,7 @@ import '../../core/utils/enums/enums.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
+import '../../services/razorpay/razorpay_service.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
 
@@ -29,10 +31,29 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   @override
+  void dispose() {
+    //* Must clear because razorpay init used on cartpage & subscartpage & recharge page
+    RazorpayService().clear();
+    log('Dispose called (razorpay cart page)');
+    super.dispose();
+  }
+
+  @override
   void initState() {
-    // Wait until the first frame is rendered
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<CartProvider>().getListCart();
+      final cartProvider = Provider.of<CartProvider>(context, listen: false);
+      cartProvider.getListCart();
+      RazorpayService().init(
+        onSuccess: (PaymentSuccessResponse response) {
+          cartProvider.handlePaymentSuccess(context, response);
+        },
+        onError: (PaymentFailureResponse response) {
+          cartProvider.handlePaymentError(context, response);
+        },
+        onExternalWallet: (ExternalWalletResponse response) {
+          cartProvider.handleExternalWallet(context, response);
+        },
+      );
     });
     super.initState();
   }
@@ -300,7 +321,6 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                 ),
                                 Text(
-                                  // '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.parse(provider.totalAmount!)) : '0.00'} ',
                                   '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.tryParse(provider.totalAmount!) ?? 0.0) : '0.00'}',
                                   style: GoogleFonts.publicSans(
                                     fontSize: 12.sp,
@@ -420,50 +440,63 @@ class _CartPageState extends State<CartPage> {
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Consumer<CartProvider>(builder: (context, _, child) {
                   return CustomButton(
-                    onTap: provider.cartItemList == null
-                        ? () {
-                            debugPrint('CART is Empty');
-                          }
-                        : () {
-                            final limitedCartItems = provider.cartItemList
-                                ?.map((item) => item.toLimitedJson())
-                                .toList();
-                            final Map<String, dynamic> orderCreateData = {
-                              "userId": sharedPrefsService
-                                      .getString(SharedPrefsKeys.userId) ??
-                                  '',
-                              "userType": accountType == 'business'
-                                  ? 'BusinessUser'
-                                  : 'User',
-                              "items": limitedCartItems,
-                              "totalAmount": double.parse(
-                                provider.totalAmount.toString(),
-                              ),
-                              "paymentMethod": provider
-                                  .selectedPaymentMethod, // 'UPI', 'Perks'
-                              "deliveryAddress":
-                                  menuProvider.homeMenuResponse?.data?.address,
-                            };
-                            log('OrderCreateData: $orderCreateData');
-                            provider.isConfirmed = false;
-                            showProcessToPayBottomSheeet(
-                              context: context,
-                              scaffoldContext: context,
-                              payableAmount: provider.totalAmount ?? '0',
-                              accountType: accountType,
-                              //! Emit order-create
-                              orderCreateData: orderCreateData,
-                            );
-                          },
-                    height: 55.h,
-                    width: double.infinity,
-                    bgColor: getColorAccountType(
-                      accountType: accountType,
-                      businessColor: AppColors.primaryColor,
-                      personalColor: AppColors.darkGreenGrey,
-                    ),
-                    text: 'proceed to pay ₹ ${provider.totalAmount ?? '0'}',
-                  );
+                      onTap: provider.cartItemList == null
+                          ? () {
+                              debugPrint('CART is Empty');
+                            }
+                          : () {
+                              final limitedCartItems = provider.cartItemList
+                                  ?.map((item) => item.toLimitedJson())
+                                  .toList();
+                              final Map<String, dynamic> orderCreateData = {
+                                "userId": sharedPrefsService
+                                        .getString(SharedPrefsKeys.userId) ??
+                                    '',
+                                "userType": accountType == 'business'
+                                    ? 'BusinessUser'
+                                    : 'User',
+                                "items": limitedCartItems,
+                                "totalAmount": double.parse(
+                                  provider.totalAmount.toString(),
+                                ),
+                                "paymentMethod": provider
+                                    .selectedPaymentMethod, // 'UPI', 'Perks'
+                                "deliveryAddress": menuProvider
+                                    .homeMenuResponse?.data?.address,
+                              };
+                              log('OrderCreateData: $orderCreateData');
+                              // log(provider
+                              //     .getTotalAmountWithGST(double.tryParse(
+                              //             provider.totalAmount ?? '') ??
+                              //         0.0)
+                              //     .toStringAsFixed(2));
+                              provider.isConfirmed = false;
+                              showProcessToPayBottomSheeet(
+                                context: context,
+                                scaffoldContext: context,
+                                // payableAmount: provider.totalAmount ?? '0',
+                                payableAmount: provider
+                                    .getTotalAmountWithGST(double.tryParse(
+                                            provider.totalAmount ?? '') ??
+                                        0.0)
+                                    .toStringAsFixed(2),
+
+                                accountType: accountType,
+                                //! Emit order-create
+                                orderCreateData: orderCreateData,
+                              );
+                            },
+                      height: 55.h,
+                      width: double.infinity,
+                      bgColor: getColorAccountType(
+                        accountType: accountType,
+                        businessColor: AppColors.primaryColor,
+                        personalColor: AppColors.darkGreenGrey,
+                      ),
+                      text:
+                          'proceed to pay ₹ ${provider.getTotalAmountWithGST(double.tryParse(provider.totalAmount ?? '') ?? 0.0)}'
+                      // text: 'proceed to pay ₹ ${provider.totalAmount ?? '0'}',
+                      );
                 }),
               ),
             ),

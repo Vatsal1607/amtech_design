@@ -47,7 +47,7 @@ class GoogleMapProvider extends ChangeNotifier {
         CameraUpdate.newCameraPosition(
           CameraPosition(
             target: location,
-            zoom: 14,
+            zoom: 17,
             bearing: 60,
             tilt: 45,
           ),
@@ -213,7 +213,7 @@ class GoogleMapProvider extends ChangeNotifier {
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: position,
-              zoom: 14,
+              zoom: 17,
             ),
           ),
         );
@@ -303,11 +303,14 @@ class GoogleMapProvider extends ChangeNotifier {
   EditLocationModel? editLocationModel;
   ApiService apiService = ApiService();
 
+  bool? fromSubscart;
+
   //* Edit location API
   Future<void> editLocation({
     required BuildContext context,
     required SavedAddressProvider savedAddressProvider,
     required SocketProvider socketProvider,
+    bool fromSubscart = false,
   }) async {
     isEditLocationLoading = true;
     notifyListeners();
@@ -340,7 +343,13 @@ class GoogleMapProvider extends ChangeNotifier {
         landmarkController.clear();
         //* Emit saved address event
         savedAddressProvider.emitAndListenSavedAddress(socketProvider);
-        Navigator.popUntil(context, ModalRoute.withName(Routes.bottomBarPage));
+        if (fromSubscart) {
+          Navigator.popUntil(
+              context, ModalRoute.withName(Routes.subscriptionCart));
+        } else {
+          Navigator.popUntil(
+              context, ModalRoute.withName(Routes.bottomBarPage));
+        }
         context.read<MenuProvider>().homeMenuApi(); //* API call
         log('editLocation message: ${res.message}');
       } else {

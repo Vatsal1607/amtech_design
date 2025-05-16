@@ -408,25 +408,57 @@ class ApiService {
     return await apiClient.rechargeHistory(userId);
   }
 
-  Future<ApiGlobalModel> subscriptionsPayment(
-      {required String orderId, required String subsId}) async {
-    return await apiClient.subscriptionsPayment(orderId, subsId);
+  //Todo call on razorpay success
+  Future<ApiGlobalModel> subscriptionsPayment({
+    required String subscriptionId,
+    required String razorpayOrderId,
+    required String razorpayPaymentId,
+    required String paymentMethod,
+  }) async {
+    return await apiClient.subscriptionsPayment(
+      subscriptionId,
+      razorpayOrderId,
+      razorpayPaymentId,
+      paymentMethod,
+    );
   }
 
-  Future<ApiGlobalModel> orderPaymentDeduct({required String orderId}) async {
-    return await apiClient.orderPaymentDeduct(orderId);
+  Future<ApiGlobalModel> orderPaymentDeduct({
+    required String orderId,
+    required String paymentMethod,
+    required String paymentStatus,
+  }) async {
+    return await apiClient.orderPaymentDeduct(
+      orderId,
+      paymentMethod,
+      paymentStatus,  
+    );
   }
 
-  Future<ApiGlobalModel> subscriptionsPaymentDeduct(
-      {required String subsId}) async {
-    return await apiClient.subscriptionsPaymentDeduct(subsId);
+  Future<ApiGlobalModel> subscriptionsPaymentDeduct({
+    required String subsId,
+    required String paymentMethod,
+    required bool paymentStatus,
+  }) async {
+    return await apiClient.subscriptionsPaymentDeduct(
+      subsId,
+      paymentMethod,
+      paymentStatus,
+    );
   }
 
   Future<ApiGlobalModel> orderPayment({
     required String orderId,
-    required String orderIdByJustpay,
+    required String razorpayOrderId,
+    required String razorpayPaymentId,
+    required String paymentMethod,
   }) async {
-    return await apiClient.orderPayment(orderId, orderIdByJustpay);
+    return await apiClient.orderPayment(
+      orderId,
+      razorpayOrderId,
+      razorpayPaymentId,
+      paymentMethod,
+    );
   }
 
   Future<SubsListModel> getSubsList(

@@ -4,8 +4,7 @@ class SubscriptionCreateRequestModel {
   final List<SubscriptionItem> items;
   final double price;
   final String units;
-  // final String notes; // replaced with particular item note
-  final String paymentMethod;
+  // final String paymentMethod;
   final bool paymentStatus;
   final DateTime? createdAt;
   final String? deliveryAddress;
@@ -16,8 +15,7 @@ class SubscriptionCreateRequestModel {
     required this.items,
     required this.price,
     required this.units,
-    // required this.notes,
-    required this.paymentMethod,
+    // required this.paymentMethod,
     required this.paymentStatus,
     this.createdAt,
     this.deliveryAddress,
@@ -30,8 +28,7 @@ class SubscriptionCreateRequestModel {
       "items": items.map((item) => item.toJson()).toList(),
       "price": price,
       "units": units,
-      // "notes": notes,
-      "paymentMethod": paymentMethod,
+      // "paymentMethod": paymentMethod,
       "paymentStatus": paymentStatus,
       "createdAt": createdAt?.toIso8601String(),
       "deliveryAddress": deliveryAddress,

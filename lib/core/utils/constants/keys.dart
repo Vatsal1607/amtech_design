@@ -1,5 +1,4 @@
 class RazorPayKeys {
-  // static const String testKey = "rzp_test_gvsZVEPcujnlQ5"; // * Test key
   static const String testKey = "rzp_test_BMJsOprMezADK7"; // * Test key
   static const String liveKey = 'rzp_live_Tfjwk5e3xTb5vA'; // * Live key Amtech
 }

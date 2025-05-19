@@ -14,6 +14,8 @@ import 'package:amtech_design/modules/profile/edit_profile/edit_profile_page.dar
 import 'package:amtech_design/modules/ratings/ratings_page.dart';
 import 'package:amtech_design/modules/splash/splash_page.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_summary/subscription_summary_page.dart';
+import 'package:amtech_design/modules/webview/privacy_policy_page.dart';
+import 'package:amtech_design/modules/webview/t_and_c_page.dart';
 import 'package:amtech_design/modules/welcome/welcome_page.dart';
 import 'package:flutter/material.dart';
 import 'modules/auth/business_register/register_page.dart';
@@ -59,6 +61,8 @@ class Routes {
   static const String subscriptionSummary = '/subscriptionSummary';
   static const String subscriptionCart = '/subscriptionCart';
   static const String subscriptonDetailsPage = '/subscriptonDetailsPage';
+  static const String tAndC = '/TAndCPage';
+  static const String privacyPolicy = '/PrivacyPolicyPage';
 
   static final Map<String, WidgetBuilder> routes = {
     initial: (context) => const SplashPage(),
@@ -90,5 +94,7 @@ class Routes {
     subscriptionSummary: (context) => const SubscriptionSummaryPage(),
     subscriptionCart: (context) => const SubscriptionCartPage(),
     subscriptonDetailsPage: (context) => const SubscriptonDetailsPage(),
+    tAndC: (context) => const TAndCPage(),
+    privacyPolicy: (context) => const PrivacyPolicyPage(),
   };
 }

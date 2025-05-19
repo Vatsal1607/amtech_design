@@ -5,8 +5,10 @@ import 'package:amtech_design/models/subscription_create_request_model.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:amtech_design/services/network/api_service.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../models/get_all_units_model.dart';
 import '../../../models/subscription_modify_request_model.dart' as modify;
 import '../../../models/timeslot_day_model.dart';
 import '../../../routes.dart';
@@ -17,14 +19,43 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   String? _selectedValue;
   bool _isDropdownOpen = false;
 
-  final List<Map<String, String>> items = [
-    {"label": "6 Units | ₹ 799", "value": "6", "price": "799"},
-    {"label": "25 Units | ₹ 2199", "value": "25", "price": "2199"},
-    {"label": "35 Units | ₹ 3499", "value": "35", "price": "3499"},
-    {"label": "40 Units | ₹ 4999", "value": "40", "price": "4999"},
-  ];
+  // final List<Map<String, String>> items = [
+  //   {"label": "6 Units | ₹ 799", "value": "6", "price": "799"},
+  //   {"label": "25 Units | ₹ 2199", "value": "25", "price": "2199"},
+  //   {"label": "35 Units | ₹ 3499", "value": "35", "price": "3499"},
+  //   {"label": "40 Units | ₹ 4999", "value": "40", "price": "4999"},
+  // ];
+  List<UnitItem> unitItems = [];
 
-  String? get selectedValue => _selectedValue ?? items.first["value"];
+  bool isLoadingUnits = false;
+
+  Future getAllUnits() async {
+    isLoadingUnits = true;
+    notifyListeners();
+    try {
+      final res = await apiService.getAllUnits();
+      if (res.success == true && res.data != null) {
+        //* Assign data to the item
+        unitItems = res.data ?? [];
+        log("Units loaded: ${unitItems.length}");
+      } else {
+        log('${res.message}');
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          log(data['message']);
+        }
+      }
+      log("Error getAllUnits: ${e.toString()}");
+    } finally {
+      isLoadingUnits = false;
+      notifyListeners();
+    }
+  }
+
+  String? get selectedValue => _selectedValue ?? unitItems.first.value;
   bool get isDropdownOpen => _isDropdownOpen;
 
   String selectedUnits = '6';
@@ -32,16 +63,23 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
 
   void setSelectedValue(String? newValue) {
     _selectedValue = newValue;
-    final selectedItem = items.firstWhere(
-      (item) => item['value'] == newValue,
-      orElse: () => {"value": "0", "price": "0.0"},
+    final selectedItem = unitItems.firstWhere(
+      (item) => item.value == newValue,
+      orElse: () => UnitItem(label: '', value: '0', price: '0.0'),
     );
-    selectedUnits = selectedItem['value'] ?? '0';
-    if (selectedItem.containsKey('price')) {
-      selectedPrice = double.tryParse(selectedItem['price']!) ?? 0.0;
+    selectedUnits = selectedItem.value ?? '0';
+    if (selectedItem.price != null && selectedItem.price!.isNotEmpty) {
+      selectedPrice = double.tryParse(selectedItem.price ?? '0') ?? 0.0;
     } else {
       selectedPrice = 0.0;
     }
+
+    //OLD
+    // if (selectedItem.containsKey('price')) {
+    //   selectedPrice = double.tryParse(selectedItem.price!) ?? 0.0;
+    // } else {
+    //   selectedPrice = 0.0;
+    // }
     log('selectedUnits: $selectedUnits, selectedPrice: $selectedPrice');
     notifyListeners();
   }
@@ -339,7 +377,8 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   }
 
   void clearItems() {
-    items.clear();
+    // items.clear();
+    unitItems.clear();
     notifyListeners();
   }
 
@@ -384,7 +423,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         items: subsItems,
         price: selectedPrice,
         units: selectedUnits,
-        // paymentMethod: 'paymentMethod',
         paymentStatus: false,
         createdAt: createdAtDate,
         deliveryAddress: deliveryAddress,

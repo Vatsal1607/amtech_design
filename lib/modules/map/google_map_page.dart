@@ -71,12 +71,6 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
         final mapProvider =
             Provider.of<GoogleMapProvider>(context, listen: false);
         mapProvider.fromSubscart = args?['fromSubscart'];
-        //   editAddressLat = args['editAddressLat'] != null
-        //       ? double.tryParse(args['editAddressLat'].toString())
-        //       : null;
-        //   editAddressLong = args['editAddressLong'] != null
-        //       ? double.tryParse(args['editAddressLong'].toString())
-        //       : null;
       }
       final googleMapProvider =
           Provider.of<GoogleMapProvider>(context, listen: false);

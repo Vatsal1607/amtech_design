@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import '../../../core/utils/app_globals.dart';
 import '../../../core/utils/constants/keys.dart';
+import '../../../custom_widgets/dialog/subs_success_dialog.dart';
 import '../../../models/api_global_model.dart';
 import '../../../models/subscription_summary_model.dart';
 import '../../../services/local/shared_preferences_service.dart';
@@ -34,7 +36,6 @@ class SubscriptionCartProvider extends ChangeNotifier {
           return (sum ?? 0.0) + itemTotal;
         }) ??
         0.0;
-    // return basePrice + addOnTotal;
     num total = basePrice + addOnTotal;
     return double.parse(total.toStringAsFixed(2));
   }
@@ -50,6 +51,8 @@ class SubscriptionCartProvider extends ChangeNotifier {
   double getTotalWithGST(num totalAmount) {
     return double.parse((totalAmount * 1.12).toStringAsFixed(2));
   }
+
+  num km = 0;
 
   ApiService apiService = ApiService();
   bool isLoading = false;
@@ -143,14 +146,25 @@ class SubscriptionCartProvider extends ChangeNotifier {
     BuildContext context,
     String selectedPaymentMethod,
   ) async {
+    final createSubsProvider = context.read<CreateSubscriptionPlanProvider>();
     try {
       final response = await apiService.subscriptionsPaymentDeduct(
-        subsId: context.read<CreateSubscriptionPlanProvider>().subsId ?? '',
+        // subsId: context.read<CreateSubscriptionPlanProvider>().subsId ?? '',
+        subsId: createSubsProvider.subsId ?? '',
         paymentMethod: selectedPaymentMethod,
         paymentStatus: true,
       );
       log('subscriptionsPaymentDeduct: $response');
       if (response.success == true) {
+        //* clear Subs list & selected meal & daywiseSelectedItem
+        createSubsProvider.subsItems.clear();
+        createSubsProvider.selectedMeals = {};
+        createSubsProvider.daywiseSelectedItem = {};
+        //* Show Subs Success dialog
+        final dialogContext = navigatorKey.currentContext;
+        if (dialogContext != null) {
+          showSubscriptionSuccessDialog(dialogContext);
+        }
         log('SUCCESS of subscriptionsPaymentDeduct');
       }
       return response;
@@ -190,6 +204,7 @@ class SubscriptionCartProvider extends ChangeNotifier {
     required String paymentMethod,
     required BuildContext context,
   }) async {
+    final createSubsProvider = context.read<CreateSubscriptionPlanProvider>();
     try {
       final response = await apiService.subscriptionsPayment(
         subscriptionId: subscriptionId,
@@ -200,10 +215,18 @@ class SubscriptionCartProvider extends ChangeNotifier {
       log('rechargeHandleJuspayResponse: $response');
       log('response.status: ${response.success}');
       if (response.success == true) {
+        //* clear Subs list & selected meal & daywiseSelectedItem
+        createSubsProvider.subsItems.clear();
+        createSubsProvider.selectedMeals = {};
+        createSubsProvider.daywiseSelectedItem = {};
         Navigator.popUntil(context, (route) {
-          // Keep popping until the condition is met
           return route.settings.name == Routes.bottomBarPage;
         });
+        //* Show Subs Success dialog
+        final dialogContext = navigatorKey.currentContext;
+        if (dialogContext != null) {
+          showSubscriptionSuccessDialog(dialogContext);
+        }
         log('SUCCESS of handleJuspayResponse');
       }
       return response;

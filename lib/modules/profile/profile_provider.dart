@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/dialog/custom_info_dialog.dart';
+import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/app_globals.dart';
 import '../../custom_widgets/snackbar.dart';
@@ -39,6 +41,8 @@ class ProfileProvider extends ChangeNotifier {
       final ApiGlobalModel response = await apiService.logout(body: body);
       if (response.success == true) {
         sharedPrefsService.setBool(SharedPrefsKeys.isLoggedIn, false);
+        sharedPrefsService.clear();
+        context?.read<SocketProvider>().disconnect();
         if (context != null) {
           if (isTokenExpired) {
             if (navigatorKey.currentContext != null) {

@@ -24,26 +24,26 @@ class DividerLabel extends StatelessWidget {
             indent: 20.w,
             thickness: 2,
             color: isHealthFirst
-                ? AppColors.deepGreen.withOpacity(.25)
+                ? AppColors.deepGreen.withOpacity(.3)
                 : getColorAccountType(
                     accountType: accountType,
-                    businessColor: AppColors.primaryColor.withOpacity(0.25),
-                    personalColor: AppColors.darkGreenGrey.withOpacity(0.25),
+                    businessColor: AppColors.primaryColor.withOpacity(0.3),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(0.3),
                   ),
           ),
         ),
-        const SizedBox(width: 7),
+        SizedBox(width: 7.w),
         Text(
           label.toUpperCase(),
           style: GoogleFonts.publicSans(
-            fontSize: 10.0,
+            fontSize: 13.sp,
             fontWeight: FontWeight.bold,
             color: isHealthFirst
-                ? AppColors.deepGreen.withOpacity(.25)
+                ? AppColors.deepGreen.withOpacity(.5)
                 : getColorAccountType(
                     accountType: accountType,
-                    businessColor: AppColors.primaryColor.withOpacity(0.25),
-                    personalColor: AppColors.darkGreenGrey.withOpacity(0.25),
+                    businessColor: AppColors.primaryColor.withOpacity(0.5),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(0.5),
                   ),
           ),
         ),
@@ -53,11 +53,11 @@ class DividerLabel extends StatelessWidget {
             thickness: 2,
             endIndent: 20.w,
             color: isHealthFirst
-                ? AppColors.deepGreen.withOpacity(.25)
+                ? AppColors.deepGreen.withOpacity(.3)
                 : getColorAccountType(
                     accountType: accountType,
-                    businessColor: AppColors.primaryColor.withOpacity(0.25),
-                    personalColor: AppColors.darkGreenGrey.withOpacity(0.25),
+                    businessColor: AppColors.primaryColor.withOpacity(0.3),
+                    personalColor: AppColors.darkGreenGrey.withOpacity(0.3),
                   ),
           ),
         ),

@@ -31,7 +31,7 @@ class SharedPreferencesService {
     await _prefs?.remove(key);
   }
 
-  // Clear all data //* clear local data method on logout
+  //* clear local data method on logout
   Future<void> clear() async {
     await _prefs?.clear();
   }

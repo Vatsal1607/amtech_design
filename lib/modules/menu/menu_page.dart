@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/custom_widgets/dialog/subs_success_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
@@ -77,10 +78,6 @@ class _MenuPageState extends State<MenuPage> {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
     log('selected Addresstype: ${provider.selectedAddressType}');
-
-    //! Note: variable is not used but by initialize this socket connect
-    // final socketProvider = Provider.of<SocketProvider>(context, listen: false);
-
     //* Show cart snackbar
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   provider.updateSnackBarVisibility(true);

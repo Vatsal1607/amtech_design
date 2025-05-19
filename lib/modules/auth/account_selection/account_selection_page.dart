@@ -1,5 +1,6 @@
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -96,9 +97,13 @@ class AccountSelectionPage extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: 'T&C ',
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushNamed(context, Routes.tAndC);
+                            },
                           style: GoogleFonts.publicSans(
                             fontWeight: FontWeight.bold,
-                            fontSize: 10.sp,
+                            fontSize: 12.sp,
                           ),
                         ),
                         TextSpan(
@@ -109,9 +114,14 @@ class AccountSelectionPage extends StatelessWidget {
                         ),
                         TextSpan(
                           text: 'PRIVACY POLICY.',
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushNamed(
+                                  context, Routes.privacyPolicy);
+                            },
                           style: GoogleFonts.publicSans(
                             fontWeight: FontWeight.bold,
-                            fontSize: 10.sp,
+                            fontSize: 12.sp,
                           ),
                         ),
                       ],

@@ -31,43 +31,62 @@ class SavedAddressPage extends StatefulWidget {
 class _SavedAddressPageState extends State<SavedAddressPage> {
   TextEditingController searchController = TextEditingController();
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final socketProvider =
-          Provider.of<SocketProvider>(context, listen: false);
-      final provider =
-          Provider.of<SavedAddressProvider>(context, listen: false);
-      if (!socketProvider.isConnected) {
-        socketProvider.connectToSocket();
-      }
-      // Remove existing listener if any
-      // socketProvider.offEvent(SocketEvents.searchSavedLocationListen);
-      // Emit and listen again
-      provider.emitAndListenSavedAddress(socketProvider);
+  // @override
+  // void initState() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  // final socketProvider =
+  //     Provider.of<SocketProvider>(context, listen: false);
+  // final provider =
+  //     Provider.of<SavedAddressProvider>(context, listen: false);
+  // if (!socketProvider.isConnected) {
+  //   socketProvider.connectToSocket();
+  // }
 
-      // final socketProvider =
-      //     Provider.of<SocketProvider>(context, listen: false);
-      // final provider =
-      //     Provider.of<SavedAddressProvider>(context, listen: false);
-      // if (!socketProvider.isConnected) {
-      //   socketProvider.connectToSocket();
-      // }
-      // provider.emitAndListenSavedAddress(socketProvider);
-      //
-      // final googleMapProvider =
-      //     Provider.of<GoogleMapProvider>(context, listen: false);
-      // Future.delayed(const Duration(milliseconds: 200), () {
-      // provider.emitAndListenSavedAddress(socketProvider);
-      // provider.emitAndListenNearBy( //* Emit nearby
-      //   socketProvider: socketProvider,
-      //   lat: googleMapProvider.currentLocation?.latitude,
-      //   long: googleMapProvider.currentLocation?.longitude,
-      // );
-      // });
-      // checkLocationPermissionAndEmitEvent();
+  // provider.emitAndListenSavedAddress(socketProvider);
+  //*
+  // final socketProvider =
+  //     Provider.of<SocketProvider>(context, listen: false);
+  // final provider =
+  //     Provider.of<SavedAddressProvider>(context, listen: false);
+  // if (!socketProvider.isConnected) {
+  //   socketProvider.connectToSocket();
+  // }
+  // provider.emitAndListenSavedAddress(socketProvider);
+  //
+  // final googleMapProvider =
+  //     Provider.of<GoogleMapProvider>(context, listen: false);
+  // Future.delayed(const Duration(milliseconds: 200), () {
+  // provider.emitAndListenSavedAddress(socketProvider);
+  // provider.emitAndListenNearBy( //* Emit nearby
+  //   socketProvider: socketProvider,
+  //   lat: googleMapProvider.currentLocation?.latitude,
+  //   long: googleMapProvider.currentLocation?.longitude,
+  // );
+  // });
+  // checkLocationPermissionAndEmitEvent();
+  //   });
+  //   super.initState();
+  // }
+
+  bool _isInitialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    log('didChangeDependencies called (Saved address)');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_isInitialized) {
+        final socketProvider =
+            Provider.of<SocketProvider>(context, listen: false);
+        final provider =
+            Provider.of<SavedAddressProvider>(context, listen: false);
+        if (!socketProvider.isConnected) {
+          socketProvider.connectToSocket();
+        }
+        provider.emitAndListenSavedAddress(socketProvider);
+        _isInitialized = true;
+      }
     });
-    super.initState();
   }
 
   //* check location permission & emit event:

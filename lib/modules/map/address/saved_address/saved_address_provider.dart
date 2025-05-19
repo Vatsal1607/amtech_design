@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:developer';
+import 'dart:io';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/saved_address_model.dart';
 import 'package:flutter/material.dart';
@@ -17,65 +18,7 @@ class SavedAddressProvider extends ChangeNotifier {
   bool isFirstCall = true;
   List<SavedAddressList> savedAddressList = []; // Not nullable
 
-  Timer? _periodicEmitter;
-
   //* Emit & Listen Saved Address
-  // Future<void> emitAndListenSavedAddress(SocketProvider socketProvider) async {
-  //   log('emitAndListenSavedAddress called');
-  //   isLoadingSavedAddress = true;
-  //   notifyListeners();
-  //   final userId = sharedPrefsService.getString(SharedPrefsKeys.userId);
-  //   final lat = sharedPrefsService.getString(SharedPrefsKeys.currentLat);
-  //   final long = sharedPrefsService.getString(SharedPrefsKeys.currentLong);
-  //   final accountType =
-  //       sharedPrefsService.getString(SharedPrefsKeys.accountType);
-
-  //   Map<String, dynamic> data = {
-  //     "userId": userId,
-  //   };
-  //   if (isFirstCall) {
-  //     data["latitude"] = lat;
-  //     data["longitude"] = long;
-  //     data["isFirst"] = true;
-  //     data["role"] = accountType == 'business' ? 0 : 1;
-  //     data["deviceId"] = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
-  //     data["socketId"] = socketProvider.socket.id;
-  //     isFirstCall = false;
-  //   }
-
-  //   /// Remove old listener to avoid duplication
-  //   socketProvider.offEvent(SocketEvents.searchSavedLocationListen);
-  //   // Cancel previous emitter if already running
-  //   _periodicEmitter?.cancel();
-  //   _periodicEmitter = Timer.periodic(const Duration(seconds: 1), (_) {
-  //     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
-  //   });
-  //   // Optional retry
-  //   Future.delayed(const Duration(seconds: 3), () {
-  //     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
-  //   });
-
-  //   socketProvider.listenToEvent(SocketEvents.searchSavedLocationListen,
-  //       (data) {
-  //     log('Raw data socket SavedAddress: $data');
-  //     try {
-  //       if (data is Map<String, dynamic>) {
-  //         SavedAddressModel savedAddress = SavedAddressModel.fromJson(data);
-  //         savedAddressList = savedAddress.data ?? [];
-  //       } else {
-  //         log('Unexpected data format');
-  //         // savedAddressList = [];
-  //       }
-  //     } catch (e) {
-  //       log('Error parsing saved address: $e');
-  //       // savedAddressList = [];
-  //     } finally {
-  //       isLoadingSavedAddress = false;
-  //       notifyListeners();
-  //     }
-  //   });
-  // }
-  //OLD
   void emitAndListenSavedAddress(SocketProvider socketProvider) async {
     log('emitAndListenSavedAddress called');
     log('isSocketConnected: ${socketProvider.isConnected}');
@@ -88,6 +31,9 @@ class SavedAddressProvider extends ChangeNotifier {
         sharedPrefsService.getString(SharedPrefsKeys.accountType);
     Map<String, dynamic> data = {
       "userId": userId,
+      "role": accountType == 'business' ? 0 : 1,
+      "deviceId": sharedPrefsService.getString(SharedPrefsKeys.deviceId),
+      "socketId": socketProvider.socket.id,
     };
     if (isFirstCall) {
       data["latitude"] = lat;
@@ -98,6 +44,7 @@ class SavedAddressProvider extends ChangeNotifier {
       data["socketId"] = socketProvider.socket.id;
       isFirstCall = false; //* Set to false after first call
     }
+    log('request Data: $data');
     socketProvider.emitEvent(SocketEvents.saveAddressEventName, data);
     socketProvider.listenToEvent(SocketEvents.searchSavedLocationListen,
         (data) {
@@ -118,8 +65,6 @@ class SavedAddressProvider extends ChangeNotifier {
         isLoadingSavedAddress = false;
         notifyListeners();
       }
-      isLoadingSavedAddress = false;
-      notifyListeners();
     });
   }
 

@@ -54,4 +54,5 @@ class ApiEndpoints {
   static const String notificationHistory = 'notifications/users/history';
   static const String unreadNotificationCount = 'unread';
   static const String subsDayDetails = 'subscriptions/day/details';
+  static const String getAllUnits = 'getAllUnits';
 }

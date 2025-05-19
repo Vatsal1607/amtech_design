@@ -21,6 +21,7 @@ import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
+import '../../models/get_all_units_model.dart';
 import '../../models/get_banner_model.dart';
 import '../../models/get_list_access_model.dart';
 import '../../models/get_payment_response_model.dart';
@@ -408,7 +409,6 @@ class ApiService {
     return await apiClient.rechargeHistory(userId);
   }
 
-  //Todo call on razorpay success
   Future<ApiGlobalModel> subscriptionsPayment({
     required String subscriptionId,
     required String razorpayOrderId,
@@ -431,7 +431,7 @@ class ApiService {
     return await apiClient.orderPaymentDeduct(
       orderId,
       paymentMethod,
-      paymentStatus,  
+      paymentStatus,
     );
   }
 
@@ -481,5 +481,9 @@ class ApiService {
     required String day,
   }) async {
     return await apiClient.subsDayDetails(subsId, day);
+  }
+
+  Future<GetAllUnitsModel> getAllUnits() async {
+    return await apiClient.getAllUnits();
   }
 }

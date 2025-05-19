@@ -480,6 +480,10 @@ class CartProvider extends ChangeNotifier {
     return double.parse((totalAmount * 1.12).toStringAsFixed(2));
   }
 
+  num getTotalAmountWithGSTWithRound(double totalAmount) {
+    return (totalAmount * 1.12).round();
+  }
+
   //* clearCart
   Future<void> clearCart() async {
     // isLoading = true;

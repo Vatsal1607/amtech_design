@@ -20,6 +20,7 @@ import '../../models/edit_location_model.dart';
 import '../../models/edit_location_request_model.dart';
 import '../../models/edit_profile_model.dart';
 import '../../models/favorite_add_model.dart';
+import '../../models/get_all_units_model.dart';
 import '../../models/get_banner_model.dart';
 import '../../models/get_business_details_model.dart';
 import '../../models/get_payment_response_model.dart';
@@ -335,7 +336,7 @@ abstract class ApiClient {
   Future<ApiGlobalModel> subscriptionsPaymentDeduct(
     @Path("subs_id") String subsId,
     @Field("paymentMethod") String paymentMethod,
-    // Bool for Subs order.
+    //* Bool for Subs order.
     @Field("paymentStatus") bool paymentStatus,
   );
 
@@ -371,4 +372,7 @@ abstract class ApiClient {
     @Path("subsId") String subsId,
     @Query("day") String day,
   );
+
+  @GET(ApiEndpoints.getAllUnits)
+  Future<GetAllUnitsModel> getAllUnits();
 }

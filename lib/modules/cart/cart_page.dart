@@ -456,25 +456,22 @@ class _CartPageState extends State<CartPage> {
                                     ? 'BusinessUser'
                                     : 'User',
                                 "items": limitedCartItems,
-                                "totalAmount": double.parse(
-                                  provider.totalAmount.toString(),
-                                ),
+                                "totalAmount": provider.totalAmount != null
+                                    ? provider.getTotalAmountWithGSTWithRound(
+                                        double.tryParse(
+                                                provider.totalAmount!) ??
+                                            0.0)
+                                    : 0,
                                 "paymentMethod": provider
                                     .selectedPaymentMethod, // 'UPI', 'Perks'
                                 "deliveryAddress": menuProvider
                                     .homeMenuResponse?.data?.address,
                               };
                               log('OrderCreateData: $orderCreateData');
-                              // log(provider
-                              //     .getTotalAmountWithGST(double.tryParse(
-                              //             provider.totalAmount ?? '') ??
-                              //         0.0)
-                              //     .toStringAsFixed(2));
                               provider.isConfirmed = false;
                               showProcessToPayBottomSheeet(
                                 context: context,
                                 scaffoldContext: context,
-                                // payableAmount: provider.totalAmount ?? '0',
                                 payableAmount: provider
                                     .getTotalAmountWithGST(double.tryParse(
                                             provider.totalAmount ?? '') ??

@@ -110,34 +110,10 @@ class SocketProvider with ChangeNotifier {
       });
     }
   }
-  // void emitEvent(String event, dynamic data) {
-  //   if (_socket.connected) {
-  //     _socket.emit(event, data);
-  //   } else {
-  //     log("Socket not connected, trying to reconnect...");
-  //     _socket
-  //         .connect(); // Initiates reconnection manually (even if autoConnect is true)
-  //// Once connected, emit the event
-  //     _socket.once('connect', (_) {
-  //       log("Reconnected. Emitting event: $event");
-  //       _socket.emit(event, data);
-  //     });
-  //   }
-  // }
 
   void listenToEvent(String event, Function(dynamic) callback) {
     _socket?.on(event, callback);
   }
-  // void listenToEvent(String event, Function(dynamic) callback) {
-  //   _socket.on(event, callback);
-  // }
-
-  // @override
-  // void dispose() {
-  //   disconnect();
-  //   log('SocketProvider Dispose called');
-  //   super.dispose();
-  // }
 
   void disconnect() {
     _socket?.dispose();

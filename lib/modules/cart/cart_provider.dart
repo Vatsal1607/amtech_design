@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/list_cart_model.dart';
+import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
 import 'package:amtech_design/modules/recharge/recharge_provider.dart';
 import 'package:amtech_design/modules/subscriptions/subscription_cart/subscription_cart_provider.dart';
@@ -10,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/enums/enums.dart';
+import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../models/home_menu_model.dart';
 import '../../routes.dart';
@@ -383,6 +385,44 @@ class CartProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+
+  //* Show cart snackbar
+  void showCartSnackbarIfNeeded(BuildContext context, String accountType) {
+    final cartItems = cartItemList ?? [];
+    // Calculate total quantity of items in the cart
+    final int totalItems = cartItems.fold<int>(
+      0,
+      (sum, item) => sum + (item.quantity ?? 0),
+    );
+    if (totalItems == 0) return; // Don't show snackbar if cart is empty
+    // Get clean item names
+    final List<String> itemNames = cartItems
+        .map((item) => item.itemName?.trim() ?? '')
+        .where((name) => name.isNotEmpty)
+        .toList();
+    final String cartSnackbarItemText = itemNames.join(', ');
+    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    // Ensure Snackbar shows only after build is complete
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      menuProvider.updateSnackBarVisibility(true);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+            cartSnackbarWidget(
+              accountType: accountType,
+              // message: '$totalItems item(s) added',
+              message:
+                  '$totalItems ${totalItems == 1 ? 'item' : 'items'} added',
+              items: cartSnackbarItemText,
+              context: context,
+            ),
+          )
+          .closed
+          .then((_) {
+        menuProvider.updateSnackBarVisibility(false);
+        log('Snackbar closed');
+      });
+    });
   }
 
   String? totalAmount;

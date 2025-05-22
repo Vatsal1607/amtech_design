@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,7 +5,6 @@ import 'package:provider/provider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
-import '../../../routes.dart';
 import '../menu_provider.dart';
 
 class BannerView extends StatelessWidget {
@@ -19,7 +16,6 @@ class BannerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('${context.read<MenuProvider>().banners.length}');
     return Column(
       children: [
         SizedBox(
@@ -40,7 +36,6 @@ class BannerView extends StatelessWidget {
                   onTap: () {
                     String selectedBannerId =
                         provider.bannersData[index].sId ?? "Unknown ID";
-                    log("Tapped banner ID: $selectedBannerId");
                     //* API call
                     provider.countBanner(bannerId: selectedBannerId);
                   },

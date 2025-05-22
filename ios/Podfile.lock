@@ -78,15 +78,8 @@ PODS:
   - GoogleUtilities/UserDefaults (8.0.2):
     - GoogleUtilities/Logger
     - GoogleUtilities/Privacy
-  - HyperSDK (2.2.2):
-    - JuspaySafeBrowser (= 0.1.84)
-    - Salvator (= 1.0.6)
-  - hypersdkflutter (4.0.27):
-    - Flutter
-    - HyperSDK (= 2.2.2)
   - image_picker_ios (0.0.1):
     - Flutter
-  - JuspaySafeBrowser (0.1.84)
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -102,7 +95,6 @@ PODS:
   - razorpay_flutter (1.1.10):
     - Flutter
     - razorpay-pod
-  - Salvator (1.0.6)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -122,7 +114,6 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
-  - hypersdkflutter (from `.symlinks/plugins/hypersdkflutter/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -142,12 +133,9 @@ SPEC REPOS:
     - GoogleDataTransport
     - GoogleMaps
     - GoogleUtilities
-    - HyperSDK
-    - JuspaySafeBrowser
     - nanopb
     - PromisesObjC
     - razorpay-pod
-    - Salvator
 
 EXTERNAL SOURCES:
   device_info_plus:
@@ -166,8 +154,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter_ios:
     :path: ".symlinks/plugins/google_maps_flutter_ios/ios"
-  hypersdkflutter:
-    :path: ".symlinks/plugins/hypersdkflutter/ios"
   image_picker_ios:
     :path: ".symlinks/plugins/image_picker_ios/ios"
   path_provider_foundation:
@@ -201,17 +187,13 @@ SPEC CHECKSUMS:
   GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleMaps: 8939898920281c649150e0af74aa291c60f2e77d
   GoogleUtilities: 26a3abef001b6533cf678d3eb38fd3f614b7872d
-  HyperSDK: 653f618de09696305b9b705555019ecbbacc10b0
-  hypersdkflutter: b86350dbcc088f737634f6177c36da39bb701325
   image_picker_ios: 7fe1ff8e34c1790d6fff70a32484959f563a928a
-  JuspaySafeBrowser: caa2c1a54405f30210ba9d324cf79224e719134d
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   razorpay-pod: cb5b5439697bdda9c57d68a92b3e5b0ce1d2f2f3
   razorpay_flutter: 0e98e4fcaae27ad50e011d85f66d85e0a008754a
-  Salvator: 1de69620ac17123ba3491e27a9a8b35bc5b97eaa
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   webview_flutter_wkwebview: 44d4dee7d7056d5ad185d25b38404436d56c547c

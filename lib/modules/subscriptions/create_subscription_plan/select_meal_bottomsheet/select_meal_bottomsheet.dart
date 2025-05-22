@@ -77,11 +77,6 @@ void showSelectMealBottomSheeet({
                                   itemLength: category.menuItems?.length ?? 0,
                                   menuItems: category.menuItems,
                                   menuProvider: menuProvider,
-                                  itemName: category.menuItems?.isNotEmpty ==
-                                          true
-                                      ? category.menuItems!.first.itemName ??
-                                          'No Item'
-                                      : 'No Items',
                                   provider: provider,
                                 ))
                             .toList(),

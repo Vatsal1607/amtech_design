@@ -167,6 +167,8 @@ class MenuProvider extends ChangeNotifier {
   }
 
   double viewOrderBottomPadding = 28;
+
+  //* Menu page condition where snackbar is visible then Buttons will add bottom padding for visibility over snackbar
   bool isSnackBarVisible = false;
   updateSnackBarVisibility(value) {
     isSnackBarVisible = value;
@@ -372,10 +374,6 @@ class MenuProvider extends ChangeNotifier {
     "REGULAR": false,
   };
   bool getIsLoadingStates(String size) => loadingStates[size] ?? false;
-  // void setLoading(String size, bool isLoading) {
-  //   loadingStates[size] = isLoading;
-  //   notifyListeners();
-  // }
 
   int cartSnackbarTotalItems = 0;
   String cartSnackbarItemText = '';
@@ -409,7 +407,6 @@ class MenuProvider extends ChangeNotifier {
     } else {
       isLoadingAddToCart = true;
     }
-    // setLoading(size, true); // sizewise loader
     notifyListeners();
     try {
       final requestBody = AddToCartRequestModel(
@@ -447,19 +444,6 @@ class MenuProvider extends ChangeNotifier {
             : itemNames.join(", ");
         log('cartSnackbarItemText: $cartSnackbarTotalItems');
         log('cartSnackbarItemText: $cartSnackbarItemText');
-
-        //* Show Snackbar here using the GlobalKey
-        // if (context != null) {
-        //   scaffoldMessengerKey.currentState?.showSnackBar(
-        //     cartSnackbarWidget(
-        //       message: '$cartSnackbarTotalItems Items added',
-        //       items: cartSnackbarItemText,
-        //       context: context,
-        //     ),
-        //   );
-        // } else {
-        //   debugPrint('context is null');
-        // }
       } else {
         log('${res.message}');
         callback(false); // Notify failure
@@ -473,8 +457,6 @@ class MenuProvider extends ChangeNotifier {
       } else {
         isLoadingAddToCart = false;
       }
-
-      // setLoading(size, false); // sizewise loader
       notifyListeners();
     }
   }

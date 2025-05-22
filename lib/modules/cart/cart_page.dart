@@ -54,6 +54,13 @@ class _CartPageState extends State<CartPage> {
           cartProvider.handleExternalWallet(context, response);
         },
       );
+      Future.delayed(
+        const Duration(milliseconds: 300),
+        () {
+          //* clear cart snackbar while on cart page
+          ScaffoldMessenger.of(context).clearSnackBars();
+        },
+      );
     });
     super.initState();
   }
@@ -64,6 +71,10 @@ class _CartPageState extends State<CartPage> {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
+    // Future.delayed(const Duration(milliseconds: 300), () {
+    //   ScaffoldMessenger.of(context)
+    //       .clearSnackBars(); //* clear cart snackbar while on cart page
+    // });
 
     return Scaffold(
       backgroundColor: getColorAccountType(

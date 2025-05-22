@@ -133,51 +133,8 @@ class InitialContentSliver extends StatelessWidget {
               ],
             ),
           ),
-          // child: LinearProgressIndicator(
-          //   value: 0.2,
-          //   backgroundColor: AppColors.red.withOpacity(0.5),
-          //   valueColor: AlwaysStoppedAnimation<Color>(
-          //     AppColors.lightGreen.withOpacity(0.5),
-          //   ),
-          // ),
         ),
         SizedBox(height: 10.h),
-
-        /// Credit Slider widget old
-        // Consumer<MenuProvider>(
-        //   builder:
-        //       (BuildContext context, provider, Widget? child) =>
-        //           GradientSlider(
-        //     thumbAsset: '',
-        //     thumbHeight: 0,
-        //     thumbWidth: 0,
-        //     trackHeight: 3,
-        //     trackBorderColor: Colors.transparent,
-        //     activeTrackGradient: const LinearGradient(
-        //       colors: [
-        //         AppColors.lightGreen,
-        //         AppColors.lightGreen,
-        //       ],
-        //     ),
-        //     inactiveTrackGradient: LinearGradient(
-        //       colors: [
-        //         AppColors.lightGreen.withOpacity(0.5),
-        //         AppColors.red.withOpacity(0.5),
-        //       ],
-        //     ),
-        //     inactiveTrackColor: Colors.transparent,
-        //     slider: Slider(
-        //       value: provider.sliderCreditValue,
-        //       min: 1,
-        //       max: 2000,
-        //       thumbColor: Colors.transparent,
-        //       onChanged: provider.onChangeCreditSlider,
-        //     ),
-        //   ),
-        // ),
-
-        // SizedBox(height: 18.h),
-
         //* Slider details widget
         ProgressDetailsWidget(
           accountType: accountType,

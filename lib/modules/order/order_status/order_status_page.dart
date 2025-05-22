@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
@@ -34,7 +32,6 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
       final args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       String orderId = args?['orderId'] ?? '';
-      log('orderID is: $orderId');
       provider.setIsBack(args?['isBack'] ?? false);
       provider.emitAndListenOrderStatus(socketProvider, orderId);
     });

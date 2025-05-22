@@ -39,14 +39,6 @@ class OrderStatusProvider extends ChangeNotifier {
           orderStatusEnum =
               OrderStatusExtension.fromString(statusFromApi ?? '');
         }
-        log('orderStatusEnum.value: ${orderStatusEnum.value}');
-        // You can now use `orderResponse.items` as a strongly typed list.
-        // if (orderResponse?.items != null) {
-        //   for (var item in orderResponse!.items) {
-        //     log("Item: ${item.itemName}, Quantity: ${item.quantity}");
-        //   }
-        // }
-
         //* Switch case handle on order status
         switch (orderStatusEnum) {
           case OrderStatus.placed:

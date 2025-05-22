@@ -10,7 +10,6 @@ import '../../../../core/utils/enums/enums.dart';
 import '../../../../core/utils/strings.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../routes.dart';
-import '../../order_status/order_status_provider.dart';
 import '../../order_status/widgets/order_status_icon_widget.dart';
 import '../../order_status/widgets/progress_line_widget.dart';
 

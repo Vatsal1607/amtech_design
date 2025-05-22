@@ -1,6 +1,7 @@
 // Define buildscript configurations
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    // ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.8.10'
     // Add the clientId and hyperSDKVersion ext property
     ext {
         clientId = "hdfcmaster"

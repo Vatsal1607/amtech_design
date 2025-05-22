@@ -208,48 +208,6 @@ class BottomsheetContent extends StatelessWidget {
                     ),
                   ],
                 )
-              // * Ratings
-              // Row(
-              //   children: [
-              //     SvgIcon(
-              //       icon: IconStrings.ratingsPerson,
-              //       color: getColorAccountType(
-              //         accountType: accountType,
-              //         businessColor: AppColors.disabledColor,
-              //         personalColor: AppColors.bayLeaf,
-              //       ),
-              //     ),
-              //     RichText(
-              //       maxLines: 1,
-              //       overflow: TextOverflow.clip,
-              //       text: TextSpan(
-              //         text: '1.5K ',
-              //         style: GoogleFonts.publicSans(
-              //           fontSize: 14.sp,
-              //           fontWeight: FontWeight.bold,
-              //           color: getColorAccountType(
-              //             accountType: accountType,
-              //             businessColor: AppColors.primaryColor,
-              //             personalColor: AppColors.darkGreenGrey,
-              //           ),
-              //         ),
-              //         children: <TextSpan>[
-              //           TextSpan(
-              //             text: 'Ratings',
-              //             style: GoogleFonts.publicSans(
-              //               fontSize: 14.sp,
-              //               color: getColorAccountType(
-              //                 accountType: accountType,
-              //                 businessColor: AppColors.primaryColor,
-              //                 personalColor: AppColors.darkGreenGrey,
-              //               ),
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // ),
             ],
           ),
           SizedBox(height: 17.h),
@@ -319,39 +277,6 @@ class BottomsheetContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                // * Overlay gradient effect
-                // Positioned(
-                //   bottom: 0,
-                //   left: 0,
-                //   right: 0,
-                //   height: 30.h,
-                //   child: IgnorePointer(
-                //     child: Container(
-                //       decoration: BoxDecoration(
-                //         gradient: LinearGradient(
-                //           begin: Alignment.topCenter,
-                //           end: Alignment.bottomCenter,
-                //           colors: [
-                //             // * color 1
-                //             getColorAccountType(
-                //                 accountType: accountType,
-                //                 businessColor:
-                //                     AppColors.seaShell.withOpacity(0.0),
-                //                 personalColor:
-                //                     AppColors.seaMist.withOpacity(0.0)),
-                //             // * color 2
-                //             getColorAccountType(
-                //                 accountType: accountType,
-                //                 businessColor:
-                //                     AppColors.seaShell.withOpacity(0.8),
-                //                 personalColor:
-                //                     AppColors.seaMist.withOpacity(0.8)),
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //   ),
-                // ),
               ],
             ),
           ),

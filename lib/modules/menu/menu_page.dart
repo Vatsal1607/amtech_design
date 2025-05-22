@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
-import 'package:amtech_design/custom_widgets/dialog/subs_success_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/menu/widgets/banner_view.dart';
@@ -22,6 +22,7 @@ import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
+import '../../custom_widgets/snackbar.dart';
 import '../../custom_widgets/textfield/custom_searchfield.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
@@ -73,34 +74,16 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    log('log userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
+    // log('log userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<MenuProvider>(context, listen: false);
-    log('selected Addresstype: ${provider.selectedAddressType}');
-    //* Show cart snackbar
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   provider.updateSnackBarVisibility(true);
-    //   provider.scaffoldMessengerKey.currentState
-    //       ?.showSnackBar(
-    //         cartSnackbarWidget(
-    //           accountType: accountType,
-    //           message: '${provider.cartSnackbarTotalItems} Items added',
-    //           items: provider.cartSnackbarItemText,
-    //           context: context,
-    //         ),
-    //       )
-    //       .closed
-    //       .then((_) {
-    //     provider.updateSnackBarVisibility(false);
-    //     log('Snackbar is closed');
-    //   });
-    // });
     return Consumer<MenuProvider>(
       builder: (context, _, child) => provider.isLoading ||
               provider.isLoadingGetBanner
           ? const MenuPageLoader()
           : Scaffold(
+              extendBody: true, //Allows content to extend under nav bar
               backgroundColor: getColorAccountType(
                 accountType: accountType,
                 businessColor: AppColors.seaShell,
@@ -119,12 +102,18 @@ class _MenuPageState extends State<MenuPage> {
                 ),
               ),
               body: FocusableActionDetector(
-                // autofocus: false,
-                // onFocusChange: (value) {
-                //   if (value == true) {
-                //     context.read<MenuProvider>().homeMenuApi(); //* API call
-                //   }
-                // },
+                autofocus: true,
+                onFocusChange: (value) async {
+                  if (value == true) {
+                    // * Show cart snackbar
+                    final cartProvider =
+                        Provider.of<CartProvider>(context, listen: false);
+                    await cartProvider.getListCart();
+                    cartProvider.showCartSnackbarIfNeeded(context, accountType);
+                  } else {
+                    ScaffoldMessenger.of(context).clearSnackBars();
+                  }
+                },
                 child: Stack(
                   children: [
                     Column(

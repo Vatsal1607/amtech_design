@@ -39,18 +39,6 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>upi</string>
-		<string>tez</string>
-		<string>gpay</string>
-		<string>paytm</string>
-		<string>phonepe</string>
-		<string>bhim</string>
-		<string>amazon</string>
-		<string>myairtel</string>
-		<string>credpay</string>
-	</array>
 	<key>FirebaseAppDelegateProxyEnabled</key>
 	<true/>
 	<key>GoogleMapsAPIKey</key>
@@ -64,6 +52,18 @@
 	<string>This app requires access to your location to provide delivery services.</string>
 	<key>LSApplicationCategoryType</key>
 	<string></string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>upi</string>
+		<string>tez</string>
+		<string>gpay</string>
+		<string>paytm</string>
+		<string>phonepe</string>
+		<string>bhim</string>
+		<string>amazon</string>
+		<string>myairtel</string>
+		<string>credpay</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -75,12 +75,12 @@
 	<string>We need access to your camera to allow you to take pictures of documents for user verification.</string>
 	<key>NSDeviceInfoUsageDescription</key>
 	<string>Required to access device information for push notifications and personalized messaging.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location to ensure accurate tracking at all times, even in the background.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location to ensure accurate delivery tracking even when the app is in the background.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need your location to show nearby products and deliver them to you.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>We need your location to ensure accurate tracking at all times, even in the background.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photo library to allow you to upload documents for user verification.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -91,6 +91,10 @@
 		<string>remote-notification</string>
 		<string>fetch</string>
 	</array>
+	<key>UIDeviceFamily</key>
+	<array>
+		<integer>1</integer>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -98,15 +102,13 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
-		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 	</array>
 </dict>
 </plist>

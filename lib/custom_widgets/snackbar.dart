@@ -1,10 +1,16 @@
+import 'dart:developer';
+
+import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../core/utils/app_colors.dart';
+import '../routes.dart';
 
 void customSnackBar({
   required BuildContext context,
@@ -49,26 +55,27 @@ void customSnackBar({
 }
 
 // * Cart snackbar
-void showCartSnackbar({
-  required BuildContext context,
-  required String message,
-  required String items,
-}) {
-  final snackBar =
-      cartSnackbarWidget(message: message, items: items, context: context);
+// void showCartSnackbar({
+//   required BuildContext context,
+//   required String message,
+//   required String items,
+// }) {
+//   final snackBar =
+//       cartSnackbarWidget(message: message, items: items, context: context);
 
-  ScaffoldMessenger.of(context)
-    ..clearSnackBars() // Clear any previous Snackbar to avoid stacking
-    ..showSnackBar(snackBar);
-}
+//   ScaffoldMessenger.of(context)
+//     ..clearSnackBars() // Clear any previous Snackbar to avoid stacking
+//     ..showSnackBar(snackBar);
+// }
 
-//* extracted method of snackbar
 SnackBar cartSnackbarWidget({
   required String message,
   required String items,
   required BuildContext context,
   String accountType = 'business',
 }) {
+  log('items: $items');
+  final bool showAndMore = items.split(', ').length > 1;
   return SnackBar(
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(35.r),
@@ -97,24 +104,30 @@ SnackBar cartSnackbarWidget({
                       color: AppColors.white,
                     ),
                   ),
-                  // SizedBox(width: 11.h),
                 ],
               ),
               Container(color: Colors.amber, child: SizedBox(height: 6.h)),
               RichText(
                 text: TextSpan(
-                    text: '$items '.toUpperCase(),
-                    style: GoogleFonts.publicSans(
-                      fontSize: 10.sp,
-                      color: AppColors.disabledColor,
-                      fontWeight: FontWeight.bold,
+                  text: '$items '.toUpperCase(),
+                  style: GoogleFonts.publicSans(
+                    fontSize: 10.sp,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.disabledColor,
+                      personalColor: AppColors.bayLeaf,
                     ),
-                    children: [
-                      TextSpan(
-                        text: '& MORE',
-                        style: GoogleFonts.publicSans(),
-                      ),
-                    ]),
+                    fontWeight: FontWeight.bold,
+                  ),
+                  children: showAndMore
+                      ? [
+                          TextSpan(
+                            text: ' & MORE',
+                            style: GoogleFonts.publicSans(),
+                          ),
+                        ]
+                      : [],
+                ),
               ),
             ],
           ),
@@ -128,6 +141,8 @@ SnackBar cartSnackbarWidget({
               //* Arrow icon
               GestureDetector(
                 onTap: () {
+                  Navigator.pushNamed(context, Routes.cart);
+                  ScaffoldMessenger.of(context).clearSnackBars();
                   debugPrint('Navigate to cart page');
                 },
                 child: Container(
@@ -137,9 +152,13 @@ SnackBar cartSnackbarWidget({
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(100.r),
                   ),
-                  child: const SvgIcon(
+                  child: SvgIcon(
                     icon: IconStrings.arrowNext,
-                    color: AppColors.primaryColor,
+                    color: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
                 ),
               ),
@@ -153,6 +172,7 @@ SnackBar cartSnackbarWidget({
                       subTitle: 'Are You Sure Want To Empty Cart?',
                       accountType: accountType,
                       onTapYes: () {
+                        context.read<CartProvider>().clearCart(); //* API
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).clearSnackBars();
                       },
@@ -179,8 +199,12 @@ SnackBar cartSnackbarWidget({
         ),
       ],
     ),
-    backgroundColor: AppColors.primaryColor,
+    backgroundColor: getColorAccountType(
+      accountType: accountType,
+      businessColor: AppColors.primaryColor,
+      personalColor: AppColors.darkGreenGrey,
+    ),
     behavior: SnackBarBehavior.floating,
-    duration: const Duration(days: 1),
+    duration: const Duration(days: 1), //Custom long duration of snackbar
   );
 }

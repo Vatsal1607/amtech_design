@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet.dart';
@@ -17,7 +15,6 @@ import '../select_meal_bottomsheet_provider.dart';
 
 //! text should Unique category name for each tab
 class BottomsheetTabbarViewWidget extends StatelessWidget {
-  final String itemName;
   final SelectMealBottomsheetProvider provider;
   final MenuProvider menuProvider;
   final int itemLength;
@@ -28,7 +25,6 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
   final bool isModify;
   const BottomsheetTabbarViewWidget({
     super.key,
-    required this.itemName,
     required this.provider,
     required this.menuProvider,
     required this.itemLength,
@@ -69,8 +65,9 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
                       children: [
+                        //* Item name
                         Text(
-                          itemName,
+                          menuItems?[index].itemName ?? '',
                           style: GoogleFonts.publicSans(
                               color: Colors.white,
                               fontSize: 16.sp,
@@ -117,8 +114,8 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                         SizedBox(height: 10.h),
                         Consumer<SelectMealBottomsheetProvider>(
                             builder: (context, provider, child) {
-                          int quantity =
-                              provider.getQuantity(day, itemName, index);
+                          int quantity = provider.getQuantity(
+                              day, menuItems?[index].itemName ?? '', index);
                           return quantity == 0
                               ? SmallEditButton(
                                   width: 108.w,

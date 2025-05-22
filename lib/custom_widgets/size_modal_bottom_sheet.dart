@@ -154,6 +154,7 @@ void showSizeModalBottomSheet({
                             // provider.quantities = {}; //* Reset quantity
                             if (provider.quantities.isNotEmpty) {
                               Navigator.pop(context);
+                              ScaffoldMessenger.of(context).clearSnackBars();
                               Navigator.pushNamed(context, Routes.cart);
                             }
                           },

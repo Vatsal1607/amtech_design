@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/bottom_blur_on_page.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
@@ -79,7 +77,6 @@ class _OrderListPageState extends State<OrderListPage> {
                                   ?.map((e) => e.itemName ?? '')
                                   .toList() ??
                               [];
-                          log('current Status: ${allOrder?.currentStatus}');
                           //* Widget
                           return OrderListStatusWidget(
                             accountType: accountType,

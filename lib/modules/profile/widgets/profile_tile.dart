@@ -9,7 +9,6 @@ class ProfileTile extends StatelessWidget {
   final String title;
   final String icon;
   final Color iconColor;
-  // final Color? bgColor;
   final bool isSelected;
   final VoidCallback? onTap;
   final String accountType;
@@ -18,7 +17,6 @@ class ProfileTile extends StatelessWidget {
     required this.title,
     required this.icon,
     this.iconColor = AppColors.seaShell,
-    // this.bgColor,
     this.isSelected = false,
     this.onTap,
     required this.accountType,

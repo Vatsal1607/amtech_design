@@ -139,21 +139,6 @@ class ProductDetailsPage extends StatelessWidget {
                             : '',
                         fit: BoxFit.cover,
                       ),
-                      // Expanded(
-                      //   child: DraggableScrollableSheet(
-                      //     initialChildSize: 0.7,
-                      //     minChildSize: 0.7,
-                      //     maxChildSize: 0.9,
-                      //     expand: true, // set true for scrollable sheet itself
-                      //     builder:
-                      //         (BuildContext context, ScrollController scrollController) {
-                      //       return SingleChildScrollView(
-                      //         controller: scrollController,
-                      //         child:
-                      //       );
-                      //     },
-                      //   ),
-                      // ),
                     ],
                   ),
                   // * DraggableScrollableSheet at the bottom
@@ -222,7 +207,7 @@ class ProductDetailsPage extends StatelessWidget {
                                               );
                                             } else if (detailsType ==
                                                 DetailsType.subscription.name) {
-                                              // Todo add process of get subs
+                                              // Todo add process of get subs (Currently not in use)
                                               debugPrint(
                                                   "Subscription type onTap method");
                                             }

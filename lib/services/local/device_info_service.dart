@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,7 @@ class DeviceInfoService {
           sharedPrefsService.setString(SharedPrefsKeys.deviceId, _deviceId!);
         }
       }
+      log('Device id: ${sharedPrefsService.getString(SharedPrefsKeys.deviceId)}');
     } catch (e) {
       debugPrint('Error fetching device ID: $e');
       _deviceId = 'Error fetching device ID';

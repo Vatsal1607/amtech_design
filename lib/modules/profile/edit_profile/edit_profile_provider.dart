@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/models/get_personal_details_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -211,7 +209,6 @@ class EditProfileProvider extends ChangeNotifier {
         address: addressController.text.trim(),
         profileImage: selectedPersonalImage,
       );
-      log('editProfile res: ${res.data}');
       if (res.success == true) {
         selectedPersonalImage = null; // Clear preview after upload
         context.read<MenuProvider>().homeMenuApi(); //* API call

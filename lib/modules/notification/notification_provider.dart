@@ -39,7 +39,6 @@ class NotificationProvider extends ChangeNotifier {
   int unreadCount = 0;
   // *  Get Unread Count API
   Future unreadNotificationCount() async {
-    // isLoading = true;
     try {
       String userId =
           sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
@@ -59,7 +58,6 @@ class NotificationProvider extends ChangeNotifier {
     } catch (e) {
       log("Error unreadNotificationCount: ${e.toString()}");
     } finally {
-      // isLoading = false;
       notifyListeners();
     }
   }

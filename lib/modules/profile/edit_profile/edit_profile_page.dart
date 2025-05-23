@@ -3,7 +3,6 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -92,39 +91,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     child: ClipOval(
                                       //* Profile image
                                       child: Consumer<EditProfileProvider>(
-                                          builder: (context, provider, child) {
-                                        return CircleAvatar(
-                                          backgroundColor: Colors.grey,
-                                          radius: 50,
-                                          backgroundImage: accountType ==
-                                                  'business'
-                                              ? provider
-                                                  .getBusinessProfileImage()
-                                              : provider
-                                                  .getPersonalProfileImage(),
-                                        );
-                                        // CachedNetworkImage(
-                                        //   imageUrl: accountType == 'business'
-                                        //       ? '${provider.businessProfileImage}'
-                                        //       : '${provider.personalProfileImage}',
-                                        //   fit: BoxFit.cover,
-                                        //   placeholder: (context, url) =>
-                                        //       CircularProgressIndicator(
-                                        //     color: getColorAccountType(
-                                        //       accountType: accountType,
-                                        //       businessColor:
-                                        //           AppColors.primaryColor,
-                                        //       personalColor:
-                                        //           AppColors.darkGreenGrey,
-                                        //     ),
-                                        //   ),
-                                        //   errorWidget: (context, url, error) =>
-                                        //       const Icon(
-                                        //     Icons.account_circle,
-                                        //     size: 80,
-                                        //   ),
-                                        // );
-                                      }),
+                                        builder: (context, provider, child) {
+                                          return CircleAvatar(
+                                            backgroundColor: Colors.grey,
+                                            radius: 50,
+                                            backgroundImage: accountType ==
+                                                    'business'
+                                                ? provider
+                                                    .getBusinessProfileImage()
+                                                : provider
+                                                    .getPersonalProfileImage(),
+                                          );
+                                        },
+                                      ),
                                     ),
                                   ),
                                   Positioned(
@@ -133,13 +112,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                     child: GestureDetector(
                                       onTap: () {
                                         if (accountType == 'business') {
-                                          provider
-                                              .pickBusinessImage(); //* API call
+                                          provider.pickBusinessImage();
                                         } else {
-                                          provider
-                                              .pickPersonalImage(); //* API call
+                                          provider.pickPersonalImage();
                                         }
-                                        // provider.pickBusinessImage();
                                       },
                                       child: EditIconWidget(
                                         accountType: accountType,
@@ -351,34 +327,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                   ),
                                 ),
                               //! Fields end
-                              //* business type textfield
-                              // SizedBox(height: 20.h),
-                              // CustomTextField(
-                              //   hint: '',
-                              //   prefixIcon: IconStrings.property,
-                              //   iconColor: getColorAccountType(
-                              //     accountType: accountType,
-                              //     businessColor: AppColors.primaryColor,
-                              //     personalColor: AppColors.darkGreenGrey,
-                              //   ),
-                              //   controller: provider.businessTypeController,
-                              //   borderColor: getColorAccountType(
-                              //     accountType: accountType,
-                              //     businessColor: AppColors.primaryColor,
-                              //     personalColor: AppColors.darkGreenGrey,
-                              //   ),
-                              //   textColor: getColorAccountType(
-                              //     accountType: accountType,
-                              //     businessColor: AppColors.primaryColor,
-                              //     personalColor: AppColors.darkGreenGrey,
-                              //   ),
-                              //   suffixWidget: Padding(
-                              //     padding: EdgeInsets.all(9.w),
-                              //     child: EditIconWidget(
-                              //       accountType: accountType,
-                              //     ),
-                              //   ),
-                              // ),
                               SizedBox(height: 20.h),
                               //* Dropdown business type
                               if (accountType == 'business')

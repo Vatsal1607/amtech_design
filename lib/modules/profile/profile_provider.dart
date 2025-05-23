@@ -11,6 +11,7 @@ import '../../core/utils/app_globals.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../routes.dart';
+import '../../services/local/device_info_service.dart';
 import '../../services/network/api_service.dart';
 
 class ProfileProvider extends ChangeNotifier {

@@ -227,20 +227,20 @@ class LoginProvider extends ChangeNotifier {
       log('send OTP Response: $response');
       if (response.success == true) {
         log('Success: sendotp: ${response.message.toString()}');
-        //* OTP
-        // customSnackBar(
-        //   context: context,
-        //   message: 'Your OTP is: ${response.data.toString()}',
-        //   duration: const Duration(seconds: 10),
-        //   backgroundColor: AppColors.seaShell,
-        //   textColor: AppColors.primaryColor,
-        // );
+        //* OTP Snackbar TEMP
         customSnackBar(
           context: context,
-          message: response.message.toString(),
+          message: 'Your OTP is: ${response.data.toString()}',
+          duration: const Duration(seconds: 60),
           backgroundColor: AppColors.seaShell,
           textColor: AppColors.primaryColor,
         );
+        // customSnackBar(
+        //   context: context,
+        //   message: response.message.toString(),
+        //   backgroundColor: AppColors.seaShell,
+        //   textColor: AppColors.primaryColor,
+        // );
         if (isNavigateToOtpPage) {
           Navigator.pushNamed(context, Routes.otp, arguments: {
             'mobile': phoneController.text,

@@ -268,6 +268,7 @@ class GoogleMapProvider extends ChangeNotifier {
           address = location.data?.address;
           addressController.text = location.data?.address ?? '';
           distance = location.data?.distance.toString();
+          // distance
           // * Prevent overriding edited lat/long
           if (editLat == null && editLong == null) {
             if (selectedLocation?.latitude != location.data?.latitude ||

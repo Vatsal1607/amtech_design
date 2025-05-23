@@ -29,7 +29,6 @@ class ProfilePage extends StatelessWidget {
         sharedPrefsService.getString(SharedPrefsKeys.userContact) ?? '';
     final provider = Provider.of<ProfileProvider>(context, listen: false);
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
-    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -230,7 +229,6 @@ class ProfilePage extends StatelessWidget {
                             style: GoogleFonts.publicSans(
                               fontSize: 15.sp,
                               fontWeight: FontWeight.w700,
-                              // color: AppColors.disabledColor,
                               color: getColorAccountType(
                                 accountType: accountType,
                                 businessColor: AppColors.disabledColor,
@@ -324,19 +322,6 @@ class ProfilePage extends StatelessWidget {
                       icon: IconStrings.feedback,
                     ),
                   ),
-                  // SizedBox(height: 20.h),
-                  // Consumer<ProfileProvider>(
-                  //   builder: (context, _, child) => ProfileTile(
-                  //     // * Consider tile Index 4
-                  //     accountType: accountType,
-                  //     onTap: () {
-                  //       provider.updateTileIndex(4);
-                  //     },
-                  //     isSelected: provider.selectedTileIndex == 4,
-                  //     title: 'Subscriptions',
-                  //     icon: IconStrings.subscriptions,
-                  //   ),
-                  // ),
                   SizedBox(height: 20.h),
                   Consumer<ProfileProvider>(
                     builder: (context, _, child) => ProfileTile(
@@ -351,27 +336,6 @@ class ProfilePage extends StatelessWidget {
                       icon: IconStrings.aboutUs,
                     ),
                   ),
-                  // SizedBox(height: 20.h),
-
-                  // * Ratings view
-                  // // ! TEMP
-                  // ProfileTile(
-                  //   accountType: accountType,
-                  //   onTap: () {
-                  //     // * showDialog(
-                  //     showGeneralDialog(
-                  //       context: context,
-                  //       // barrierDismissible: true,
-                  //       // * builder: (context) => const RatingsPage(),
-                  //       pageBuilder: (context, animation, secondaryAnimation) {
-                  //         return const RatingsPage();
-                  //       },
-                  //     );
-                  //   },
-                  //   title: 'TEMP RATING UI VIEW --> ⭐',
-                  //   icon: IconStrings.aboutUs,
-                  // ),
-                  // // !
                 ],
               ),
             ),

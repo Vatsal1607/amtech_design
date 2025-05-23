@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
@@ -22,9 +21,9 @@ import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
-import '../../custom_widgets/snackbar.dart';
 import '../../custom_widgets/textfield/custom_searchfield.dart';
 import '../../routes.dart';
+import '../../services/local/device_info_service.dart';
 import '../../services/local/shared_preferences_service.dart';
 import '../provider/socket_provider.dart';
 import 'widgets/address_widget_home_page.dart';
@@ -43,6 +42,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      DeviceInfoService().fetchDeviceId(context);
       //* Connect to socket if disconnected
       final socketProvider =
           Provider.of<SocketProvider>(context, listen: false);
@@ -303,130 +303,121 @@ class _MenuPageState extends State<MenuPage> {
                                               // * Subscriptions Banner
                                               const SubscriptionBannerWidget(),
                                               SizedBox(height: 20.h),
+
                                               // * ListView Categories
-                                              Consumer<MenuProvider>(
-                                                builder: (context, _, child) {
-                                                  return ListView.separated(
-                                                    // controller: widget.scrollController,
-                                                    shrinkWrap: true,
-                                                    padding: EdgeInsets.zero,
-                                                    physics:
-                                                        const NeverScrollableScrollPhysics(),
-                                                    itemCount: provider
-                                                        .filteredCategories
-                                                        .length,
-                                                    separatorBuilder: (context,
-                                                            index) =>
+                                              ListView.separated(
+                                                shrinkWrap: true,
+                                                padding: EdgeInsets.zero,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                itemCount: provider
+                                                    .filteredCategories.length,
+                                                separatorBuilder:
+                                                    (context, index) =>
                                                         SizedBox(height: 15.h),
-                                                    itemBuilder:
-                                                        (context, parentIndex) {
-                                                      final categoryTitle = provider
-                                                              .filteredCategories[
-                                                                  parentIndex]
-                                                              .categoryTitle ??
-                                                          '';
-                                                      return Column(
-                                                        children: [
-                                                          Padding(
+                                                itemBuilder:
+                                                    (context, parentIndex) {
+                                                  final categoryTitle = provider
+                                                          .filteredCategories[
+                                                              parentIndex]
+                                                          .categoryTitle ??
+                                                      '';
+                                                  return Column(
+                                                    children: [
+                                                      Padding(
+                                                        padding: EdgeInsets
+                                                            .symmetric(
+                                                                horizontal:
+                                                                    20.w),
+                                                        child: DividerLabel(
+                                                          key: provider
+                                                                  .dynamicKeys[
+                                                              categoryTitle],
+                                                          label: categoryTitle,
+                                                          accountType:
+                                                              accountType,
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 15.h),
+                                                      // * Categories horizontal view
+                                                      Align(
+                                                        alignment:
+                                                            Alignment.topLeft,
+                                                        child: SizedBox(
+                                                          height: 157.h,
+                                                          //* ListView Items
+                                                          child: ListView
+                                                              .separated(
                                                             padding: EdgeInsets
                                                                 .symmetric(
                                                                     horizontal:
                                                                         20.w),
-                                                            child: DividerLabel(
-                                                              key: provider
-                                                                      .dynamicKeys[
-                                                                  categoryTitle],
-                                                              label:
-                                                                  categoryTitle,
-                                                              accountType:
-                                                                  accountType,
-                                                            ),
-                                                          ),
-                                                          SizedBox(
-                                                              height: 15.h),
-                                                          // * Categories horizontal view
-                                                          Align(
-                                                            alignment: Alignment
-                                                                .topLeft,
-                                                            child: SizedBox(
-                                                              height: 157.h,
-                                                              //* ListView Items
-                                                              child: ListView
-                                                                  .separated(
-                                                                padding: EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal:
-                                                                            20.w),
-                                                                shrinkWrap:
-                                                                    true,
-                                                                itemCount: provider
-                                                                        .filteredCategories[
-                                                                            parentIndex]
-                                                                        .menuItems
-                                                                        ?.length ??
-                                                                    0,
-                                                                scrollDirection:
-                                                                    Axis.horizontal,
-                                                                separatorBuilder: (context,
+                                                            shrinkWrap: true,
+                                                            itemCount: provider
+                                                                    .filteredCategories[
+                                                                        parentIndex]
+                                                                    .menuItems
+                                                                    ?.length ??
+                                                                0,
+                                                            scrollDirection:
+                                                                Axis.horizontal,
+                                                            separatorBuilder:
+                                                                (context,
                                                                         index) =>
                                                                     SizedBox(
                                                                         width: 10
                                                                             .w),
-                                                                itemBuilder:
-                                                                    (context,
-                                                                        childIndex) {
-                                                                  final menuItems = provider
-                                                                      .filteredCategories[
-                                                                          parentIndex]
-                                                                      .menuItems?[childIndex];
-
-                                                                  return Consumer<
-                                                                      MenuProvider>(
-                                                                    builder: (context,
-                                                                            provider,
-                                                                            child) =>
-                                                                        GestureDetector(
-                                                                      onTap:
-                                                                          () {
-                                                                        Navigator
-                                                                            .pushNamed(
-                                                                          context,
-                                                                          Routes
-                                                                              .productDetails,
-                                                                          arguments: {
-                                                                            'menuId':
-                                                                                menuItems?.menuId,
-                                                                            'detailsType':
-                                                                                DetailsType.details.name,
-                                                                          },
-                                                                        );
-                                                                      },
-                                                                      child:
-                                                                          ProductWidget(
-                                                                        image: (menuItems?.images?.isNotEmpty ??
-                                                                                false)
-                                                                            ? menuItems!.images![0]
-                                                                            : '',
-                                                                        name: menuItems?.itemName ??
-                                                                            '',
-                                                                        index:
-                                                                            childIndex,
-                                                                        accountType:
-                                                                            accountType,
-                                                                        provider:
-                                                                            provider,
-                                                                        menuItems:
-                                                                            menuItems,
-                                                                      ),
-                                                                    ),
+                                                            itemBuilder:
+                                                                (context,
+                                                                    childIndex) {
+                                                              final menuItems = provider
+                                                                  .filteredCategories[
+                                                                      parentIndex]
+                                                                  .menuItems?[childIndex];
+                                                              return GestureDetector(
+                                                                onTap: () {
+                                                                  Navigator
+                                                                      .pushNamed(
+                                                                    context,
+                                                                    Routes
+                                                                        .productDetails,
+                                                                    arguments: {
+                                                                      'menuId':
+                                                                          menuItems
+                                                                              ?.menuId,
+                                                                      'detailsType': DetailsType
+                                                                          .details
+                                                                          .name,
+                                                                    },
                                                                   );
                                                                 },
-                                                              ),
-                                                            ),
+                                                                child:
+                                                                    ProductWidget(
+                                                                  image: (menuItems
+                                                                              ?.images
+                                                                              ?.isNotEmpty ??
+                                                                          false)
+                                                                      ? menuItems!
+                                                                          .images![0]
+                                                                      : '',
+                                                                  name: menuItems
+                                                                          ?.itemName ??
+                                                                      '',
+                                                                  index:
+                                                                      childIndex,
+                                                                  accountType:
+                                                                      accountType,
+                                                                  provider:
+                                                                      provider,
+                                                                  menuItems:
+                                                                      menuItems,
+                                                                ),
+                                                              );
+                                                            },
                                                           ),
-                                                        ],
-                                                      );
-                                                    },
+                                                        ),
+                                                      ),
+                                                    ],
                                                   );
                                                 },
                                               ),

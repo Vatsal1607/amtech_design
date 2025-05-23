@@ -70,11 +70,12 @@ class OtpProvider extends ChangeNotifier {
       final ApiGlobalModel response = await apiService.verifyOtp(
         body: body,
       );
-      log('send OTP Response: $response');
       if (response.success == true) {
         log('Success: verify otp: ${response.message.toString()}');
         // * isLogged in user - true
         sharedPrefsService.setBool(SharedPrefsKeys.isLoggedIn, true);
+        //! TEMP clear snackbar
+        ScaffoldMessenger.of(context).clearSnackBars();
         Navigator.pushNamed(context, Routes.verifySuccess);
       } else {
         debugPrint('verify otp: ${response.message}');

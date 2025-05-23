@@ -32,12 +32,10 @@ class _SelectUnitDropdownState extends State<SelectUnitDropdown> {
     final createSubsPlanProvider =
         Provider.of<CreateSubscriptionPlanProvider>(context, listen: true);
     if (createSubsPlanProvider.unitItems.isEmpty) {
-      return SizedBox.shrink(
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            width: double.infinity,
-            color: Colors.amber,
+      return Padding(
+        padding: EdgeInsets.only(right: 90.w),
+        child: SizedBox.shrink(
+          child: Center(
             child: CustomLoader(
               backgroundColor: getColorAccountType(
                 accountType: widget.accountType,

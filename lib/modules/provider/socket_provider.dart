@@ -18,10 +18,6 @@ class SocketProvider with ChangeNotifier {
   bool _isConnected = false;
   bool get isConnected => _isConnected;
 
-  // SocketProvider() {
-  //   connectToSocket();
-  //   log('Constructor of socket provider is called');
-  // }
   void offEvent(String eventName) {
     socket.off(eventName);
   }

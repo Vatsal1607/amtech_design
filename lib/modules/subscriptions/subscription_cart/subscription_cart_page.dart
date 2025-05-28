@@ -60,9 +60,6 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
   Widget build(BuildContext context) {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    final provider =
-        Provider.of<SubscriptionCartProvider>(context, listen: false);
-    log('KM: ${provider.km}');
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
         title: 'Cart',
@@ -250,7 +247,6 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                           (singlePrice ?? 0) *
                                                               (quantity ?? 0);
                                                       // Accumulate the grand total
-
                                                       itemWidgets.add(
                                                         _buildItemRow(
                                                           title,
@@ -344,11 +340,34 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                 ),
                                                 //* Grand total (payable amount)
                                                 Consumer<
-                                                    SubscriptionCartProvider>(
-                                                  builder:
-                                                      (context, _, child) =>
-                                                          Text(
-                                                    '₹ ${provider.getTotalWithGST(provider.getGrandTotal()).toStringAsFixed(2)}',
+                                                        SubscriptionCartProvider>(
+                                                    builder:
+                                                        (context, _, child) {
+                                                  final grandTotal = provider
+                                                      .getGrandTotal(); // From items + add-ons
+                                                  final deliveryCharges = provider
+                                                      .calculateDeliveryCharges(
+                                                    distanceInKm: double.tryParse(
+                                                            sharedPrefsService
+                                                                    .getString(
+                                                                        SharedPrefsKeys
+                                                                            .confirmDistance) ??
+                                                                '0.0') ??
+                                                        0.0,
+                                                    unitCount: int.tryParse(
+                                                            provider
+                                                                    .summaryRes
+                                                                    ?.data
+                                                                    ?.units ??
+                                                                '0') ??
+                                                        0,
+                                                  );
+                                                  final totalAmount =
+                                                      grandTotal +
+                                                          deliveryCharges;
+                                                  //* Payable amount
+                                                  return Text(
+                                                    '₹ ${totalAmount.round()}',
                                                     style:
                                                         GoogleFonts.publicSans(
                                                       fontSize: 18.sp,
@@ -364,8 +383,8 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                       fontWeight:
                                                           FontWeight.bold,
                                                     ),
-                                                  ),
-                                                ),
+                                                  );
+                                                }),
                                               ],
                                             ),
                                             children: [
@@ -379,10 +398,9 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                       builder:
                                                           (context, _, child) =>
                                                               _buildItemRow(
-                                                        "Item Total",
+                                                        "Item Total (With gst)",
                                                         '${provider.getGrandTotal()}',
                                                         accountType,
-                                                        // '${provider.summaryRes?.data?.price}',
                                                       ),
                                                     ),
                                                     Consumer<
@@ -396,14 +414,32 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                                                 .getGrandTotal())
                                                             .toStringAsFixed(2),
                                                         accountType,
-                                                        // '${provider.getGST(provider.getGrandTotal()).toStringAsFixed(2)}',
                                                       ),
                                                     ),
-                                                    _buildItemRow(
-                                                      "Delivery Fee",
-                                                      "0",
-                                                      accountType,
-                                                    ),
+                                                    Consumer<
+                                                            SubscriptionCartProvider>(
+                                                        builder: (context, _,
+                                                            child) {
+                                                      return _buildItemRow(
+                                                        "Delivery Fee (18%)",
+                                                        provider
+                                                            .calculateDeliveryCharges(
+                                                              distanceInKm:
+                                                                  double.tryParse(
+                                                                          sharedPrefsService.getString(SharedPrefsKeys.confirmDistance) ??
+                                                                              '0.0') ??
+                                                                      0.0,
+                                                              unitCount: int.tryParse(provider
+                                                                          .summaryRes
+                                                                          ?.data
+                                                                          ?.units ??
+                                                                      '0') ??
+                                                                  0,
+                                                            )
+                                                            .toStringAsFixed(2),
+                                                        accountType,
+                                                      );
+                                                    }),
                                                   ],
                                                 ),
                                               ),
@@ -415,7 +451,6 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                                     ),
                                   ),
                                   SizedBox(height: 20.h),
-
                                   // * SubscriptionCartDetailsWidget
                                   SubscriptionCartDetailsWidget(
                                     provider: provider,
@@ -452,9 +487,8 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                             showProcessToPayBottomSheeet(
                               context: context,
                               scaffoldContext: context,
-                              payableAmount: provider
-                                  .getTotalWithGST(provider.getGrandTotal())
-                                  .toStringAsFixed(2),
+                              payableAmount:
+                                  provider.calculateTotalAmount().toString(),
                               accountType: accountType,
                               isSubscriptionPay: true,
                             );

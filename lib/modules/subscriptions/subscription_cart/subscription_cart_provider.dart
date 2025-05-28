@@ -16,12 +16,13 @@ import '../create_subscription_plan/create_subscription_plan_provider.dart';
 import '../subscription/subscription_details/subscription_details_provider.dart';
 
 class SubscriptionCartProvider extends ChangeNotifier {
-  //* Calculate grand total with addons
+  //* Calculate grand total (with AddOns)
+  num addOnTotal = 0;
   num getGrandTotal() {
     if (summaryRes?.data == null) return 0.0;
     num basePrice = summaryRes!.data!.price ?? 0.0;
     // Calculate add-on total
-    num addOnTotal = summaryRes?.data?.items?.fold(0.0, (sum, item) {
+    addOnTotal = summaryRes?.data?.items?.fold(0.0, (sum, item) {
           final addOns = item.customize
                   ?.where((custom) => custom.addOns != null)
                   .expand((custom) => custom.addOns!)
@@ -47,12 +48,37 @@ class SubscriptionCartProvider extends ChangeNotifier {
     return double.parse((totalAmount * 0.12).toStringAsFixed(2));
   }
 
-  //* Get total amount with GST included
-  double getTotalWithGST(num totalAmount) {
-    return double.parse((totalAmount * 1.12).toStringAsFixed(2));
+  //* Calculate Total with delivery charges
+  double calculateDeliveryCharges({
+    required double distanceInKm,
+    required int unitCount,
+  }) {
+    const double freeDistance = 1.0;
+    const double ratePerKm = 7.0;
+    const double gstRate = 0.18;
+    // Calculate chargeable distance
+    final chargeableDistance =
+        distanceInKm > freeDistance ? distanceInKm - freeDistance : 0.0;
+    // Calculate base delivery cost (before GST)
+    final baseDeliveryCost = chargeableDistance * ratePerKm * unitCount;
+    // Add GST
+    final gstAmount = baseDeliveryCost * gstRate;
+    final totalDeliveryCharge = baseDeliveryCost + gstAmount;
+    return totalDeliveryCharge;
   }
 
-  num km = 0;
+  //* Payable amount
+  double calculateTotalAmount() {
+    final deliveryCharges = calculateDeliveryCharges(
+      distanceInKm: double.tryParse(
+              sharedPrefsService.getString(SharedPrefsKeys.confirmDistance) ??
+                  '0.0') ??
+          0.0,
+      unitCount: int.tryParse(summaryRes?.data?.units ?? '0') ?? 0,
+    );
+    final totalAmount = getGrandTotal() + deliveryCharges;
+    return totalAmount;
+  }
 
   ApiService apiService = ApiService();
   bool isLoading = false;

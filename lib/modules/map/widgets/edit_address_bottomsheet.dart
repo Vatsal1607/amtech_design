@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_bottomsheet_close_button.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button_with_arrow.dart';
 import 'package:amtech_design/custom_widgets/custom_textfield.dart';
 import 'package:amtech_design/modules/map/address/saved_address/saved_address_provider.dart';
 import 'package:amtech_design/modules/map/google_map_provider.dart';
 import 'package:amtech_design/modules/provider/socket_provider.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -209,6 +211,16 @@ void editAddressBottomSheeet({
                                       .read<GoogleMapProvider>()
                                       .fromSubscart ??
                                   false,
+                            );
+                            //* Assign confirm distance on select address
+                            provider.confirmDistance = provider.distance;
+                            final normalizedDistance = context
+                                .read<SavedAddressProvider>()
+                                .normalizeDistance(provider.confirmDistance);
+                            //* Set confirmDistance
+                            sharedPrefsService.setString(
+                              SharedPrefsKeys.confirmDistance,
+                              normalizedDistance.toStringAsFixed(2),
                             );
                           } else {
                             log('textfields is empty');

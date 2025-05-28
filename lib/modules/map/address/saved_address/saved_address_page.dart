@@ -15,10 +15,8 @@ import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/constants/keys.dart';
 import '../../../../core/utils/enums/enums.dart';
 import '../../../../custom_widgets/appbar/custom_appbar_with_center_title.dart';
-import '../../../../custom_widgets/textfield/custom_search_container.dart';
 import '../../../../services/local/shared_preferences_service.dart';
 import '../../../provider/socket_provider.dart';
-import '../../widgets/show_search_address_bottomsheet.dart';
 import 'widgets/saved_location_card.dart';
 
 class SavedAddressPage extends StatefulWidget {
@@ -196,8 +194,6 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
               //   ),
               // ),
 
-              // SizedBox(height: 20.h),
-
               //* Add new location card:
               AddLocationCard(
                 accountType: accountType,
@@ -246,6 +242,15 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                                 final savedAddress = list[index];
                                 return GestureDetector(
                                   onTap: () async {
+                                    log('Distance from saved ${savedAddress.distance}');
+                                    final normalizedDistance =
+                                        provider.normalizeDistance(
+                                            savedAddress.distance);
+                                    //* Set confirmDistance
+                                    sharedPrefsService.setString(
+                                      SharedPrefsKeys.confirmDistance,
+                                      normalizedDistance.toStringAsFixed(2),
+                                    );
                                     await provider
                                         .chooseLocation(
                                       context: context,

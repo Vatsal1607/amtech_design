@@ -283,35 +283,4 @@ class _RechargePageState extends State<RechargePage> {
             ),
     );
   }
-
-  // * Open razorpay
-  // void openRazorpay() {
-  //   final cleanValue = provider.amountController.text.replaceAll(',', '');
-  //   var options = {
-  //     'key': RazorPayKeys.testKey,
-  //     // 'key': RazorPayKeys.liveKey,
-  //     'amount': int.parse(cleanValue) * 100,
-  //     'currency': 'INR',
-  //     'order_id': provider.razorpayOrderId,
-  //     'name': '135 Degrees',
-  //     'description': 'Payment for Order #1234',
-  //     'prefill': {
-  //       'contact': '9876543210',
-  //       'email': 'customer@example.com',
-  //     },
-  //     'method': {
-  //       'upi': true,
-  //       'card': true,
-  //       'wallet': false,
-  //       'netbanking': false,
-  //       'paylater': false,
-  //     },
-  //   };
-
-  //   try {
-  //     razorpay.open(options);
-  //   } catch (e) {
-  //     debugPrint('Error: $e');
-  //   }
-  // }
 }

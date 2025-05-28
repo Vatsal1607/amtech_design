@@ -77,13 +77,13 @@ class OrderStatusProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  @override
-  void dispose() {
-    log('dispose called (OrderStatusProvider)');
-    orderStatusTimer?.cancel();
-    orderStatusTimer = null;
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   log('dispose called (OrderStatusProvider)');
+  //   orderStatusTimer?.cancel();
+  //   orderStatusTimer = null;
+  //   super.dispose();
+  // }
 
   //* Get Lotties Files
   String getLottieFile(String accountType, OrderStatus status) {
@@ -141,5 +141,13 @@ class OrderStatusProvider extends ChangeNotifier {
       default:
         return isBusiness ? "Placed Successfully!" : "Placed Successfully!";
     }
+  }
+
+  void disposeOrderStatus(SocketProvider socketProvider) {
+    // Cancel periodic timer
+    orderStatusTimer?.cancel();
+    orderStatusTimer = null;
+    // Remove socket listener
+    socketProvider.offEvent(SocketEvents.orderStatusResponseListen);
   }
 }

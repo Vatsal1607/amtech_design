@@ -102,6 +102,7 @@ class IconStrings {
   static const editPen = '${BaseIconPath.basePath}edit_pen.svg';
   static const appFill = '${BaseIconPath.basePath}apps_fill.svg';
   static const modify = '${BaseIconPath.basePath}modify.svg';
+  static const deleteAccount = '${BaseIconPath.basePath}delete_account.svg';
 }
 
 class ImageStrings {

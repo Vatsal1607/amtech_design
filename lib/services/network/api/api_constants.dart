@@ -12,7 +12,7 @@ class BaseUrl {
 }
 
 class WebViewUrl {
-  static const String aboutUs = "https://135degrees.in/about-us/";
+  static const String aboutUs = "https://135degrees.in/#/NewAbout";
   static const String refundAndCancallationPolicy =
       "https://135degrees.in/refund-cancellation-policy/";
   static const String termsAndConditions =

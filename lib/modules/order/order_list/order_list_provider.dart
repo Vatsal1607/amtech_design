@@ -57,11 +57,11 @@ class OrderListProvider extends ChangeNotifier {
     }
   }
 
-  @override
-  void dispose() {
-    log('dispose called (OrderListProvider)');
+  void disposeAllOrderStatus(SocketProvider socketProvider) {
+    // Cancel periodic timer
     allOrderStatusListTimer?.cancel();
     allOrderStatusListTimer = null;
-    super.dispose();
+    // Remove socket listener
+    socketProvider.offEvent(SocketEvents.allOrderStatusesResponseListen);
   }
 }

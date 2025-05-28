@@ -34,7 +34,6 @@ class _CartPageState extends State<CartPage> {
   void dispose() {
     //* Must clear because razorpay init used on cartpage & subscartpage & recharge page
     RazorpayService().clear();
-    log('Dispose called (razorpay cart page)');
     super.dispose();
   }
 
@@ -71,11 +70,6 @@ class _CartPageState extends State<CartPage> {
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     final provider = Provider.of<CartProvider>(context, listen: false);
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
-    // Future.delayed(const Duration(milliseconds: 300), () {
-    //   ScaffoldMessenger.of(context)
-    //       .clearSnackBars(); //* clear cart snackbar while on cart page
-    // });
-
     return Scaffold(
       backgroundColor: getColorAccountType(
         accountType: accountType,
@@ -98,7 +92,6 @@ class _CartPageState extends State<CartPage> {
                   children: [
                     Consumer<CartProvider>(
                       builder: (context, _, child) {
-                        log('provider.cartItemList length: ${provider.cartItemList?.length}');
                         return provider.cartItemList == null
                             ? Center(
                                 child: CustomLoader(
@@ -332,7 +325,12 @@ class _CartPageState extends State<CartPage> {
                                   ),
                                 ),
                                 Text(
-                                  '₹${provider.totalAmount != null ? provider.getTotalAmountWithGST(double.tryParse(provider.totalAmount!) ?? 0.0) : '0.00'}',
+                                  '₹${provider.calculateFinalTotalAmount(
+                                    storedDistance:
+                                        sharedPrefsService.getString(
+                                            SharedPrefsKeys.confirmDistance),
+                                    itemTotalString: provider.totalAmount,
+                                  )} ',
                                   style: GoogleFonts.publicSans(
                                     fontSize: 12.sp,
                                     fontWeight: FontWeight.bold,
@@ -397,9 +395,7 @@ class _CartPageState extends State<CartPage> {
                                           ),
                                         ),
                                         Text(
-                                          // '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.parse(provider.totalAmount!))} (12%)' : '0.00'}',
                                           '₹${provider.totalAmount != null ? '${provider.getGSTCharges(double.tryParse(provider.totalAmount!) ?? 0.0)} (12%)' : '0.00'}',
-
                                           style: GoogleFonts.publicSans(
                                             fontSize: 12.sp,
                                             color: AppColors.seaShell,
@@ -414,14 +410,21 @@ class _CartPageState extends State<CartPage> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Delivery Charges',
+                                          'Delivery Fee',
                                           style: GoogleFonts.publicSans(
                                             color: AppColors.seaShell,
                                             fontSize: 12.sp,
                                           ),
                                         ),
                                         Text(
-                                          'FREE',
+                                          '₹${provider.getDeliveryCharges(
+                                            distanceInKm: double.tryParse(
+                                                    sharedPrefsService.getString(
+                                                            SharedPrefsKeys
+                                                                .confirmDistance) ??
+                                                        '0.0') ??
+                                                0.0,
+                                          )}',
                                           style: GoogleFonts.publicSans(
                                             fontSize: 12.sp,
                                             color: AppColors.seaShell,
@@ -451,60 +454,64 @@ class _CartPageState extends State<CartPage> {
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Consumer<CartProvider>(builder: (context, _, child) {
                   return CustomButton(
-                      onTap: provider.cartItemList == null
-                          ? () {
-                              debugPrint('CART is Empty');
-                            }
-                          : () {
-                              final limitedCartItems = provider.cartItemList
-                                  ?.map((item) => item.toLimitedJson())
-                                  .toList();
-                              final Map<String, dynamic> orderCreateData = {
-                                "userId": sharedPrefsService
-                                        .getString(SharedPrefsKeys.userId) ??
-                                    '',
-                                "userType": accountType == 'business'
-                                    ? 'BusinessUser'
-                                    : 'User',
-                                "items": limitedCartItems,
-                                "totalAmount": provider.totalAmount != null
-                                    ? provider.getTotalAmountWithGSTWithRound(
-                                        double.tryParse(
-                                                provider.totalAmount!) ??
-                                            0.0)
-                                    : 0,
-                                "paymentMethod": provider
-                                    .selectedPaymentMethod, // 'UPI', 'Perks'
-                                "deliveryAddress": menuProvider
-                                    .homeMenuResponse?.data?.address,
-                              };
-                              log('OrderCreateData: $orderCreateData');
-                              provider.isConfirmed = false;
-                              showProcessToPayBottomSheeet(
-                                context: context,
-                                scaffoldContext: context,
-                                payableAmount: provider
-                                    .getTotalAmountWithGST(double.tryParse(
-                                            provider.totalAmount ?? '') ??
-                                        0.0)
-                                    .toStringAsFixed(2),
-
-                                accountType: accountType,
-                                //! Emit order-create
-                                orderCreateData: orderCreateData,
-                              );
-                            },
-                      height: 55.h,
-                      width: double.infinity,
-                      bgColor: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.primaryColor,
-                        personalColor: AppColors.darkGreenGrey,
-                      ),
-                      text:
-                          'proceed to pay ₹ ${provider.getTotalAmountWithGST(double.tryParse(provider.totalAmount ?? '') ?? 0.0)}'
-                      // text: 'proceed to pay ₹ ${provider.totalAmount ?? '0'}',
-                      );
+                    onTap: provider.cartItemList == null
+                        ? () {
+                            debugPrint('CART is Empty');
+                          }
+                        : () {
+                            final limitedCartItems = provider.cartItemList
+                                ?.map((item) => item.toLimitedJson())
+                                .toList();
+                            final Map<String, dynamic> orderCreateData = {
+                              "userId": sharedPrefsService
+                                      .getString(SharedPrefsKeys.userId) ??
+                                  '',
+                              "userType": accountType == 'business'
+                                  ? 'BusinessUser'
+                                  : 'User',
+                              "items": limitedCartItems,
+                              "totalAmount": provider.calculateFinalTotalAmount(
+                                storedDistance: sharedPrefsService
+                                    .getString(SharedPrefsKeys.confirmDistance),
+                                itemTotalString: provider.totalAmount,
+                              ),
+                              "paymentMethod": provider
+                                  .selectedPaymentMethod, // 'UPI', 'Perks'
+                              "deliveryAddress":
+                                  menuProvider.homeMenuResponse?.data?.address,
+                            };
+                            provider.isConfirmed = false;
+                            //* Bottomsheet
+                            showProcessToPayBottomSheeet(
+                              context: context,
+                              scaffoldContext: context,
+                              payableAmount: provider
+                                  .calculateFinalTotalAmount(
+                                    storedDistance:
+                                        sharedPrefsService.getString(
+                                            SharedPrefsKeys.confirmDistance),
+                                    itemTotalString: provider.totalAmount,
+                                  )
+                                  .toString(),
+                              accountType: accountType,
+                              //! Emit order-create
+                              orderCreateData: orderCreateData,
+                            );
+                          },
+                    height: 55.h,
+                    width: double.infinity,
+                    bgColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
+                    text:
+                        'proceed to pay ₹ ${provider.calculateFinalTotalAmount(
+                      storedDistance: sharedPrefsService
+                          .getString(SharedPrefsKeys.confirmDistance),
+                      itemTotalString: provider.totalAmount,
+                    )} ',
+                  );
                 }),
               ),
             ),

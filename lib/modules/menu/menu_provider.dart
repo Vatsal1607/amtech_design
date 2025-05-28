@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/models/account_switch_model.dart';
 import 'package:amtech_design/models/add_to_cart_model.dart';
 import 'package:amtech_design/models/add_to_cart_request_model.dart';
 import 'package:amtech_design/models/home_menu_model.dart';
@@ -14,13 +15,6 @@ import '../../models/menu_size_model.dart';
 import '../../services/network/api_service.dart';
 
 class MenuProvider extends ChangeNotifier {
-  double sliderCreditValue = 135;
-  final double sliderTotalCreditValue = 2000;
-  onChangeCreditSlider(double value) {
-    sliderCreditValue = value;
-    notifyListeners();
-  }
-
   double currentSliderValue = 20;
   onChangeSlider(double value) {
     currentSliderValue = value;
@@ -30,12 +24,6 @@ class MenuProvider extends ChangeNotifier {
   int carouselCurrentIndex = 0;
   onPageChangedCarousel(index, reason) {
     carouselCurrentIndex = index;
-    notifyListeners();
-  }
-
-  int subscriptionCurrentIndex = 0;
-  onPageChangedsubscription(index, reason) {
-    subscriptionCurrentIndex = index;
     notifyListeners();
   }
 
@@ -69,20 +57,6 @@ class MenuProvider extends ChangeNotifier {
   List<String> banners = [];
   List<BannersData> bannersData = [];
 
-  final List<String> productImage = [
-    ImageStrings.masalaTea2,
-    ImageStrings.masalaTea2,
-    ImageStrings.masalaTea2,
-    ImageStrings.masalaTea2,
-  ];
-
-  final List<String> productName = [
-    'everyday tea',
-    'Zero suger coffee ',
-    'tea w/o milk',
-    'everyday tea',
-  ];
-
   // * get dynamic greetings
   String getGreeting() {
     final hour = DateTime.now().hour;
@@ -103,13 +77,6 @@ class MenuProvider extends ChangeNotifier {
 
   String? selectedValue;
   bool isMenuOpen = false;
-
-  // * Menu items (Also values of items)
-  List<String> menuItemsName = [
-    'Tea',
-    'Coffee',
-    'Best Seller',
-  ];
 
   void onSelectedMenuItem(String value) {
     selectedValue = value;
@@ -158,12 +125,43 @@ class MenuProvider extends ChangeNotifier {
 
   onVerticalDragDownLeading() {
     panelHeight = panelMaxHeight;
+    getAccountSwitch(); //* API
     notifyListeners();
   }
 
   onTapOutsideAccountUI() {
     panelHeight = 0;
     notifyListeners();
+  }
+
+  bool isLoadingAccount = false;
+  List<AccountData>? accounts;
+  // Account switch API
+  Future getAccountSwitch() async {
+    isLoadingAccount = true;
+    notifyListeners();
+    try {
+      final res = await apiService.accountSwitch(
+        contact:
+            sharedPrefsService.getString(SharedPrefsKeys.userContact) ?? '',
+      );
+      if (res.success == true) {
+        accounts = res.data ?? [];
+      } else {
+        log(res.message.toString());
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          log(data['message']);
+        }
+      }
+      log("Error deleteAccount: ${e.toString()}");
+    } finally {
+      isLoadingAccount = false;
+      notifyListeners();
+    }
   }
 
   double viewOrderBottomPadding = 28;
@@ -252,10 +250,8 @@ class MenuProvider extends ChangeNotifier {
         return false; // * Indicat failure
       }
     } catch (error) {
-      log("Error during homeMenuApi Response------- $error");
       if (error is DioException) {
         final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
-        log(apiError.message ?? 'An error occurred');
       } else {
         log('An unexpected error occurred');
       }
@@ -278,7 +274,6 @@ class MenuProvider extends ChangeNotifier {
   }) {
     if ((quantities[sizeName] ?? 0) > 0) {
       quantities[sizeName] = (quantities[sizeName] ?? 0) - 1;
-      log('decrementQuantity quantity: ${quantities[sizeName]}');
       notifyListeners();
     }
   }
@@ -289,7 +284,6 @@ class MenuProvider extends ChangeNotifier {
     required String sizeId,
   }) {
     quantities[sizeName] = (quantities[sizeName] ?? 0) + 1;
-    log('incrementQuantity quantity: ${quantities[sizeName]}');
     notifyListeners();
   }
 
@@ -356,14 +350,13 @@ class MenuProvider extends ChangeNotifier {
       final res = await apiService.countBanner(
         bannerId: bannerId,
       );
-      log('countBanner: $res');
       if (res.success == true) {
-        log('countBanner: ${res.message}');
+        // log('countBanner: ${res.message}');
       } else {
-        log('${res.message}');
+        // log('${res.message}');
       }
     } catch (e) {
-      debugPrint("Error fetching countBanner: ${e.toString()}");
+      debugPrint("Error  countBanner: ${e.toString()}");
     }
   }
 
@@ -491,7 +484,6 @@ class MenuProvider extends ChangeNotifier {
       final res = await apiService.updateCart(
         updateCartRequestBody: requestBody,
       );
-      log('updateCart: ${res.data}');
       if (res.success == true) {
         callback(true);
       } else {
@@ -515,7 +507,6 @@ class MenuProvider extends ChangeNotifier {
     //* store locally
     sharedPrefsService.setString(
         SharedPrefsKeys.selectedAddressType, selectedAddressType?.name ?? '');
-    log('selectedAddressType: ${selectedAddressType.toString()}');
     notifyListeners();
   }
 

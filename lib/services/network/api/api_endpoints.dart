@@ -55,4 +55,7 @@ class ApiEndpoints {
   static const String unreadNotificationCount = 'unread';
   static const String subsDayDetails = 'subscriptions/day/details';
   static const String getAllUnits = 'getAllUnits';
+  static const String deleteAccount = 'admin-business/delete';
+  static const String accountSwitch = 'user/account/switch';
+  static const String subsInvoiceGenrate = 'order/subscriptions-generate';
 }

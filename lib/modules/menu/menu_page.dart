@@ -678,9 +678,8 @@ class _MenuPageState extends State<MenuPage> {
                           child: Align(
                             alignment: Alignment.bottomLeft,
                             child: GestureDetector(
-                              onTap: () {
-                                Navigator.pushNamed(context, Routes.orderList);
-                              },
+                              onTap: () => Navigator.pushNamed(
+                                  context, Routes.orderList),
                               child: Container(
                                 height: 50.h,
                                 width: 142.w,

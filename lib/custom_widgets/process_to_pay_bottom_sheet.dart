@@ -104,7 +104,7 @@ void showProcessToPayBottomSheeet({
                       : Text(
                           'Please select an address first',
                           style: GoogleFonts.publicSans(
-                            color: AppColors.white,
+                            color: AppColors.red,
                           ),
                         ),
                   SizedBox(height: 4.h),

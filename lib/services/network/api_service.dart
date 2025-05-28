@@ -19,6 +19,7 @@ import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:dio/dio.dart';
+import '../../models/account_switch_model.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
 import '../../models/get_all_units_model.dart';
@@ -485,5 +486,17 @@ class ApiService {
 
   Future<GetAllUnitsModel> getAllUnits() async {
     return await apiClient.getAllUnits();
+  }
+
+  Future<ApiGlobalModel> deleteAccount({
+    required String userId,
+  }) async {
+    return await apiClient.deleteAccount(userId);
+  }
+
+  Future<AccountSwitchModel> accountSwitch({
+    required String contact,
+  }) async {
+    return await apiClient.accountSwitch(contact);
   }
 }

@@ -232,6 +232,7 @@ class GoogleMapProvider extends ChangeNotifier {
 
   String? address;
   String? distance;
+  String? confirmDistance;
   bool isFirstCall = true;
 
   //* Socket Get location

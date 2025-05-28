@@ -140,6 +140,8 @@ class _GoogleMapPageState extends State<GoogleMapPage> {
     final socketProvider = Provider.of<SocketProvider>(context, listen: false);
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+    log('Distance (km): ${provider.distance}');
+    log('Confirm Distance (km): ${provider.confirmDistance}');
 
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(

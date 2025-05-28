@@ -80,78 +80,73 @@ class FabMenuButton extends StatelessWidget {
             PopupMenuItem(
               enabled: false,
               child: Center(
-                child: Container(
-                  // color: Colors.amber,
-                  child: SizedBox(
-                    width: 130.w, //* Box size
-                    height: 250.h,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: provider.menuCategories != null &&
-                                provider.menuCategories!.isNotEmpty
-                            ? provider.menuCategories!.map(
-                                (item) {
-                                  return PopupMenuItem<String>(
-                                    value: item.categoryTitle,
-                                    child: Container(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 15.h),
-                                      width: double.infinity,
-                                      decoration: BoxDecoration(
-                                        color: provider.selectedValue ==
-                                                item.categoryTitle
-                                            ? getColorAccountType(
+                child: SizedBox(
+                  width: 130.w, //* Box size
+                  height: 250.h,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: provider.menuCategories != null &&
+                              provider.menuCategories!.isNotEmpty
+                          ? provider.menuCategories!.map(
+                              (item) {
+                                return PopupMenuItem<String>(
+                                  value: item.categoryTitle,
+                                  child: Container(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 15.h),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: provider.selectedValue ==
+                                              item.categoryTitle
+                                          ? getColorAccountType(
+                                              accountType: accountType,
+                                              businessColor:
+                                                  AppColors.disabledColor,
+                                              personalColor: AppColors.bayLeaf,
+                                            )
+                                          : null,
+                                      borderRadius: BorderRadius.circular(30.r),
+                                    ),
+                                    child: Text(
+                                      item.categoryTitle?.toUpperCase() ??
+                                          'UNKNOWN',
+                                      textAlign: TextAlign.center,
+                                      style: provider.selectedValue ==
+                                              item.categoryTitle
+                                          ? GoogleFonts.publicSans(
+                                              fontSize: 15.sp,
+                                              fontWeight: FontWeight.bold,
+                                              color: getColorAccountType(
                                                 accountType: accountType,
                                                 businessColor:
-                                                    AppColors.disabledColor,
+                                                    AppColors.primaryColor,
                                                 personalColor:
-                                                    AppColors.bayLeaf,
-                                              )
-                                            : null,
-                                        borderRadius:
-                                            BorderRadius.circular(30.r),
-                                      ),
-                                      child: Text(
-                                        item.categoryTitle?.toUpperCase() ??
-                                            'UNKNOWN',
-                                        textAlign: TextAlign.center,
-                                        style: provider.selectedValue ==
-                                                item.categoryTitle
-                                            ? GoogleFonts.publicSans(
-                                                fontSize: 15.sp,
-                                                fontWeight: FontWeight.bold,
-                                                color: getColorAccountType(
-                                                  accountType: accountType,
-                                                  businessColor:
-                                                      AppColors.primaryColor,
-                                                  personalColor:
-                                                      AppColors.darkGreenGrey,
-                                                ),
-                                              )
-                                            : GoogleFonts.publicSans(
-                                                fontSize: 15.sp,
-                                                color: AppColors.seaShell,
+                                                    AppColors.darkGreenGrey,
                                               ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ).toList()
-                            : [
-                                Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(20.w),
-                                    child: Text(
-                                      "No Categories Available",
-                                      style: GoogleFonts.publicSans(
-                                          color: Colors.white),
+                                            )
+                                          : GoogleFonts.publicSans(
+                                              fontSize: 15.sp,
+                                              color: AppColors.seaShell,
+                                            ),
                                     ),
                                   ),
-                                )
-                              ], // Show a message when categories are empty
-                      ),
+                                );
+                              },
+                            ).toList()
+                          : [
+                              Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20.w),
+                                  child: Text(
+                                    "No Categories Available",
+                                    style: GoogleFonts.publicSans(
+                                        color: Colors.white),
+                                  ),
+                                ),
+                              )
+                            ], // Show a message when categories are empty
                     ),
                   ),
                 ),

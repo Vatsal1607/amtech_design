@@ -5,12 +5,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../../../models/subs_day_details_model.dart';
-import 'package:amtech_design/models/subscription_create_request_model.dart'
-    as create;
 import 'package:amtech_design/models/subscription_modify_request_model.dart'
     as modify;
-import 'package:amtech_design/models/subscription_summary_model.dart'
-    as summary;
 
 class SubscriptionDetailsProvider extends ChangeNotifier {
   DateTime firstDay = DateTime.utc(2000, 1, 1);

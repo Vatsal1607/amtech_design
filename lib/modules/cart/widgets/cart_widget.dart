@@ -170,7 +170,7 @@ class CartWidget extends StatelessWidget {
                         sizeId: cartItems?.size?[0].sizeId ?? '',
                         callback: (isSuccess) {
                           if (isSuccess) {
-                            debugPrint('Item added to cart successfully');
+                            debugPrint('s to cart successfully');
                             cartProvider.getListCart();
                             debugPrint('QTY: Incr: ${cartItems?.quantity}');
                           } else {

@@ -1,3 +1,4 @@
+import 'dart:developer' as dev;
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/bottom_blur_on_page.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
@@ -21,15 +22,24 @@ class OrderListPage extends StatefulWidget {
 }
 
 class _OrderListPageState extends State<OrderListPage> {
+  late OrderListProvider provider;
+  late SocketProvider socketProvider;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<OrderListProvider>(context, listen: false);
-      final socketProvider =
-          Provider.of<SocketProvider>(context, listen: false);
+      provider = Provider.of<OrderListProvider>(context, listen: false);
+      socketProvider = Provider.of<SocketProvider>(context, listen: false);
       provider.emitAndListenAllOrderStatus(socketProvider);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    provider
+        .disposeAllOrderStatus(socketProvider); // Correctly stops everything
+    super.dispose();
   }
 
   @override

@@ -74,7 +74,6 @@ SnackBar cartSnackbarWidget({
   required BuildContext context,
   String accountType = 'business',
 }) {
-  log('items: $items');
   final bool showAndMore = items.split(', ').length > 1;
   return SnackBar(
     shape: RoundedRectangleBorder(

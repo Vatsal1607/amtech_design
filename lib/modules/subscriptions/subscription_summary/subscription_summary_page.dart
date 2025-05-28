@@ -41,8 +41,6 @@ class _SubscriptionSummaryPageState extends State<SubscriptionSummaryPage> {
   Widget build(BuildContext context) {
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    final provider =
-        Provider.of<SubscriptionSummaryProvider>(context, listen: false);
     return Scaffold(
       appBar: CustomAppbarWithCenterTitle(
         title: 'Subscription Summary',

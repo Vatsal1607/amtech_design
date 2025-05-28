@@ -112,10 +112,21 @@ class SavedAddressProvider extends ChangeNotifier {
 
   String formatDistance(double? distance) {
     if (distance == null) return "--";
-
     return distance % 1 == 0
         ? "${(distance * 10).toInt()} M away" // Convert to meters if whole number
         : "$distance KM away"; // Show as KM if decimal
+  }
+
+  //* Normalize & Store Distance Always in KM
+  double normalizeDistance(dynamic distance) {
+    if (distance == null) return 0.0;
+    final doubleValue = double.tryParse(distance.toString()) ?? 0.0;
+    // If value is a whole number and >= 100, assume it's in meters
+    if (doubleValue % 1 == 0) {
+      return doubleValue / 1000; // convert meters to KM
+    }
+    // Otherwise, assume it's already in KM
+    return doubleValue;
   }
 
   double parseDouble(dynamic value) {

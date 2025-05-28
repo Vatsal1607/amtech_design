@@ -60,7 +60,7 @@ class SelectPaymentMethodWidget extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '₹ ${double.parse(payableAmount).toInt()} ',
+                  '₹ ${double.tryParse(payableAmount)?.toInt() ?? 0} ',
                   style: GoogleFonts.publicSans(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.bold,

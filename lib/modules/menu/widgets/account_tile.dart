@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +25,7 @@ class AccountTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    log('Profile pic $profilePic');
     return ListTile(
       onTap: onTap,
       leading: Container(
@@ -38,10 +41,12 @@ class AccountTile extends StatelessWidget {
           ),
         ),
         child: ClipOval(
-          child: Image.asset(
-            profilePic,
-            fit: BoxFit.cover,
-          ),
+          child: profilePic != ''
+              ? Image.network(
+                  profilePic,
+                  fit: BoxFit.cover,
+                )
+              : Image.asset(ImageStrings.defaultAvatar),
         ),
       ),
       title: Text(

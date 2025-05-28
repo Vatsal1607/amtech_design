@@ -139,8 +139,6 @@ class LoginProvider extends ChangeNotifier {
         'fcmToken': fcmToken,
         'deviceId': deviceId,
       };
-      debugPrint('--Request body: $body');
-      // Make the API call
       final UserLoginModel response = await apiService.userLogin(
         body: body,
       );
@@ -154,8 +152,6 @@ class LoginProvider extends ChangeNotifier {
           // * Save User id
           await sharedPrefsService.setString(
               SharedPrefsKeys.userId, response.data?.user?.sId ?? '');
-          // await sharedPrefsService.setString(
-          //     SharedPrefsKeys.userId, AuthTokenHelper.getUserId().toString());
           // * Save contact
           await sharedPrefsService.setString(SharedPrefsKeys.userContact,
               AuthTokenHelper.getUserContact().toString());

@@ -259,29 +259,15 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 33.w),
               child: Column(
                 children: [
-                  // * Consider tile Index 0
                   Consumer<ProfileProvider>(
                     builder: (context, _, child) => ProfileTile(
+                      // * Consider tile Index 0
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(0);
-                        Navigator.pop(context);
-                      },
-                      isSelected: provider.selectedTileIndex == 0,
-                      title: 'Home',
-                      icon: IconStrings.home,
-                    ),
-                  ),
-                  SizedBox(height: 20.h),
-                  Consumer<ProfileProvider>(
-                    builder: (context, _, child) => ProfileTile(
-                      // * Consider tile Index 1
-                      accountType: accountType,
-                      onTap: () {
-                        provider.updateTileIndex(1);
                         Navigator.pushNamed(context, Routes.favoriteItems);
                       },
-                      isSelected: provider.selectedTileIndex == 1,
+                      isSelected: provider.selectedTileIndex == 0,
                       title: 'Favorite Products',
                       icon: IconStrings.favorite,
                     ),
@@ -293,13 +279,13 @@ class ProfilePage extends StatelessWidget {
                           int.parse(userContact)))
                     Consumer<ProfileProvider>(
                       builder: (context, _, child) => ProfileTile(
-                        // * Consider tile Index 2
+                        // * Consider tile Index 1
                         accountType: accountType,
                         onTap: () {
-                          provider.updateTileIndex(2);
+                          provider.updateTileIndex(1);
                           Navigator.pushNamed(context, Routes.authorizedEmp);
                         },
-                        isSelected: provider.selectedTileIndex == 2,
+                        isSelected: provider.selectedTileIndex == 1,
                         title: 'Authorized Employees',
                         icon: IconStrings.authorizedEmp,
                       ),
@@ -311,15 +297,29 @@ class ProfilePage extends StatelessWidget {
                     SizedBox(height: 20.h),
                   Consumer<ProfileProvider>(
                     builder: (context, _, child) => ProfileTile(
+                      // * Consider tile Index 2
+                      accountType: accountType,
+                      onTap: () {
+                        provider.updateTileIndex(2);
+                        Navigator.pushNamed(context, Routes.feedback);
+                      },
+                      isSelected: provider.selectedTileIndex == 2,
+                      title: 'Feedback',
+                      icon: IconStrings.feedback,
+                    ),
+                  ),
+                  SizedBox(height: 20.h),
+                  Consumer<ProfileProvider>(
+                    builder: (context, _, child) => ProfileTile(
                       // * Consider tile Index 3
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(3);
-                        Navigator.pushNamed(context, Routes.feedback);
+                        Navigator.pushNamed(context, Routes.aboutUs);
                       },
                       isSelected: provider.selectedTileIndex == 3,
-                      title: 'Feedback',
-                      icon: IconStrings.feedback,
+                      title: 'About Us',
+                      icon: IconStrings.aboutUs,
                     ),
                   ),
                   SizedBox(height: 20.h),
@@ -329,11 +329,24 @@ class ProfilePage extends StatelessWidget {
                       accountType: accountType,
                       onTap: () {
                         provider.updateTileIndex(4);
-                        Navigator.pushNamed(context, Routes.aboutUs);
+                        showDialog(
+                          context: context,
+                          builder: (context) => CustomConfirmDialog(
+                            isLoading: provider.isLoadingAccountDelete,
+                            title: 'Confirmation',
+                            subTitle: 'Are you sure want to delete Account?',
+                            accountType: accountType,
+                            onTapYes: () async {
+                              await provider.deleteAccount(context); //* API
+                            },
+                          ),
+                        );
                       },
                       isSelected: provider.selectedTileIndex == 4,
-                      title: 'About Us',
-                      icon: IconStrings.aboutUs,
+                      title: 'Delete Account',
+                      titleColor: AppColors.red,
+                      icon: IconStrings.deleteAccount,
+                      iconColor: AppColors.red,
                     ),
                   ),
                 ],

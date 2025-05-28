@@ -8,18 +8,20 @@ import '../../../custom_widgets/svg_icon.dart';
 class ProfileTile extends StatelessWidget {
   final String title;
   final String icon;
-  final Color iconColor;
+  final Color? iconColor;
   final bool isSelected;
   final VoidCallback? onTap;
   final String accountType;
+  final Color? titleColor;
   const ProfileTile({
     super.key,
     required this.title,
     required this.icon,
-    this.iconColor = AppColors.seaShell,
+    this.iconColor,
     this.isSelected = false,
     this.onTap,
     required this.accountType,
+    this.titleColor,
   });
 
   @override
@@ -46,13 +48,13 @@ class ProfileTile extends StatelessWidget {
               color: isSelected
                   ? getColorAccountType(
                       accountType: accountType,
-                      businessColor: iconColor,
-                      personalColor: AppColors.seaMist,
+                      businessColor: iconColor ?? AppColors.seaShell,
+                      personalColor: iconColor ?? AppColors.seaMist,
                     )
                   : getColorAccountType(
                       accountType: accountType,
-                      businessColor: AppColors.disabledColor,
-                      personalColor: AppColors.bayLeaf,
+                      businessColor: iconColor ?? AppColors.disabledColor,
+                      personalColor: iconColor ?? AppColors.bayLeaf,
                     ),
             ),
             SizedBox(width: 10.h),
@@ -62,19 +64,21 @@ class ProfileTile extends StatelessWidget {
                   ? GoogleFonts.publicSans(
                       fontSize: 15.sp,
                       fontWeight: FontWeight.w700,
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.seaShell,
-                        personalColor: AppColors.seaMist,
-                      ),
+                      color: titleColor ??
+                          getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.seaShell,
+                            personalColor: AppColors.seaMist,
+                          ),
                     )
                   : GoogleFonts.publicSans(
                       fontSize: 15.sp,
-                      color: getColorAccountType(
-                        accountType: accountType,
-                        businessColor: AppColors.primaryColor,
-                        personalColor: AppColors.darkGreenGrey,
-                      ),
+                      color: titleColor ??
+                          getColorAccountType(
+                            accountType: accountType,
+                            businessColor: AppColors.primaryColor,
+                            personalColor: AppColors.darkGreenGrey,
+                          ),
                     ),
             )
           ],

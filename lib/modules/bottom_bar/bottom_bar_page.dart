@@ -76,7 +76,8 @@ class _BottomBarPageState extends State<BottomBarPage> {
               },
             ),
           ),
-          AccountSelectionWidget(
+          //* Account Switcher
+          AccountSwitcherWidget(
             accountType: accountType,
           ),
         ],

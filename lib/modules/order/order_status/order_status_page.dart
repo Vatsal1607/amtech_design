@@ -23,12 +23,14 @@ class OrderStatusPage extends StatefulWidget {
 }
 
 class _OrderStatusPageState extends State<OrderStatusPage> {
+  late OrderStatusProvider provider;
+  late SocketProvider socketProvider;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<OrderStatusProvider>(context, listen: false);
-      final socketProvider =
-          Provider.of<SocketProvider>(context, listen: false);
+      provider = Provider.of<OrderStatusProvider>(context, listen: false);
+      socketProvider = Provider.of<SocketProvider>(context, listen: false);
       final args =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
       String orderId = args?['orderId'] ?? '';
@@ -36,6 +38,12 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
       provider.emitAndListenOrderStatus(socketProvider, orderId);
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    provider.disposeOrderStatus(socketProvider);
+    super.dispose();
   }
 
   @override
@@ -54,107 +62,110 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
         title: 'Order',
         isBack: isBack,
       ),
-      body: Consumer<OrderStatusProvider>(
-        builder: (context, provider, child) => provider.isLoading
-            ? Center(
-                child: CustomLoader(
-                  backgroundColor: getColorAccountType(
-                    accountType: accountType,
-                    businessColor: AppColors.primaryColor,
-                    personalColor: AppColors.darkGreenGrey,
+      body: WillPopScope(
+        onWillPop: () async => isBack, // Prevent back
+        child: Consumer<OrderStatusProvider>(
+          builder: (context, provider, child) => provider.isLoading
+              ? Center(
+                  child: CustomLoader(
+                    backgroundColor: getColorAccountType(
+                      accountType: accountType,
+                      businessColor: AppColors.primaryColor,
+                      personalColor: AppColors.darkGreenGrey,
+                    ),
                   ),
-                ),
-              )
-            : Stack(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 80.h),
-                    child: SingleChildScrollView(
-                      physics: const ClampingScrollPhysics(),
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 32.w, right: 32.w, bottom: 50.h),
-                        child: Column(
-                          children: [
-                            // * Lottie file
-                            SizedBox(
-                              height: 340.h,
-                              child: Consumer<OrderStatusProvider>(
-                                builder: (context, provider, child) =>
-                                    Lottie.asset(
-                                  provider.getLottieFile(
-                                      accountType, provider.orderStatusEnum),
-                                ),
-                              ),
-                            ),
-                            Text(
-                              "Your Order Has Been",
-                              style: GoogleFonts.publicSans(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16.sp,
-                                color: getColorAccountType(
-                                  accountType: accountType,
-                                  businessColor: AppColors.primaryColor,
-                                  personalColor: AppColors.darkGreenGrey,
-                                ),
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            Consumer<OrderStatusProvider>(
-                              builder: (context, provider, child) => Text(
-                                // "Placed Successfully!",
-                                provider.getOrderStatusText(
-                                    accountType, provider.orderStatusEnum),
-                                style: GoogleFonts.publicSans(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30.sp,
-                                  color: getColorAccountType(
-                                    accountType: accountType,
-                                    businessColor: AppColors.disabledColor,
-                                    personalColor: AppColors.bayLeaf,
+                )
+              : Stack(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 80.h),
+                      child: SingleChildScrollView(
+                        physics: const ClampingScrollPhysics(),
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 32.w, right: 32.w, bottom: 50.h),
+                          child: Column(
+                            children: [
+                              // * Lottie file
+                              SizedBox(
+                                height: 340.h,
+                                child: Consumer<OrderStatusProvider>(
+                                  builder: (context, provider, child) =>
+                                      Lottie.asset(
+                                    provider.getLottieFile(
+                                        accountType, provider.orderStatusEnum),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(height: 40.h),
-                            // * Order status with progress indicator
-                            OrderStatusWithProgressWidget(
+                              Text(
+                                "Your Order Has Been",
+                                style: GoogleFonts.publicSans(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16.sp,
+                                  color: getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 8.h),
+                              Consumer<OrderStatusProvider>(
+                                builder: (context, provider, child) => Text(
+                                  // "Placed Successfully!",
+                                  provider.getOrderStatusText(
+                                      accountType, provider.orderStatusEnum),
+                                  style: GoogleFonts.publicSans(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30.sp,
+                                    color: getColorAccountType(
+                                      accountType: accountType,
+                                      businessColor: AppColors.disabledColor,
+                                      personalColor: AppColors.bayLeaf,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 40.h),
+                              // * Order status with progress indicator
+                              OrderStatusWithProgressWidget(
+                                accountType: accountType,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              left: 32.w, right: 32.w, bottom: 48.h),
+                          child: CustomButton(
+                            height: 55.h,
+                            bgColor: getColorAccountType(
                               accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
                             ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                            left: 32.w, right: 32.w, bottom: 48.h),
-                        child: CustomButton(
-                          height: 55.h,
-                          bgColor: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.primaryColor,
-                            personalColor: AppColors.darkGreenGrey,
-                          ),
-                          onTap: () {
-                            Navigator.popUntil(context,
-                                ModalRoute.withName(Routes.bottomBarPage));
-                          },
-                          text: 'GO TO HOME',
-                          textColor: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.seaShell,
-                            personalColor: AppColors.seaMist,
+                            onTap: () {
+                              Navigator.popUntil(context,
+                                  ModalRoute.withName(Routes.bottomBarPage));
+                            },
+                            text: 'GO TO HOME',
+                            textColor: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.seaShell,
+                              personalColor: AppColors.seaMist,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
-              ),
+                    )
+                  ],
+                ),
+        ),
       ),
     );
   }

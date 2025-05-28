@@ -37,9 +37,8 @@ class CustomSliverAppbar extends StatelessWidget {
           //! leading icon
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, Routes.profile),
-            //Todo Uncoment (implement)
             //* IMP: Account switch logic
-            // onLongPress: provider.onVerticalDragDownLeading,
+            onLongPress: provider.onVerticalDragDownLeading,
             child: Container(
               height: 48.h,
               width: 48.w,
@@ -111,8 +110,8 @@ class CustomSliverAppbar extends StatelessWidget {
                     builder: (context, menuProvider, child) => Text(
                       accountType == 'business'
                           ? menuProvider.homeMenuResponse?.data?.businessName ??
-                              ''
-                          : '${menuProvider.homeMenuResponse?.data?.firstName ?? ''}'
+                              'User'
+                          : '${menuProvider.homeMenuResponse?.data?.firstName ?? 'User'}'
                               ' ${menuProvider.homeMenuResponse?.data?.lastName ?? ''}',
                       style: GoogleFonts.publicSans(
                         fontSize: 24.sp,

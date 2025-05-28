@@ -29,13 +29,15 @@ class EditProfileProvider extends ChangeNotifier {
   GetBusinessDetailsModel? detailsResponse;
   GetPersonalDetailsModel? personalDetailsResponse;
   String? selectedBusinessType;
+
   List<String> businessTypeItems = [
     'Sole Proprietorship',
-    '⁠Partnership',
-    '⁠Limited Liability Partnership (LLP)',
-    '⁠Limited Liability Company (LLC)',
-    '⁠Private Limited Company',
+    'Partnership',
+    'Limited Liability Partnership (LLP)',
+    'Limited Liability Company (LLC)',
+    'Private Limited Company',
   ];
+
   onChangeBusinessType(String? newValue) {
     selectedBusinessType = newValue;
     notifyListeners();

@@ -48,24 +48,4 @@ class AuthTokenHelper {
       return null;
     }
   }
-  // static String? getUserContact() {
-  //   try {
-  //     String? authToken =
-  //         sharedPrefsService.getString(SharedPrefsKeys.userToken);
-  //     if (authToken != null) {
-  //       List<String> tokenParts = authToken.split('.');
-  //       if (tokenParts.length == 3) {
-  //         String payloadBase64 = tokenParts[1];
-  //         String payload = utf8.decode(base64Url.decode(payloadBase64));
-  //         Map<String, dynamic> payloadMap = jsonDecode(payload);
-  //         return payloadMap[
-  //             'contact']; // Assuming 'contact' is the key for mobile number in the payload
-  //       }
-  //     }
-  //     return null; // * If the structure is invalid\
-  //   } catch (e) {
-  //     debugPrint('Error extracting userId: $e');
-  //     return null;
-  //   }
-  // }
 }

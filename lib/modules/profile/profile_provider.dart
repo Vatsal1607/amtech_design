@@ -11,7 +11,6 @@ import '../../core/utils/app_globals.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../routes.dart';
-import '../../services/local/device_info_service.dart';
 import '../../services/network/api_service.dart';
 
 class ProfileProvider extends ChangeNotifier {
@@ -79,12 +78,6 @@ class ProfileProvider extends ChangeNotifier {
             textColor: AppColors.primaryColor,
           );
         }
-        // else {
-        //   navigatorKey.currentState?.pushNamedAndRemoveUntil(
-        //     Routes.accountSelection,
-        //     (route) => false,
-        //   );
-        // }
         return true;
       } else {
         if (context != null) {
@@ -119,6 +112,40 @@ class ProfileProvider extends ChangeNotifier {
       }
     } finally {
       _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  bool isLoadingAccountDelete = false;
+
+  Future deleteAccount(BuildContext context) async {
+    isLoadingAccountDelete = true;
+    notifyListeners();
+    try {
+      final res = await apiService.deleteAccount(
+        userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '',
+      );
+      if (res.success == true) {
+        sharedPrefsService.clear();
+        Navigator.pushNamedAndRemoveUntil(
+          navigatorKey.currentContext!,
+          Routes.accountSelection,
+          (Route<dynamic> route) => false,
+        );
+        updateTileIndex(0);
+      } else {
+        customSnackBar(context: context, message: res.message.toString());
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          log(data['message']);
+        }
+      }
+      log("Error deleteAccount: ${e.toString()}");
+    } finally {
+      isLoadingAccountDelete = false;
       notifyListeners();
     }
   }

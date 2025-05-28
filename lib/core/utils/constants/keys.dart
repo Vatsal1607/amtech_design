@@ -21,6 +21,7 @@ class SharedPrefsKeys {
   static const String selectedAddressType = 'selectedAddressType';
   static const String userName = 'user_name';
   static const String remainingPerksAmount = 'remaining_perks_amount';
+  static const String confirmDistance = 'confirm_distance';
 }
 
 class SocketEvents {

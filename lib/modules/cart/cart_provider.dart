@@ -27,7 +27,6 @@ class CartProvider extends ChangeNotifier {
 
   double dragPosition = 10.w; // Track the drag position
   final double maxDrag = 280.w; // Maximum drag length
-  // maxDrag parentWidth - buttonWidth - 10.0;
   final minDrag = 10.w;
   bool isConfirmed = false; // Track if the action is confirmed
 
@@ -74,7 +73,7 @@ class CartProvider extends ChangeNotifier {
         if (selectedPaymentMethod == SelectedPaymentMethod.perks.name) {
           await rechargeDeduct(
             context,
-            totalAmount ?? '',
+            payableAmount,
             isSubscriptionPay,
           ).then(
             (isSuccess) {
@@ -87,7 +86,6 @@ class CartProvider extends ChangeNotifier {
                 socketProvider.listenToEvent(
                   SocketEvents.orderReceive,
                   (data) async {
-                    log('listenToEvent orderReceive: $data');
                     final order = data['order'];
                     if (order != null && order['_id'] != null) {
                       orderId = order['_id'];
@@ -117,7 +115,6 @@ class CartProvider extends ChangeNotifier {
           socketProvider.listenToEvent(
             SocketEvents.orderReceive,
             (data) {
-              log('listenToEvent orderReceive: $data');
               final order = data['order'];
               if (order != null && order['_id'] != null) {
                 orderId = order['_id'];
@@ -145,7 +142,6 @@ class CartProvider extends ChangeNotifier {
                         description: '',
                         name: '',
                       );
-                      // openRazorpay(context: context);
                       debugPrint('isSuccess callback api-——: $isSuccess');
                     } else {
                       debugPrint('isSuccess callback api-——: $isSuccess');
@@ -206,25 +202,19 @@ class CartProvider extends ChangeNotifier {
           //* API call Subscription payment
           final subscriptionCartProvider =
               Provider.of<SubscriptionCartProvider>(context, listen: false);
-          subscriptionCartProvider
-              .getTotalWithGST(subscriptionCartProvider.getGrandTotal())
-              .toStringAsFixed(2);
-          log('Amount (subs cart): ${subscriptionCartProvider.getTotalWithGST(subscriptionCartProvider.getGrandTotal()).toStringAsFixed(2)}');
-          log('Amount totalAmount (subs cart): ${subscriptionCartProvider.getGrandTotal()}');
           await rechargeProvider
               .userRecharge(
             context: context,
-            amount: subscriptionCartProvider
-                .getTotalWithGST(subscriptionCartProvider.getGrandTotal())
-                .round(),
+            amount: subscriptionCartProvider.calculateTotalAmount().round(),
           )
               .then((isSuccess) {
             if (isSuccess) {
               //! Open razorpay
               RazorpayService().openRazorpayCheckout(
                 amountText: subscriptionCartProvider
-                    .getTotalWithGST(subscriptionCartProvider.getGrandTotal())
-                    .toStringAsFixed(2),
+                    .calculateTotalAmount()
+                    .round()
+                    .toString(),
                 orderId: rechargeProvider.razorpayOrderId ?? '',
                 description: '',
                 name: '',
@@ -267,7 +257,6 @@ class CartProvider extends ChangeNotifier {
     BuildContext context,
     PaymentSuccessResponse response,
   ) {
-    log('Payment-Success: ${response.data}');
     if (response.paymentId != null) {
       //* Reset position
       dragPosition = 10.w;
@@ -298,7 +287,6 @@ class CartProvider extends ChangeNotifier {
         paymentMethod: paymentMethod,
       );
       if (response.success == true) {
-        log('SUCCESS of orderPayment');
         await clearCart(); //* API
         Navigator.pushNamed(
           context,
@@ -317,7 +305,6 @@ class CartProvider extends ChangeNotifier {
 
   void handlePaymentError(
       BuildContext context, PaymentFailureResponse response) {
-    log('Payment-Failure: ${response.toString()}');
     // Payment failure callback
     showDialog(
       context: context,
@@ -337,7 +324,6 @@ class CartProvider extends ChangeNotifier {
 
   void handleExternalWallet(
       BuildContext context, ExternalWalletResponse response) {
-    log('Payment-External wallet: ${response.toString()}');
     // External wallet callback
     showDialog(
       context: context,
@@ -371,7 +357,6 @@ class CartProvider extends ChangeNotifier {
         userId: userId,
         userType: accountType == 'business' ? 0 : 1,
       );
-      log('getListCart: ${res.data}');
       if (res.success == true && res.data != null) {
         listCartResponse = res;
         cartItemList = res.data?.carts?[0].items;
@@ -403,16 +388,14 @@ class CartProvider extends ChangeNotifier {
         .toList();
     final String cartSnackbarItemText = itemNames.join(', ');
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
-    // Ensure Snackbar shows only after build is complete
     WidgetsBinding.instance.addPostFrameCallback((_) {
       menuProvider.updateSnackBarVisibility(true);
       ScaffoldMessenger.of(context)
           .showSnackBar(
             cartSnackbarWidget(
               accountType: accountType,
-              // message: '$totalItems item(s) added',
               message:
-                  '$totalItems ${totalItems == 1 ? 'item' : 'items'} added',
+                  '$totalItems ${totalItems == 1 ? 'Item' : 'Items'} Added',
               items: cartSnackbarItemText,
               context: context,
             ),
@@ -420,7 +403,6 @@ class CartProvider extends ChangeNotifier {
           .closed
           .then((_) {
         menuProvider.updateSnackBarVisibility(false);
-        log('Snackbar closed');
       });
     });
   }
@@ -438,15 +420,13 @@ class CartProvider extends ChangeNotifier {
         "userId": sharedPrefsService.getString(SharedPrefsKeys.userId),
         "amountToDeduct": double.parse(payableAmount).toInt(),
       };
-      log('requestBody: ${requestBody.toString()}');
       final res = await apiService.rechargeDeduct(
         body: requestBody,
       );
-      log('rechargeDeduct: ${res.data}');
       if (res.success == true && res.data != null) {
         if (!isSubscriptionPay) {
           Future.delayed(
-            const Duration(seconds: 1),
+            const Duration(milliseconds: 500), //replace from second 1
             () async {
               debugPrint("Order Placed!");
               //* Action confirmed
@@ -466,7 +446,6 @@ class CartProvider extends ChangeNotifier {
           );
         } else if (isSubscriptionPay) {
           //* Subscription
-          debugPrint("Order Placed!");
           //* Action confirmed
           isConfirmed = true;
           Navigator.popUntil(
@@ -502,9 +481,8 @@ class CartProvider extends ChangeNotifier {
         paymentMethod: paymentMethod,
         paymentStatus: 'Completed',
       );
-      log('orderPaymentDeduct: $response');
       if (response.success == true) {
-        log('SUCCESS of orderPaymentDeduct');
+        // log('SUCCESS of orderPaymentDeduct');
       }
       return response;
     } catch (e) {
@@ -526,8 +504,6 @@ class CartProvider extends ChangeNotifier {
 
   //* clearCart
   Future<void> clearCart() async {
-    // isLoading = true;
-    // notifyListeners();
     try {
       final res = await apiService.clearCart(
         cartId: listCartResponse?.data?.carts?[0].sId ?? '',
@@ -539,9 +515,6 @@ class CartProvider extends ChangeNotifier {
       }
     } catch (e) {
       debugPrint("Error clearCart: ${e.toString()}");
-    } finally {
-      // isLoading = false;
-      // notifyListeners();
     }
   }
 
@@ -549,18 +522,44 @@ class CartProvider extends ChangeNotifier {
   List<MenuItems> getMixedItemsFromCategories(List<MenuCategories> categories,
       {int perCategory = 2}) {
     final List<MenuItems> mixedItems = [];
-
     for (final category in categories) {
       // Copy and shuffle items from this category
       final items = List<MenuItems>.from(category.menuItems ?? [])..shuffle();
-
       // Take a few items (if available)
       final selected = items.take(perCategory);
       mixedItems.addAll(selected);
     }
-
     // Optionally shuffle the final list to mix items from different categories
     mixedItems.shuffle();
     return mixedItems;
+  }
+
+  //* Normal order Delivery charges
+  double getDeliveryCharges({
+    required double distanceInKm,
+  }) {
+    const double freeDistance = 1.0;
+    const double ratePerKm = 7.0;
+    const double gstRate = 0.18;
+    // Calculate chargeable distance
+    final chargeableDistance =
+        distanceInKm > freeDistance ? distanceInKm - freeDistance : 0.0;
+    // Calculate base delivery cost (before GST)
+    final baseDeliveryCost = chargeableDistance * ratePerKm;
+    // Add GST
+    final gstAmount = baseDeliveryCost * gstRate;
+    final totalDeliveryCharge = baseDeliveryCost + gstAmount;
+    return totalDeliveryCharge;
+  }
+
+  int calculateFinalTotalAmount({
+    required String? storedDistance,
+    required String? itemTotalString,
+  }) {
+    final distanceInKm = double.tryParse(storedDistance ?? '0.0') ?? 0.0;
+    final itemTotal = double.tryParse(itemTotalString ?? '') ?? 0.0;
+    final deliveryCharge = getDeliveryCharges(distanceInKm: distanceInKm);
+    final total = itemTotal + deliveryCharge;
+    return total.round(); // Returns int, rounded value
   }
 }

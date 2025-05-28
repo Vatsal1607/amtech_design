@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/modules/bottom_bar/bottom_bar_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
@@ -10,9 +12,9 @@ import '../../../core/utils/strings.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import 'account_tile.dart';
 
-class AccountSelectionWidget extends StatelessWidget {
+class AccountSwitcherWidget extends StatelessWidget {
   final String accountType;
-  const AccountSelectionWidget({
+  const AccountSwitcherWidget({
     super.key,
     required this.accountType,
   });
@@ -43,38 +45,57 @@ class AccountSelectionWidget extends StatelessWidget {
           padding: EdgeInsets.zero,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          children: [
-            AccountTile(
-              onTap: () {
-                // * Change Save account type
-                sharedPrefsService.setString(
-                  SharedPrefsKeys.accountType,
-                  Strings.accountTypeBusiness,
+          children: menuProvider.accounts?.map((account) {
+                return AccountTile(
+                  onTap: () {
+                    // * Change Save account type
+                    // sharedPrefsService.setString(
+                    //   SharedPrefsKeys.accountType,
+                    //   Strings.accountTypeBusiness,
+                    // );
+                    log('Account ${account.userType}');
+                  },
+                  title: '${account.name}',
+                  subTitle: '${account.userType}',
+                  isCurrentAccount: sharedPrefsService
+                          .getString(SharedPrefsKeys.accountType) ==
+                      account.userType,
+                  profilePic: account.image ?? '',
                 );
-              },
-              title: 'AMTech Design',
-              subTitle: 'Business Account',
-              isCurrentAccount:
-                  sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
-                      'business',
-              profilePic: ImageStrings.logo,
-            ),
-            AccountTile(
-              onTap: () {
-                // * Change Save account type
-                sharedPrefsService.setString(
-                  SharedPrefsKeys.accountType,
-                  Strings.accountTypePersonal,
-                );
-              },
-              title: 'Anup Parekh',
-              subTitle: 'Personal Account',
-              isCurrentAccount:
-                  sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
-                      'personal',
-              profilePic: ImageStrings.personalPic,
-            ),
-          ],
+              }).toList() ??
+              [],
+          // children: [
+          //   AccountTile(
+          //     onTap: () {
+          // * Change Save account type
+          //       sharedPrefsService.setString(
+          //         SharedPrefsKeys.accountType,
+          //         Strings.accountTypeBusiness,
+          //       );
+          //     },
+          //     title: 'AMTech Design',
+          //     subTitle: 'Business Account',
+          //     isCurrentAccount:
+          //         sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
+          //             'business',
+          //     profilePic: ImageStrings.logo,
+          //   ),
+          //   AccountTile(
+          //     onTap: () {
+          //       // * Change Save account type
+          //       sharedPrefsService.setString(
+          //         SharedPrefsKeys.accountType,
+          //         Strings.accountTypePersonal,
+          //       );
+          //     },
+          //     title: 'Anup Parekh',
+          //     subTitle: 'Personal Account',
+          //     isCurrentAccount:
+          //         sharedPrefsService.getString(SharedPrefsKeys.accountType) ==
+          //             'personal',
+          //     profilePic: ImageStrings.personalPic,
+          //   ),
+          // ],
         ),
       ),
     );

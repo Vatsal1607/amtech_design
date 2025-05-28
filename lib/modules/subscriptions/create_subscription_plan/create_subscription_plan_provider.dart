@@ -12,19 +12,11 @@ import '../../../models/get_all_units_model.dart';
 import '../../../models/subscription_modify_request_model.dart' as modify;
 import '../../../models/timeslot_day_model.dart';
 import '../../../routes.dart';
-import 'package:amtech_design/models/subscription_summary_model.dart'
-    as summary;
 
 class CreateSubscriptionPlanProvider extends ChangeNotifier {
   String? _selectedValue;
   bool _isDropdownOpen = false;
 
-  // final List<Map<String, String>> items = [
-  //   {"label": "6 Units | ₹ 799", "value": "6", "price": "799"},
-  //   {"label": "25 Units | ₹ 2199", "value": "25", "price": "2199"},
-  //   {"label": "35 Units | ₹ 3499", "value": "35", "price": "3499"},
-  //   {"label": "40 Units | ₹ 4999", "value": "40", "price": "4999"},
-  // ];
   List<UnitItem> unitItems = [];
 
   bool isLoadingUnits = false;
@@ -37,7 +29,10 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
       if (res.success == true && res.data != null) {
         //* Assign data to the item
         unitItems = res.data ?? [];
-        log("Units loaded: ${unitItems.length}");
+        selectedUnits = res.data?.first.value ?? '0';
+        log('initial selectedPrice ${res.data?.first.price}');
+        selectedPrice =
+            double.tryParse(res.data?.first.price?.toString() ?? '') ?? 0.0;
       } else {
         log('${res.message}');
       }
@@ -58,8 +53,8 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
   String? get selectedValue => _selectedValue ?? unitItems.first.value;
   bool get isDropdownOpen => _isDropdownOpen;
 
-  String selectedUnits = '6';
-  double selectedPrice = 799;
+  String selectedUnits = '';
+  double selectedPrice = 0;
 
   void setSelectedValue(String? newValue) {
     _selectedValue = newValue;
@@ -73,14 +68,6 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
     } else {
       selectedPrice = 0.0;
     }
-
-    //OLD
-    // if (selectedItem.containsKey('price')) {
-    //   selectedPrice = double.tryParse(selectedItem.price!) ?? 0.0;
-    // } else {
-    //   selectedPrice = 0.0;
-    // }
-    log('selectedUnits: $selectedUnits, selectedPrice: $selectedPrice');
     notifyListeners();
   }
 
@@ -287,11 +274,10 @@ class CreateSubscriptionPlanProvider extends ChangeNotifier {
         items: subsItems, //* Subscription itemList
         price: selectedPrice,
         units: selectedUnits,
-        // paymentMethod: 'paymentMethod',
         paymentStatus: false,
       );
 
-      log('requestData: $requestData');
+      log('requestData: ${requestData.price}');
       final res = await apiService.subscriptionCreate(
         subscriptionCreateRequestData: requestData,
       );

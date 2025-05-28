@@ -11,6 +11,7 @@ import 'package:amtech_design/models/verify_recharge_model.dart';
 import 'package:amtech_design/services/network/api/api_endpoints.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import '../../models/account_switch_model.dart';
 import '../../models/add_to_cart_model.dart';
 import '../../models/add_to_cart_request_model.dart';
 import '../../models/billing_model.dart';
@@ -150,7 +151,6 @@ abstract class ApiClient {
     @Body() Map<String, dynamic> body,
   );
 
-  // Favorite
   @POST(ApiEndpoints.favoritesAdd)
   Future<FavoriteAddModel> favoritesAdd(
     @Body() Map<String, dynamic> body,
@@ -375,4 +375,19 @@ abstract class ApiClient {
 
   @GET(ApiEndpoints.getAllUnits)
   Future<GetAllUnitsModel> getAllUnits();
+
+  @DELETE("${ApiEndpoints.deleteAccount}/{userId}")
+  Future<ApiGlobalModel> deleteAccount(
+    @Path("userId") String userId,
+  );
+
+  @POST(ApiEndpoints.accountSwitch)
+  Future<AccountSwitchModel> accountSwitch(
+    @Field('contact') String contact, // with prefix 91
+  );
+
+  // @POST(ApiEndpoints.subsInvoiceGenrate)
+  // Future<SubscriptionCreateModel> subsInvoiceGenrate(
+  //   @Field('subscriptionId') String subscriptionId,
+  // );
 }

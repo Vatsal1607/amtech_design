@@ -387,8 +387,8 @@ class CartProvider extends ChangeNotifier {
         .where((name) => name.isNotEmpty)
         .toList();
     final String cartSnackbarItemText = itemNames.join(', ');
-    final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final menuProvider = Provider.of<MenuProvider>(context, listen: false);
       menuProvider.updateSnackBarVisibility(true);
       ScaffoldMessenger.of(context)
           .showSnackBar(

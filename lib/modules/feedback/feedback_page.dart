@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_title.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
@@ -43,6 +45,7 @@ class FeedbackPage extends StatelessWidget {
                 ),
                 SizedBox(height: 20.h),
                 TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
                   controller: provider.feedbackController,
                   maxLines: 7,
                   style: GoogleFonts.publicSans(
@@ -88,14 +91,19 @@ class FeedbackPage extends StatelessWidget {
             bottom: 50.h,
             left: 32.w,
             right: 32.w,
-            child: CustomButton(
-              height: 55.h,
-              onTap: () {},
-              text: 'submit',
-              bgColor: getColorAccountType(
-                accountType: accountType,
-                businessColor: AppColors.primaryColor,
-                personalColor: AppColors.darkGreenGrey,
+            child: Consumer<FeedbackProvider>(
+              builder: (context, _, child) => CustomButton(
+                height: 55.h,
+                isLoading: provider.isLoadingFeedback,
+                onTap: () {
+                  provider.feedbackSubmit(context);
+                },
+                text: 'submit',
+                bgColor: getColorAccountType(
+                  accountType: accountType,
+                  businessColor: AppColors.primaryColor,
+                  personalColor: AppColors.darkGreenGrey,
+                ),
               ),
             ),
           ),

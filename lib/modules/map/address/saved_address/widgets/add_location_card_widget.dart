@@ -91,7 +91,11 @@ class AddLocationCard extends StatelessWidget {
           //* Use your current location
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, Routes.googleMapPage);
+              Navigator.pushNamed(
+                context,
+                Routes.googleMapPage,
+                arguments: null,
+              );
             },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +125,7 @@ class AddLocationCard extends StatelessWidget {
                       Consumer<GoogleMapProvider>(
                         builder: (context, googleMapProvider, child) {
                           return Text(
-                            '${googleMapProvider.address}',
+                            googleMapProvider.address ?? '',
                             style: GoogleFonts.publicSans(
                               fontSize: 12.sp,
                               color: Colors.grey,

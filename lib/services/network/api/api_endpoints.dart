@@ -57,5 +57,6 @@ class ApiEndpoints {
   static const String getAllUnits = 'getAllUnits';
   static const String deleteAccount = 'admin-business/delete';
   static const String accountSwitch = 'user/account/switch';
+  static const String feedbackSumbit = 'feedback/sumbit';
   static const String subsInvoiceGenrate = 'order/subscriptions-generate';
 }

@@ -2107,6 +2107,47 @@ class _ApiClient implements ApiClient {
     return _value;
   }
 
+  @override
+  Future<ApiGlobalModel> feedbackSumbit(
+    String userId,
+    String userType,
+    String description,
+  ) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = {
+      'userId': userId,
+      'userType': userType,
+      'description': description,
+    };
+    final _options = _setStreamType<ApiGlobalModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          'feedback/sumbit',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        )));
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late ApiGlobalModel _value;
+    try {
+      _value = ApiGlobalModel.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    return _value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

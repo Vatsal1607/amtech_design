@@ -11,8 +11,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'core/utils/app_globals.dart';
-import 'modules/bottom_bar/account_switcher_provider.dart';
-import 'modules/bottom_bar/bottom_bar_page.dart';
 import 'modules/order/order_list/order_list_provider.dart';
 import 'modules/subscriptions/create_subscription_plan/ingredients_bottomsheet/ingredients_bottomsheet_provider.dart';
 import 'modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet_provider.dart';
@@ -99,7 +97,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SubscriptionDetailsProvider()),
         ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (_) => OrderListProvider()),
-        ChangeNotifierProvider(create: (_) => AccountSwitcherProvider()),
       ],
       child: ScreenUtilInit(
         designSize: const Size(430, 932), // Base screen size (width x height)

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
@@ -75,11 +77,13 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     // log('log userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
+    final provider = Provider.of<MenuProvider>(context, listen: false);
+    log('provider.dynamicKeys ${provider.dynamicKeys}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    final provider = Provider.of<MenuProvider>(context, listen: false);
+    // final provider = Provider.of<MenuProvider>(context, listen: false);
     return Consumer<MenuProvider>(
-      builder: (context, _, child) => provider.isLoading ||
+      builder: (context, provider, child) => provider.isLoading ||
               provider.isLoadingGetBanner
           ? const MenuPageLoader()
           : Scaffold(
@@ -304,7 +308,7 @@ class _MenuPageState extends State<MenuPage> {
                                               const SubscriptionBannerWidget(),
                                               SizedBox(height: 20.h),
 
-                                              // * ListView Categories
+                                              // * ListView Categories OLD
                                               ListView.separated(
                                                 shrinkWrap: true,
                                                 padding: EdgeInsets.zero,

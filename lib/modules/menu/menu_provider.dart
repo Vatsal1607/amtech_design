@@ -100,9 +100,11 @@ class MenuProvider extends ChangeNotifier {
   Map<String, GlobalKey> dynamicKeys = {}; // Store category keys dynamically
 
   void generateCategoryKeys(List<MenuCategories> categories) {
+    dynamicKeys.clear();
     for (var category in categories) {
       dynamicKeys[category.categoryTitle ?? ""] = GlobalKey();
     }
+    log('dynamicKeys $dynamicKeys');
     notifyListeners(); // Update UI after keys are generated
   }
 

@@ -114,10 +114,13 @@ class LoginProvider extends ChangeNotifier {
   final ApiService apiService = ApiService();
 
   //! User login API
-  Future<void> userLogin(
-    BuildContext context,
-    String accountType,
-  ) async {
+  //* New login method with callback
+  Future<bool> userLogin({
+    required BuildContext context,
+    required String accountType,
+    bool isAccountSwitch = false,
+    String? accountSwitchContact,
+  }) async {
     _isLoading = true;
     notifyListeners();
     try {
@@ -126,10 +129,11 @@ class LoginProvider extends ChangeNotifier {
       final fcmToken = sharedPrefsService.getString(SharedPrefsKeys.fcmToken);
       final deviceId = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
       final Map<String, dynamic> body = {
-        'contact': int.parse('91${phoneController.text}'),
+        'contact': isAccountSwitch
+            ? accountSwitchContact
+            : int.parse('91${phoneController.text}'),
         'location': location,
-        if (accountType == 'business')
-          'company': company, // business.businessName
+        if (accountType == 'business') 'company': company,
         'role': accountType == 'business'
             ? validateContactInSecondaryAccess(
                     int.parse('91${phoneController.text}'))
@@ -139,39 +143,39 @@ class LoginProvider extends ChangeNotifier {
         'fcmToken': fcmToken,
         'deviceId': deviceId,
       };
-      final UserLoginModel response = await apiService.userLogin(
-        body: body,
-      );
-      log('User login Response: $response');
+      log('requestBody login: $body');
+      final UserLoginModel response = await apiService.userLogin(body: body);
       if (response.success == true) {
-        log(response.message.toString());
         if (response.data != null) {
-          // * Save User Token
           await sharedPrefsService.setString(
               SharedPrefsKeys.userToken, response.data!.token!);
-          // * Save User id
           await sharedPrefsService.setString(
               SharedPrefsKeys.userId, response.data?.user?.sId ?? '');
-          // * Save contact
+          log('User Id from local: $accountType ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
+          log('User Id from response: $accountType ${response.data?.user?.sId}');
           await sharedPrefsService.setString(SharedPrefsKeys.userContact,
               AuthTokenHelper.getUserContact().toString());
         }
-        // * send otp API call
-        await sendOtp(
-          context: context,
-          mobile: phoneController.text,
-          accountType: accountType,
-          isNavigateToOtpPage: true,
-        );
-        phoneController.clear();
+        if (isAccountSwitch) {
+          // handle account switch specific logic here if needed
+        } else {
+          await sendOtp(
+            context: context,
+            mobile: phoneController.text,
+            accountType: accountType,
+            isNavigateToOtpPage: true,
+          );
+          phoneController.clear();
+        }
+        return true; // SUCCESS
       } else {
         debugPrint('User login Message: ${response.message}');
+        return false; // FAIL from API
       }
     } catch (error) {
       log("Error during User login Response: $error");
 
       if (error is DioException) {
-        // Parse API error response
         final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
         customSnackBar(
           context: context,
@@ -180,7 +184,6 @@ class LoginProvider extends ChangeNotifier {
           textColor: AppColors.primaryColor,
         );
       } else {
-        // Handle unexpected errors
         customSnackBar(
           context: context,
           message: 'An unexpected error occurred',
@@ -188,12 +191,94 @@ class LoginProvider extends ChangeNotifier {
           textColor: AppColors.primaryColor,
         );
       }
+      return false; // FAIL on exception
     } finally {
-      // Ensure loading state is reset
       _isLoading = false;
       notifyListeners();
     }
   }
+  //* OLD Without callback
+  // Future<void> userLogin({
+  //   required BuildContext context,
+  //   required String accountType,
+  //   bool isAccountSwitch = false,
+  //   String? accountSwitchContact,
+  // }) async {
+  //   _isLoading = true;
+  //   notifyListeners();
+  //   try {
+  //     final location = sharedPrefsService.getString(SharedPrefsKeys.location);
+  //     final company = sharedPrefsService.getString(SharedPrefsKeys.company);
+  //     final fcmToken = sharedPrefsService.getString(SharedPrefsKeys.fcmToken);
+  //     final deviceId = sharedPrefsService.getString(SharedPrefsKeys.deviceId);
+  //     final Map<String, dynamic> body = {
+  //       'contact': isAccountSwitch
+  //           ? accountSwitchContact
+  //           : int.parse('91${phoneController.text}'),
+  //       'location': location,
+  //       if (accountType == 'business')
+  //         'company': company, // business.businessName
+  //       'role': accountType == 'business'
+  //           ? validateContactInSecondaryAccess(
+  //                   int.parse('91${phoneController.text}'))
+  //               ? '2'
+  //               : '0'
+  //           : '1',
+  //       'fcmToken': fcmToken,
+  //       'deviceId': deviceId,
+  //     };
+  //     final UserLoginModel response = await apiService.userLogin(body: body);
+  //     if (response.success == true) {
+  //       if (response.data != null) {
+  //         // * Save User Token
+  //         await sharedPrefsService.setString(
+  //             SharedPrefsKeys.userToken, response.data!.token!);
+  //         // * Save User id
+  //         await sharedPrefsService.setString(
+  //             SharedPrefsKeys.userId, response.data?.user?.sId ?? '');
+  //         // * Save contact
+  //         await sharedPrefsService.setString(SharedPrefsKeys.userContact,
+  //             AuthTokenHelper.getUserContact().toString());
+  //       }
+  //       if (isAccountSwitch) {
+  //         //* handle while isAccountSwitch is true
+  //         //
+  //       } else {
+  //         // * send otp API call
+  //         await sendOtp(
+  //           context: context,
+  //           mobile: phoneController.text,
+  //           accountType: accountType,
+  //           isNavigateToOtpPage: true,
+  //         );
+  //         phoneController.clear();
+  //       }
+  //     } else {
+  //       debugPrint('User login Message: ${response.message}');
+  //     }
+  //   } catch (error) {
+  //     log("Error during User login Response: $error");
+  //     if (error is DioException) {
+  //       final apiError = ApiGlobalModel.fromJson(error.response?.data ?? {});
+  //       customSnackBar(
+  //         context: context,
+  //         message: apiError.message ?? 'An error occurred',
+  //         backgroundColor: AppColors.seaShell,
+  //         textColor: AppColors.primaryColor,
+  //       );
+  //     } else {
+  //       customSnackBar(
+  //         context: context,
+  //         message: 'An unexpected error occurred',
+  //         backgroundColor: AppColors.seaShell,
+  //         textColor: AppColors.primaryColor,
+  //       );
+  //     }
+  //   } finally {
+  //     _isLoading = false;
+  //     notifyListeners();
+  //   }
+  // }
 
   // * send Otp API
   Future sendOtp({

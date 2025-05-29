@@ -27,8 +27,6 @@ class _VerifySuccessPageState extends State<VerifySuccessPage> {
           Routes.bottomBarPage,
           (Route<dynamic> route) => false,
         );
-
-        // Navigator.pushReplacementNamed(context, Routes.bottomBarPage);
       }
     });
     super.initState();

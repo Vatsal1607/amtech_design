@@ -386,6 +386,13 @@ abstract class ApiClient {
     @Field('contact') String contact, // with prefix 91
   );
 
+  @POST(ApiEndpoints.feedbackSumbit)
+  Future<ApiGlobalModel> feedbackSumbit(
+    @Field('userId') String userId,
+    @Field('userType') String userType, //BusinessUser or User
+    @Field('description') String description,
+  );
+
   // @POST(ApiEndpoints.subsInvoiceGenrate)
   // Future<SubscriptionCreateModel> subsInvoiceGenrate(
   //   @Field('subscriptionId') String subscriptionId,

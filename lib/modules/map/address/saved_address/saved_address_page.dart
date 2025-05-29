@@ -277,13 +277,11 @@ class _SavedAddressPageState extends State<SavedAddressPage> {
                 },
               ),
 
-              // SizedBox(height: 20.h),
               // CenterTitleWithDivider(
               //   accountType: accountType,
               //   title: 'NEARBY LOCATIONS',
               //   fontSize: 15.sp,
               // ),
-              // SizedBox(height: 20.h),
               //* NearBy address card
               // Consumer<SavedAddressProvider>(builder: (context, _, child) {
               //   log('nearByAddressList length: ${provider.nearByAddressList?.length}');

@@ -494,9 +494,14 @@ class ApiService {
     return await apiClient.deleteAccount(userId);
   }
 
-  Future<AccountSwitchModel> accountSwitch({
-    required String contact,
-  }) async {
+  Future<AccountSwitchModel> accountSwitch({required String contact}) async {
     return await apiClient.accountSwitch(contact);
+  }
+
+  Future<ApiGlobalModel> feedbackSumbit(
+      {required String userId,
+      required String userType,
+      required String description}) async {
+    return await apiClient.feedbackSumbit(userId, userType, description);
   }
 }

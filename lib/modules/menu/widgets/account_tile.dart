@@ -25,7 +25,6 @@ class AccountTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('Profile pic $profilePic');
     return ListTile(
       onTap: onTap,
       leading: Container(
@@ -46,7 +45,10 @@ class AccountTile extends StatelessWidget {
                   profilePic,
                   fit: BoxFit.cover,
                 )
-              : Image.asset(ImageStrings.defaultAvatar),
+              : Image.asset(
+                  ImageStrings.defaultAvatar,
+                  color: Colors.white,
+                ),
         ),
       ),
       title: Text(

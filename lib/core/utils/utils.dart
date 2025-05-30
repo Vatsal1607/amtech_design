@@ -116,4 +116,7 @@ class Utils {
     ];
     return months[month - 1];
   }
+
+  static String defaultUserId =
+      '6820dcd705ec25425b883a23'; // Guest id DEV bhavani
 }

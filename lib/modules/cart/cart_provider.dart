@@ -11,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../core/utils/enums/enums.dart';
+import '../../core/utils/utils.dart';
 import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../models/home_menu_model.dart';
@@ -350,9 +351,11 @@ class CartProvider extends ChangeNotifier {
     isLoading = true;
     notifyListeners();
     try {
-      final userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
-      final accountType =
-          sharedPrefsService.getString(SharedPrefsKeys.accountType);
+      String userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ??
+          Utils.defaultUserId;
+      String accountType =
+          sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
+              'business';
       final res = await apiService.getListCart(
         userId: userId,
         userType: accountType == 'business' ? 0 : 1,

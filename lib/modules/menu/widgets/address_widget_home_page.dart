@@ -8,6 +8,7 @@ import '../../../core/utils/constant.dart';
 import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/enums/enums.dart';
 import '../../../custom_widgets/buttons/small_edit_button.dart';
+import '../../../custom_widgets/custom_confirm_dialog.dart';
 import '../../../routes.dart';
 import '../../../services/local/shared_preferences_service.dart';
 import '../menu_provider.dart';
@@ -136,7 +137,26 @@ class AddressWidgetHomePage extends StatelessWidget {
               child: SmallEditButton(
                 text: 'CHANGE',
                 onTap: () {
-                  Navigator.pushNamed(context, Routes.savedAddress);
+                  bool isLoggedIn =
+                      sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn) ??
+                          false;
+                  if (isLoggedIn == true) {
+                    Navigator.pushNamed(context, Routes.savedAddress);
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => CustomConfirmDialog(
+                        title: 'Login Required',
+                        subTitle: 'Please log in to use this feature.',
+                        accountType: accountType,
+                        yesBtnText: 'Login',
+                        onTapYes: () {
+                          Navigator.pop(context);
+                          Navigator.pushNamed(context, Routes.accountSelection);
+                        },
+                      ),
+                    );
+                  }
                 },
                 accountType: accountType,
               ),

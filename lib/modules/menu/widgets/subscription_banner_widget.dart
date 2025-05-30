@@ -1,5 +1,10 @@
 import 'dart:async';
+import 'dart:developer';
+import 'package:amtech_design/core/utils/constants/keys.dart';
+import 'package:amtech_design/custom_widgets/custom_confirm_dialog.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +13,8 @@ import '../../../core/utils/strings.dart';
 import '../../../routes.dart';
 
 class SubscriptionBannerWidget extends StatefulWidget {
-  const SubscriptionBannerWidget({super.key});
+  final String accountType;
+  const SubscriptionBannerWidget({super.key, required this.accountType});
 
   @override
   State<SubscriptionBannerWidget> createState() =>
@@ -117,12 +123,25 @@ class _SubscriptionBannerWidgetState extends State<SubscriptionBannerWidget> {
             right: 20.w,
             child: GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, Routes.createSubscriptionPlan);
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: (context) => const CreateSubscriptionPlanPage(),
-                //     ));
+                final isLoggedIn =
+                    sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn);
+                if (isLoggedIn == true) {
+                  Navigator.pushNamed(context, Routes.createSubscriptionPlan);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CustomConfirmDialog(
+                      title: 'Login Required',
+                      subTitle: 'Please log in to use this feature.',
+                      accountType: widget.accountType,
+                      yesBtnText: 'Login',
+                      onTapYes: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, Routes.accountSelection);
+                      },
+                    ),
+                  );
+                }
               },
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 8.h),

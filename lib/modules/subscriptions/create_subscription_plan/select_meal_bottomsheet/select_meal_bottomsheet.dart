@@ -29,10 +29,8 @@ void showSelectMealBottomSheeet({
     ),
     isScrollControlled: true,
     builder: (context) {
-      log('Select meal bottomsheet called');
       final provider =
           Provider.of<SelectMealBottomsheetProvider>(context, listen: false);
-
       return Stack(
         clipBehavior: Clip.none,
         children: [

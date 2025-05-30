@@ -4,6 +4,7 @@ import 'package:amtech_design/custom_widgets/appbar/custom_appbar_with_center_ti
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
 import 'package:amtech_design/custom_widgets/process_to_pay_bottom_sheet.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/modules/cart/cart_provider.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../core/utils/enums/enums.dart';
+import '../../custom_widgets/custom_confirm_dialog.dart';
 import '../../custom_widgets/svg_icon.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
@@ -54,7 +56,7 @@ class _CartPageState extends State<CartPage> {
         },
       );
       Future.delayed(
-        const Duration(milliseconds: 300),
+        const Duration(milliseconds: 400),
         () {
           //* clear cart snackbar while on cart page
           ScaffoldMessenger.of(context).clearSnackBars();
@@ -453,51 +455,76 @@ class _CartPageState extends State<CartPage> {
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 30.w),
                 child: Consumer<CartProvider>(builder: (context, _, child) {
+                  bool isLoggedIn =
+                      sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn) ??
+                          false;
                   return CustomButton(
-                    onTap: provider.cartItemList == null
+                    onTap: !isLoggedIn
                         ? () {
-                            debugPrint('CART is Empty');
-                          }
-                        : () {
-                            final limitedCartItems = provider.cartItemList
-                                ?.map((item) => item.toLimitedJson())
-                                .toList();
-                            final Map<String, dynamic> orderCreateData = {
-                              "userId": sharedPrefsService
-                                      .getString(SharedPrefsKeys.userId) ??
-                                  '',
-                              "userType": accountType == 'business'
-                                  ? 'BusinessUser'
-                                  : 'User',
-                              "items": limitedCartItems,
-                              "totalAmount": provider.calculateFinalTotalAmount(
-                                storedDistance: sharedPrefsService
-                                    .getString(SharedPrefsKeys.confirmDistance),
-                                itemTotalString: provider.totalAmount,
-                              ),
-                              "paymentMethod": provider
-                                  .selectedPaymentMethod, // 'UPI', 'Perks'
-                              "deliveryAddress":
-                                  menuProvider.homeMenuResponse?.data?.address,
-                            };
-                            provider.isConfirmed = false;
-                            //* Bottomsheet
-                            showProcessToPayBottomSheeet(
+                            showDialog(
                               context: context,
-                              scaffoldContext: context,
-                              payableAmount: provider
-                                  .calculateFinalTotalAmount(
+                              builder: (context) => CustomConfirmDialog(
+                                title: 'Login Required',
+                                subTitle: 'Please log in to use this feature.',
+                                accountType: accountType,
+                                yesBtnText: 'Login',
+                                onTapYes: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(
+                                      context, Routes.accountSelection);
+                                },
+                              ),
+                            );
+                          }
+                        : provider.cartItemList == null
+                            ? () {
+                                debugPrint('CART is Empty');
+                                customSnackBar(
+                                    context: context,
+                                    message: 'Your Cart is Empty');
+                              }
+                            : () {
+                                final limitedCartItems = provider.cartItemList
+                                    ?.map((item) => item.toLimitedJson())
+                                    .toList();
+                                final Map<String, dynamic> orderCreateData = {
+                                  "userId": sharedPrefsService
+                                          .getString(SharedPrefsKeys.userId) ??
+                                      '',
+                                  "userType": accountType == 'business'
+                                      ? 'BusinessUser'
+                                      : 'User',
+                                  "items": limitedCartItems,
+                                  "totalAmount":
+                                      provider.calculateFinalTotalAmount(
                                     storedDistance:
                                         sharedPrefsService.getString(
                                             SharedPrefsKeys.confirmDistance),
                                     itemTotalString: provider.totalAmount,
-                                  )
-                                  .toString(),
-                              accountType: accountType,
-                              //! Emit order-create
-                              orderCreateData: orderCreateData,
-                            );
-                          },
+                                  ),
+                                  "paymentMethod": provider
+                                      .selectedPaymentMethod, // 'UPI', 'Perks'
+                                  "deliveryAddress": menuProvider
+                                      .homeMenuResponse?.data?.address,
+                                };
+                                provider.isConfirmed = false;
+                                //* Bottomsheet
+                                showProcessToPayBottomSheeet(
+                                  context: context,
+                                  scaffoldContext: context,
+                                  payableAmount: provider
+                                      .calculateFinalTotalAmount(
+                                        storedDistance: sharedPrefsService
+                                            .getString(SharedPrefsKeys
+                                                .confirmDistance),
+                                        itemTotalString: provider.totalAmount,
+                                      )
+                                      .toString(),
+                                  accountType: accountType,
+                                  //! Emit order-create
+                                  orderCreateData: orderCreateData,
+                                );
+                              },
                     height: 55.h,
                     width: double.infinity,
                     bgColor: getColorAccountType(

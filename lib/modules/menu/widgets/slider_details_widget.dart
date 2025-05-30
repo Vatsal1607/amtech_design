@@ -3,9 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../core/utils/constant.dart';
+import '../../../core/utils/constants/keys.dart';
 import '../../../core/utils/strings.dart';
+import '../../../custom_widgets/custom_confirm_dialog.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../routes.dart';
+import '../../../services/local/shared_preferences_service.dart';
 
 class ProgressDetailsWidget extends StatelessWidget {
   final String icon;
@@ -73,7 +76,26 @@ class ProgressDetailsWidget extends StatelessWidget {
           if (isShowRecharge)
             GestureDetector(
               onTap: () {
-                Navigator.pushNamed(context, Routes.recharge);
+                bool isLoggedIn =
+                    sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn) ??
+                        false;
+                if (isLoggedIn == true) {
+                  Navigator.pushNamed(context, Routes.recharge);
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) => CustomConfirmDialog(
+                      title: 'Login Required',
+                      subTitle: 'Please log in to use this feature.',
+                      accountType: accountType,
+                      yesBtnText: 'Login',
+                      onTapYes: () {
+                        Navigator.pop(context);
+                        Navigator.pushNamed(context, Routes.accountSelection);
+                      },
+                    ),
+                  );
+                }
               },
               child: Container(
                 height: 26.h,

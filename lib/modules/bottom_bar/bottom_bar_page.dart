@@ -4,7 +4,7 @@ import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/billing/billing_page.dart';
 import 'package:amtech_design/modules/menu/menu_page.dart';
-import 'package:amtech_design/modules/menu/widgets/account_selection_widget.dart';
+import 'package:amtech_design/modules/menu/widgets/account_switcher_widget.dart';
 import 'package:amtech_design/modules/reorder/reorder_page.dart';
 import 'package:amtech_design/modules/subscriptions/subscription/subscription_page.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -62,7 +62,7 @@ class _BottomBarPageState extends State<BottomBarPage> {
   @override
   Widget build(BuildContext context) {
     String accountType =
-        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
+        sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? 'business';
     final menuProvider = Provider.of<MenuProvider>(context, listen: false);
     return Scaffold(
       // resizeToAvoidBottomInset: false,

@@ -18,7 +18,7 @@ Color getColorAccountType({
       ? businessColor
       : accountType != '' && accountType == 'personal'
           ? personalColor
-          : AppColors.white; // NOTE: default color (while type not found)
+          : businessColor; // NOTE: default personal color (while type not found)
 }
 
 // default bottom shadow of content

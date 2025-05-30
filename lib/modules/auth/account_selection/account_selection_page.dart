@@ -1,5 +1,9 @@
+import 'dart:developer';
+
+import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
+import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,10 +11,30 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_colors.dart';
 import '../../../routes.dart';
+import '../../../services/local/device_info_service.dart';
+import '../../notification/notification_service.dart';
 import 'widgets/account_selection_button.dart';
 
-class AccountSelectionPage extends StatelessWidget {
+class AccountSelectionPage extends StatefulWidget {
   const AccountSelectionPage({super.key});
+
+  @override
+  State<AccountSelectionPage> createState() => _AccountSelectionPageState();
+}
+
+class _AccountSelectionPageState extends State<AccountSelectionPage> {
+  @override
+  void initState() {
+    super.initState();
+    _initNotifications();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      DeviceInfoService().fetchDeviceId(context);
+    });
+  }
+
+  Future<void> _initNotifications() async {
+    await NotificationService.initialize();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +46,28 @@ class AccountSelectionPage extends StatelessWidget {
             width: 1.sw,
             ImageStrings.accountSelectionBg,
             fit: BoxFit.cover,
+          ),
+          Positioned(
+            top: 75.h,
+            right: 34.w,
+            //* Skip button
+            child: GestureDetector(
+              onTap: () {
+                // Navigator.pushNamed(context, Routes.bottomBarPage);
+                Navigator.of(context, rootNavigator: true)
+                    .pushNamed(Routes.bottomBarPage);
+              },
+              child: Padding(
+                padding: EdgeInsets.all(5.w),
+                child: Text(
+                  'SKIP >',
+                  style: GoogleFonts.publicSans(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
           ),
           Positioned.fill(
             child: Padding(

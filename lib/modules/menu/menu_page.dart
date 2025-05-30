@@ -22,6 +22,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/constant.dart';
 import '../../core/utils/constants/keys.dart';
+import '../../core/utils/utils.dart';
 import '../../custom_widgets/appbar/custom_sliver_appbar.dart';
 import '../../custom_widgets/textfield/custom_searchfield.dart';
 import '../../routes.dart';
@@ -74,14 +75,26 @@ class _MenuPageState extends State<MenuPage> {
     super.initState();
   }
 
+  late MenuProvider _menuProvider;
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _menuProvider = Provider.of<MenuProvider>(context, listen: false);
+  }
+
+  @override
+  void dispose() {
+    _menuProvider.dynamicKeys.clear();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // log('log userId: ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
     final provider = Provider.of<MenuProvider>(context, listen: false);
-    log('provider.dynamicKeys ${provider.dynamicKeys}');
+    log('userId ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
+    log('defaultUserId ${Utils.defaultUserId}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    // final provider = Provider.of<MenuProvider>(context, listen: false);
     return Consumer<MenuProvider>(
       builder: (context, provider, child) => provider.isLoading ||
               provider.isLoadingGetBanner
@@ -174,7 +187,7 @@ class _MenuPageState extends State<MenuPage> {
                                         ),
                                         SizedBox(height: 15.h),
 
-                                        //* Progress bar details widget
+                                        //* Progress bar details widget (PERKS)
                                         Consumer<MenuProvider>(
                                             builder: (context, _, child) {
                                           final homeMenuData =
@@ -305,7 +318,9 @@ class _MenuPageState extends State<MenuPage> {
                                                 ),
                                               SizedBox(height: 20.h),
                                               // * Subscriptions Banner
-                                              const SubscriptionBannerWidget(),
+                                              SubscriptionBannerWidget(
+                                                accountType: accountType,
+                                              ),
                                               SizedBox(height: 20.h),
 
                                               // * ListView Categories OLD
@@ -334,9 +349,13 @@ class _MenuPageState extends State<MenuPage> {
                                                                 horizontal:
                                                                     20.w),
                                                         child: DividerLabel(
-                                                          key: provider
+                                                          //! Key
+                                                          key: ValueKey(provider
                                                                   .dynamicKeys[
-                                                              categoryTitle],
+                                                              categoryTitle]),
+                                                          // key: provider
+                                                          //         .dynamicKeys[
+                                                          //     categoryTitle],
                                                           label: categoryTitle,
                                                           accountType:
                                                               accountType,

@@ -9,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import '../../core/utils/enums/enums.dart';
 import '../../core/utils/strings.dart';
+import '../../core/utils/utils.dart';
 import '../../models/api_global_model.dart';
 import '../../models/get_banner_model.dart';
 import '../../models/menu_size_model.dart';
@@ -104,7 +105,6 @@ class MenuProvider extends ChangeNotifier {
     for (var category in categories) {
       dynamicKeys[category.categoryTitle ?? ""] = GlobalKey();
     }
-    log('dynamicKeys $dynamicKeys');
     notifyListeners(); // Update UI after keys are generated
   }
 
@@ -224,10 +224,12 @@ class MenuProvider extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      String userId =
-          sharedPrefsService.getString(SharedPrefsKeys.userId) ?? '';
-      final accountType =
-          sharedPrefsService.getString(SharedPrefsKeys.accountType);
+      dynamicKeys.clear(); // clear the global keys
+      String userId = sharedPrefsService.getString(SharedPrefsKeys.userId) ??
+          Utils.defaultUserId;
+      String accountType =
+          sharedPrefsService.getString(SharedPrefsKeys.accountType) ??
+              'business';
       final HomeMenuModel response = await apiService.getHomeMenu(
         userId: userId,
         userType: accountType == 'business' ? 0 : 1,
@@ -405,7 +407,8 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final requestBody = AddToCartRequestModel(
-        userId: sharedPrefsService.getString(SharedPrefsKeys.userId),
+        userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ??
+            Utils.defaultUserId,
         items: items ??
             [
               RequestItems(
@@ -469,7 +472,8 @@ class MenuProvider extends ChangeNotifier {
     notifyListeners();
     try {
       final requestBody = AddToCartRequestModel(
-        userId: sharedPrefsService.getString(SharedPrefsKeys.userId),
+        userId: sharedPrefsService.getString(SharedPrefsKeys.userId) ??
+            Utils.defaultUserId,
         items: [
           RequestItems(
             menuId: menuId,

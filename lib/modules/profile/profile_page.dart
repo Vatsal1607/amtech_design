@@ -29,6 +29,8 @@ class ProfilePage extends StatelessWidget {
         sharedPrefsService.getString(SharedPrefsKeys.userContact) ?? '';
     final provider = Provider.of<ProfileProvider>(context, listen: false);
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    bool isLoggedIn =
+        sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn) ?? false;
 
     return Scaffold(
       backgroundColor: getColorAccountType(
@@ -45,6 +47,7 @@ class ProfilePage extends StatelessWidget {
           personalColor: AppColors.seaMist,
         ),
       ),
+      //* Logout & Login FAB
       floatingActionButton: GestureDetector(
         onTap: () {
           showDialog(
@@ -55,9 +58,14 @@ class ProfilePage extends StatelessWidget {
                   accountType: accountType,
                   onTapCancel: () => Navigator.pop(context),
                   onTapYes: () {
-                    provider.logout(context: context); // * LogOut
+                    if (isLoggedIn) {
+                      provider.logout(context: context); // * LogOut
+                    } else {
+                      Navigator.pop(context);
+                      Navigator.pushNamed(context, Routes.accountSelection);
+                    }
                   },
-                  yesBtnText: 'LOGOUT',
+                  yesBtnText: isLoggedIn ? 'LOGOUT' : 'LOGIN',
                   isLoading: provider.isLoading,
                   title: 'ARE YOU SURE?',
                   subTitle: 'You really want to Logout?',
@@ -89,7 +97,7 @@ class ProfilePage extends StatelessWidget {
               ),
               SizedBox(width: 13.w),
               Text(
-                'Logout',
+                isLoggedIn ? 'Logout' : 'Login',
                 style: GoogleFonts.publicSans(
                   color: AppColors.seaShell,
                   fontSize: 15.sp,
@@ -125,7 +133,8 @@ class ProfilePage extends StatelessWidget {
                           builder: (context, menuProvider, child) {
                         final imageUrl =
                             menuProvider.homeMenuResponse?.data?.profileImage;
-                        return (imageUrl == null || imageUrl.isEmpty)
+                        return !isLoggedIn ||
+                                (imageUrl == null || imageUrl.isEmpty)
                             ? SizedBox(
                                 height: 30.h,
                                 width: 30.w,
@@ -173,10 +182,13 @@ class ProfilePage extends StatelessWidget {
                               final lastName = menuProvider
                                       .homeMenuResponse?.data?.lastName ??
                                   '';
+                              false;
                               return Text(
-                                accountType == 'business'
-                                    ? businessName
-                                    : '$firstName $lastName',
+                                isLoggedIn
+                                    ? accountType == 'business'
+                                        ? businessName
+                                        : '$firstName $lastName'
+                                    : 'Guest',
                                 style: GoogleFonts.publicSans(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
@@ -196,31 +208,51 @@ class ProfilePage extends StatelessWidget {
                           ),
                         ],
                       ),
-                      Text(
-                        accountType == 'business'
-                            ? 'Business Account'
-                            : 'Personal Account',
-                        style: GoogleFonts.publicSans(
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.primaryColor,
-                            personalColor: AppColors.darkGreenGrey,
+                      if (isLoggedIn)
+                        Text(
+                          accountType == 'business'
+                              ? 'Business Account'
+                              : 'Personal Account',
+                          style: GoogleFonts.publicSans(
+                            color: getColorAccountType(
+                              accountType: accountType,
+                              businessColor: AppColors.primaryColor,
+                              personalColor: AppColors.darkGreenGrey,
+                            ),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 15.sp,
                           ),
-                          fontWeight: FontWeight.w400,
-                          fontSize: 15.sp,
                         ),
-                      ),
                       GestureDetector(
-                        /// * validateContactInSecondaryAccess
-                        onTap: userContact.isNotEmpty &&
-                                !loginProvider.validateContactInSecondaryAccess(
-                                    int.parse(userContact))
-                            ? () {
-                                Navigator.pushNamed(
-                                    context, Routes.editProfile);
-                              }
+                        // * validateContactInSecondaryAccess
+                        onTap: isLoggedIn
+                            ? userContact.isNotEmpty &&
+                                    !loginProvider
+                                        .validateContactInSecondaryAccess(
+                                            int.parse(userContact))
+                                ? () {
+                                    Navigator.pushNamed(
+                                        context, Routes.editProfile);
+                                  }
+                                : () {
+                                    log('NOT AUTHORIZED');
+                                  }
                             : () {
-                                log('NOT AUTHORIZED');
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => CustomConfirmDialog(
+                                    title: 'Login Required',
+                                    subTitle:
+                                        'Please log in to use this feature.',
+                                    accountType: accountType,
+                                    yesBtnText: 'Login',
+                                    onTapYes: () {
+                                      Navigator.pop(context);
+                                      Navigator.pushNamed(
+                                          context, Routes.accountSelection);
+                                    },
+                                  ),
+                                );
                               },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 3.w),
@@ -323,32 +355,33 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.h),
-                  Consumer<ProfileProvider>(
-                    builder: (context, _, child) => ProfileTile(
-                      // * Consider tile Index 4
-                      accountType: accountType,
-                      onTap: () {
-                        provider.updateTileIndex(4);
-                        showDialog(
-                          context: context,
-                          builder: (context) => CustomConfirmDialog(
-                            isLoading: provider.isLoadingAccountDelete,
-                            title: 'Confirmation',
-                            subTitle: 'Are you sure want to delete Account?',
-                            accountType: accountType,
-                            onTapYes: () async {
-                              await provider.deleteAccount(context); //* API
-                            },
-                          ),
-                        );
-                      },
-                      isSelected: provider.selectedTileIndex == 4,
-                      title: 'Delete Account',
-                      titleColor: AppColors.red,
-                      icon: IconStrings.deleteAccount,
-                      iconColor: AppColors.red,
+                  if (isLoggedIn)
+                    Consumer<ProfileProvider>(
+                      builder: (context, _, child) => ProfileTile(
+                        // * Consider tile Index 4
+                        accountType: accountType,
+                        onTap: () {
+                          provider.updateTileIndex(4);
+                          showDialog(
+                            context: context,
+                            builder: (context) => CustomConfirmDialog(
+                              isLoading: provider.isLoadingAccountDelete,
+                              title: 'Confirmation',
+                              subTitle: 'Are you sure want to delete Account?',
+                              accountType: accountType,
+                              onTapYes: () async {
+                                await provider.deleteAccount(context); //* API
+                              },
+                            ),
+                          );
+                        },
+                        isSelected: provider.selectedTileIndex == 4,
+                        title: 'Delete Account',
+                        titleColor: AppColors.red,
+                        icon: IconStrings.deleteAccount,
+                        iconColor: AppColors.red,
+                      ),
                     ),
-                  ),
                 ],
               ),
             ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:amtech_design/modules/notification/notification_provider.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constant.dart';
+import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../modules/menu/menu_provider.dart';
 import '../../routes.dart';
+import '../../services/local/shared_preferences_service.dart';
 import '../svg_icon.dart';
 
 class CustomSliverAppbar extends StatelessWidget {
@@ -55,7 +59,10 @@ class CustomSliverAppbar extends StatelessWidget {
                 child: Consumer<MenuProvider>(builder: (context, _, child) {
                   final imageUrl =
                       provider.homeMenuResponse?.data?.profileImage;
-                  return (imageUrl == null || imageUrl.isEmpty)
+                  bool isLoggedIn =
+                      sharedPrefsService.getBool(SharedPrefsKeys.isLoggedIn) ??
+                          false;
+                  return !isLoggedIn || (imageUrl == null || imageUrl.isEmpty)
                       ? SizedBox(
                           height: 30.h,
                           width: 30.w,
@@ -107,12 +114,19 @@ class CustomSliverAppbar extends StatelessWidget {
               Row(
                 children: [
                   Consumer<MenuProvider>(
-                    builder: (context, menuProvider, child) => Text(
-                      accountType == 'business'
-                          ? menuProvider.homeMenuResponse?.data?.businessName ??
-                              'User'
-                          : '${menuProvider.homeMenuResponse?.data?.firstName ?? 'User'}'
-                              ' ${menuProvider.homeMenuResponse?.data?.lastName ?? ''}',
+                      builder: (context, menuProvider, child) {
+                    bool isLoggedIn = sharedPrefsService
+                            .getBool(SharedPrefsKeys.isLoggedIn) ??
+                        false;
+                    return Text(
+                      isLoggedIn
+                          ? accountType == 'business'
+                              ? menuProvider
+                                      .homeMenuResponse?.data?.businessName ??
+                                  'Guest'
+                              : '${menuProvider.homeMenuResponse?.data?.firstName ?? 'Guest'}'
+                                  ' ${menuProvider.homeMenuResponse?.data?.lastName ?? ''}'
+                          : 'Guest',
                       style: GoogleFonts.publicSans(
                         fontSize: 24.sp,
                         fontWeight: FontWeight.bold,
@@ -122,8 +136,8 @@ class CustomSliverAppbar extends StatelessWidget {
                           personalColor: AppColors.darkGreenGrey,
                         ),
                       ),
-                    ),
-                  ),
+                    );
+                  }),
                   SizedBox(width: 5.w),
                   const SvgIcon(
                     icon: IconStrings.verifiedUser,

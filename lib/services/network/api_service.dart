@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:amtech_design/models/api_global_model.dart';
 import 'package:amtech_design/models/billing_model.dart';
 import 'package:amtech_design/models/business_list_model.dart';
@@ -59,11 +58,9 @@ class ApiService {
 
   Future<ApiGlobalModel> businessRegister({
     required Map<String, dynamic> body,
-    // required List<MultipartFile> images,
   }) async {
     return await apiClient.businessRegister(
       body,
-      // images,
     );
   }
 

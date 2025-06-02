@@ -11,6 +11,7 @@ import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
+import '../product_page/product_details_page.dart';
 import 'favorite_provider.dart';
 import 'widgets/favourite_items_widget.dart';
 
@@ -79,12 +80,15 @@ class _FavoritePageState extends State<FavoritePage> {
 
                           return GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
+                              //* Normal Route
+                              Navigator.push(
                                 context,
-                                Routes.productDetails,
-                                arguments: {
-                                  'menuId': menuDetails?.sId,
-                                },
+                                MaterialPageRoute(
+                                  builder: (context) => ProductDetailsPage(
+                                    menuId: menuDetails?.sId ?? '',
+                                    imageUrls: menuDetails?.images ?? [],
+                                  ),
+                                ),
                               );
                             },
                             child: FavoriteItemsWidget(

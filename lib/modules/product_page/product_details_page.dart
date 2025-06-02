@@ -1,5 +1,4 @@
 import 'package:amtech_design/core/utils/constant.dart';
-import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/custom_widgets/appbar/custom_appbar.dart';
 import 'package:amtech_design/custom_widgets/buttons/custom_button.dart';
 import 'package:amtech_design/custom_widgets/loader/custom_loader.dart';
@@ -7,33 +6,57 @@ import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/menu/menu_provider.dart';
 import 'package:amtech_design/modules/product_page/widgets/bottomsheet_content.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import '../../core/utils/app_colors.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
+import '../../custom_widgets/snackbar.dart';
+import '../../services/local/hive_service.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'product_details_provider.dart';
 
-class ProductDetailsPage extends StatelessWidget {
-  const ProductDetailsPage({super.key});
+class ProductDetailsPage extends StatefulWidget {
+  final String menuId;
+  final List<String> imageUrls;
+  const ProductDetailsPage({
+    super.key,
+    required this.menuId,
+    required this.imageUrls,
+  });
+
+  @override
+  State<ProductDetailsPage> createState() => _ProductDetailsPageState();
+}
+
+class _ProductDetailsPageState extends State<ProductDetailsPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider =
+          Provider.of<ProductDetailsProvider>(context, listen: false);
+
+      provider.getMenuDetails(menuId: widget.menuId); //* API call
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     // * Retrieve the arguments
-    final args =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
-            {};
-    final menuId = args['menuId'];
-    final detailsType = args['detailsType'];
+    // final args =
+    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
+    //         {};
+    // final menuId = args['menuId'];
     final provider =
         Provider.of<ProductDetailsProvider>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      provider.getMenuDetails(menuId: menuId); //* API call
-    });
+    final images = widget.imageUrls;
+
     return Scaffold(
       extendBodyBehindAppBar: true, // Ensures content goes behind the AppBar
       backgroundColor: getColorAccountType(
@@ -76,9 +99,11 @@ class ProductDetailsPage extends StatelessWidget {
                 : () {
                     //* API call
                     if (provider.isFavorite == true) {
-                      provider.removeFavorite(context: context, menuId: menuId);
+                      provider.removeFavorite(
+                          context: context, menuId: widget.menuId);
                     } else {
-                      provider.favoritesAdd(context: context, menuId: menuId);
+                      provider.favoritesAdd(
+                          context: context, menuId: widget.menuId);
                     }
                   },
             child: Container(
@@ -126,18 +151,37 @@ class ProductDetailsPage extends StatelessWidget {
             : Stack(
                 children: [
                   // * Top content above the DraggableScrollableSheet
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
+                  Stack(
+                    // mainAxisSize: MainAxisSize.min,
                     children: [
-                      Image.network(
+                      SizedBox(
                         height: 440.h,
                         width: double.infinity,
-                        (provider.menuDetailsResponse?.data?.images
-                                    ?.isNotEmpty ??
-                                false)
-                            ? provider.menuDetailsResponse!.data!.images![0]
-                            : '',
-                        fit: BoxFit.cover,
+                        child: PageView.builder(
+                          controller: provider.pageController,
+                          itemCount: images.length,
+                          onPageChanged: provider.onPageChanged,
+                          itemBuilder: (context, index) {
+                            return CachedNetworkImage(
+                              imageUrl: images[index],
+                              fit: BoxFit.cover,
+                            );
+                          },
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 40.h,
+                        left: 1.sw / 2,
+                        child: SmoothPageIndicator(
+                          controller: provider.pageController,
+                          count: images.length,
+                          effect: WormEffect(
+                            dotHeight: 10,
+                            dotWidth: 10,
+                            activeDotColor: Colors.green,
+                            dotColor: Colors.grey.shade300,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -196,42 +240,41 @@ class ProductDetailsPage extends StatelessWidget {
                                             (context, menuProvider, child) =>
                                                 CustomButton(
                                           height: 55.h,
-                                          onTap: () {
-                                            if (detailsType ==
-                                                DetailsType.details.name) {
-                                              showSizeModalBottomSheet(
-                                                context: context,
-                                                accountType: accountType,
-                                                provider: menuProvider,
-                                                menuId: menuId,
-                                              );
-                                            } else if (detailsType ==
-                                                DetailsType.subscription.name) {
-                                              // Todo add process of get subs (Currently not in use)
-                                              debugPrint(
-                                                  "Subscription type onTap method");
-                                            }
-                                          },
-                                          text: detailsType ==
-                                                  DetailsType.details.name
+                                          onTap: provider.isActive
+                                              ? () {
+                                                  // if (HiveLocalStorageHelper
+                                                  //     .getStoreActive()) {
+                                                  showSizeModalBottomSheet(
+                                                    context: context,
+                                                    accountType: accountType,
+                                                    provider: menuProvider,
+                                                    menuId: widget.menuId,
+                                                  );
+                                                  // } else {
+                                                  //   customSnackBar(
+                                                  //       context: context,
+                                                  //       message:
+                                                  //           'STORE IS OFFLINE NOW.');
+                                                  // }
+                                                }
+                                              : () {},
+                                          text: provider.isActive
                                               ? 'ADD TO CART'
-                                              : detailsType ==
-                                                      DetailsType
-                                                          .subscription.name
-                                                  ? 'GET SUBSCRIPTION'
-                                                  : '',
+                                              : 'OUT OF STOCK',
                                           textColor: getColorAccountType(
                                             accountType: accountType,
                                             businessColor: AppColors.seaShell,
                                             personalColor: AppColors.seaMist,
                                           ),
-                                          bgColor: getColorAccountType(
-                                            accountType: accountType,
-                                            businessColor:
-                                                AppColors.primaryColor,
-                                            personalColor:
-                                                AppColors.darkGreenGrey,
-                                          ),
+                                          bgColor: provider.isActive
+                                              ? getColorAccountType(
+                                                  accountType: accountType,
+                                                  businessColor:
+                                                      AppColors.primaryColor,
+                                                  personalColor:
+                                                      AppColors.darkGreenGrey,
+                                                )
+                                              : AppColors.red,
                                         ),
                                       ),
                                     ),

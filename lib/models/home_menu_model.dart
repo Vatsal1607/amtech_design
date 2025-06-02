@@ -133,31 +133,32 @@ class MenuCategories {
 class MenuItems {
   String? menuId;
   String? itemName;
-  List<String>? images; // Updated to List<String>
+  List<String>? images;
   String? description;
   num? ratings;
   List<Size>? size;
   List<Size>? personalSize;
   String? createdAt;
   String? updatedAt;
+  bool? isActiveForBusiness;
 
-  MenuItems(
-      {this.menuId,
-      this.itemName,
-      this.images,
-      this.description,
-      this.ratings,
-      this.size,
-      this.personalSize,
-      this.createdAt,
-      this.updatedAt});
+  MenuItems({
+    this.menuId,
+    this.itemName,
+    this.images,
+    this.description,
+    this.ratings,
+    this.size,
+    this.personalSize,
+    this.createdAt,
+    this.updatedAt,
+    this.isActiveForBusiness,
+  });
 
   MenuItems.fromJson(Map<String, dynamic> json) {
     menuId = json['menuId'];
     itemName = json['itemName'];
-    images = json['images'] != null
-        ? List<String>.from(json['images'])
-        : null; // Convert to List<String>
+    images = json['images'] != null ? List<String>.from(json['images']) : null;
     description = json['description'];
     ratings = json['ratings'];
     if (json['size'] != null) {
@@ -174,6 +175,7 @@ class MenuItems {
     }
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    isActiveForBusiness = json['isActiveForBusiness'];
   }
 
   Map<String, dynamic> toJson() {
@@ -191,6 +193,7 @@ class MenuItems {
     }
     data['createdAt'] = createdAt;
     data['updatedAt'] = updatedAt;
+    data['isActiveForBusiness'] = isActiveForBusiness;
     return data;
   }
 }

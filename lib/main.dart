@@ -40,6 +40,7 @@ import 'modules/subscriptions/subscription/subscription_provider.dart';
 import 'modules/subscriptions/subscription_cart/subscription_cart_provider.dart';
 import 'modules/subscriptions/subscription_summary/subscription_summary_provider.dart';
 import 'routes.dart';
+import 'services/local/hive_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +54,8 @@ void main() async {
     DeviceOrientation.portraitUp,
   ]);
   await sharedPrefsService.init();
+  // Init Hive
+  await HiveLocalStorageHelper.init();
   await Firebase.initializeApp();
   await NotificationService.initialize();
   runApp(const MyApp());

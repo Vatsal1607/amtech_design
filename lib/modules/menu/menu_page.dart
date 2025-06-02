@@ -16,6 +16,8 @@ import 'package:amtech_design/modules/menu/widgets/pinned_header.dart';
 import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/subscription_banner_widget.dart';
 import 'package:amtech_design/modules/notification/notification_provider.dart';
+import 'package:amtech_design/modules/product_page/product_details_page.dart';
+import 'package:amtech_design/services/local/hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -92,7 +94,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     final provider = Provider.of<MenuProvider>(context, listen: false);
     log('userId ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    log('defaultUserId ${Utils.defaultUserId}');
+    log('isActive store ${HiveLocalStorageHelper.getStoreActive()}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Consumer<MenuProvider>(
@@ -399,23 +401,42 @@ class _MenuPageState extends State<MenuPage> {
                                                                   .menuItems?[childIndex];
                                                               return GestureDetector(
                                                                 onTap: () {
+                                                                  //* Normal Route
                                                                   Navigator
-                                                                      .pushNamed(
+                                                                      .push(
                                                                     context,
-                                                                    Routes
-                                                                        .productDetails,
-                                                                    arguments: {
-                                                                      'menuId':
-                                                                          menuItems
-                                                                              ?.menuId,
-                                                                      'detailsType': DetailsType
-                                                                          .details
-                                                                          .name,
-                                                                    },
+                                                                    MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              ProductDetailsPage(
+                                                                        menuId:
+                                                                            menuItems?.menuId ??
+                                                                                '',
+                                                                        imageUrls:
+                                                                            menuItems?.images ??
+                                                                                [],
+                                                                      ),
+                                                                    ),
                                                                   );
+                                                                  //* Named Route
+                                                                  // Navigator
+                                                                  //     .pushNamed(
+                                                                  //   context,
+                                                                  //   Routes
+                                                                  //       .productDetails,
+                                                                  //   arguments: {
+                                                                  //     'menuId':
+                                                                  //         menuItems
+                                                                  //             ?.menuId,
+                                                                  //   },
+                                                                  // );
                                                                 },
                                                                 child:
                                                                     ProductWidget(
+                                                                  isActive:
+                                                                      menuItems
+                                                                              ?.isActiveForBusiness ??
+                                                                          false,
                                                                   image: (menuItems
                                                                               ?.images
                                                                               ?.isNotEmpty ??

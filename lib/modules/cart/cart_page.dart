@@ -21,6 +21,7 @@ import '../../custom_widgets/svg_icon.dart';
 import '../../routes.dart';
 import '../../services/local/shared_preferences_service.dart';
 import '../../services/razorpay/razorpay_service.dart';
+import '../product_page/product_details_page.dart';
 import 'widgets/cart_widget.dart';
 import 'widgets/you_may_like_widget.dart';
 
@@ -256,14 +257,16 @@ class _CartPageState extends State<CartPage> {
                                     final item = randomMixedItems[index];
                                     return GestureDetector(
                                       onTap: () {
-                                        Navigator.pushNamed(
+                                        //* Normal Route
+                                        Navigator.push(
                                           context,
-                                          Routes.productDetails,
-                                          arguments: {
-                                            'menuId': item.menuId,
-                                            'detailsType':
-                                                DetailsType.details.name,
-                                          },
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ProductDetailsPage(
+                                              menuId: item.menuId ?? '',
+                                              imageUrls: item.images ?? [],
+                                            ),
+                                          ),
                                         );
                                       },
                                       child: YouMayLikeWidget(

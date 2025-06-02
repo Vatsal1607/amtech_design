@@ -1,4 +1,5 @@
 import 'package:amtech_design/custom_widgets/size_modal_bottom_sheet.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../models/home_menu_model.dart';
+import '../../../services/local/hive_service.dart';
 
 class ProductWidget extends StatelessWidget {
   final String image;
@@ -17,6 +19,7 @@ class ProductWidget extends StatelessWidget {
   final bool isHealthFirst;
   final dynamic provider;
   final MenuItems? menuItems;
+  final bool isActive; // out of stock flag
   const ProductWidget({
     super.key,
     required this.image,
@@ -26,6 +29,7 @@ class ProductWidget extends StatelessWidget {
     this.isHealthFirst = false,
     this.provider,
     this.menuItems,
+    this.isActive = false,
   });
 
   @override
@@ -131,50 +135,90 @@ class ProductWidget extends StatelessWidget {
           right: 0,
           child: Align(
             alignment: Alignment.bottomCenter,
-            //* 'Add' button of Product widget
-            child: GestureDetector(
-              onTap: () {
-                //* Custom Size bottomsheet
-                showSizeModalBottomSheet(
-                  context: context,
-                  accountType: accountType,
-                  provider: provider,
-                  menuItems: menuItems,
-                  menuId: menuItems?.menuId ?? '',
-                );
-              },
-              child: Container(
-                padding: EdgeInsets.symmetric(
-                  vertical: 3.h,
-                  horizontal: 8.w,
-                ),
-                decoration: BoxDecoration(
-                  color: isHealthFirst
-                      ? AppColors.deepGreen
-                      : getColorAccountType(
-                          accountType: accountType,
-                          businessColor: AppColors.primaryColor,
-                          personalColor: AppColors.darkGreenGrey,
-                        ),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'ADD',
-                      style: GoogleFonts.publicSans(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.white,
+            //* ADD Button of Product widget
+            child: isActive
+                ? GestureDetector(
+                    onTap: () {
+                      //* Custom Size bottomsheet
+                      // if (HiveLocalStorageHelper.getStoreActive()) {
+                      showSizeModalBottomSheet(
+                        context: context,
+                        accountType: accountType,
+                        provider: provider,
+                        menuItems: menuItems,
+                        menuId: menuItems?.menuId ?? '',
+                      );
+                      // } else {
+                      //   customSnackBar(
+                      //       context: context, message: 'STORE IS OFFLINE NOW.');
+                      // }
+                    },
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 3.h,
+                        horizontal: 8.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isHealthFirst
+                            ? AppColors.deepGreen
+                            : getColorAccountType(
+                                accountType: accountType,
+                                businessColor: AppColors.primaryColor,
+                                personalColor: AppColors.darkGreenGrey,
+                              ),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'ADD',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.white,
+                            ),
+                          ),
+                          SizedBox(width: 4.w),
+                          const SvgIcon(icon: IconStrings.add),
+                        ],
                       ),
                     ),
-                    SizedBox(width: 4.w),
-                    const SvgIcon(icon: IconStrings.add),
-                  ],
-                ),
-              ),
-            ),
+                  )
+                : GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: 3.h,
+                        horizontal: 8.w,
+                      ),
+                      decoration: BoxDecoration(
+                        color: isHealthFirst
+                            ? AppColors.deepGreen
+                            : isActive
+                                ? getColorAccountType(
+                                    accountType: accountType,
+                                    businessColor: AppColors.primaryColor,
+                                    personalColor: AppColors.darkGreenGrey,
+                                  )
+                                : AppColors.red,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'OUT OF STOCK',
+                            style: GoogleFonts.publicSans(
+                              fontSize: 10.sp,
+                              fontWeight: FontWeight.bold,
+                              color: AppColors.white,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
           ),
         ),
       ],

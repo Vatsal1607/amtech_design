@@ -13,6 +13,14 @@ class ProductDetailsProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   MenuDetailsModel? menuDetailsResponse;
   bool isFavorite = false;
+  bool isActive = false;
+
+  final PageController pageController = PageController();
+  int currentPage = 0;
+  onPageChanged(index) {
+    currentPage = index;
+    notifyListeners();
+  }
 
   Future<void> getMenuDetails({
     required String menuId,
@@ -23,10 +31,10 @@ class ProductDetailsProvider extends ChangeNotifier {
       final res = await apiService.getMenuDetails(
         menuId: menuId,
       );
-      log('menuDetailsResponse: $menuDetailsResponse');
       if (res.success == true && res.data != null) {
         menuDetailsResponse = res;
         isFavorite = res.data?.isFavorite ?? false;
+        isActive = res.data?.isActiveForBusiness ?? false;
       } else {
         log('${res.message}');
       }
@@ -57,7 +65,6 @@ class ProductDetailsProvider extends ChangeNotifier {
       log('FavouriteAdd res: $res');
       if (res.success == true && res.data != null) {
         isFavorite = true;
-        log('${res.message}');
       } else {
         log('${res.message}');
       }

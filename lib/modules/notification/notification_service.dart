@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../../services/local/hive_service.dart';
 
 class NotificationService {
   static String? _fcmToken;
@@ -50,9 +53,17 @@ class NotificationService {
         initLocalNotifications();
 
         // * Handle foreground notifications
-        FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-          log("Foreground NOTIFICATION RECEIVED: ${message.notification?.title}");
+        FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
           // Handle foreground notification (e.g., show an in-app alert)
+          log("Foreground NOTIFICATION RECEIVED: ${message.data}");
+          if (message.data.containsKey('isActive')) {
+            final dynamic rawIsActive = message.data['isActive'];
+            final bool isActive = rawIsActive is bool
+                ? rawIsActive
+                : rawIsActive.toString().toLowerCase() == 'true';
+            await HiveLocalStorageHelper.setStoreActive(isActive);
+          }
+          //* show notification
           showNotification(
             id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
             title: message.notification?.title ?? 'No Title',
@@ -72,9 +83,19 @@ class NotificationService {
   }
 
   // * Background message handler
+  @pragma('vm:entry-point') // Important for iOS background execution
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    log("Background NOTIFICATION RECEIVED: ${message.notification?.title}");
     // Handle background notification (e.g., store data locally)
+    log("Background NOTIFICATION RECEIVED: ${message.data}");
+    await Firebase.initializeApp();
+    await HiveLocalStorageHelper.init();
+    if (message.data.containsKey('isActive')) {
+      final dynamic rawIsActive = message.data['isActive'];
+      final bool isActive = rawIsActive is bool
+          ? rawIsActive
+          : rawIsActive.toString().toLowerCase() == 'true';
+      await HiveLocalStorageHelper.setStoreActive(isActive);
+    }
   }
 
   static Future<void> initLocalNotifications() async {

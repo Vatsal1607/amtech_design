@@ -37,7 +37,7 @@ class Routes {
   static const String accountSelection = '/accountSelection';
   static const String locationSelection = '/locationSelection';
   static const String bottomBarPage = '/bottomBarPage';
-  static const String productDetails = '/productDetailsPage`';
+  // static const String productDetails = '/productDetailsPage`';
   static const String companySelection = '/companySelection';
   static const String login = '/login';
   static const String otp = '/otp';
@@ -69,8 +69,8 @@ class Routes {
     welcome: (context) => const WelcomePage(),
     accountSelection: (context) => const AccountSelectionPage(),
     locationSelection: (context) => const LocationSelectionPage(),
-    bottomBarPage: (context) => BottomBarPage(),
-    productDetails: (context) => const ProductDetailsPage(),
+    bottomBarPage: (context) => const BottomBarPage(),
+    // productDetails: (context) => const ProductDetailsPage(),
     companySelection: (context) => const BusinessSelectionPage(),
     login: (context) => const LoginPage(),
     otp: (context) => const OtpPage(),

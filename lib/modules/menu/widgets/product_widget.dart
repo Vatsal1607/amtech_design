@@ -139,19 +139,20 @@ class ProductWidget extends StatelessWidget {
             child: isActive
                 ? GestureDetector(
                     onTap: () {
-                      //* Custom Size bottomsheet
-                      // if (HiveLocalStorageHelper.getStoreActive()) {
-                      showSizeModalBottomSheet(
-                        context: context,
-                        accountType: accountType,
-                        provider: provider,
-                        menuItems: menuItems,
-                        menuId: menuItems?.menuId ?? '',
-                      );
-                      // } else {
-                      //   customSnackBar(
-                      //       context: context, message: 'STORE IS OFFLINE NOW.');
-                      // }
+                      //* Store logic Online / Offline
+                      if (HiveLocalStorageHelper.getStoreActive()) {
+                        //* Custom Size bottomsheet
+                        showSizeModalBottomSheet(
+                          context: context,
+                          accountType: accountType,
+                          provider: provider,
+                          menuItems: menuItems,
+                          menuId: menuItems?.menuId ?? '',
+                        );
+                      } else {
+                        customSnackBar(
+                            context: context, message: 'STORE IS OFFLINE NOW.');
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.symmetric(

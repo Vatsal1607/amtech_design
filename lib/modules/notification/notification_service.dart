@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
@@ -6,6 +7,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../../models/notification_model.dart';
 import '../../services/local/hive_service.dart';
 
 class NotificationService {
@@ -20,7 +22,6 @@ class NotificationService {
     try {
       // * Enable auto-init for FCM
       await _firebaseMessaging.setAutoInitEnabled(true);
-
       // * Request permission for notifications
       final permissionRequest = await _firebaseMessaging.requestPermission(
         alert: true,
@@ -31,7 +32,6 @@ class NotificationService {
         provisional: false,
         sound: true,
       );
-
       if (permissionRequest.authorizationStatus ==
           AuthorizationStatus.authorized) {
         // * Get the FCM token
@@ -49,31 +49,44 @@ class NotificationService {
           sharedPrefsService.setString(SharedPrefsKeys.fcmToken, newToken);
           debugPrint("FCM Token refreshed: $newToken");
         });
-
         initLocalNotifications();
-
         // * Handle foreground notifications
         FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-          // Handle foreground notification (e.g., show an in-app alert)
-          log("Foreground NOTIFICATION RECEIVED: ${message.data}");
-          if (message.data.containsKey('isActive')) {
-            final dynamic rawIsActive = message.data['isActive'];
-            final bool isActive = rawIsActive is bool
-                ? rawIsActive
-                : rawIsActive.toString().toLowerCase() == 'true';
-            await HiveLocalStorageHelper.setStoreActive(isActive);
+          // log("Foreground NOTIFICATION RECEIVED: ${message.data}");
+          final Map<String, dynamic> rawData = message.data;
+          dynamic dataField = rawData['data'];
+          Map<String, dynamic>? parsedInnerData;
+
+          if (dataField is String) {
+            try {
+              parsedInnerData = jsonDecode(dataField);
+            } catch (e) {
+              log("Failed to decode 'data' field: $e");
+            }
+          } else if (dataField is Map) {
+            parsedInnerData = Map<String, dynamic>.from(dataField);
           }
-          //* show notification
+
+          NotificationModel notification = NotificationModel(
+            body: rawData['body'],
+            title: rawData['title'],
+            clickAction: rawData['click_action'],
+            type: rawData['type'],
+            userType: rawData['user_type'],
+            data:
+                parsedInnerData != null ? Data.fromJson(parsedInnerData) : null,
+          );
+
+          final bool isActive = notification.data?.isActive ?? false;
+          await HiveLocalStorageHelper.setStoreActive(isActive);
+
           showNotification(
             id: DateTime.now().millisecondsSinceEpoch.remainder(100000),
             title: message.notification?.title ?? 'No Title',
             body: message.notification?.body ?? 'No Body',
           );
         });
-
-        FirebaseMessaging.onBackgroundMessage(
-          backgroundMessageHandler,
-        );
+        FirebaseMessaging.onBackgroundMessage(backgroundMessageHandler);
       } else {
         debugPrint("Notifications not authorized");
       }
@@ -85,17 +98,31 @@ class NotificationService {
   // * Background message handler
   @pragma('vm:entry-point') // Important for iOS background execution
   static Future<void> backgroundMessageHandler(RemoteMessage message) async {
-    // Handle background notification (e.g., store data locally)
-    log("Background NOTIFICATION RECEIVED: ${message.data}");
+    // log("Background NOTIFICATION RECEIVED: ${message.data}");
     await Firebase.initializeApp();
     await HiveLocalStorageHelper.init();
-    if (message.data.containsKey('isActive')) {
-      final dynamic rawIsActive = message.data['isActive'];
-      final bool isActive = rawIsActive is bool
-          ? rawIsActive
-          : rawIsActive.toString().toLowerCase() == 'true';
-      await HiveLocalStorageHelper.setStoreActive(isActive);
+    final Map<String, dynamic> rawData = message.data;
+    dynamic dataField = rawData['data'];
+    Map<String, dynamic>? parsedInnerData;
+    if (dataField is String) {
+      try {
+        parsedInnerData = jsonDecode(dataField);
+      } catch (e) {
+        log("Failed to decode 'data' field: $e");
+      }
+    } else if (dataField is Map) {
+      parsedInnerData = Map<String, dynamic>.from(dataField);
     }
+    NotificationModel notification = NotificationModel(
+      body: rawData['body'],
+      title: rawData['title'],
+      clickAction: rawData['click_action'],
+      type: rawData['type'],
+      userType: rawData['user_type'],
+      data: parsedInnerData != null ? Data.fromJson(parsedInnerData) : null,
+    );
+    final bool isActive = notification.data?.isActive ?? false;
+    await HiveLocalStorageHelper.setStoreActive(isActive);
   }
 
   static Future<void> initLocalNotifications() async {

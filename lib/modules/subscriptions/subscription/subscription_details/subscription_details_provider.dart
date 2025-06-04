@@ -102,6 +102,38 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  //* 3 hours before logic (user not able to modify order before this time)
+  String timeSlot = '';
+
+  bool isModificationAllowed(String timeSlot) {
+    try {
+      // Extract start time from the slot
+      final startTimeString = timeSlot.split(" To ").first.trim(); // "08:00AM"
+      // Parse start time
+      final now = DateTime.now();
+      final format = DateFormat("hh:mma"); // e.g., "08:00AM"
+      final parsedTime = format.parse(startTimeString);
+      // Combine parsed time with today's date
+      final startTimeToday = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        parsedTime.hour,
+        parsedTime.minute,
+      );
+      // If slot time is before current time, assume it's for tomorrow
+      final actualSlotTime = startTimeToday.isBefore(now)
+          ? startTimeToday.add(const Duration(days: 1))
+          : startTimeToday;
+      final diff = actualSlotTime.difference(now);
+      // Allow modification only if more than 3 hours left
+      return diff.inHours >= 3;
+    } catch (e) {
+      debugPrint("Error parsing time slot: $e");
+      return true; // fail-safe: allow modification if error
+    }
+  }
+
   ApiService apiService = ApiService();
   bool isLoading = false;
   String? errorMsg;
@@ -199,14 +231,12 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
           if (meal.day == day) {
             meal.timeSlot = newTimeSlot;
             isUpdated = true;
-            log('Updated timeSlot for $day');
           }
         }
       }
     }
     if (isUpdated) {
       notifyListeners();
-      log('Updated subsItem: ${jsonEncode(subsItem.map((e) => e.toJson()).toList())}');
     } else {
       log('No matching day found to update timeSlot.');
     }

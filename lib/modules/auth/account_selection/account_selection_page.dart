@@ -1,9 +1,5 @@
-import 'dart:developer';
-
-import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/core/utils/strings.dart';
 import 'package:amtech_design/modules/auth/location_selection/location_selection_provider.dart';
-import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

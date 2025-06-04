@@ -1,14 +1,14 @@
 class BaseUrl {
   // static const String apiBaseUrl = 'http://192.168.1.11:9000/'; //* local
   // static const String socketBaseUrl = 'http://192.168.1.11:3000/';
-  // static const String apiBaseUrl =
-  //     'https://node-517461825507.asia-south1.run.app/'; // Dev server
-  // static const String socketBaseUrl =
-  //     'https://websocket-517461825507.asia-south1.run.app/'; // Dev socket
   static const String apiBaseUrl =
-      'https://node-508303671463.asia-south1.run.app/'; // Prod server
+      'https://node-517461825507.asia-south1.run.app/'; // Dev server
   static const String socketBaseUrl =
-      'https://websocket-508303671463.asia-south1.run.app/'; // Prod socket
+      'https://websocket-517461825507.asia-south1.run.app/'; // Dev socket
+  // static const String apiBaseUrl =
+  //     'https://node-508303671463.asia-south1.run.app/'; // Prod server
+  // static const String socketBaseUrl =
+  //     'https://websocket-508303671463.asia-south1.run.app/'; // Prod socket
 }
 
 class WebViewUrl {

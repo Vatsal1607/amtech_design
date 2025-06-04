@@ -242,20 +242,21 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                           height: 55.h,
                                           onTap: provider.isActive
                                               ? () {
-                                                  // if (HiveLocalStorageHelper
-                                                  //     .getStoreActive()) {
-                                                  showSizeModalBottomSheet(
-                                                    context: context,
-                                                    accountType: accountType,
-                                                    provider: menuProvider,
-                                                    menuId: widget.menuId,
-                                                  );
-                                                  // } else {
-                                                  //   customSnackBar(
-                                                  //       context: context,
-                                                  //       message:
-                                                  //           'STORE IS OFFLINE NOW.');
-                                                  // }
+                                                  //* Store logic Online / Offline
+                                                  if (HiveLocalStorageHelper
+                                                      .getStoreActive()) {
+                                                    showSizeModalBottomSheet(
+                                                      context: context,
+                                                      accountType: accountType,
+                                                      provider: menuProvider,
+                                                      menuId: widget.menuId,
+                                                    );
+                                                  } else {
+                                                    customSnackBar(
+                                                        context: context,
+                                                        message:
+                                                            'STORE IS OFFLINE NOW.');
+                                                  }
                                                 }
                                               : () {},
                                           text: provider.isActive

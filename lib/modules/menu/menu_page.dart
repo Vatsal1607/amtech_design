@@ -94,7 +94,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     final provider = Provider.of<MenuProvider>(context, listen: false);
     log('userId ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    log('isActive store ${HiveLocalStorageHelper.getStoreActive()}');
+    log('isActive stored ${HiveLocalStorageHelper.getStoreActive()}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Consumer<MenuProvider>(
@@ -325,9 +325,10 @@ class _MenuPageState extends State<MenuPage> {
                                               ),
                                               SizedBox(height: 20.h),
 
-                                              // * ListView Categories OLD
                                               ListView.separated(
                                                 shrinkWrap: true,
+                                                // controller:
+                                                //     provider.scrollController,
                                                 padding: EdgeInsets.zero,
                                                 physics:
                                                     const NeverScrollableScrollPhysics(),
@@ -343,125 +344,130 @@ class _MenuPageState extends State<MenuPage> {
                                                               parentIndex]
                                                           .categoryTitle ??
                                                       '';
-                                                  return Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal:
-                                                                    20.w),
-                                                        child: DividerLabel(
-                                                          //! Key
-                                                          key: ValueKey(provider
-                                                                  .dynamicKeys[
-                                                              categoryTitle]),
-                                                          // key: provider
-                                                          //         .dynamicKeys[
-                                                          //     categoryTitle],
-                                                          label: categoryTitle,
-                                                          accountType:
-                                                              accountType,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 15.h),
-                                                      // * Categories horizontal view
-                                                      Align(
-                                                        alignment:
-                                                            Alignment.topLeft,
-                                                        child: SizedBox(
-                                                          height: 157.h,
-                                                          //* ListView Items
-                                                          child: ListView
-                                                              .separated(
+                                                  return LayoutBuilder(
+                                                    builder:
+                                                        (context, constraints) {
+                                                      WidgetsBinding.instance
+                                                          .addPostFrameCallback(
+                                                              (_) {
+                                                        final renderBox = context
+                                                                .findRenderObject()
+                                                            as RenderBox?;
+                                                        if (renderBox != null) {
+                                                          final offset =
+                                                              renderBox
+                                                                  .localToGlobal(
+                                                                      Offset
+                                                                          .zero)
+                                                                  .dy;
+                                                          provider.sectionOffsets[
+                                                                  categoryTitle] =
+                                                              offset;
+                                                        }
+                                                      });
+                                                      return Column(
+                                                        children: [
+                                                          Padding(
                                                             padding: EdgeInsets
                                                                 .symmetric(
                                                                     horizontal:
                                                                         20.w),
-                                                            shrinkWrap: true,
-                                                            itemCount: provider
-                                                                    .filteredCategories[
-                                                                        parentIndex]
-                                                                    .menuItems
-                                                                    ?.length ??
-                                                                0,
-                                                            scrollDirection:
-                                                                Axis.horizontal,
-                                                            separatorBuilder:
-                                                                (context,
+                                                            child: DividerLabel(
+                                                              //* Key
+                                                              key: ValueKey(provider
+                                                                      .dynamicKeys[
+                                                                  categoryTitle]),
+                                                              label:
+                                                                  categoryTitle,
+                                                              accountType:
+                                                                  accountType,
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                              height: 15.h),
+                                                          // * Categories horizontal view
+                                                          Align(
+                                                            alignment: Alignment
+                                                                .topLeft,
+                                                            child: SizedBox(
+                                                              height: 157.h,
+                                                              //* ListView Items
+                                                              child: ListView
+                                                                  .separated(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        horizontal:
+                                                                            20.w),
+                                                                shrinkWrap:
+                                                                    true,
+                                                                itemCount: provider
+                                                                        .filteredCategories[
+                                                                            parentIndex]
+                                                                        .menuItems
+                                                                        ?.length ??
+                                                                    0,
+                                                                scrollDirection:
+                                                                    Axis.horizontal,
+                                                                separatorBuilder: (context,
                                                                         index) =>
                                                                     SizedBox(
                                                                         width: 10
                                                                             .w),
-                                                            itemBuilder:
-                                                                (context,
-                                                                    childIndex) {
-                                                              final menuItems = provider
-                                                                  .filteredCategories[
-                                                                      parentIndex]
-                                                                  .menuItems?[childIndex];
-                                                              return GestureDetector(
-                                                                onTap: () {
-                                                                  //* Normal Route
-                                                                  Navigator
-                                                                      .push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
+                                                                itemBuilder:
+                                                                    (context,
+                                                                        childIndex) {
+                                                                  final menuItems = provider
+                                                                      .filteredCategories[
+                                                                          parentIndex]
+                                                                      .menuItems?[childIndex];
+                                                                  return GestureDetector(
+                                                                    onTap: () {
+                                                                      //* Normal Route
+                                                                      Navigator
+                                                                          .push(
+                                                                        context,
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
                                                                               ProductDetailsPage(
-                                                                        menuId:
-                                                                            menuItems?.menuId ??
-                                                                                '',
-                                                                        imageUrls:
-                                                                            menuItems?.images ??
-                                                                                [],
-                                                                      ),
+                                                                            menuId:
+                                                                                menuItems?.menuId ?? '',
+                                                                            imageUrls:
+                                                                                menuItems?.images ?? [],
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    child:
+                                                                        ProductWidget(
+                                                                      isActive:
+                                                                          menuItems?.isActiveForBusiness ??
+                                                                              false,
+                                                                      image: (menuItems?.images?.isNotEmpty ??
+                                                                              false)
+                                                                          ? menuItems!
+                                                                              .images![0]
+                                                                          : '',
+                                                                      name: menuItems
+                                                                              ?.itemName ??
+                                                                          '',
+                                                                      index:
+                                                                          childIndex,
+                                                                      accountType:
+                                                                          accountType,
+                                                                      provider:
+                                                                          provider,
+                                                                      menuItems:
+                                                                          menuItems,
                                                                     ),
                                                                   );
-                                                                  //* Named Route
-                                                                  // Navigator
-                                                                  //     .pushNamed(
-                                                                  //   context,
-                                                                  //   Routes
-                                                                  //       .productDetails,
-                                                                  //   arguments: {
-                                                                  //     'menuId':
-                                                                  //         menuItems
-                                                                  //             ?.menuId,
-                                                                  //   },
-                                                                  // );
                                                                 },
-                                                                child:
-                                                                    ProductWidget(
-                                                                  isActive:
-                                                                      menuItems
-                                                                              ?.isActiveForBusiness ??
-                                                                          false,
-                                                                  image: (menuItems
-                                                                              ?.images
-                                                                              ?.isNotEmpty ??
-                                                                          false)
-                                                                      ? menuItems!
-                                                                          .images![0]
-                                                                      : '',
-                                                                  name: menuItems
-                                                                          ?.itemName ??
-                                                                      '',
-                                                                  index:
-                                                                      childIndex,
-                                                                  accountType:
-                                                                      accountType,
-                                                                  provider:
-                                                                      provider,
-                                                                  menuItems:
-                                                                      menuItems,
-                                                                ),
-                                                              );
-                                                            },
+                                                              ),
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    ],
+                                                        ],
+                                                      );
+                                                    },
+                                                    // child:
                                                   );
                                                 },
                                               ),

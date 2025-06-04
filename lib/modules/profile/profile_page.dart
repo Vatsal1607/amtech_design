@@ -50,29 +50,28 @@ class ProfilePage extends StatelessWidget {
       //* Logout & Login FAB
       floatingActionButton: GestureDetector(
         onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return Consumer<ProfileProvider>(
-                builder: (context, _, child) => CustomConfirmDialog(
-                  accountType: accountType,
-                  onTapCancel: () => Navigator.pop(context),
-                  onTapYes: () {
-                    if (isLoggedIn) {
+          if (isLoggedIn) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return Consumer<ProfileProvider>(
+                  builder: (context, _, child) => CustomConfirmDialog(
+                    accountType: accountType,
+                    onTapCancel: () => Navigator.pop(context),
+                    onTapYes: () {
                       provider.logout(context: context); // * LogOut
-                    } else {
-                      Navigator.pop(context);
-                      Navigator.pushNamed(context, Routes.accountSelection);
-                    }
-                  },
-                  yesBtnText: isLoggedIn ? 'LOGOUT' : 'LOGIN',
-                  isLoading: provider.isLoading,
-                  title: 'ARE YOU SURE?',
-                  subTitle: 'You really want to Logout?',
-                ),
-              );
-            },
-          );
+                    },
+                    yesBtnText: isLoggedIn ? 'LOGOUT' : 'LOGIN',
+                    isLoading: provider.isLoading,
+                    title: 'ARE YOU SURE?',
+                    subTitle: 'You really want to Logout?',
+                  ),
+                );
+              },
+            );
+          } else {
+            Navigator.pushNamed(context, Routes.accountSelection);
+          }
         },
         child: Container(
           height: 50.h,

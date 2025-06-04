@@ -18,8 +18,6 @@ import 'package:provider/provider.dart';
 import '../../../../core/utils/app_colors.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../models/subscription_modify_request_model.dart' as modify;
-import 'package:amtech_design/models/subscription_summary_model.dart'
-    as summary;
 import '../../create_subscription_plan/create_subscription_plan_provider.dart';
 import '../../subscription_cart/subscription_cart_provider.dart';
 import 'subscription_details_provider.dart';
@@ -153,7 +151,6 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        log('save pressed');
                                         final subsDetailsProvider = Provider.of<
                                                 SubscriptionDetailsProvider>(
                                             context,
@@ -249,16 +246,11 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
                               accountType: accountType,
                             ),
                           ),
-                          _buildText(
-                            label: 'Period',
-                            value: 'Monthly (static)',
-                            accountType: accountType,
-                          ),
-                          Consumer<SubscriptionCartProvider>(
-                            builder: (context, _, child) => _buildText(
+                          Consumer<SubscriptionDetailsProvider>(
+                            builder: (context, provider, child) => _buildText(
                               label: 'Timings',
-                              value:
-                                  '${subsCartProvider.summaryRes?.data?.items?.first.mealSubscription?.first.timeSlot}',
+                              value: provider.timeSlot,
+                              // '${subsCartProvider.summaryRes?.data?.items?.first.mealSubscription?.first.timeSlot}',
                               accountType: accountType,
                             ),
                           ),

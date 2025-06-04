@@ -1,8 +1,7 @@
-// import 'dart:nativewrappers/_internal/vm/lib/math_patch.dart';
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/constant.dart';
 import 'package:amtech_design/core/utils/strings.dart';
+import 'package:amtech_design/custom_widgets/snackbar.dart';
 import 'package:amtech_design/custom_widgets/svg_icon.dart';
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/select_meal_bottomsheet.dart';
 import 'package:amtech_design/modules/subscriptions/subscription/subscription_details/subscription_details_provider.dart';
@@ -68,17 +67,25 @@ class ItemDetailsWidget extends StatelessWidget {
           SizedBox(height: 5.h),
           GestureDetector(
             onTap: () {
-              //* Select meal bottomsheet
-              log('isModifyDayName: ${DateFormat('EEEE').format(context.read<SubscriptionDetailsProvider>().selectedDay)}');
-              showSelectMealBottomSheeet(
-                context: context,
-                accountType: accountType,
-                isModify: true,
-                isModifyDayName: DateFormat('EEEE').format(
-                    context.read<SubscriptionDetailsProvider>().selectedDay),
-                // day: day,
-                // mealIndex: mealIndex,
-              );
+              //* Condition that user should not able to order before 3 hours
+              final provider = Provider.of<SubscriptionDetailsProvider>(context,
+                  listen: false);
+              log('isModificationAllowed ${provider.isModificationAllowed(provider.timeSlot)}');
+              if (provider.isModificationAllowed(provider.timeSlot)) {
+                // * Select meal bottomsheet
+                showSelectMealBottomSheeet(
+                  context: context,
+                  accountType: accountType,
+                  isModify: true,
+                  isModifyDayName: DateFormat('EEEE').format(
+                      context.read<SubscriptionDetailsProvider>().selectedDay),
+                );
+              } else {
+                customSnackBar(
+                    context: context,
+                    message:
+                        'You cannot modify the order within 3 hours of delivery.');
+              }
             },
             child: Container(
               padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 8.h),

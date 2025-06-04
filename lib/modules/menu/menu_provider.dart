@@ -84,9 +84,23 @@ class MenuProvider extends ChangeNotifier {
     isMenuOpen = false;
     notifyListeners();
     if (dynamicKeys.containsKey(value)) {
-      scrollToSection(dynamicKeys[value]!);
+      // scrollToSection(dynamicKeys[value]!);
+      // scrollToSection(value);
     }
   }
+
+  // void scrollToSection(String categoryTitle) {
+  //   final offset = sectionOffsets[categoryTitle];
+  //   if (offset != null) {
+  //     scrollController.animateTo(
+  //       offset,
+  //       duration: const Duration(milliseconds: 200),
+  //       curve: Curves.easeIn,
+  //     );
+  //   } else {
+  //     log("Offset not found for section: $categoryTitle");
+  //   }
+  // }
 
   onCanceledMenuItem() {
     isMenuOpen = false;
@@ -103,22 +117,28 @@ class MenuProvider extends ChangeNotifier {
   void generateCategoryKeys(List<MenuCategories> categories) {
     dynamicKeys.clear();
     for (var category in categories) {
-      dynamicKeys[category.categoryTitle ?? ""] = GlobalKey();
+      final keyLabel = category.categoryTitle ?? '';
+      dynamicKeys[keyLabel] = LabeledGlobalKey(keyLabel);
+      // dynamicKeys[category.categoryTitle ?? ""] = GlobalKey();
     }
     notifyListeners(); // Update UI after keys are generated
   }
 
   // * Scroll to the section with its key
-  void scrollToSection(GlobalKey sectionKey) {
-    final context = sectionKey.currentContext;
-    if (context != null) {
-      Scrollable.ensureVisible(
-        context,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-    }
-  }
+  // void scrollToSection(GlobalKey sectionKey) {
+  //   final context = sectionKey.currentContext;
+  //   if (context != null) {
+  //     Scrollable.ensureVisible(
+  //       context,
+  //       duration: const Duration(milliseconds: 500),
+  //       curve: Curves.easeInOut,
+  //     );
+  //   }
+  // }
+
+  //* Scroll to section with scroll controller
+  ScrollController scrollController = ScrollController();
+  Map<String, double> sectionOffsets = {};
 
   final addressWidth = 290;
   // * Account Selection UI data

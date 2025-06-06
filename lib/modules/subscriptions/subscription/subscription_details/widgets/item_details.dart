@@ -52,7 +52,6 @@ class ItemDetailsWidget extends StatelessWidget {
             builder: (context, provider, child) => _buildRichText(
               "Ingredients",
               "${provider.dayDetailsRes?.ingredients != null && provider.dayDetailsRes!.ingredients!.isNotEmpty ? provider.dayDetailsRes!.ingredients!.first.ingreName : ''}",
-              // "${provider.dayDetailsRes?.ingredients?.first.ingreName}",
             ),
           ),
           SizedBox(height: 10.h),
@@ -70,8 +69,9 @@ class ItemDetailsWidget extends StatelessWidget {
               //* Condition that user should not able to order before 3 hours
               final provider = Provider.of<SubscriptionDetailsProvider>(context,
                   listen: false);
-              log('isModificationAllowed ${provider.isModificationAllowed(provider.timeSlot)}');
-              if (provider.isModificationAllowed(provider.timeSlot)) {
+              log('provider.isModificationAllowed ${provider.isModificationAllowed(provider.timeSlot, provider.day)}');
+              if (provider.isModificationAllowed(
+                  provider.timeSlot, provider.day)) {
                 // * Select meal bottomsheet
                 showSelectMealBottomSheeet(
                   context: context,

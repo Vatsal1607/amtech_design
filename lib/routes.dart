@@ -24,7 +24,6 @@ import 'modules/auth/otp/widgets/verify_success_page.dart';
 import 'modules/authorized_emp/authorized_emp_page.dart';
 import 'modules/map/google_map_page.dart';
 import 'modules/order/order_status/order_status_page.dart';
-import 'modules/product_page/product_details_page.dart';
 import 'modules/profile/profile_page.dart';
 import 'modules/recharge/recharge_page.dart';
 import 'modules/subscriptions/create_subscription_plan/create_subscription_plan_page.dart';
@@ -37,7 +36,6 @@ class Routes {
   static const String accountSelection = '/accountSelection';
   static const String locationSelection = '/locationSelection';
   static const String bottomBarPage = '/bottomBarPage';
-  // static const String productDetails = '/productDetailsPage`';
   static const String companySelection = '/companySelection';
   static const String login = '/login';
   static const String otp = '/otp';
@@ -70,7 +68,6 @@ class Routes {
     accountSelection: (context) => const AccountSelectionPage(),
     locationSelection: (context) => const LocationSelectionPage(),
     bottomBarPage: (context) => const BottomBarPage(),
-    // productDetails: (context) => const ProductDetailsPage(),
     companySelection: (context) => const BusinessSelectionPage(),
     login: (context) => const LoginPage(),
     otp: (context) => const OtpPage(),

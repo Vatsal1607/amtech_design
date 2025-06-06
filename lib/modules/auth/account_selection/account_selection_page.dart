@@ -49,7 +49,6 @@ class _AccountSelectionPageState extends State<AccountSelectionPage> {
             //* Skip button
             child: GestureDetector(
               onTap: () {
-                // Navigator.pushNamed(context, Routes.bottomBarPage);
                 Navigator.of(context, rootNavigator: true)
                     .pushNamed(Routes.bottomBarPage);
               },
@@ -101,11 +100,10 @@ class _AccountSelectionPageState extends State<AccountSelectionPage> {
                   ),
                   SizedBox(height: 20.h),
 
-                  // custom widget of Account selection button
-
+                  //* Account selection button
                   AccountSelectionButton(
                     onTap: () {
-                      // * Update & Save accountType in local storage // Todo
+                      // * Update & Save accountType in local storage
                       context
                           .read<LocationSelectionProvider>()
                           .updateAccountType('personal');
@@ -120,7 +118,7 @@ class _AccountSelectionPageState extends State<AccountSelectionPage> {
                   SizedBox(height: 17.h),
                   AccountSelectionButton(
                     onTap: () {
-                      // * Update & Save accountType in local storage // Todo
+                      // * Update & Save accountType in local storage
                       context
                           .read<LocationSelectionProvider>()
                           .updateAccountType('business');
@@ -130,7 +128,6 @@ class _AccountSelectionPageState extends State<AccountSelectionPage> {
                     icon: IconStrings.businessAccount,
                   ),
                   SizedBox(height: 16.h),
-
                   RichText(
                     text: TextSpan(
                       text: 'BY PROCEEDING, YOU ACCEPT OUR ',

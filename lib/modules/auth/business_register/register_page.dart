@@ -22,8 +22,6 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RegisterProvider>(context, listen: false);
-    // final businessSelectionProvider =
-    //     Provider.of<BusinessSelectionProvider>(context, listen: false);
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Scaffold(
@@ -177,7 +175,6 @@ class RegisterPage extends StatelessWidget {
                   :
                   //! Business form
                   SingleChildScrollView(
-                      // physics: const ClampingScrollPhysics(),
                       child: Padding(
                         padding: EdgeInsets.only(
                           bottom: MediaQuery.of(context)
@@ -348,12 +345,6 @@ class RegisterPage extends StatelessWidget {
                                               dropdownStyleData:
                                                   DropdownStyleData(
                                                 maxHeight: 300.h,
-                                                // width: provider.isDropdownOpen
-                                                //     ? MediaQuery.of(context)
-                                                //             .size
-                                                //             .width *
-                                                //         0.9
-                                                //     : 220.w,
                                                 decoration: BoxDecoration(
                                                   color: getColorAccountType(
                                                     accountType: accountType,
@@ -771,9 +762,6 @@ class RegisterPage extends StatelessWidget {
                       if (provider.businessFormKey.currentState!.validate()) {
                         //! Api call business register
                         provider.businessRegister(context);
-                        // context
-                        //     .read<BusinessSelectionProvider>()
-                        //     .getBusinessList(); //* API call
                         debugPrint('Business form is valid');
                       } else {
                         debugPrint('Business form is not valid');
@@ -795,82 +783,3 @@ class RegisterPage extends StatelessWidget {
     );
   }
 }
-
-//* OLD businesstype
-                                          //     DropdownButton2<String>(
-                                          //   dropdownStyleData:
-                                          //       DropdownStyleData(
-                                          //     decoration: BoxDecoration(
-                                          //       color: AppColors.seaShell,
-                                          //       borderRadius:
-                                          //           BorderRadius.circular(
-                                          //               10), // Rounded corners
-                                          //       border: Border.all(
-                                          //         color: Colors
-                                          //             .grey, // Border color
-                                          //         width: 1, // Border width
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          //   value:
-                                          //       provider.selectedBusinessType,
-                                          //   isExpanded: true,
-                                          //   style: GoogleFonts.publicSans(
-                                          //     fontSize: 14.sp,
-                                          //     color: AppColors.white,
-                                          //   ),
-                                          //   hint: Text(
-                                          //     'Business Type',
-                                          //     style: GoogleFonts.publicSans(
-                                          //       fontSize: 14.sp,
-                                          //       color: AppColors.white,
-                                          //     ),
-                                          //   ),
-                                          //   items: provider.businessTypeItems
-                                          //       .map<DropdownMenuItem<String>>(
-                                          //           (String value) {
-                                          //     return DropdownMenuItem<String>(
-                                          //       value: value,
-                                          //       child: Text(
-                                          //         value,
-                                          //         style: GoogleFonts.publicSans(
-                                          //           fontSize: 14.sp,
-                                          //           fontWeight: FontWeight.bold,
-                                          //           color:
-                                          //               AppColors.primaryColor,
-                                          //         ),
-                                          //       ),
-                                          //     );
-                                          //   }).toList(),
-                                          //   underline: const SizedBox.shrink(),
-                                          //   onChanged:
-                                          //       provider.onChangeBusinessType,
-                                          //   iconStyleData: IconStyleData(
-                                          //     icon: Padding(
-                                          //       padding: EdgeInsets.only(
-                                          //           right: 20.w),
-                                          //       child: const SvgIcon(
-                                          //         icon: IconStrings.dropdown,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          //   selectedItemBuilder:
-                                          //       (BuildContext context) {
-                                          //     return provider.businessTypeItems
-                                          //         .map<Widget>((String value) {
-                                          //       return Align(
-                                          //         alignment:
-                                          //             Alignment.centerLeft,
-                                          //         child: Text(
-                                          //           value,
-                                          //           style:
-                                          //               GoogleFonts.publicSans(
-                                          //             fontSize: 14,
-                                          //             color: Colors
-                                          //                 .white, // Style for the selected item
-                                          //           ),
-                                          //         ),
-                                          //       );
-                                          //     }).toList();
-                                          //   },
-                                          // ),

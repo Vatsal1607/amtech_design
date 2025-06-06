@@ -60,16 +60,15 @@ class _SubscriptonDetailsPageState extends State<SubscriptonDetailsPage> {
               ?.map((item) => modify.SubscriptionItem.fromSummary(item))
               .toList() ??
           [];
-      for (var item in subsDetailsProvider.subsItem) {
-        log('subsItem list(details page) ${item.toJson()}'); // If you have toJson()
-      }
-
+      // for (var item in subsDetailsProvider.subsItem) {
+      //   log('subsItem list(details page) ${item.toJson()}'); // If you have toJson()
+      // }
+      // log('createdAtDate $createdAtDate');
       if (createdAtDate != null) {
-        //* API call
         await subsDetailsProvider.getSubsDayDetails(
           subsId: '$subsId',
           day: subsDetailsProvider.getDayName(createdAtDate),
-        );
+        ); //* API
       }
     });
     super.initState();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/services/local/auth_token_helper.dart';
@@ -15,17 +16,9 @@ import '../../../services/network/api_service.dart';
 
 class LoginProvider extends ChangeNotifier {
   LoginProvider() {
-    // getBusinessNameAndSecondaryAccess().then((value) {
-    //   log('getBusinessNameAndSecondaryAccess: $value');
-    //   businessList = value;
-    // });
-
-    /// getSelectedBusinessSecondaryAccess
+    //* getSelectedBusinessSecondaryAccess
     getSelectedBusinessSecondaryAccess().then((value) {
       secondaryAccessList = value;
-      log('secondaryAccessList -- (loginProvider): $secondaryAccessList');
-      // call Validate method
-      // log('validateContactInSecondaryAccess: ${validateContactInSecondaryAccess(919725163481)}');
     });
   }
 
@@ -61,7 +54,6 @@ class LoginProvider extends ChangeNotifier {
     if (secondaryAccessList.isNotEmpty) {
       if (secondaryAccessList
           .any((contact) => contact.contact == enteredContact)) {
-        log('validateContactInSecondaryAccessList: TRUE');
         return true; // Contact found
       }
     }
@@ -142,6 +134,11 @@ class LoginProvider extends ChangeNotifier {
             : '1',
         'fcmToken': fcmToken,
         'deviceId': deviceId,
+        'deviceType': Platform.isAndroid
+            ? 'android'
+            : Platform.isIOS
+                ? 'ios'
+                : 'unknown',
       };
       log('requestBody login: $body');
       final UserLoginModel response = await apiService.userLogin(body: body);
@@ -151,8 +148,6 @@ class LoginProvider extends ChangeNotifier {
               SharedPrefsKeys.userToken, response.data!.token!);
           await sharedPrefsService.setString(
               SharedPrefsKeys.userId, response.data?.user?.sId ?? '');
-          log('User Id from local: $accountType ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-          log('User Id from response: $accountType ${response.data?.user?.sId}');
           await sharedPrefsService.setString(SharedPrefsKeys.userContact,
               AuthTokenHelper.getUserContact().toString());
         }

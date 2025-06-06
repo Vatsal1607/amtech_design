@@ -226,7 +226,6 @@ class RegisterProvider extends ChangeNotifier {
       // Call the API
       ApiGlobalModel response = await apiService.businessRegister(
         body: body,
-        // images: multipartImageList, // Use the multipart list for file uploads
       );
 
       log('Business Register Response: $response');
@@ -241,7 +240,6 @@ class RegisterProvider extends ChangeNotifier {
         );
       } else {
         debugPrint('Response Message: ${response.message}');
-        debugPrint('Response Success: ${response.success}');
       }
     } catch (e) {
       log("Business Register Error: $e");
@@ -275,7 +273,6 @@ class RegisterProvider extends ChangeNotifier {
     notifyListeners();
     GstVerifyModel? response;
     try {
-      // Call the API
       response =
           await apiService.gstVerify(gstNumber: gstNumberController.text);
 

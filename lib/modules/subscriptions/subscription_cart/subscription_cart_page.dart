@@ -475,12 +475,8 @@ class _SubscriptionCartPageState extends State<SubscriptionCartPage> {
                       child: Container(
                         padding: EdgeInsets.only(
                             left: 22.w, right: 22.w, bottom: 40.h, top: 10.h),
-                        decoration: BoxDecoration(
-                          color: getColorAccountType(
-                            accountType: accountType,
-                            businessColor: AppColors.seaShell,
-                            personalColor: AppColors.seaMist,
-                          ),
+                        decoration: const BoxDecoration(
+                          color: AppColors.seaShell,
                         ),
                         child: CustomSubsButtonWithArrow(
                           onTap: () {

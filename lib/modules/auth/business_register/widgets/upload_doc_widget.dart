@@ -38,7 +38,7 @@ class UploadDocWidget extends StatelessWidget {
               children: [
                 SvgIcon(
                   icon: leadingIcon,
-                ), // icon leading
+                ),
                 SizedBox(width: 12.w),
                 Text(
                   title,
@@ -50,7 +50,7 @@ class UploadDocWidget extends StatelessWidget {
                 ),
               ],
             ),
-            SvgIcon(icon: IconStrings.upload),
+            const SvgIcon(icon: IconStrings.upload),
           ],
         ),
       ),

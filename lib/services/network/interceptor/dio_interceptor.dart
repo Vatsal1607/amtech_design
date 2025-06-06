@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:io';
 import 'package:amtech_design/core/utils/constants/keys.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
 import 'package:dio/dio.dart';
-import 'package:dio/io.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../core/utils/app_globals.dart';
@@ -12,20 +10,6 @@ import '../../../models/api_global_model.dart';
 import '../../../modules/profile/profile_provider.dart';
 
 class DioInterceptor extends Interceptor {
-  // Todo remove proxy unaware
-  // proxy unaware apk start
-  // Dio dio;
-  // DioInterceptor(this.dio);
-  // Initialize dio to accept all certificates (proxy-unaware)
-  // void _setupDio() {
-  //   dio.httpClientAdapter = DefaultHttpClientAdapter()
-  //     ..onHttpClientCreate = (client) {
-  //       client.badCertificateCallback =
-  //           (X509Certificate cert, String host, int port) => true;
-  //     };
-  // }
-  // proxy unaware apk end
-
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     debugPrint("Request: ${options.method} ${options.uri}");
@@ -35,8 +19,6 @@ class DioInterceptor extends Interceptor {
       'Authorization':
           'Bearer ${sharedPrefsService.getString(SharedPrefsKeys.userToken)}',
     });
-    // Ensure the Dio client is set up for proxy interception
-    // _setupDio(); //! Unaware proxy
     handler.next(options);
   }
 
@@ -67,15 +49,6 @@ class DioInterceptor extends Interceptor {
           }
         }
       }
-      // Try decoding if responseData is a String
-      // if (responseData is String) {
-      //   try {
-      //     responseData = jsonDecode(responseData);
-      //   } catch (e) {
-      //     log('Failed to decode JSON: $e');
-      //     responseData = null;
-      //   }
-      // }
 
       // Now parse safely
       if (responseData is Map<String, dynamic>) {

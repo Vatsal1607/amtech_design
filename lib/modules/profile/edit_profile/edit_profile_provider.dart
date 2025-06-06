@@ -64,7 +64,11 @@ class EditProfileProvider extends ChangeNotifier {
         addressController.text = data?.address ?? '';
         mobileController.text = data?.contact?.toString() ?? '';
         businessEmailController.text = data?.email ?? '';
-        selectedBusinessType = data?.buninessType ?? '';
+        //* Assign businessType
+        selectedBusinessType =
+            businessTypeItems.contains(data?.buninessType?.trim())
+                ? data!.buninessType!.trim()
+                : null; // or `null` or any valid default
         businessProfileImage = data?.profileImage;
       } else {
         log('${res.message}');

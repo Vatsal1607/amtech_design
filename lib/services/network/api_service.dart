@@ -14,6 +14,7 @@ import 'package:amtech_design/models/ingredients_and_addons_model.dart';
 import 'package:amtech_design/models/personal_register_model.dart';
 import 'package:amtech_design/models/recharge_history_model.dart';
 import 'package:amtech_design/models/reorder_model.dart';
+import 'package:amtech_design/models/store_status_model.dart';
 import 'package:amtech_design/models/user_login_model.dart';
 import 'package:amtech_design/models/user_recharge_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
@@ -500,5 +501,9 @@ class ApiService {
       required String userType,
       required String description}) async {
     return await apiClient.feedbackSumbit(userId, userType, description);
+  }
+
+  Future<StoreStatusModel> storeStatus() async {
+    return await apiClient.storeStatus();
   }
 }

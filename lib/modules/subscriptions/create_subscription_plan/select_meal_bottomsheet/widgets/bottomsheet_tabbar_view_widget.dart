@@ -4,6 +4,7 @@ import 'package:amtech_design/modules/subscriptions/create_subscription_plan/ing
 import 'package:amtech_design/modules/subscriptions/create_subscription_plan/select_meal_bottomsheet/widgets/counter_widget.dart';
 import 'package:amtech_design/custom_widgets/buttons/small_edit_button.dart';
 import 'package:amtech_design/services/local/shared_preferences_service.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -172,12 +173,16 @@ class BottomsheetTabbarViewWidget extends StatelessWidget {
                     child: SizedBox(
                       width: 80.w,
                       height: 80.h,
-                      child: Image.network(
-                        (menuItems?[index].images?.isNotEmpty ?? false)
+                      child: CachedNetworkImage(
+                        imageUrl: (menuItems?[index].images?.isNotEmpty ??
+                                false)
                             ? menuItems![index].images![0]
                             : 'https://via.placeholder.com/150', // Fallback image URL
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) =>
+                        placeholder: (context, url) => const Center(
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        errorWidget: (context, url, error) =>
                             const Icon(Icons.broken_image, color: Colors.white),
                       ),
                     ),

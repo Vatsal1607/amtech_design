@@ -9,7 +9,6 @@ import '../../../core/utils/constant.dart';
 import '../../../core/utils/strings.dart';
 import '../../../custom_widgets/svg_icon.dart';
 import '../../../models/home_menu_model.dart';
-import '../../../services/local/hive_service.dart';
 
 class ProductWidget extends StatelessWidget {
   final String image;
@@ -138,10 +137,11 @@ class ProductWidget extends StatelessWidget {
             //* ADD Button of Product widget
             child: isActive
                 ? GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       //* Store logic Online / Offline
-                      if (HiveLocalStorageHelper.getStoreActive()) {
-                        //* Custom Size bottomsheet
+                      bool storeStatus = await provider.getStoreStatus(context);
+                      if (storeStatus) {
+                        //* Store is open //* Custom Size bottomsheet
                         showSizeModalBottomSheet(
                           context: context,
                           accountType: accountType,
@@ -150,8 +150,11 @@ class ProductWidget extends StatelessWidget {
                           menuId: menuItems?.menuId ?? '',
                         );
                       } else {
+                        //* Store is offline
                         customSnackBar(
-                            context: context, message: 'STORE IS OFFLINE NOW.');
+                            context: context,
+                            message:
+                                "We're sorry, the store is offline at the moment.");
                       }
                     },
                     child: Container(

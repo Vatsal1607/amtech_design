@@ -59,4 +59,5 @@ class ApiEndpoints {
   static const String accountSwitch = 'user/account/switch';
   static const String feedbackSumbit = 'feedback/sumbit';
   static const String subsInvoiceGenrate = 'order/subscriptions-generate';
+  static const String storeStatus = 'store/status';
 }

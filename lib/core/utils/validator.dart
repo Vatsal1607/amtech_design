@@ -1,5 +1,5 @@
 class Validator {
-  // Validator for name
+  // Name Validator
   static String? validateName(String? value) {
     if (value == null || value.isEmpty) {
       return "Please enter your name";
@@ -23,7 +23,7 @@ class Validator {
     return null;
   }
 
-  // Validator for phone number
+  // Validator phone number
   static String? validatePhoneNumber(String? value) {
     if (value == null || value.isEmpty) {
       return "Please enter your phone number";

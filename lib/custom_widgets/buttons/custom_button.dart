@@ -44,7 +44,10 @@ class CustomButton extends StatelessWidget {
         ),
         child: Center(
           child: isLoading
-              ? CustomLoader(color: loaderColor ?? textColor)
+              ? CustomLoader(
+                  color: loaderColor ?? textColor,
+                  backgroundColor: loaderColor ?? textColor,
+                )
               : Text(
                   text.toUpperCase(),
                   style: GoogleFonts.publicSans(

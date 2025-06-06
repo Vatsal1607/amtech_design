@@ -5,6 +5,7 @@ import 'package:amtech_design/models/favorites_model.dart';
 import 'package:amtech_design/models/get_list_access_model.dart';
 import 'package:amtech_design/models/gst_verify_model.dart';
 import 'package:amtech_design/models/notification_history_model.dart';
+import 'package:amtech_design/models/store_status_model.dart';
 import 'package:amtech_design/models/subs_day_details_model.dart';
 import 'package:amtech_design/models/subscription_create_request_model.dart';
 import 'package:amtech_design/models/verify_recharge_model.dart';
@@ -392,6 +393,10 @@ abstract class ApiClient {
     @Field('userType') String userType, //BusinessUser or User
     @Field('description') String description,
   );
+
+  // StoreStatusModel
+  @GET(ApiEndpoints.storeStatus)
+  Future<StoreStatusModel> storeStatus();
 
   // @POST(ApiEndpoints.subsInvoiceGenrate)
   // Future<SubscriptionCreateModel> subsInvoiceGenrate(

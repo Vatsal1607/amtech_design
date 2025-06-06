@@ -302,7 +302,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               if (accountType == 'business')
                                 CustomTextField(
                                   controller: provider.businessEmailController,
-                                  hint: '',
+                                  hint: 'Email',
                                   prefixIcon: IconStrings.email,
                                   iconColor: getColorAccountType(
                                     accountType: accountType,

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import '../../core/utils/enums/enums.dart';
 import '../../core/utils/strings.dart';
 import '../../core/utils/utils.dart';
+import '../../custom_widgets/snackbar.dart';
 import '../../models/api_global_model.dart';
 import '../../models/get_banner_model.dart';
 import '../../models/menu_size_model.dart';
@@ -545,4 +546,49 @@ class MenuProvider extends ChangeNotifier {
         (totalAmount == 0) ? 0 : (filledAmount / totalAmount).clamp(0.0, 1.0);
     notifyListeners();
   }
+
+  bool isActive = false;
+  //* Store Status
+  Future<bool> getStoreStatus(BuildContext context) async {
+    bool isActive = false;
+    try {
+      final res = await apiService.storeStatus();
+      if (res.success == true) {
+        isActive = res.data?.isActive ?? false;
+      } else {
+        log(res.message.toString());
+      }
+    } on DioException catch (e) {
+      if (e.response != null && e.response?.data != null) {
+        final data = e.response!.data;
+        if (data is Map<String, dynamic> && data['message'] != null) {
+          log(data['message']);
+        }
+      }
+      log("Error getStoreStatus: ${e.toString()}");
+    }
+    return isActive;
+  }
+
+  // Future getStoreStatus(BuildContext context) async {
+  //   try {
+  //     final res = await apiService.storeStatus();
+  //     if (res.success == true) {
+  //       isActive = res.data?.isActive ?? false;
+  //       if (!isActive) {
+  //         customSnackBar(context: context, message: 'STORE IS OFFLINE NOW.');
+  //       }
+  //     } else {
+  //       log(res.message.toString());
+  //     }
+  //   } on DioException catch (e) {
+  //     if (e.response != null && e.response?.data != null) {
+  //       final data = e.response!.data;
+  //       if (data is Map<String, dynamic> && data['message'] != null) {
+  //         log(data['message']);
+  //       }
+  //     }
+  //     log("Error deleteAccount: ${e.toString()}");
+  //   }
+  // }
 }

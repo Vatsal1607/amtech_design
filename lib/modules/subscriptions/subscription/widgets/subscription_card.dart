@@ -127,7 +127,7 @@ class SubscriptionCardWidget extends StatelessWidget {
                         ),
                         Text(
                           item.createdAt != null
-                              ? '${Utils.formatSubscriptionDate(item.createdAt!)}'
+                              ? Utils.formatSubscriptionDate(item.createdAt!)
                               : '',
                           overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.publicSans(

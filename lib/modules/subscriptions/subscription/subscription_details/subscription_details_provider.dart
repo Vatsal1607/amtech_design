@@ -104,33 +104,73 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
 
   //* 3 hours before logic (user not able to modify order before this time)
   String timeSlot = '';
+  String day = '';
 
-  bool isModificationAllowed(String timeSlot) {
+  bool isModificationAllowed(String timeSlot, String day) {
     try {
-      // Extract start time from the slot
-      final startTimeString = timeSlot.split(" To ").first.trim(); // "08:00AM"
-      // Parse start time
+      // Convert day string to weekday number (Monday = 1, ..., Sunday = 7)
+      final dayMap = {
+        'monday': DateTime.monday,
+        'tuesday': DateTime.tuesday,
+        'wednesday': DateTime.wednesday,
+        'thursday': DateTime.thursday,
+        'friday': DateTime.friday,
+        'saturday': DateTime.saturday,
+        'sunday': DateTime.sunday,
+      };
+
       final now = DateTime.now();
-      final format = DateFormat("hh:mma"); // e.g., "08:00AM"
+      final normalizedDay = day.toLowerCase().trim();
+
+      if (!dayMap.containsKey(normalizedDay)) {
+        debugPrint("Invalid day: $day");
+        return true; // fail-safe
+      }
+
+      final targetWeekday = dayMap[normalizedDay]!;
+
+      // Find the next occurrence of the target weekday
+      int daysDifference = (targetWeekday - now.weekday) % 7;
+      if (daysDifference == 0) {
+        // It's today, check if time has already passed
+        final format = DateFormat("hh:mma");
+        final startTimeString = timeSlot.split(" To ").first.trim();
+        final parsedTime = format.parse(startTimeString);
+
+        final todaySlotTime = DateTime(
+          now.year,
+          now.month,
+          now.day,
+          parsedTime.hour,
+          parsedTime.minute,
+        );
+
+        if (todaySlotTime.isBefore(now)) {
+          // If time has passed today, schedule for next week
+          daysDifference = 7;
+        }
+      }
+
+      // Calculate slot date and time
+      final format = DateFormat("hh:mma");
+      final startTimeString = timeSlot.split(" To ").first.trim();
       final parsedTime = format.parse(startTimeString);
-      // Combine parsed time with today's date
-      final startTimeToday = DateTime(
+
+      final slotDateTime = DateTime(
         now.year,
         now.month,
         now.day,
-        parsedTime.hour,
-        parsedTime.minute,
-      );
-      // If slot time is before current time, assume it's for tomorrow
-      final actualSlotTime = startTimeToday.isBefore(now)
-          ? startTimeToday.add(const Duration(days: 1))
-          : startTimeToday;
-      final diff = actualSlotTime.difference(now);
-      // Allow modification only if more than 3 hours left
-      return diff.inHours >= 3;
+      ).add(Duration(days: daysDifference)).copyWith(
+            hour: parsedTime.hour,
+            minute: parsedTime.minute,
+          );
+
+      final difference = slotDateTime.difference(now);
+
+      return difference.inMinutes >= 180; // >= 3 hours
     } catch (e) {
-      debugPrint("Error parsing time slot: $e");
-      return true; // fail-safe: allow modification if error
+      debugPrint("Error in isModificationAllowed: $e");
+      return true; // fail-safe
     }
   }
 
@@ -159,6 +199,7 @@ class SubscriptionDetailsProvider extends ChangeNotifier {
         log('Timeslot: ${res.data?.first.timeSlot}');
       } else {
         dayDetailsRes = null;
+        errorMsg = res.message;
         log('${res.message}');
       }
     } on DioException catch (e) {

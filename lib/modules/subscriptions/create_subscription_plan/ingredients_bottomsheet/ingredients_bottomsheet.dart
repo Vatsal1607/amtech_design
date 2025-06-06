@@ -33,7 +33,6 @@ Future<void> showIngredientsBottomSheeet({
   required int mealItemIndex,
   bool isModify = false,
 }) async {
-  log('mealIndex is: $mealIndex');
   final ingredientsProvider =
       Provider.of<IngredientsBottomsheetProvider>(context, listen: false);
   final menuProvider = Provider.of<MenuProvider>(context, listen: false);
@@ -49,7 +48,6 @@ Future<void> showIngredientsBottomSheeet({
   final String sizeId = size?.sizeId ?? '';
   final String sizeName = size?.sizeName ?? '';
   final num sizePrice = size?.price ?? 0;
-  // log('Get menusize price: ${menuProvider.menuSizeResponse?.data?.sizeDetails?.first.price}');
   showModalBottomSheet(
     context: context,
     backgroundColor: getColorAccountType(
@@ -59,7 +57,6 @@ Future<void> showIngredientsBottomSheeet({
     ),
     isScrollControlled: true, // Allows full height modal
     builder: (context) {
-      log('Ingredients bottomsheet called');
       return Stack(
         clipBehavior: Clip.none,
         children: [
@@ -197,7 +194,11 @@ Future<void> showIngredientsBottomSheeet({
             right: 0,
             left: 0,
             child: Container(
-              color: AppColors.seaShell,
+              color: getColorAccountType(
+                accountType: accountType,
+                businessColor: AppColors.seaShell,
+                personalColor: AppColors.seaMist,
+              ),
               padding: EdgeInsets.only(
                 top: 8.h,
                 bottom: 20.h,
@@ -210,7 +211,6 @@ Future<void> showIngredientsBottomSheeet({
                   onTap: () {
                     //* Modify daywise item (subscription details)
                     if (isModify) {
-                      log('Modify item daywise');
                       final subsDetailsProvider =
                           Provider.of<SubscriptionDetailsProvider>(context,
                               listen: false);
@@ -254,7 +254,6 @@ Future<void> showIngredientsBottomSheeet({
                         ],
                       );
                     } else {
-                      log('Without Modify item');
                       // DayWiseSelected ItemName
                       createSubsProvider.addOrUpdateDayWiseSelectedItem(
                           day, itemName);

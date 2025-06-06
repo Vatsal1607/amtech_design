@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:amtech_design/core/utils/app_colors.dart';
 import 'package:amtech_design/core/utils/enums/enums.dart';
 import 'package:amtech_design/core/utils/strings.dart';
@@ -17,7 +16,6 @@ import 'package:amtech_design/modules/menu/widgets/product_widget.dart';
 import 'package:amtech_design/modules/menu/widgets/subscription_banner_widget.dart';
 import 'package:amtech_design/modules/notification/notification_provider.dart';
 import 'package:amtech_design/modules/product_page/product_details_page.dart';
-import 'package:amtech_design/services/local/hive_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -92,9 +90,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<MenuProvider>(context, listen: false);
-    log('userId ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
-    log('isActive stored ${HiveLocalStorageHelper.getStoreActive()}');
+    // log('userId ${sharedPrefsService.getString(SharedPrefsKeys.userId)}');
     final String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
     return Consumer<MenuProvider>(

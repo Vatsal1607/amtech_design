@@ -115,6 +115,8 @@ class SubscriptionCartProvider extends ChangeNotifier {
           context.read<SubscriptionDetailsProvider>().timeSlot =
               summaryRes?.data?.items?.first.mealSubscription?.first.timeSlot ??
                   '';
+          context.read<SubscriptionDetailsProvider>().day =
+              summaryRes?.data?.items?.first.mealSubscription?.first.day ?? '';
           final createdAtString = summaryRes?.data?.createdAt;
           if (createdAtString != null) {
             final createdAt = DateTime.parse(createdAtString).toLocal();

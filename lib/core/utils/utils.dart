@@ -71,7 +71,7 @@ class Utils {
       DateTime date = DateTime.parse(dateString)
           .toLocal(); // Convert to local time if needed
 
-      String day = date.day.toString();
+      date.day.toString();
       String month = _monthAbbreviation(date.month);
       String year = date.year.toString();
 
@@ -117,10 +117,10 @@ class Utils {
     return months[month - 1];
   }
 
+  // static String defaultUserId =
+  // '683998b91287bfe134c0bcb3'; // Guest id Local mustang
   static String defaultUserId =
       '6820dcd705ec25425b883a23'; // Guest id DEV(staging) bhavani
   // static String defaultUserId =
   //     '682c759d66bf59171ea8fabf'; // Guest id PROD Asus
-  // static String defaultUserId =
-  // '683998b91287bfe134c0bcb3'; // Guest id Local mustang
 }

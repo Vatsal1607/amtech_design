@@ -15,7 +15,6 @@ import '../../core/utils/app_colors.dart';
 import '../../core/utils/constants/keys.dart';
 import '../../core/utils/strings.dart';
 import '../../custom_widgets/snackbar.dart';
-import '../../services/local/hive_service.dart';
 import '../../services/local/shared_preferences_service.dart';
 import 'product_details_provider.dart';
 
@@ -48,11 +47,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
   Widget build(BuildContext context) {
     String accountType =
         sharedPrefsService.getString(SharedPrefsKeys.accountType) ?? '';
-    // * Retrieve the arguments
-    // final args =
-    //     ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>? ??
-    //         {};
-    // final menuId = args['menuId'];
     final provider =
         Provider.of<ProductDetailsProvider>(context, listen: false);
     final images = widget.imageUrls;
@@ -240,25 +234,29 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                                             (context, menuProvider, child) =>
                                                 CustomButton(
                                           height: 55.h,
-                                          onTap: provider.isActive
-                                              ? () {
-                                                  //* Store logic Online / Offline
-                                                  if (HiveLocalStorageHelper
-                                                      .getStoreActive()) {
-                                                    showSizeModalBottomSheet(
-                                                      context: context,
-                                                      accountType: accountType,
-                                                      provider: menuProvider,
-                                                      menuId: widget.menuId,
-                                                    );
-                                                  } else {
-                                                    customSnackBar(
-                                                        context: context,
-                                                        message:
-                                                            'STORE IS OFFLINE NOW.');
-                                                  }
-                                                }
-                                              : () {},
+                                          onTap: () async {
+                                            bool storeStatus =
+                                                await menuProvider
+                                                    .getStoreStatus(context);
+                                            //* Out of stock (isActive)
+                                            if (provider.isActive) {
+                                              if (storeStatus) {
+                                                //* Store is open //* Custom Size bottomsheet
+                                                showSizeModalBottomSheet(
+                                                  context: context,
+                                                  accountType: accountType,
+                                                  provider: menuProvider,
+                                                  menuId: widget.menuId,
+                                                );
+                                              } else {
+                                                //* Store is offline
+                                                customSnackBar(
+                                                    context: context,
+                                                    message:
+                                                        "We're sorry, the store is offline at the moment.");
+                                              }
+                                            } else {}
+                                          },
                                           text: provider.isActive
                                               ? 'ADD TO CART'
                                               : 'OUT OF STOCK',
